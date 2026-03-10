@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Security Headers -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https:;">
+    <meta name="theme-color" content="#09090F">
+    <link rel="manifest" href="manifest.json">
+    <title>Reports & Export — ImmoLux</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="data/version.js"></script>
+    <script src="version-display.js" defer></script>
+    <style>
+        :root {
+            --bg: #09090F;
+            --bg-card: #111118;
+            --bg-lift: #16161F;
+            --bg-panel: #1C1C27;
+            --gold: #C9A265;
+            --gold-dim: rgba(201,162,101,0.18);
+            --gold-line: rgba(201,162,101,0.35);
+            --text: #E8E4DC;
+            --text-muted: #7A7A8C;
+            --text-dim: #4A4A5C;
+            --border: rgba(255,255,255,0.07);
+            --border-gold: rgba(201,162,101,0.25);
+            --radius: 4px;
+            --radius-lg: 8px;
+            --shadow: 0 4px 32px rgba(0,0,0,0.5);
+            --font-display: 'Cormorant Garamond', Georgia, serif;
+            --font-body: 'Outfit', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        body.light-mode {
+            --bg: #F5F0E8;
+            --bg-card: #FFFFFF;
+            --bg-lift: #FAF7F2;
+            --bg-panel: #F0EAE0;
+            --text: #1A1A24;
+            --text-muted: #6B6B7C;
+            --text-dim: #A0A0B0;
+            --border: rgba(0,0,0,0.08);
+            --border-gold: rgba(160,110,50,0.3);
+            --gold: #9A6E2A;
+            --gold-dim: rgba(154,110,42,0.1);
+            --gold-line: rgba(154,110,42,0.3);
+            --shadow: 0 4px 24px rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.4;
+        }
+
+        /* ── Nav Bar ── */
+        .nav-bar {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0 1.5rem;
+            height: 52px;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-gold);
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .nav-bar::-webkit-scrollbar { display: none; }
+
+        .nav-link {
+            flex-shrink: 0;
+            padding: 0.35rem 0.85rem;
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: var(--radius);
+            transition: color 0.2s, background 0.2s;
+            white-space: nowrap;
+            letter-spacing: 0.02em;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--gold);
+            background: var(--gold-dim);
+        }
+
+        .nav-link.active {
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .nav-toggle {
+            margin-left: auto;
+            flex-shrink: 0;
+            background: none;
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius);
+            color: var(--text-muted);
+            font-size: 1rem;
+            width: 34px;
+            height: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .nav-toggle:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        /* ── Page Layout ── */
+        .page-wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem 4rem;
+        }
+
+        /* ── Page Header ── */
+        .page-header {
+            margin-bottom: 3rem;
+            animation: fadeInDown 0.55s ease both;
+        }
+
+        .page-header-eyebrow {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 0.75rem;
+        }
+
+        .page-header h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 600;
+            color: var(--text);
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+
+        .gold-rule {
+            width: 48px;
+            height: 1px;
+            background: var(--gold-line);
+            margin: 1rem 0 0;
+        }
+
+        /* ── Stats Overview ── */
+        .stats-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+            animation: fadeIn 0.6s ease 0.15s both;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gold-line);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+            transform-origin: left;
+        }
+
+        .stat-card:hover {
+            border-color: var(--border-gold);
+            box-shadow: var(--shadow);
+            transform: translateY(-2px);
+        }
+
+        .stat-card:hover::after {
+            transform: scaleX(1);
+        }
+
+        .stat-icon {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.7;
+        }
+
+        .stat-value {
+            font-family: var(--font-mono);
+            font-size: 1.6rem;
+            font-weight: 500;
+            color: var(--gold);
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            font-weight: 500;
+            margin-top: 0.2rem;
+        }
+
+        /* ── Export Grid ── */
+        .export-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .export-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.55s ease both;
+        }
+
+        .export-card:nth-child(1) { animation-delay: 0.1s; }
+        .export-card:nth-child(2) { animation-delay: 0.2s; }
+        .export-card:nth-child(3) { animation-delay: 0.3s; }
+
+        .export-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold-line), transparent);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .export-card:hover {
+            border-color: var(--border-gold);
+            box-shadow: var(--shadow);
+            transform: translateY(-3px);
+        }
+
+        .export-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .export-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            margin-bottom: 1.25rem;
+            background: var(--gold-dim);
+            border: 1px solid var(--border-gold);
+        }
+
+        .export-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.6rem;
+            color: var(--text);
+            line-height: 1.2;
+        }
+
+        .export-card > p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            font-size: 0.88rem;
+            font-weight: 300;
+        }
+
+        /* ── Filter Group ── */
+        .filter-group {
+            margin-bottom: 1rem;
+        }
+
+        .filter-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.4rem;
+        }
+
+        .filter-group input {
+            width: 100%;
+            padding: 0.6rem 0.9rem;
+            background: var(--bg-lift);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--text);
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .filter-group input::placeholder {
+            color: var(--text-dim);
+        }
+
+        .filter-group input:focus {
+            outline: none;
+            border-color: var(--border-gold);
+            box-shadow: 0 0 0 3px var(--gold-dim);
+        }
+
+        /* ── Export Button ── */
+        .btn-export {
+            width: 100%;
+            margin-top: auto;
+            padding: 0.75rem 1.5rem;
+            background: var(--gold-dim);
+            color: var(--gold);
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius);
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 0.85rem;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-export:hover {
+            background: rgba(201,162,101,0.3);
+            border-color: var(--gold);
+            box-shadow: 0 0 18px var(--gold-dim);
+            transform: translateY(-1px);
+        }
+
+        .btn-export:active {
+            transform: translateY(0);
+        }
+
+        /* ── Back Button ── */
+        .footer-nav {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.65rem 1.75rem;
+            background: var(--bg-card);
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-decoration: none;
+            letter-spacing: 0.03em;
+            transition: border-color 0.2s, color 0.2s, transform 0.2s;
+        }
+
+        .btn-back:hover {
+            border-color: var(--border-gold);
+            color: var(--gold);
+            transform: translateY(-1px);
+        }
+
+        /* ── Success Toast ── */
+        .success-message {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--bg-panel);
+            color: var(--gold);
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.03em;
+            opacity: 0;
+            transform: translateX(400px);
+            transition: all 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 2000;
+        }
+
+        .success-message.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* ── Dark Mode Float Button ── */
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dark-mode-toggle:hover {
+            transform: scale(1.1) rotate(15deg);
+            border-color: var(--gold);
+        }
+
+        @media (max-width: 900px) {
+            .dark-mode-toggle { display: none; }
+        }
+
+        /* ── Animations ── */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .page-wrapper { padding: 2rem 1rem 3rem; }
+
+            .export-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-overview {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Nav Bar -->
+    <nav class="nav-bar">
+        <a href="index.html" class="nav-link">Dashboard</a>
+        <a href="new-listings.html" class="nav-link">Nouvelles</a>
+        <a href="anomalies.html" class="nav-link">Anomalies</a>
+        <a href="map-advanced.html" class="nav-link">Carte</a>
+        <a href="favorites.html" class="nav-link">Prioritaires</a>
+        <a href="3chambres.html" class="nav-link">3 Chambres</a>
+        <a href="ia-analyse.html" class="nav-link">Analyse IA</a>
+        <a href="stats-by-city.html" class="nav-link">Villes</a>
+        <button class="nav-toggle" id="darkModeToggle" title="Mode clair/sombre">☀️</button>
+    </nav>
+
+    <!-- Success Toast -->
+    <div id="successMsg" class="success-message">
+        ✓ Export réussi!
+    </div>
+
+    <!-- Main Content -->
+    <div class="page-wrapper">
+
+        <!-- Header -->
+        <header class="page-header">
+            <div class="page-header-eyebrow">Données · Export</div>
+            <h1>Reports &amp; Export</h1>
+            <p>Téléchargez et analysez vos données immobilières</p>
+            <div class="gold-rule"></div>
+        </header>
+
+        <!-- Stats Overview -->
+        <div class="stats-overview">
+            <div class="stat-card">
+                <div class="stat-icon">🏠</div>
+                <div class="stat-value" id="totalListings">0</div>
+                <div class="stat-label">Annonces Total</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">💰</div>
+                <div class="stat-value" id="avgPrice">0€</div>
+                <div class="stat-label">Prix Moyen</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🏙️</div>
+                <div class="stat-value" id="totalCities">0</div>
+                <div class="stat-label">Villes</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🌐</div>
+                <div class="stat-value" id="totalSites">0</div>
+                <div class="stat-label">Sources</div>
+            </div>
+        </div>
+
+        <!-- Export Cards -->
+        <div class="export-grid">
+
+            <div class="export-card">
+                <div class="export-icon">📊</div>
+                <h3>Rapport Complet CSV</h3>
+                <p>Exportez toutes les annonces avec statistiques complètes au format tableur.</p>
+                <button class="btn-export" onclick="exportCSV()">
+                    <span style="position:relative;z-index:1;">📥 Télécharger CSV</span>
+                </button>
+            </div>
+
+            <div class="export-card">
+                <div class="export-icon">📋</div>
+                <h3>Export JSON Complet</h3>
+                <p>Données brutes en JSON pour intégration API ou traitement personnalisé.</p>
+                <button class="btn-export" onclick="exportJSON()">
+                    <span style="position:relative;z-index:1;">📥 Télécharger JSON</span>
+                </button>
+            </div>
+
+            <div class="export-card">
+                <div class="export-icon">🔍</div>
+                <h3>Export Filtré</h3>
+                <p>Personnalisez vos données avec des filtres de prix précis.</p>
+                <div class="filter-group">
+                    <label>Prix Minimum (€)</label>
+                    <input type="number" id="priceMin" placeholder="Ex: 1000" min="0">
+                </div>
+                <div class="filter-group">
+                    <label>Prix Maximum (€)</label>
+                    <input type="number" id="priceMax" placeholder="Ex: 3000" min="0">
+                </div>
+                <button class="btn-export" onclick="exportFiltered()">
+                    <span style="position:relative;z-index:1;">📥 Télécharger Filtré</span>
+                </button>
+            </div>
+
+        </div>
+
+        <!-- Back Navigation -->
+        <div class="footer-nav">
+            <a href="index.html" class="btn-back">
+                <span>←</span>
+                <span>Retour au Dashboard</span>
+            </a>
+        </div>
+
+    </div><!-- /.page-wrapper -->
+
+    <!-- Floating Dark Mode Toggle -->
+    <button class="dark-mode-toggle" id="darkModeToggleFloat">☀️</button>
+
+    <script src="data/listings.js"></script>
+    <script>
+        // Dark mode
+        const dm = document.getElementById('darkModeToggle');
+        const dmFloat = document.getElementById('darkModeToggleFloat');
+        function applyDM(light) {
+            document.body.classList.toggle('light-mode', light);
+            const icon = light ? '🌙' : '☀️';
+            dm.textContent = icon;
+            if (dmFloat) dmFloat.textContent = icon;
+            localStorage.setItem('darkMode', light);
+        }
+        dm.addEventListener('click', () => applyDM(!document.body.classList.contains('light-mode')));
+        if (dmFloat) dmFloat.addEventListener('click', () => dm.click());
+        applyDM(localStorage.getItem('darkMode') === 'true');
+
+        // Update statistics
+        function updateStats() {
+            const total = LISTINGS.length;
+            const prices = LISTINGS.filter(l => l.price > 0).map(l => l.price);
+            const avgPrice = prices.length ? Math.round(prices.reduce((a,b) => a+b) / prices.length) : 0;
+            const cities = new Set(LISTINGS.map(l => l.city)).size;
+            const sites = new Set(LISTINGS.map(l => l.site)).size;
+
+            document.getElementById('totalListings').textContent = total.toLocaleString();
+            document.getElementById('avgPrice').textContent = avgPrice.toLocaleString() + '€';
+            document.getElementById('totalCities').textContent = cities;
+            document.getElementById('totalSites').textContent = sites;
+        }
+
+        // Show success message
+        function showSuccess() {
+            const msg = document.getElementById('successMsg');
+            msg.classList.add('show');
+            setTimeout(() => msg.classList.remove('show'), 3000);
+        }
+
+        // Download file helper
+        function downloadFile(content, filename, type) {
+            const blob = new Blob([content], { type });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+            showSuccess();
+        }
+
+        // Export CSV
+        function exportCSV() {
+            let csv = 'Site,Titre,Ville,Prix,Chambres,Surface,€/m²,URL\n';
+            LISTINGS.forEach(l => {
+                const priceM2 = l.price_m2 || (l.surface > 0 ? Math.round(l.price / l.surface) : 0);
+                csv += `"${l.site}","${l.title}","${l.city}",${l.price},${l.rooms || 0},${l.surface || 0},${priceM2},"${l.url}"\n`;
+            });
+            const date = new Date().toISOString().split('T')[0];
+            downloadFile(csv, `ImmoLux-Export-${date}.csv`, 'text/csv');
+        }
+
+        // Export JSON
+        function exportJSON() {
+            const json = JSON.stringify(LISTINGS, null, 2);
+            const date = new Date().toISOString().split('T')[0];
+            downloadFile(json, `ImmoLux-Export-${date}.json`, 'application/json');
+        }
+
+        // Export filtered
+        function exportFiltered() {
+            const min = parseInt(document.getElementById('priceMin').value) || 0;
+            const max = parseInt(document.getElementById('priceMax').value) || 999999;
+            const filtered = LISTINGS.filter(l => l.price >= min && l.price <= max);
+
+            if (filtered.length === 0) {
+                alert('Aucune annonce ne correspond aux filtres sélectionnés.');
+                return;
+            }
+
+            let csv = 'Site,Titre,Ville,Prix,Chambres,Surface,€/m²,URL\n';
+            filtered.forEach(l => {
+                const priceM2 = l.price_m2 || (l.surface > 0 ? Math.round(l.price / l.surface) : 0);
+                csv += `"${l.site}","${l.title}","${l.city}",${l.price},${l.rooms || 0},${l.surface || 0},${priceM2},"${l.url}"\n`;
+            });
+            const date = new Date().toISOString().split('T')[0];
+            downloadFile(csv, `ImmoLux-Filtered-${min}-${max}-${date}.csv`, 'text/csv');
+        }
+
+        // Initialize
+        updateStats();
+    </script>
+
+    <!-- Service Worker -->
+    <script>
+    if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("sw.js")
+            .then(reg => console.log("SW registered"))
+            .catch(err => console.log("SW failed:", err));
+    }
+    </script>
+
+</body>
+</html>

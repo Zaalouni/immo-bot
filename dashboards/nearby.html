@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autour de Moi - ImmoLux</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H" crossorigin="anonymous">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#C9A265">
+    <meta name="mobile-web-app-capable" content="yes">
+    <!-- Security Headers -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https:;">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="ImmoLux">
+    <script src="data/version.js"></script>
+    <script src="version-display.js" defer></script>
+    <style>
+        :root {
+            --bg: #09090F;
+            --bg-card: #111118;
+            --bg-lift: #16161F;
+            --bg-panel: #1C1C27;
+            --gold: #C9A265;
+            --gold-dim: rgba(201,162,101,0.18);
+            --gold-line: rgba(201,162,101,0.35);
+            --text: #E8E4DC;
+            --text-muted: #7A7A8C;
+            --text-dim: #4A4A5C;
+            --border: rgba(255,255,255,0.07);
+            --border-gold: rgba(201,162,101,0.25);
+            --radius: 4px;
+            --radius-lg: 8px;
+            --shadow: 0 4px 32px rgba(0,0,0,0.5);
+            --font-display: 'Cormorant Garamond', Georgia, serif;
+            --font-body: 'Outfit', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        body.light-mode {
+            --bg: #F5F0E8;
+            --bg-card: #FFFFFF;
+            --bg-lift: #FAF7F2;
+            --bg-panel: #F0EAE0;
+            --text: #1A1A24;
+            --text-muted: #6B6B7C;
+            --text-dim: #A0A0B0;
+            --border: rgba(0,0,0,0.08);
+            --border-gold: rgba(160,110,50,0.3);
+            --gold: #9A6E2A;
+            --gold-dim: rgba(154,110,42,0.1);
+            --gold-line: rgba(154,110,42,0.3);
+            --shadow: 0 4px 24px rgba(0,0,0,0.1);
+        }
+
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        /* ── Nav Bar ── */
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0 1.5rem;
+            height: 52px;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            padding: 0.35rem 0.85rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 500;
+            font-family: var(--font-body);
+            border-radius: var(--radius);
+            transition: color 0.2s, background 0.2s;
+            white-space: nowrap;
+        }
+
+        .nav-link:hover {
+            color: var(--text);
+            background: var(--bg-lift);
+        }
+
+        .nav-link.active {
+            color: var(--gold);
+            background: var(--gold-dim);
+        }
+
+        .nav-toggle {
+            margin-left: auto;
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: border-color 0.2s, color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-toggle:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        /* ── Page Layout ── */
+        .page-wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+        }
+
+        /* ── Page Header ── */
+        .page-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1.25rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .page-header h1 {
+            font-family: var(--font-display);
+            font-size: 2.2rem;
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: 0.01em;
+            margin-bottom: 0.3rem;
+        }
+
+        .page-header p {
+            font-size: 0.92rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .header-accent {
+            display: inline-block;
+            width: 32px;
+            height: 2px;
+            background: var(--gold);
+            margin-bottom: 0.75rem;
+        }
+
+        /* ── Status Bar ── */
+        .status {
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius);
+            font-size: 0.87rem;
+            font-family: var(--font-body);
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            border-left: 3px solid var(--gold);
+            background: var(--bg-card);
+            color: var(--text-muted);
+            display: none;
+        }
+
+        .status.success {
+            border-left-color: #4CAF7D;
+            color: #4CAF7D;
+            background: rgba(76,175,125,0.08);
+        }
+
+        .status.error {
+            border-left-color: #E05C5C;
+            color: #E05C5C;
+            background: rgba(224,92,92,0.08);
+        }
+
+        .status.info {
+            border-left-color: var(--gold);
+            color: var(--text-muted);
+            background: var(--gold-dim);
+        }
+
+        /* ── Location Box ── */
+        .location-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .location-box h5 {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 1.25rem;
+            letter-spacing: 0.02em;
+        }
+
+        .location-button {
+            padding: 0.65rem 1.5rem;
+            background: var(--gold);
+            color: #09090F;
+            border: none;
+            border-radius: var(--radius);
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 0.88rem;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.2s;
+            letter-spacing: 0.02em;
+        }
+
+        .location-button:hover {
+            opacity: 0.88;
+            transform: translateY(-1px);
+        }
+
+        .location-button:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        #locationInfo {
+            margin-top: 1rem;
+            padding: 0.75rem 1rem;
+            background: var(--bg-lift);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        .radius-control {
+            margin-top: 1.5rem;
+            padding: 1rem 1.25rem;
+            background: var(--bg-lift);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+        }
+
+        .radius-control label {
+            display: block;
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+            font-size: 0.87rem;
+            color: var(--text-muted);
+        }
+
+        #radiusValue {
+            color: var(--gold);
+            font-family: var(--font-mono);
+            font-weight: 500;
+        }
+
+        #radiusSlider {
+            width: 100%;
+            max-width: 400px;
+            height: 4px;
+            border-radius: 2px;
+            background: var(--border);
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        #radiusSlider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--gold);
+            cursor: pointer;
+            border: 2px solid var(--bg-card);
+            box-shadow: 0 0 0 1px var(--gold-line);
+        }
+
+        #radiusSlider::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--gold);
+            cursor: pointer;
+            border: 2px solid var(--bg-card);
+            box-shadow: 0 0 0 1px var(--gold-line);
+        }
+
+        /* ── Stats Overview ── */
+        .stats-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem 1rem;
+            text-align: center;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+        .stat-card:hover {
+            border-color: var(--border-gold);
+            transform: translateY(-2px);
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--gold);
+            font-family: var(--font-mono);
+            letter-spacing: -0.02em;
+        }
+
+        .stat-label {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-top: 0.3rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        /* ── Map ── */
+        #map {
+            height: 500px;
+            border-radius: var(--radius-lg);
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        /* ── Listing Cards ── */
+        .listing-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 0.75rem;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+        .listing-card:hover {
+            border-color: var(--border-gold);
+            transform: translateY(-1px);
+        }
+
+        .listing-card h6 {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .listing-meta {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin-top: 0.35rem;
+        }
+
+        .listing-price {
+            font-family: var(--font-mono);
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--gold);
+        }
+
+        .listing-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .listing-info {
+            flex: 1;
+        }
+
+        .distance-badge {
+            background: var(--gold-dim);
+            border: 1px solid var(--border-gold);
+            color: var(--gold);
+            padding: 0.35rem 0.75rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 0.82rem;
+            font-family: var(--font-mono);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .badge-success {
+            background: rgba(76,175,125,0.15);
+            color: #4CAF7D;
+            border: 1px solid rgba(76,175,125,0.3);
+            padding: 0.2rem 0.6rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 0.75rem;
+            font-family: var(--font-mono);
+            margin-left: 0.5rem;
+        }
+
+        .badge-danger {
+            background: rgba(224,92,92,0.12);
+            color: #E05C5C;
+            border: 1px solid rgba(224,92,92,0.3);
+            padding: 0.2rem 0.6rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 0.75rem;
+            font-family: var(--font-mono);
+            margin-left: 0.5rem;
+        }
+
+        .badge-warning {
+            background: rgba(201,162,101,0.12);
+            color: var(--gold);
+            border: 1px solid var(--border-gold);
+            padding: 0.2rem 0.6rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 0.75rem;
+            font-family: var(--font-mono);
+            margin-left: 0.5rem;
+        }
+
+        .badge-city {
+            background: var(--bg-lift);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 0.2rem 0.6rem;
+            border-radius: var(--radius);
+            font-size: 0.75rem;
+            font-weight: 500;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-listing {
+            display: inline-block;
+            padding: 0.45rem 1rem;
+            background: var(--gold-dim);
+            color: var(--gold);
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius);
+            font-family: var(--font-body);
+            font-size: 0.82rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background 0.2s, color 0.2s;
+            cursor: pointer;
+        }
+
+        .btn-listing:hover {
+            background: var(--gold);
+            color: #09090F;
+        }
+
+        /* ── Empty State ── */
+        .empty-state {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .empty-state h5 {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state p {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+        }
+
+        /* ── Back Link ── */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.65rem 1.5rem;
+            background: var(--bg-card);
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-family: var(--font-body);
+            font-size: 0.87rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .back-link:hover {
+            border-color: var(--border-gold);
+            color: var(--gold);
+        }
+
+        .footer-bar {
+            margin-top: 2.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        /* ── Floating Dark Mode Toggle ── */
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 1.75rem;
+            right: 1.75rem;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            color: var(--gold);
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s, border-color 0.2s;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dark-mode-toggle:hover {
+            transform: scale(1.1) rotate(15deg);
+            border-color: var(--gold);
+        }
+
+        /* ── Animations ── */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in { animation: fadeIn 0.4s ease both; }
+        .fade-in-up { animation: fadeInUp 0.45s ease both; }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .page-header h1 { font-size: 1.7rem; }
+
+            .stats-overview { grid-template-columns: repeat(2, 1fr); }
+
+            #map { height: 350px; }
+
+            .listing-header { flex-direction: column; gap: 0.5rem; }
+
+            .nav-bar { padding: 0 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-bar">
+        <a href="index.html" class="nav-link">Dashboard</a>
+        <a href="new-listings.html" class="nav-link">Nouvelles</a>
+        <a href="anomalies.html" class="nav-link">Anomalies</a>
+        <a href="map-advanced.html" class="nav-link">Carte</a>
+        <a href="favorites.html" class="nav-link">Prioritaires</a>
+        <a href="3chambres.html" class="nav-link">3 Chambres</a>
+        <a href="ia-analyse.html" class="nav-link">Analyse IA</a>
+        <a href="stats-by-city.html" class="nav-link">Villes</a>
+        <button class="nav-toggle" id="darkModeToggle" title="Mode clair/sombre">☀️</button>
+    </nav>
+
+    <div class="page-wrap">
+        <div class="page-header fade-in">
+            <div class="header-accent"></div>
+            <h1>Autour de Moi</h1>
+            <p>Trouvez les annonces proches de votre position géographique</p>
+        </div>
+
+        <div id="status" class="status"></div>
+
+        <div class="location-box fade-in-up">
+            <h5>Localisation</h5>
+            <button class="location-button" onclick="getLocation()">Localiser ma position</button>
+            <div id="locationInfo"></div>
+
+            <div class="radius-control">
+                <label>Rayon de recherche : <strong id="radiusValue">2 km</strong></label>
+                <input type="range" id="radiusSlider" min="0.5" max="10" step="0.5" value="2" onchange="updateRadius()">
+            </div>
+        </div>
+
+        <div class="stats-overview" id="statsContainer" style="display: none;">
+            <div class="stat-card">
+                <div class="stat-value" id="countNearby">0</div>
+                <div class="stat-label">Annonces Proches</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="avgPriceNearby">0€</div>
+                <div class="stat-label">Prix Moyen</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="minDistance">0 km</div>
+                <div class="stat-label">Plus Proche</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="maxDistance">0 km</div>
+                <div class="stat-label">Plus Loin</div>
+            </div>
+        </div>
+
+        <div id="map" style="display: none;"></div>
+
+        <div id="listings"></div>
+
+        <div class="footer-bar">
+            <a href="index.html" class="back-link">
+                <span>←</span>
+                <span>Retour au Dashboard</span>
+            </a>
+        </div>
+    </div>
+
+    <button class="dark-mode-toggle" id="darkModeToggleFloat">☀️</button>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin="anonymous"></script>
+    <script src="data/listings.js"></script>
+    <script src="data/anomalies.js"></script>
+    <script>
+        // Fallback
+        if (typeof ANOMALIES === 'undefined') {
+            window.ANOMALIES = {};
+        }
+
+        function normCity(city) {
+            return city || 'Unknown';
+        }
+
+        let map;
+        let userLocation = null;
+        let userMarker = null;
+        let nearbyListings = [];
+        let currentRadius = 2;
+
+        function haversineDistance(lat1, lng1, lat2, lng2) {
+            const R = 6371;
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLng = (lng2 - lng1) * Math.PI / 180;
+            const a =
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLng / 2) * Math.sin(dLng / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c;
+        }
+
+        function showStatus(msg, type = 'info') {
+            const status = document.getElementById('status');
+            status.textContent = msg;
+            status.className = 'status ' + type;
+            status.style.display = 'block';
+        }
+
+        function getLocation() {
+            const btn = event.target;
+            btn.disabled = true;
+            btn.textContent = 'Localisation en cours...';
+
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    userLocation = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                    showStatus('Position trouvée avec succès!', 'success');
+                    document.getElementById('locationInfo').innerHTML =
+                        `<strong>Coordonnées :</strong> Lat: ${userLocation.lat.toFixed(4)}, Lng: ${userLocation.lng.toFixed(4)}`;
+                    btn.textContent = 'Localiser ma position';
+                    btn.disabled = false;
+                    renderNearby();
+                },
+                error => {
+                    showStatus('Erreur de géolocalisation : ' + error.message, 'error');
+                    btn.textContent = 'Localiser ma position';
+                    btn.disabled = false;
+                }
+            );
+        }
+
+        function updateRadius() {
+            currentRadius = parseFloat(document.getElementById('radiusSlider').value);
+            document.getElementById('radiusValue').textContent = currentRadius + ' km';
+            if (userLocation) renderNearby();
+        }
+
+        function renderNearby() {
+            if (!userLocation) {
+                showStatus('Veuillez d\'abord localiser votre position', 'info');
+                return;
+            }
+
+            nearbyListings = LISTINGS
+                .filter(l => l.latitude && l.longitude)
+                .map(l => ({
+                    ...l,
+                    distance: haversineDistance(userLocation.lat, userLocation.lng, l.latitude, l.longitude)
+                }))
+                .filter(l => l.distance <= currentRadius)
+                .sort((a, b) => a.distance - b.distance);
+
+            if (nearbyListings.length === 0) {
+                document.getElementById('listings').innerHTML = `
+                    <div class="empty-state">
+                        <h5>Aucune annonce trouvée</h5>
+                        <p>Essayez d'augmenter le rayon de recherche</p>
+                    </div>
+                `;
+                document.getElementById('statsContainer').style.display = 'none';
+                document.getElementById('map').style.display = 'none';
+                return;
+            }
+
+            const prices = nearbyListings.map(l => l.price);
+            const distances = nearbyListings.map(l => l.distance);
+
+            document.getElementById('countNearby').textContent = nearbyListings.length;
+            document.getElementById('avgPriceNearby').textContent = Math.round(prices.reduce((a, b) => a + b) / prices.length).toLocaleString() + '€';
+            document.getElementById('minDistance').textContent = Math.min(...distances).toFixed(1) + ' km';
+            document.getElementById('maxDistance').textContent = Math.max(...distances).toFixed(1) + ' km';
+            document.getElementById('statsContainer').style.display = 'grid';
+            document.getElementById('map').style.display = 'block';
+
+            renderMap();
+            renderListings();
+        }
+
+        function renderMap() {
+            if (!map) {
+                map = L.map('map').setView([userLocation.lat, userLocation.lng], 12);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap'
+                }).addTo(map);
+            } else {
+                map.setView([userLocation.lat, userLocation.lng], 12);
+            }
+
+            map.eachLayer(layer => {
+                if (layer instanceof L.CircleMarker || layer instanceof L.Marker || layer instanceof L.Circle) {
+                    map.removeLayer(layer);
+                }
+            });
+
+            if (userMarker) map.removeLayer(userMarker);
+            userMarker = L.circleMarker([userLocation.lat, userLocation.lng], {
+                radius: 10,
+                fillColor: '#C9A265',
+                color: '#09090F',
+                weight: 3,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).bindPopup('<strong>Votre position</strong>').addTo(map);
+
+            L.circle([userLocation.lat, userLocation.lng], {
+                radius: currentRadius * 1000,
+                color: '#C9A265',
+                fill: false,
+                weight: 2,
+                dashArray: '5, 5',
+                opacity: 0.5
+            }).addTo(map);
+
+            nearbyListings.forEach(listing => {
+                const color = ANOMALIES[listing.listing_id] === 'GOOD_DEAL' ? '#4CAF7D' :
+                              ANOMALIES[listing.listing_id] === 'HIGH' ? '#E05C5C' : '#C9A265';
+
+                L.circleMarker([listing.latitude, listing.longitude], {
+                    radius: 6,
+                    fillColor: color,
+                    color: '#09090F',
+                    weight: 2,
+                    opacity: 0.8,
+                    fillOpacity: 0.7
+                }).bindPopup(`
+                    <strong>${listing.title}</strong><br/>
+                    <strong style="color:#C9A265;">${listing.price.toLocaleString()}€</strong> | ${listing.distance.toFixed(1)} km<br/>
+                    <small>${normCity(listing.city)}</small><br/>
+                    <a href="${listing.url}" target="_blank" style="display:inline-block;margin-top:0.5rem;padding:0.3rem 0.75rem;background:#C9A265;color:#09090F;border-radius:3px;font-weight:600;text-decoration:none;font-size:0.82rem;">Voir l'annonce</a>
+                `).addTo(map);
+            });
+        }
+
+        function renderListings() {
+            const container = document.getElementById('listings');
+            container.innerHTML = nearbyListings.map((l, index) => {
+                const anomaly = ANOMALIES[l.listing_id];
+                const badgeClass = anomaly === 'GOOD_DEAL' ? 'badge-success' : anomaly === 'HIGH' ? 'badge-danger' : 'badge-warning';
+
+                return `
+                    <div class="listing-card" style="--index: ${index}">
+                        <div class="listing-header">
+                            <div class="listing-info">
+                                <h6>${l.title}</h6>
+                                <div>
+                                    <span class="listing-price">${l.price.toLocaleString()}€</span>
+                                    ${anomaly ? `<span class="${badgeClass}">${anomaly}</span>` : ''}
+                                </div>
+                                <div class="listing-meta">
+                                    ${l.rooms > 0 ? l.rooms + ' ch&nbsp;&nbsp;' : ''}${l.surface > 0 ? l.surface + 'm²&nbsp;&nbsp;' : ''}${l.time_ago}
+                                </div>
+                            </div>
+                            <div class="distance-badge">
+                                ${l.distance.toFixed(1)} km
+                            </div>
+                        </div>
+                        <div>
+                            <span class="badge-city">${normCity(l.city)}</span>
+                        </div>
+                        <a href="${l.url}" target="_blank" class="btn-listing">Voir l'annonce →</a>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ── Dark Mode ──
+        const dm = document.getElementById('darkModeToggle');
+        const dmFloat = document.getElementById('darkModeToggleFloat');
+        function applyDM(light) { document.body.classList.toggle('light-mode',light); const icon=light?'🌙':'☀️'; dm.textContent=icon; if(dmFloat)dmFloat.textContent=icon; localStorage.setItem('darkMode',light); }
+        dm.addEventListener('click',()=>applyDM(!document.body.classList.contains('light-mode')));
+        if(dmFloat)dmFloat.addEventListener('click',()=>dm.click());
+        applyDM(localStorage.getItem('darkMode')==='true');
+
+        document.addEventListener('DOMContentLoaded', () => {
+            showStatus('Cliquez sur "Localiser ma position" pour trouver les annonces proches', 'info');
+        });
+    </script>
+
+    <!-- Service Worker -->
+    <script>
+    if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("sw.js")
+            .then(reg => console.log("SW registered"))
+            .catch(err => console.log("SW failed:", err));
+    }
+    </script>
+
+</body>
+</html>

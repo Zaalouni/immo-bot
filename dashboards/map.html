@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Security Headers -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https:;">
+<title>Immo Bot LU — Carte</title>
+    <link rel="manifest" href="manifest.json">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+<link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet" integrity="sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H" crossorigin="anonymous">
+<link href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" rel="stylesheet">
+<link href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" rel="stylesheet">
+<style>
+html, body { margin: 0; padding: 0; height: 100%; overflow: hidden;
+  font-family: "Segoe UI", system-ui, sans-serif; }
+#map { height: calc(100vh - 52px); width: 100%; }
+
+.top-nav { background: #0f172a; height: 52px; display: flex; align-items: center;
+  padding: 0 1.25rem; gap: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,.4); }
+.back-btn { color: #94a3b8; text-decoration: none; font-size: .82rem;
+  display: flex; align-items: center; gap: .3rem; transition: color .15s; }
+.back-btn:hover { color: #fff; }
+.nav-title { color: #fff; font-weight: 700; }
+.nav-upd { color: #475569; font-size: .75rem; margin-left: auto; }
+
+#panel {
+  position: fixed; top: 62px; right: 12px; z-index: 1000;
+  width: 230px;
+  background: rgba(255,255,255,.96);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,.2);
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+}
+#panel .ph {
+  background: #0f172a; color: #fff;
+  padding: .6rem .85rem; font-weight: 700; font-size: .82rem;
+  display: flex; align-items: center; justify-content: space-between;
+  cursor: pointer; user-select: none;
+}
+#panel .ph .badge-geo {
+  background: #3b82f6; color: #fff; border-radius: 20px;
+  padding: .1em .6em; font-size: .75rem; font-weight: 700;
+}
+#panel .ph .toggle-icon {
+  font-size: .75rem; color: #94a3b8; transition: transform .2s;
+  margin-left: .5rem;
+}
+#panel.collapsed .ph .toggle-icon { transform: rotate(180deg); }
+#panel .pb { padding: .75rem .85rem; }
+#panel.collapsed .pb { display: none; }
+.filter-lbl {
+  font-size: .65rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .07em; color: #94a3b8; margin-bottom: .2rem;
+}
+.dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block;
+  border: 1px solid rgba(0,0,0,.1); flex-shrink: 0; }
+.legend-row { display: flex; align-items: center; gap: .4rem;
+  font-size: .75rem; color: #475569; padding: .1rem 0; }
+
+/* Markers prix — centré sur le point GPS via transform */
+.pm {
+  color: #fff; font-size: .7rem; font-weight: 700;
+  padding: 3px 8px; border-radius: 10px;
+  border: 2px solid rgba(255,255,255,.85);
+  box-shadow: 0 2px 8px rgba(0,0,0,.3);
+  white-space: nowrap; cursor: pointer;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  transform: translate(-50%, -50%);
+  display: inline-block;
+}
+
+/* Stats rapides */
+.qs { display: grid; grid-template-columns: 1fr 1fr; gap: .4rem; margin-bottom: .6rem; }
+.qs-item { background: #f8fafc; border-radius: 6px; padding: .35rem .5rem; text-align: center; }
+.qs-val { font-size: .95rem; font-weight: 800; color: #0f172a; }
+.qs-lbl { font-size: .6rem; text-transform: uppercase; letter-spacing: .05em; color: #94a3b8; }
+        .dark-mode-toggle {
+            position: fixed; bottom: 2rem; right: 2rem;
+            width: 50px; height: 50px; border-radius: 50%;
+            background: #667eea; color: white; border: none; cursor: pointer;
+            font-size: 1.2rem; box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            transition: all 0.3s; z-index: 100;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .dark-mode-toggle:hover { transform: scale(1.1); background: #5a6fd6; }
+        body.dark-mode { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: #ecf0f1; }
+        body.dark-mode > * { background: rgba(255, 255, 255, 0.05); }
+</style>
+    <script src="dark-mode.js" defer></script>
+    <script src="data/version.js"></script>
+    <script src="version-display.js" defer></script>
+</head>
+<body>
+
+<nav class="top-nav">
+  <a href="index.html" class="back-btn">← Dashboard</a>
+  <span class="nav-title">🗺️ Carte des annonces</span>
+  <span class="nav-upd" id="nav-upd">Mis à jour : —</span>
+</nav>
+
+<div id="map"></div>
+
+<div id="panel">
+  <div class="ph" onclick="togglePanel()">
+    <span>Annonces géolocalisées</span>
+    <div style="display:flex;align-items:center;gap:.4rem">
+      <span class="badge-geo" id="geo-count">103</span>
+      <span class="toggle-icon">▲</span>
+    </div>
+  </div>
+  <div class="pb">
+
+    <!-- Stats rapides -->
+    <div class="qs" id="qs">
+      <div class="qs-item">
+        <div class="qs-val" id="qs-min">—</div>
+        <div class="qs-lbl">Prix min</div>
+      </div>
+      <div class="qs-item">
+        <div class="qs-val" id="qs-max">—</div>
+        <div class="qs-lbl">Prix max</div>
+      </div>
+      <div class="qs-item">
+        <div class="qs-val" id="qs-avg">—</div>
+        <div class="qs-lbl">Prix moy.</div>
+      </div>
+      <div class="qs-item">
+        <div class="qs-val" id="qs-cnt">—</div>
+        <div class="qs-lbl">Visibles</div>
+      </div>
+    </div>
+
+    <!-- Filtres -->
+    <div style="border-top:1px solid #f1f5f9;padding-top:.6rem;margin-bottom:.6rem">
+      <div class="filter-lbl">Ville</div>
+      <select id="f-city" class="form-select form-select-sm mb-2">
+        <option value="">Toutes les villes</option>
+      </select>
+      <div class="filter-lbl">Site</div>
+      <select id="f-site" class="form-select form-select-sm mb-2">
+        <option value="">Tous les sites</option>
+      </select>
+      <div class="filter-lbl">Distance max</div>
+      <select id="f-dist" class="form-select form-select-sm mb-2">
+        <option value="">Toutes distances</option>
+        <option value="2">&lt; 2 km</option>
+        <option value="5">&lt; 5 km</option>
+        <option value="10">&lt; 10 km</option>
+      </select>
+      <div class="d-flex gap-2 mb-2">
+        <button class="btn btn-sm w-100 fw-semibold"
+                style="background:#3b82f6;color:#fff;font-size:.78rem"
+                onclick="applyFilters()">Appliquer</button>
+        <button class="btn btn-sm btn-outline-secondary w-100"
+                style="font-size:.78rem"
+                onclick="resetFilters()">Reset</button>
+      </div>
+      <button id="btnPriceToggle" class="btn btn-sm w-100"
+              style="background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.3);
+                     color:#475569;font-size:.78rem;font-weight:600;text-align:left;
+                     border-radius:7px;padding:.35rem .6rem;transition:all .2s"
+              onclick="togglePriceMode()">💰 Afficher les prix</button>
+    </div>
+
+    <!-- Légende -->
+    <div style="border-top:1px solid #f1f5f9;padding-top:.6rem">
+      <div class="filter-lbl mb-1">Légende — distance</div>
+      <div class="legend-row"><span class="dot" style="background:#10b981"></span>&lt; 2 km du centre</div>
+      <div class="legend-row"><span class="dot" style="background:#3b82f6"></span>2 – 5 km</div>
+      <div class="legend-row"><span class="dot" style="background:#f59e0b"></span>5 – 10 km</div>
+      <div class="legend-row"><span class="dot" style="background:#ef4444"></span>&gt; 10 km</div>
+      <div class="legend-row"><span class="dot" style="background:#94a3b8"></span>Distance inconnue</div>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+<script src="data/listings.js"></script>
+<script>
+// Fallback normCity si version-display.js pas encore chargé
+if (typeof normCity === 'undefined') {
+    window.normCity = function(city) {
+        return city ? city.replace(/^Luxembourg[-\s]/i, '') : city;
+    };
+}
+const GEO = (typeof LISTINGS !== 'undefined' ? LISTINGS : []).filter(l => l.latitude && l.longitude);
+let mapObj, clusterGroup, plainGroup;
+let priceMode = false;
+
+function togglePriceMode() {
+    priceMode = !priceMode;
+    const btn = document.getElementById('btnPriceToggle');
+    if (priceMode) {
+        btn.style.background = '#3b82f6';
+        btn.style.color = '#fff';
+        btn.style.borderColor = '#3b82f6';
+        btn.textContent = '💰 Masquer les prix';
+    } else {
+        btn.style.background = 'rgba(59,130,246,.08)';
+        btn.style.color = '#475569';
+        btn.style.borderColor = 'rgba(59,130,246,.3)';
+        btn.textContent = '💰 Afficher les prix';
+    }
+    applyFilters();
+}
+
+function fmt(n) { return n != null ? Number(n).toLocaleString('fr-FR') : '—'; }
+function trunc(s,n) { return s && s.length > n ? s.slice(0,n) + '…' : (s || '—'); }
+function dCol(d) {
+  if (d == null) return '#94a3b8';
+  return d < 2 ? '#10b981' : d < 5 ? '#3b82f6' : d < 10 ? '#f59e0b' : '#ef4444';
+}
+
+function updateStats(data) {
+  const prices = data.map(l => l.price).filter(p => p > 0);
+  const avg = prices.length ? Math.round(prices.reduce((a,b) => a+b,0) / prices.length) : null;
+  document.getElementById('qs-min').textContent  = prices.length ? fmt(Math.min(...prices)) + ' €' : '—';
+  document.getElementById('qs-max').textContent  = prices.length ? fmt(Math.max(...prices)) + ' €' : '—';
+  document.getElementById('qs-avg').textContent  = avg ? fmt(avg) + ' €' : '—';
+  document.getElementById('qs-cnt').textContent  = data.length;
+  document.getElementById('geo-count').textContent = data.length;
+}
+
+function buildPopup(l) {
+  const pm2 = (l.price > 0 && l.surface > 0) ? Math.round(l.price / l.surface) : null;
+  return `
+    <div style="min-width:210px;font-size:.85rem;font-family:'Segoe UI',sans-serif">
+      <div style="font-weight:700;color:#0f172a;margin-bottom:2px;font-size:.95rem">${normCity(l.city) || ''}</div>
+      <div style="font-size:1.15rem;color:#3b82f6;font-weight:800;margin-bottom:4px">
+        ${l.price ? fmt(l.price) + ' €' : '—'}
+      </div>
+      <div style="font-size:.78rem;color:#64748b;margin-bottom:6px">
+        ${l.surface ? l.surface + ' m²' : ''}
+        ${l.rooms ? ' · ' + l.rooms + ' ch.' : ''}
+        ${pm2 ? ' · ' + pm2 + ' €/m²' : ''}
+      </div>
+      ${l.distance_km != null
+        ? `<div style="font-size:.75rem;color:#94a3b8;margin-bottom:4px">${l.distance_km.toFixed(1)} km du centre</div>`
+        : ''}
+      <div style="font-size:.78rem;color:#475569;margin-bottom:8px">${trunc(l.title, 60)}</div>
+      ${l.contact_email
+        ? `<div style="font-size:.75rem;color:#64748b;margin-bottom:6px">
+             📧 <a href="mailto:${l.contact_email}"
+                   style="color:#3b82f6;text-decoration:none">${l.contact_email}</a>
+           </div>`
+        : ''}
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <span style="font-size:.68rem;color:#94a3b8">${l.site || ''}</span>
+        <a href="${l.url}" target="_blank"
+           style="background:#3b82f6;color:#fff;text-decoration:none;border-radius:6px;
+                  padding:4px 12px;font-size:.78rem;font-weight:700">
+          Voir →
+        </a>
+      </div>
+    </div>`;
+}
+
+function buildMap(data) {
+  // Nettoyer les layers précédents
+  if (clusterGroup) mapObj.removeLayer(clusterGroup);
+  if (plainGroup)   mapObj.removeLayer(plainGroup);
+
+  const bounds = [];
+  const popup_opts = {maxWidth: 260, className: ''};
+
+  if (priceMode) {
+    // Mode prix : markers avec badge prix coloré par distance — pas de clustering
+    plainGroup = L.layerGroup();
+    data.forEach(l => {
+      const col = dCol(l.distance_km);
+      const label = l.price > 0
+        ? (l.price >= 1000 ? (Math.round(l.price / 100) / 10) + 'k€' : l.price + '€')
+        : '?€';
+      const icon = L.divIcon({
+        html: `<div class="pm" style="background:${col}">${label}</div>`,
+        className: '',
+        iconSize: [1, 1],
+        iconAnchor: [0, 0],
+        popupAnchor: [0, -16]
+      });
+      bounds.push([l.latitude, l.longitude]);
+      L.marker([l.latitude, l.longitude], {icon})
+        .bindPopup(buildPopup(l), popup_opts)
+        .addTo(plainGroup);
+    });
+    plainGroup.addTo(mapObj);
+  } else {
+    // Mode normal : cercles + clustering
+    clusterGroup = L.markerClusterGroup({
+      maxClusterRadius: 40,
+      iconCreateFunction: cluster => {
+        const n = cluster.getChildCount();
+        const sz = n < 10 ? 32 : n < 50 ? 40 : 48;
+        return L.divIcon({
+          html: `<div style="background:#3b82f6;color:#fff;border-radius:50%;
+            width:${sz}px;height:${sz}px;display:flex;align-items:center;
+            justify-content:center;font-weight:800;font-size:.8rem;
+            box-shadow:0 2px 8px rgba(0,0,0,.35);border:2px solid #fff;">${n}</div>`,
+          iconSize: [sz,sz], iconAnchor: [sz/2,sz/2], className: ''
+        });
+      }
+    });
+    data.forEach(l => {
+      const col = dCol(l.distance_km);
+      const icon = L.divIcon({
+        html: `<div style="background:${col};width:14px;height:14px;border-radius:50%;
+          border:2px solid #fff;box-shadow:0 1px 5px rgba(0,0,0,.4)"></div>`,
+        iconSize: [14,14], iconAnchor: [7,7], className: ''
+      });
+      bounds.push([l.latitude, l.longitude]);
+      L.marker([l.latitude, l.longitude], {icon})
+        .bindPopup(buildPopup(l), popup_opts)
+        .addTo(clusterGroup);
+    });
+    clusterGroup.addTo(mapObj);
+  }
+
+  if (bounds.length > 0) {
+    try { mapObj.fitBounds(bounds, {padding: [30,30], maxZoom: 13}); } catch(e) {}
+  }
+  updateStats(data);
+}
+
+function applyFilters() {
+  const city = document.getElementById('f-city').value;
+  const site = document.getElementById('f-site').value;
+  const dist = parseFloat(document.getElementById('f-dist').value) || Infinity;
+  const d = GEO.filter(l => {
+    if (city && l.city !== city) return false;
+    if (site && l.site !== site) return false;
+    if (dist < Infinity && l.distance_km != null && l.distance_km > dist) return false;
+    return true;
+  });
+  buildMap(d);
+}
+
+function resetFilters() {
+  document.getElementById('f-city').value = '';
+  document.getElementById('f-site').value = '';
+  document.getElementById('f-dist').value = '';
+  buildMap(GEO);
+}
+
+function togglePanel() {
+  document.getElementById('panel').classList.toggle('collapsed');
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  // Mise à jour date dynamique
+  document.getElementById('nav-upd').textContent = 'Mis à jour : ' + new Date().toLocaleString('fr-FR');
+
+  // Populate dropdowns dynamically from LISTINGS
+  const citySelect = document.getElementById('f-city');
+  const siteSelect = document.getElementById('f-site');
+  const cities = [...new Set(GEO.map(l => l.city).filter(Boolean))].sort();
+  const sites  = [...new Set(GEO.map(l => l.site).filter(Boolean))].sort();
+  cities.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = c; citySelect.appendChild(o); });
+  sites.forEach(s  => { const o = document.createElement('option'); o.value = s; o.textContent = s; siteSelect.appendChild(o); });
+
+  // Replié par défaut sur mobile (écran < 640px)
+  if (window.innerWidth < 640) {
+    document.getElementById('panel').classList.add('collapsed');
+  }
+  mapObj = L.map('map').setView([49.6116, 6.1319], 11);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors', maxZoom: 19
+  }).addTo(mapObj);
+  buildMap(GEO);
+});
+</script>
+    <!-- Dark Mode Toggle -->
+    <button class="dark-mode-toggle" id="darkModeToggle" title="Mode sombre" aria-label="Mode sombre/clair" aria-pressed="false">🌙</button>
+<!-- Service Worker -->
+<script>
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("sw.js")
+        .then(reg => console.log("SW registered"))
+        .catch(err => console.log("SW failed:", err));
+}
+</script>
+
+</body>
+</html>

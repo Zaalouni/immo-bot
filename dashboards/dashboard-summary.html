@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Résumé ImmoLux - Vue d'ensemble du marché immobilier">
+    <meta name="theme-color" content="#09090F">
+    <meta name="mobile-web-app-capable" content="yes">
+    <!-- Security Headers -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https:;">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="manifest.json">
+    <title>Résumé - ImmoLux</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="data/version.js"></script>
+    <script src="version-display.js" defer></script>
+    <style>
+        :root {
+            --bg: #09090F;
+            --bg-card: #111118;
+            --bg-lift: #16161F;
+            --bg-panel: #1C1C27;
+            --gold: #C9A265;
+            --gold-dim: rgba(201,162,101,0.18);
+            --gold-line: rgba(201,162,101,0.35);
+            --text: #E8E4DC;
+            --text-muted: #7A7A8C;
+            --text-dim: #4A4A5C;
+            --border: rgba(255,255,255,0.07);
+            --border-gold: rgba(201,162,101,0.25);
+            --radius: 4px;
+            --radius-lg: 8px;
+            --shadow: 0 4px 32px rgba(0,0,0,0.5);
+            --font-display: 'Cormorant Garamond', Georgia, serif;
+            --font-body: 'Outfit', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        body.light-mode {
+            --bg: #F5F0E8;
+            --bg-card: #FFFFFF;
+            --bg-lift: #FAF7F2;
+            --bg-panel: #F0EAE0;
+            --text: #1A1A24;
+            --text-muted: #6B6B7C;
+            --text-dim: #A0A0B0;
+            --border: rgba(0,0,0,0.08);
+            --border-gold: rgba(160,110,50,0.3);
+            --gold: #9A6E2A;
+            --gold-dim: rgba(154,110,42,0.1);
+            --gold-line: rgba(154,110,42,0.3);
+            --shadow: 0 4px 24px rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.4;
+        }
+
+        /* ── Nav Bar ── */
+        .nav-bar {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0 1.5rem;
+            height: 52px;
+            background: rgba(9,9,15,0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        body.light-mode .nav-bar {
+            background: rgba(245,240,232,0.9);
+        }
+
+        .nav-bar::-webkit-scrollbar { display: none; }
+
+        .nav-link {
+            flex-shrink: 0;
+            padding: 0.35rem 0.85rem;
+            border-radius: var(--radius);
+            font-size: 0.8rem;
+            font-weight: 500;
+            font-family: var(--font-body);
+            color: var(--text-muted);
+            text-decoration: none;
+            letter-spacing: 0.02em;
+            transition: color 0.2s, background 0.2s;
+            white-space: nowrap;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--gold);
+            background: var(--gold-dim);
+        }
+
+        .nav-toggle {
+            margin-left: auto;
+            flex-shrink: 0;
+            background: none;
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            padding: 0.3rem 0.6rem;
+            cursor: pointer;
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .nav-toggle:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        /* ── Page Layout ── */
+        .page-wrap {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem 5rem;
+        }
+
+        /* ── Header ── */
+        .page-header {
+            margin-bottom: 2.5rem;
+            animation: fadeInDown 0.5s ease both;
+        }
+
+        .page-header h1 {
+            font-family: var(--font-display);
+            font-size: 2.4rem;
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: 0.01em;
+            line-height: 1.2;
+            margin-bottom: 0.4rem;
+        }
+
+        .page-header h1 span.gold {
+            color: var(--gold);
+        }
+
+        .page-header .subtitle {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-family: var(--font-body);
+        }
+
+        /* ── KPI Grid ── */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+            animation: fadeIn 0.6s ease 0.1s both;
+        }
+
+        .kpi-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem 1rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+            cursor: default;
+        }
+
+        .kpi-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .kpi-card:hover {
+            border-color: var(--border-gold);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+
+        .kpi-card:hover::after {
+            opacity: 1;
+        }
+
+        .kpi-value {
+            font-family: var(--font-mono);
+            font-size: 1.65rem;
+            font-weight: 600;
+            color: var(--gold);
+            margin-bottom: 0.4rem;
+            letter-spacing: -0.02em;
+        }
+
+        .kpi-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        /* ── Section Cards ── */
+        .section-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.75rem;
+            margin-bottom: 1.25rem;
+            animation: fadeInUp 0.5s ease both;
+            transition: border-color 0.25s;
+        }
+
+        .section-card:hover {
+            border-color: var(--border-gold);
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            letter-spacing: 0.01em;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-title .icon {
+            color: var(--gold);
+            font-size: 1rem;
+        }
+
+        /* ── Page Links Grid ── */
+        .page-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .page-link-card {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.65rem 0.9rem;
+            border-radius: var(--radius);
+            background: var(--bg-lift);
+            border: 1px solid var(--border);
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            font-weight: 500;
+            font-family: var(--font-body);
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .page-link-card:hover {
+            background: var(--gold-dim);
+            border-color: var(--border-gold);
+            color: var(--gold);
+        }
+
+        /* ── Data Rows ── */
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.85rem 0.5rem;
+            border-bottom: 1px solid var(--border);
+            gap: 1rem;
+            border-radius: var(--radius);
+            transition: background 0.2s;
+        }
+
+        .data-row:last-child {
+            border-bottom: none;
+        }
+
+        .data-row:hover {
+            background: var(--bg-lift);
+        }
+
+        .data-row-left {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .data-row-left strong {
+            display: block;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.3rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .data-row-left small {
+            color: var(--text-muted);
+            font-size: 0.78rem;
+        }
+
+        .data-row-right {
+            font-weight: 600;
+            color: var(--gold);
+            font-size: 0.95rem;
+            font-family: var(--font-mono);
+            white-space: nowrap;
+        }
+
+        /* ── Progress Bars ── */
+        .progress-bar-wrap {
+            height: 4px;
+            background: var(--bg-panel);
+            border-radius: 2px;
+            margin-top: 0.4rem;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            border-radius: 2px;
+            background: linear-gradient(90deg, var(--gold), var(--gold-line));
+            transition: width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ── Price Badges ── */
+        .price-high {
+            color: #E07070;
+        }
+
+        .price-low {
+            color: #6EC49A;
+        }
+
+        /* ── Link View ── */
+        .link-view {
+            font-size: 0.75rem;
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 500;
+            font-family: var(--font-body);
+            transition: opacity 0.2s;
+            opacity: 0.8;
+        }
+
+        .link-view:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+
+        /* ── Back Button ── */
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.7rem 1.75rem;
+            background: var(--bg-card);
+            color: var(--gold);
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius);
+            font-weight: 500;
+            font-size: 0.85rem;
+            font-family: var(--font-body);
+            text-decoration: none;
+            transition: all 0.25s ease;
+            letter-spacing: 0.03em;
+        }
+
+        .btn-back:hover {
+            background: var(--gold-dim);
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .footer-center {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        /* ── Loading text ── */
+        .loading-text {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            font-style: italic;
+        }
+
+        /* ── Dark Mode Float Button ── */
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dark-mode-toggle:hover {
+            transform: scale(1.1) rotate(15deg);
+            border-color: var(--gold);
+        }
+
+        @media (max-width: 900px) {
+            .dark-mode-toggle { display: none; }
+        }
+
+        /* ── Animations ── */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .page-header h1 { font-size: 1.8rem; }
+            .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+            .page-links { grid-template-columns: repeat(2, 1fr); }
+            .section-card { padding: 1.25rem; }
+            .page-wrap { padding: 1.5rem 1rem 4rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="nav-bar">
+        <a href="index.html" class="nav-link">Dashboard</a>
+        <a href="new-listings.html" class="nav-link">Nouvelles</a>
+        <a href="anomalies.html" class="nav-link">Anomalies</a>
+        <a href="map-advanced.html" class="nav-link">Carte</a>
+        <a href="favorites.html" class="nav-link">Prioritaires</a>
+        <a href="3chambres.html" class="nav-link">3 Chambres</a>
+        <a href="ia-analyse.html" class="nav-link">Analyse IA</a>
+        <a href="stats-by-city.html" class="nav-link">Villes</a>
+        <button class="nav-toggle" id="darkModeToggle" title="Mode clair/sombre">☀️</button>
+    </nav>
+
+    <div class="page-wrap">
+
+        <!-- Header -->
+        <div class="page-header">
+            <h1>Résumé <span class="gold">ImmoLux</span></h1>
+            <p class="subtitle" id="lastUpdate">Chargement...</p>
+        </div>
+
+        <!-- KPIs -->
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-value" id="kpiTotal">—</div>
+                <div class="kpi-label">Total annonces</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value" id="kpiCities">—</div>
+                <div class="kpi-label">Villes</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value" id="kpiAvgPrice">—</div>
+                <div class="kpi-label">Prix moyen</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value" id="kpiNewToday">—</div>
+                <div class="kpi-label">Nouvelles (24h)</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value" id="kpiMedian">—</div>
+                <div class="kpi-label">Prix médian</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value" id="kpiWithGps">—</div>
+                <div class="kpi-label">Avec GPS</div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="section-card" style="--index: 1">
+            <h2 class="section-title">
+                <span class="icon">◈</span>
+                <span>Explorer le Dashboard</span>
+            </h2>
+            <div class="page-links">
+                <a href="index.html" class="page-link-card">📊 Dashboard</a>
+                <a href="market-intelligence.html" class="page-link-card">🧠 Synthèse</a>
+                <a href="new-listings.html" class="page-link-card">⭐ Nouvelles</a>
+                <a href="anomalies.html" class="page-link-card">🎯 Anomalies</a>
+                <a href="map-advanced.html" class="page-link-card">🗺️ Carte</a>
+                <a href="stats-by-city.html" class="page-link-card">📋 Par ville</a>
+                <a href="favorites.html" class="page-link-card">⭐ Prioritaires</a>
+                <a href="photos.html" class="page-link-card">🖼️ Photos</a>
+                <a href="gallery.html" class="page-link-card">✨ Galerie</a>
+                <a href="data-quality.html" class="page-link-card">🔍 Qualité</a>
+                <a href="nearby.html" class="page-link-card">📍 Proximité</a>
+                <a href="comparison.html" class="page-link-card">🔄 Comparateur</a>
+                <a href="trends.html" class="page-link-card">📈 Tendances</a>
+            </div>
+        </div>
+
+        <!-- Top villes -->
+        <div class="section-card" style="--index: 2">
+            <h2 class="section-title">
+                <span class="icon">◈</span>
+                <span>Top 8 villes — nombre d'annonces</span>
+            </h2>
+            <div id="topCities">
+                <div class="loading-text">Chargement…</div>
+            </div>
+        </div>
+
+        <!-- Répartition par site -->
+        <div class="section-card" style="--index: 3">
+            <h2 class="section-title">
+                <span class="icon">◈</span>
+                <span>Annonces par site</span>
+            </h2>
+            <div id="bySite">
+                <div class="loading-text">Chargement…</div>
+            </div>
+        </div>
+
+        <!-- Prix les plus hauts -->
+        <div class="section-card" style="--index: 4">
+            <h2 class="section-title">
+                <span class="icon">◈</span>
+                <span>Prix les plus hauts</span>
+            </h2>
+            <div id="topPrices">
+                <div class="loading-text">Chargement…</div>
+            </div>
+        </div>
+
+        <!-- Prix les plus bas -->
+        <div class="section-card" style="--index: 5">
+            <h2 class="section-title">
+                <span class="icon">◈</span>
+                <span>Meilleures affaires — prix les plus bas</span>
+            </h2>
+            <div id="topDeals">
+                <div class="loading-text">Chargement…</div>
+            </div>
+        </div>
+
+        <!-- Annonces récentes -->
+        <div class="section-card" style="--index: 6">
+            <h2 class="section-title">
+                <span class="icon">◈</span>
+                <span>Annonces récentes</span>
+            </h2>
+            <div id="recentListings">
+                <div class="loading-text">Chargement…</div>
+            </div>
+        </div>
+
+        <div class="footer-center">
+            <a href="index.html" class="btn-back">
+                <span>←</span>
+                <span>Retour au Dashboard</span>
+            </a>
+        </div>
+
+    </div>
+
+    <!-- Floating dark mode toggle -->
+    <button class="dark-mode-toggle" id="darkModeToggleFloat">☀️</button>
+
+    <script src="data/listings.js"></script>
+    <script>
+        // Dark mode (Atelier Noir system)
+        const dm = document.getElementById('darkModeToggle');
+        const dmFloat = document.getElementById('darkModeToggleFloat');
+        function applyDM(light) {
+            document.body.classList.toggle('light-mode', light);
+            const icon = light ? '🌙' : '☀️';
+            dm.textContent = icon;
+            if (dmFloat) dmFloat.textContent = icon;
+            localStorage.setItem('darkMode', light);
+        }
+        dm.addEventListener('click', () => applyDM(!document.body.classList.contains('light-mode')));
+        if (dmFloat) dmFloat.addEventListener('click', () => dm.click());
+        applyDM(localStorage.getItem('darkMode') === 'true');
+
+        // Fallback normCity
+        if (typeof normCity === 'undefined') {
+            window.normCity = function(city) {
+                return city ? city.replace(/^Luxembourg[-\s]/i, '') : city;
+            };
+        }
+
+        // Service Worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').catch(() => {});
+        }
+
+        function safeTitle(t, max) {
+            return (t || 'Sans titre').substring(0, max || 60);
+        }
+
+        function init() {
+            if (typeof LISTINGS === 'undefined' || !LISTINGS || LISTINGS.length === 0) {
+                document.getElementById('topCities').innerHTML =
+                    '<div style="color:#E07070; font-size:0.85rem;">Données non disponibles</div>';
+                return;
+            }
+
+            document.getElementById('lastUpdate').textContent =
+                `Mis à jour : ${new Date().toLocaleString('fr-FR')}`;
+
+            // ---- KPIs ----
+            const prices = LISTINGS.filter(l => l.price > 0).map(l => l.price).sort((a, b) => a - b);
+            const cities = new Set(LISTINGS.map(l => l.city).filter(Boolean));
+            const withGps = LISTINGS.filter(l => l.latitude && l.longitude).length;
+
+            const avg = prices.length > 0
+                ? Math.round(prices.reduce((a, b) => a + b, 0) / prices.length)
+                : 0;
+            const mid = Math.floor(prices.length / 2);
+            const median = prices.length > 0
+                ? (prices.length % 2 === 0 ? Math.round((prices[mid - 1] + prices[mid]) / 2) : prices[mid])
+                : 0;
+
+            // Nouvelles dernières 24h
+            const cutoff = Date.now() - 24 * 3600 * 1000;
+            const newToday = LISTINGS.filter(l => {
+                if (!l.created_at) return false;
+                try { return new Date(l.created_at).getTime() > cutoff; } catch { return false; }
+            }).length;
+
+            document.getElementById('kpiTotal').textContent    = LISTINGS.length.toLocaleString();
+            document.getElementById('kpiCities').textContent   = cities.size;
+            document.getElementById('kpiAvgPrice').textContent = avg > 0 ? avg.toLocaleString('fr-FR') + '€' : '—';
+            document.getElementById('kpiMedian').textContent   = median > 0 ? median.toLocaleString('fr-FR') + '€' : '—';
+            document.getElementById('kpiNewToday').textContent = newToday > 0 ? '+' + newToday : '0';
+            document.getElementById('kpiWithGps').textContent  = withGps + ' / ' + LISTINGS.length;
+
+            // ---- Top villes ----
+            const cityCounts = {};
+            LISTINGS.forEach(l => { const c = normCity(l.city); if (c) cityCounts[c] = (cityCounts[c] || 0) + 1; });
+            const maxCityCount = Math.max(...Object.values(cityCounts));
+            const topCities = Object.entries(cityCounts).sort((a, b) => b[1] - a[1]).slice(0, 8);
+
+            document.getElementById('topCities').innerHTML = topCities.map(([city, count]) => `
+                <div class="data-row">
+                    <div class="data-row-left">
+                        <strong>${city}</strong>
+                        <div class="progress-bar-wrap">
+                            <div class="progress-bar-fill" style="width:${Math.round(count / maxCityCount * 100)}%;"></div>
+                        </div>
+                    </div>
+                    <div class="data-row-right">${count}</div>
+                </div>`).join('');
+
+            // ---- Par site ----
+            const siteCounts = {};
+            LISTINGS.forEach(l => { if (l.site) siteCounts[l.site] = (siteCounts[l.site] || 0) + 1; });
+            const maxSiteCount = Math.max(...Object.values(siteCounts));
+            const siteEntries = Object.entries(siteCounts).sort((a, b) => b[1] - a[1]);
+
+            document.getElementById('bySite').innerHTML = siteEntries.map(([site, count]) => `
+                <div class="data-row">
+                    <div class="data-row-left">
+                        <strong>${site}</strong>
+                        <div class="progress-bar-wrap">
+                            <div class="progress-bar-fill" style="width:${Math.round(count / maxSiteCount * 100)}%; background:linear-gradient(90deg,#6EC49A,#4AA87A);"></div>
+                        </div>
+                    </div>
+                    <div class="data-row-right">${count}</div>
+                </div>`).join('');
+
+            // ---- Top prix (5 plus chers) ----
+            const topPrices = LISTINGS.filter(l => l.price > 0).sort((a, b) => b.price - a.price).slice(0, 5);
+            document.getElementById('topPrices').innerHTML = topPrices.map(l => `
+                <div class="data-row">
+                    <div class="data-row-left">
+                        <strong>${safeTitle(l.title, 55)}</strong>
+                        <small>${normCity(l.city) || l.city || '—'} · ${l.site || ''}${l.surface > 0 ? ' · ' + l.surface + 'm²' : ''}${l.rooms > 0 ? ' · ' + l.rooms + 'ch' : ''}</small>
+                    </div>
+                    <div style="text-align:right; flex-shrink:0;">
+                        <div class="data-row-right price-high">${l.price.toLocaleString('fr-FR')}€</div>
+                        <a href="${l.url}" target="_blank" rel="noopener" class="link-view">Voir →</a>
+                    </div>
+                </div>`).join('');
+
+            // ---- Top deals (5 moins chers) ----
+            const topDeals = LISTINGS.filter(l => l.price > 0).sort((a, b) => a.price - b.price).slice(0, 5);
+            document.getElementById('topDeals').innerHTML = topDeals.map(l => `
+                <div class="data-row">
+                    <div class="data-row-left">
+                        <strong>${safeTitle(l.title, 55)}</strong>
+                        <small>${normCity(l.city) || l.city || '—'} · ${l.site || ''}${l.surface > 0 ? ' · ' + l.surface + 'm²' : ''}${l.rooms > 0 ? ' · ' + l.rooms + 'ch' : ''}</small>
+                    </div>
+                    <div style="text-align:right; flex-shrink:0;">
+                        <div class="data-row-right price-low">${l.price.toLocaleString('fr-FR')}€</div>
+                        <a href="${l.url}" target="_blank" rel="noopener" class="link-view" style="color:#6EC49A;">Voir →</a>
+                    </div>
+                </div>`).join('');
+
+            // ---- Récentes (5 premières) ----
+            const recent = LISTINGS.slice(0, 5);
+            document.getElementById('recentListings').innerHTML = recent.map(l => `
+                <div class="data-row">
+                    <div class="data-row-left">
+                        <strong>${safeTitle(l.title, 55)}</strong>
+                        <small>${normCity(l.city) || l.city || '—'}${l.rooms > 0 ? ' · ' + l.rooms + ' ch.' : ''}${l.surface > 0 ? ' · ' + l.surface + 'm²' : ''}</small>
+                    </div>
+                    <div style="text-align:right; flex-shrink:0;">
+                        <div class="data-row-right">${l.price > 0 ? l.price.toLocaleString('fr-FR') + '€' : '—'}</div>
+                        <a href="${l.url}" target="_blank" rel="noopener" class="link-view">Voir →</a>
+                    </div>
+                </div>`).join('');
+        }
+
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+
+</body>
+</html>

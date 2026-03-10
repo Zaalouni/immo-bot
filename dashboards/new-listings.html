@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Security Headers -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https:;">
+    <!-- PWA -->
+    <meta name="theme-color" content="#09090F">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ImmoLux">
+    <title>Nouvelles Offres - ImmoLux</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
+    <script src="data/version.js"></script>
+    <script src="version-display.js" defer></script>
+    <style>
+        :root {
+            --bg:          #09090F;
+            --bg-card:     #111118;
+            --bg-lift:     #16161F;
+            --bg-panel:    #1C1C27;
+            --gold:        #C9A265;
+            --gold-dim:    rgba(201,162,101,0.18);
+            --gold-line:   rgba(201,162,101,0.35);
+            --text:        #E8E4DC;
+            --text-muted:  #7A7A8C;
+            --text-dim:    #4A4A5C;
+            --border:      rgba(255,255,255,0.07);
+            --border-gold: rgba(201,162,101,0.25);
+            --radius:      4px;
+            --radius-lg:   8px;
+            --shadow:      0 4px 32px rgba(0,0,0,0.5);
+            --font-display:'Cormorant Garamond', Georgia, serif;
+            --font-body:   'Outfit', system-ui, sans-serif;
+            --font-mono:   'JetBrains Mono', monospace;
+        }
+
+        body.light-mode {
+            --bg:#F5F0E8; --bg-card:#FFFFFF; --bg-lift:#FAF7F2; --bg-panel:#F0EAE0;
+            --text:#1A1A24; --text-muted:#6B6B7C; --text-dim:#A0A0B0;
+            --border:rgba(0,0,0,0.08); --border-gold:rgba(160,110,50,0.3);
+            --gold:#9A6E2A; --gold-dim:rgba(154,110,42,0.1); --gold-line:rgba(154,110,42,0.3);
+            --shadow:0 4px 24px rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.4;
+        }
+
+        /* ── Nav ──────────────────────────────────────────────── */
+        .nav-bar {
+            display: flex;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+            padding: 0.8rem 2rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 0;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+            background: var(--bg);
+        }
+
+        .nav-link {
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: var(--text-muted);
+            padding: 0.4rem 0.9rem;
+            border-radius: var(--radius);
+            border: 1px solid transparent;
+            transition: color 0.2s, border-color 0.2s;
+        }
+
+        .nav-link:hover { color: var(--text); border-color: var(--border); }
+
+        .nav-link.active {
+            color: var(--gold);
+            border-color: var(--gold-line);
+            background: var(--gold-dim);
+        }
+
+        .nav-toggle {
+            margin-left: auto;
+            background: transparent;
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius);
+            color: var(--gold);
+            font-size: 1rem;
+            padding: 0.35rem 0.65rem;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+
+        .nav-toggle:hover { background: var(--gold-dim); border-color: var(--gold); }
+
+        /* ── Layout ───────────────────────────────────────────── */
+        .container-modern {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 2rem 4rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── Header ───────────────────────────────────────────── */
+        .header-modern {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            animation: fadeInDown 0.6s ease both;
+        }
+
+        .header-modern h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: 0.02em;
+            margin-bottom: 0.5rem;
+        }
+
+        .header-modern h1 .accent {
+            color: var(--gold);
+        }
+
+        .header-modern small {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+            letter-spacing: 0.05em;
+        }
+
+        /* ── Stats Grid ───────────────────────────────────────── */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            animation: fadeIn 0.8s ease 0.1s both;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem 1.75rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            opacity: 0.6;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--border-gold);
+        }
+
+        .stat-value {
+            font-size: 2.2rem;
+            font-weight: 500;
+            color: var(--gold);
+            font-family: var(--font-mono);
+            margin-bottom: 0.4rem;
+            letter-spacing: -0.02em;
+        }
+
+        .stat-label {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        /* ── Filters ──────────────────────────────────────────── */
+        .filters-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1.25rem;
+            animation: fadeInUp 0.6s ease 0.2s both;
+        }
+
+        .filters {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-label {
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-right: 0.25rem;
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 0.45rem 1rem;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.82rem;
+            font-family: var(--font-body);
+            transition: all 0.2s ease;
+            letter-spacing: 0.03em;
+        }
+
+        .filter-btn:hover {
+            color: var(--text);
+            border-color: var(--border-gold);
+            background: var(--gold-dim);
+        }
+
+        .filter-btn.active {
+            background: var(--gold-dim);
+            color: var(--gold);
+            border-color: var(--gold-line);
+        }
+
+        /* ── Results Info ─────────────────────────────────────── */
+        .results-info {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--gold);
+            border-radius: var(--radius-lg);
+            padding: 0.85rem 1.25rem;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+        }
+
+        .results-info strong {
+            color: var(--gold);
+            font-family: var(--font-mono);
+        }
+
+        /* ── Timeline ─────────────────────────────────────────── */
+        .timeline-container {
+            max-width: 100%;
+        }
+
+        .date-section {
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.4s ease both;
+        }
+
+        .date-section:nth-child(n) {
+            animation-delay: calc(0.05s * var(--index));
+        }
+
+        .date-header {
+            position: sticky;
+            top: 10px;
+            z-index: 10;
+            background: var(--bg-panel);
+            border: 1px solid var(--border-gold);
+            color: var(--gold);
+            padding: 0.85rem 1.25rem;
+            border-radius: var(--radius-lg);
+            margin-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .date-title {
+            font-family: var(--font-display);
+            font-size: 1.05rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        .date-count {
+            background: var(--gold-dim);
+            border: 1px solid var(--gold-line);
+            color: var(--gold);
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius);
+            font-size: 0.75rem;
+            font-weight: 600;
+            font-family: var(--font-mono);
+            letter-spacing: 0.05em;
+        }
+
+        /* ── Listing Card ─────────────────────────────────────── */
+        .listing-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--border-gold);
+            border-radius: var(--radius-lg);
+            padding: 1.1rem 1.4rem;
+            margin-bottom: 0.6rem;
+            box-shadow: var(--shadow);
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .listing-card:hover {
+            transform: translateX(4px);
+            border-color: var(--border-gold);
+            border-left-color: var(--gold);
+            background: var(--bg-lift);
+        }
+
+        .listing-card.is-new {
+            border-left-color: var(--gold);
+            background: var(--bg-lift);
+        }
+
+        .listing-card.priority-card {
+            border-left-color: var(--gold);
+        }
+
+        /* ── Listing Info ─────────────────────────────────────── */
+        .listing-info {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex: 1;
+            flex-wrap: wrap;
+        }
+
+        .info-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .info-label {
+            font-size: 1rem;
+            line-height: 1;
+        }
+
+        .info-value {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .price-value {
+            color: var(--gold);
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        /* ── Listing Actions ──────────────────────────────────── */
+        .listing-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            flex-shrink: 0;
+        }
+
+        .badge-new {
+            background: var(--gold-dim);
+            border: 1px solid var(--gold-line);
+            color: var(--gold);
+            padding: 0.25rem 0.6rem;
+            border-radius: var(--radius);
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            font-family: var(--font-mono);
+        }
+
+        .time-badge {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 0.25rem 0.6rem;
+            border-radius: var(--radius);
+            font-size: 0.75rem;
+            font-weight: 500;
+            font-family: var(--font-mono);
+            letter-spacing: 0.05em;
+        }
+
+        .site-badge {
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            padding: 0.25rem 0.65rem;
+            border-radius: var(--radius);
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            letter-spacing: 0.05em;
+        }
+
+        .btn-voir {
+            background: var(--gold-dim);
+            border: 1px solid var(--gold-line);
+            color: var(--gold);
+            padding: 0.45rem 1.1rem;
+            border-radius: var(--radius);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.8rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            transition: all 0.2s ease;
+        }
+
+        .btn-voir:hover {
+            background: var(--gold);
+            color: var(--bg);
+            border-color: var(--gold);
+        }
+
+        /* ── Empty State ──────────────────────────────────────── */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            margin: 2rem 0;
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-state p {
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+
+        /* ── Back Button ──────────────────────────────────────── */
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 2rem;
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-weight: 500;
+            font-size: 0.82rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-back:hover {
+            color: var(--gold);
+            border-color: var(--gold-line);
+            background: var(--gold-dim);
+        }
+
+        /* ── Floating Dark Mode Toggle ────────────────────────── */
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dark-mode-toggle:hover {
+            transform: scale(1.1) rotate(15deg);
+            border-color: var(--gold);
+        }
+
+        @media (max-width: 900px) {
+            .dark-mode-toggle { display: none; }
+        }
+
+        /* ── Animations ───────────────────────────────────────── */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Responsive ───────────────────────────────────────── */
+        @media (max-width: 768px) {
+            .container-modern {
+                padding: 1.25rem 1rem 3rem;
+            }
+
+            .nav-bar {
+                padding: 0.6rem 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .listing-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.85rem;
+            }
+
+            .listing-info {
+                gap: 0.75rem;
+            }
+
+            .listing-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-bar">
+        <a href="index.html" class="nav-link">Dashboard</a>
+        <a href="new-listings.html" class="nav-link active">Nouvelles</a>
+        <a href="anomalies.html" class="nav-link">Anomalies</a>
+        <a href="map-advanced.html" class="nav-link">Carte</a>
+        <a href="favorites.html" class="nav-link">Prioritaires</a>
+        <a href="3chambres.html" class="nav-link">3 Chambres</a>
+        <a href="ia-analyse.html" class="nav-link">Analyse IA</a>
+        <a href="stats-by-city.html" class="nav-link">Villes</a>
+        <button class="nav-toggle" id="darkModeToggle" title="Mode clair/sombre" aria-label="Mode clair/sombre">☀️</button>
+    </nav>
+
+    <div class="container-modern">
+        <div class="header-modern">
+            <h1>⭐ <span class="accent">Nouvelles</span> Offres</h1>
+            <small id="lastUpdate">Chargement...</small>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="todayCount">0</div>
+                <div class="stat-label">Aujourd'hui</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="weekCount">0</div>
+                <div class="stat-label">7 jours</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="totalCount">0</div>
+                <div class="stat-label">Total</div>
+            </div>
+        </div>
+
+        <!-- Filtres -->
+        <div class="filters-card">
+            <div class="filters">
+                <span class="filter-label">📅 Période:</span>
+                <button class="filter-btn active" data-period="all">Toutes</button>
+                <button class="filter-btn" data-period="today">Aujourd'hui</button>
+                <button class="filter-btn" data-period="3days">3 jours</button>
+                <button class="filter-btn" data-period="7days">7 jours</button>
+            </div>
+        </div>
+
+        <!-- Info résultats -->
+        <div class="results-info" id="resultsInfo">Chargement...</div>
+
+        <!-- Timeline -->
+        <div class="timeline-container" id="timelineContainer"></div>
+
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="index.html" class="btn-back">
+                <span>←</span>
+                <span>Retour au Dashboard</span>
+            </a>
+        </div>
+    </div>
+
+    <button class="dark-mode-toggle" id="darkModeToggleFloat" title="Mode clair/sombre">☀️</button>
+
+    <script src="data/listings.js"></script>
+    <script>
+        // Dark mode
+        const dm = document.getElementById('darkModeToggle');
+        const dmFloat = document.getElementById('darkModeToggleFloat');
+        function applyDM(light) {
+            document.body.classList.toggle('light-mode', light);
+            const icon = light ? '🌙' : '☀️';
+            dm.textContent = icon;
+            if (dmFloat) dmFloat.textContent = icon;
+            localStorage.setItem('darkMode', light);
+        }
+        dm.addEventListener('click', () => applyDM(!document.body.classList.contains('light-mode')));
+        if (dmFloat) dmFloat.addEventListener('click', () => dm.click());
+        applyDM(localStorage.getItem('darkMode') === 'true');
+
+        if (typeof normCity === 'undefined') {
+            window.normCity = function(city) {
+                return city ? city.replace(/^Luxembourg[-\s]/i, '') : city;
+            };
+        }
+
+        let currentFilter = 'all';
+
+        function parseDate(dateStr) {
+            if (!dateStr) return null;
+            try {
+                return new Date(dateStr.replace(' ', 'T'));
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function getDateLabel(date) {
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
+
+            const d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+            if (d.getTime() === today.getTime()) return '📍 Aujourd\'hui';
+            if (d.getTime() === yesterday.getTime()) return '📌 Hier';
+
+            const daysAgo = Math.floor((now - d) / (1000 * 60 * 60 * 24));
+            if (daysAgo < 7) return `📅 Il y a ${daysAgo} jours`;
+
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            return '📆 ' + d.toLocaleDateString('fr-FR', options);
+        }
+
+        function formatTime(dateStr) {
+            const d = parseDate(dateStr);
+            if (!d) return 'N/A';
+            const hours = String(d.getHours()).padStart(2, '0');
+            const mins = String(d.getMinutes()).padStart(2, '0');
+            return hours + ':' + mins;
+        }
+
+        function isNew(dateStr) {
+            const d = parseDate(dateStr);
+            if (!d) return false;
+            const now = new Date();
+            const hoursAgo = (now - d) / (1000 * 60 * 60);
+            return hoursAgo < 24;
+        }
+
+        function groupByDate(listings) {
+            const groups = {};
+
+            listings.forEach(listing => {
+                const d = parseDate(listing.created_at);
+                if (!d) return;
+
+                const dateKey = d.toISOString().split('T')[0];
+                if (!groups[dateKey]) {
+                    groups[dateKey] = {
+                        date: d,
+                        label: getDateLabel(d),
+                        listings: []
+                    };
+                }
+                groups[dateKey].listings.push(listing);
+            });
+
+            return Object.values(groups).sort((a, b) => b.date - a.date);
+        }
+
+        function init() {
+            if (typeof LISTINGS === 'undefined' || !LISTINGS.length) {
+                document.getElementById('timelineContainer').innerHTML =
+                    '<div class="empty-state"><div class="empty-state-icon">📭</div><p>Aucune donnée disponible</p></div>';
+                return;
+            }
+
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const sevenDaysAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+            let todayCount = 0, weekCount = 0;
+
+            LISTINGS.forEach(l => {
+                const d = parseDate(l.created_at);
+                if (d) {
+                    if (d >= today) todayCount++;
+                    if (d >= sevenDaysAgo) weekCount++;
+                }
+            });
+
+            document.getElementById('todayCount').textContent = todayCount;
+            document.getElementById('weekCount').textContent = weekCount;
+            document.getElementById('totalCount').textContent = LISTINGS.length.toLocaleString();
+            document.getElementById('lastUpdate').textContent = 'Mis à jour: ' + new Date().toLocaleString('fr-FR');
+
+            // Event listeners
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    filterByPeriod(this.dataset.period);
+                });
+            });
+
+            filterByPeriod('all');
+        }
+
+        function filterByPeriod(period) {
+            currentFilter = period;
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const threeDaysAgo = new Date(today.getTime() - 3 * 24 * 60 * 60 * 1000);
+            const sevenDaysAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+            let filtered = LISTINGS.filter(l => {
+                if (period === 'all') return true;
+                const d = parseDate(l.created_at);
+                if (!d) return false;
+                if (period === 'today') return d >= today;
+                if (period === '3days') return d >= threeDaysAgo;
+                if (period === '7days') return d >= sevenDaysAgo;
+                return true;
+            });
+
+            filtered.sort((a, b) => {
+                const da = parseDate(a.created_at) || new Date(0);
+                const db = parseDate(b.created_at) || new Date(0);
+                return db - da;
+            });
+
+            const periodNames = {
+                'all': 'toutes les annonces',
+                'today': "aujourd'hui",
+                '3days': 'les 3 derniers jours',
+                '7days': 'les 7 derniers jours'
+            };
+            document.getElementById('resultsInfo').innerHTML =
+                '🎯 <strong>' + filtered.length + '</strong> annonces pour ' + periodNames[period];
+
+            render(filtered);
+        }
+
+        function render(listings) {
+            const container = document.getElementById('timelineContainer');
+
+            if (!listings.length) {
+                container.innerHTML =
+                    '<div class="empty-state"><div class="empty-state-icon">🔍</div><p>Aucune annonce pour cette période</p></div>';
+                return;
+            }
+
+            const groups = groupByDate(listings);
+
+            container.innerHTML = groups.map((group, index) => `
+                <div class="date-section" style="--index: ${index}">
+                    <div class="date-header">
+                        <div class="date-title">${group.label}</div>
+                        <div class="date-count">${group.listings.length} annonce${group.listings.length > 1 ? 's' : ''}</div>
+                    </div>
+                    ${group.listings.map(l => {
+                        const isNewListing = isNew(l.created_at);
+                        const PC = (typeof PRIORITY_CITIES !== 'undefined') ? PRIORITY_CITIES : [];
+                        const isPriority = PC.includes(normCity(l.city));
+                        return `
+                            <div class="listing-card ${isNewListing ? 'is-new' : ''}${isPriority ? ' priority-card' : ''}">
+                                <div class="listing-info">
+                                    <div class="info-item">
+                                        <span class="info-label">📍</span>
+                                        <span class="info-value">${isPriority ? '⭐ ' : ''}${normCity(l.city) || 'N/A'}</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">💰</span>
+                                        <span class="info-value price-value">${l.price ? l.price.toLocaleString('fr-FR') + '€' : 'N/A'}</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">📐</span>
+                                        <span class="info-value">${l.surface || '-'}m²</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">🛏️</span>
+                                        <span class="info-value">${l.rooms || '-'}</span>
+                                    </div>
+                                    <span class="site-badge">${(l.site || '').replace('.lu', '')}</span>
+                                </div>
+                                <div class="listing-actions">
+                                    ${isNewListing ? '<span class="badge-new">NEW</span>' : ''}
+                                    <span class="time-badge">${formatTime(l.created_at)}</span>
+                                    <a href="${l.url}" target="_blank" class="btn-voir">Voir</a>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `).join('');
+        }
+
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+
+    <!-- Service Worker -->
+    <script>
+    if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("sw.js")
+            .then(reg => console.log("SW registered"))
+            .catch(err => console.log("SW failed:", err));
+    }
+    </script>
+
+</body>
+</html>

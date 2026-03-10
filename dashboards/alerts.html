@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Centre de Contrôle - ImmoLux">
+    <meta name="theme-color" content="#09090F">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https:;">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="manifest.json">
+    <title>Centre de Contrôle — ImmoLux</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="data/version.js"></script>
+    <script src="version-display.js" defer></script>
+    <style>
+        :root {
+            --bg:#09090F;
+            --bg-card:#111118;
+            --bg-lift:#16161F;
+            --bg-panel:#1C1C27;
+            --gold:#C9A265;
+            --gold-dim:rgba(201,162,101,0.18);
+            --gold-line:rgba(201,162,101,0.35);
+            --text:#E8E4DC;
+            --text-muted:#7A7A8C;
+            --text-dim:#4A4A5C;
+            --border:rgba(255,255,255,0.07);
+            --border-gold:rgba(201,162,101,0.25);
+            --radius:4px;
+            --radius-lg:8px;
+            --shadow:0 4px 32px rgba(0,0,0,0.5);
+            --font-display:'Cormorant Garamond',Georgia,serif;
+            --font-body:'Outfit',system-ui,sans-serif;
+            --font-mono:'JetBrains Mono',monospace;
+            --red:rgba(220,80,80,1);
+            --red-dim:rgba(220,80,80,0.15);
+            --red-line:rgba(220,80,80,0.3);
+            --violet:rgba(130,110,200,1);
+            --violet-dim:rgba(130,110,200,0.15);
+            --violet-line:rgba(130,110,200,0.3);
+            --green:rgba(80,180,110,1);
+            --green-dim:rgba(80,180,110,0.15);
+            --amber:rgba(220,160,60,1);
+            --amber-dim:rgba(220,160,60,0.15);
+        }
+
+        body.light-mode {
+            --bg:#F5F0E8;
+            --bg-card:#FFFFFF;
+            --bg-lift:#FAF7F2;
+            --bg-panel:#F0EAE0;
+            --text:#1A1A24;
+            --text-muted:#6B6B7C;
+            --text-dim:#A0A0B0;
+            --border:rgba(0,0,0,0.08);
+            --border-gold:rgba(160,110,50,0.3);
+            --gold:#9A6E2A;
+            --gold-dim:rgba(154,110,42,0.1);
+            --gold-line:rgba(154,110,42,0.3);
+            --shadow:0 4px 24px rgba(0,0,0,0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 0 0 5rem;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: linear-gradient(var(--border) 1px, transparent 1px),
+                              linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.4;
+        }
+
+        /* ── Nav ── */
+        .nav-bar {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            gap: 0;
+            padding: 0 2rem;
+            background: rgba(9,9,15,0.92);
+            border-bottom: 1px solid var(--border-gold);
+            backdrop-filter: blur(20px);
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        body.light-mode .nav-bar {
+            background: rgba(245,240,232,0.92);
+        }
+
+        .nav-bar::-webkit-scrollbar { display: none; }
+
+        .nav-link {
+            font-family: var(--font-body);
+            font-size: 0.78rem;
+            font-weight: 500;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 1rem 1.1rem;
+            border-bottom: 2px solid transparent;
+            white-space: nowrap;
+            transition: color 0.2s, border-color 0.2s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--gold);
+            border-bottom-color: var(--gold);
+        }
+
+        .nav-toggle {
+            margin-left: auto;
+            background: none;
+            border: 1px solid var(--border-gold);
+            color: var(--text-muted);
+            padding: 0.35rem 0.75rem;
+            border-radius: var(--radius);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .nav-toggle:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        /* ── Page wrapper ── */
+        .page-wrap {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .page-wrap { padding: 2rem 1rem; }
+        }
+
+        /* ── Page header ── */
+        .page-header {
+            margin-bottom: 3rem;
+            animation: fadeInDown 0.6s ease;
+        }
+
+        .page-header-label {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 0.75rem;
+            opacity: 0.8;
+        }
+
+        .page-header h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+            line-height: 1.15;
+        }
+
+        .page-header .subtitle {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+        }
+
+        .header-meta {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        .header-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .header-meta-item strong {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        /* ── Section labels ── */
+        .section-label {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .section-pill {
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 0.25rem 0.75rem;
+            border-radius: 2px;
+            font-weight: 600;
+        }
+
+        .section-pill-red {
+            background: var(--red-dim);
+            color: var(--red);
+            border: 1px solid var(--red-line);
+        }
+
+        .section-pill-violet {
+            background: var(--violet-dim);
+            color: var(--violet);
+            border: 1px solid var(--violet-line);
+        }
+
+        .section-label h2 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        /* ── Cards / panels ── */
+        .panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.75rem;
+            margin-bottom: 1.25rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .panel-red {
+            border-color: var(--red-line);
+            background: color-mix(in srgb, var(--bg-card) 97%, rgba(220,80,80,1) 3%);
+        }
+
+        .panel-violet {
+            border-color: var(--violet-line);
+            background: color-mix(in srgb, var(--bg-card) 97%, rgba(130,110,200,1) 3%);
+        }
+
+        .panel-title {
+            font-family: var(--font-body);
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .panel-title.red { color: var(--red); }
+        .panel-title.violet { color: var(--violet); }
+        .panel-title.muted { color: var(--text-muted); }
+
+        /* ── Form grid ── */
+        .alert-form-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr auto;
+            gap: 0.85rem;
+            align-items: end;
+        }
+
+        @media (max-width: 900px) {
+            .alert-form-grid { grid-template-columns: 1fr 1fr; }
+            .alert-form-grid .btn-add { grid-column: 1 / -1; }
+        }
+
+        @media (max-width: 500px) {
+            .alert-form-grid { grid-template-columns: 1fr; }
+        }
+
+        .form-group label {
+            display: block;
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.6rem 0.9rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 0.88rem;
+            font-family: var(--font-body);
+            background: var(--bg-lift);
+            color: var(--text);
+            transition: all 0.2s;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--red-line);
+            box-shadow: 0 0 0 3px var(--red-dim);
+        }
+
+        .form-input::placeholder { color: var(--text-dim); }
+
+        .form-input-violet:focus {
+            border-color: var(--violet-line);
+            box-shadow: 0 0 0 3px var(--violet-dim);
+        }
+
+        select.form-input {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237A7A8C' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            padding-right: 2.25rem;
+            cursor: pointer;
+        }
+
+        .btn-add {
+            padding: 0.6rem 1.5rem;
+            background: var(--red-dim);
+            color: var(--red);
+            border: 1px solid var(--red-line);
+            border-radius: var(--radius);
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            letter-spacing: 0.02em;
+        }
+
+        .btn-add:hover {
+            background: rgba(220,80,80,0.28);
+            border-color: var(--red);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(220,80,80,0.2);
+        }
+
+        .btn-add-violet {
+            background: var(--violet-dim);
+            color: var(--violet);
+            border-color: var(--violet-line);
+        }
+
+        .btn-add-violet:hover {
+            background: rgba(130,110,200,0.28);
+            border-color: var(--violet);
+            box-shadow: 0 4px 16px rgba(130,110,200,0.2);
+        }
+
+        /* ── Alert chips (saved) ── */
+        .alert-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--red-dim);
+            border: 1px solid var(--red-line);
+            border-radius: var(--radius);
+            padding: 0.4rem 0.7rem 0.4rem 0.9rem;
+            font-size: 0.82rem;
+            color: var(--red);
+            font-weight: 500;
+            margin: 0.2rem;
+            transition: all 0.2s;
+        }
+
+        .alert-chip:hover { background: rgba(220,80,80,0.22); }
+
+        .alert-chip .chip-count {
+            background: rgba(220,80,80,0.2);
+            color: var(--red);
+            padding: 0.1rem 0.45rem;
+            border-radius: 2px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            font-family: var(--font-mono);
+        }
+
+        .alert-chip .chip-count.green {
+            background: var(--green-dim);
+            color: var(--green);
+        }
+
+        .btn-chip-remove {
+            background: none;
+            border: none;
+            color: var(--text-dim);
+            cursor: pointer;
+            font-size: 0.85rem;
+            line-height: 1;
+            padding: 0 0.1rem;
+            transition: color 0.15s;
+        }
+
+        .btn-chip-remove:hover { color: var(--red); }
+
+        /* ── Match listing rows ── */
+        .match-row {
+            background: var(--bg-lift);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 0.9rem 1.1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .match-row:hover {
+            background: var(--bg-panel);
+            border-color: var(--border-gold);
+            transform: translateX(2px);
+        }
+
+        .match-row.score-excellent { border-left-color: var(--red); }
+        .match-row.score-good      { border-left-color: var(--amber); }
+        .match-row.score-ok        { border-left-color: var(--green); }
+
+        .match-info { display: flex; align-items: center; gap: 1rem; flex: 1; flex-wrap: wrap; }
+
+        .info-chip { display: flex; flex-direction: column; }
+
+        .chip-label {
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            color: var(--text-dim);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .chip-value {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .chip-price {
+            color: var(--red);
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .chip-price-indigo {
+            color: var(--violet);
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .score-badge {
+            padding: 0.2rem 0.6rem;
+            border-radius: 2px;
+            font-size: 0.68rem;
+            font-weight: 600;
+            font-family: var(--font-mono);
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+        }
+
+        .score-badge.excellent { background: var(--red-dim); color: var(--red); border: 1px solid var(--red-line); }
+        .score-badge.good      { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(220,160,60,0.3); }
+        .score-badge.ok        { background: var(--green-dim); color: var(--green); border: 1px solid rgba(80,180,110,0.3); }
+
+        .site-tag {
+            padding: 0.15rem 0.55rem;
+            border-radius: 2px;
+            font-size: 0.68rem;
+            font-weight: 500;
+            font-family: var(--font-mono);
+            background: var(--bg-panel);
+            color: var(--text-dim);
+            border: 1px solid var(--border);
+        }
+
+        .btn-voir {
+            padding: 0.4rem 1rem;
+            border-radius: var(--radius);
+            font-size: 0.78rem;
+            font-weight: 600;
+            font-family: var(--font-body);
+            text-decoration: none;
+            white-space: nowrap;
+            transition: all 0.2s;
+            background: var(--red-dim);
+            color: var(--red);
+            border: 1px solid var(--red-line);
+            letter-spacing: 0.03em;
+        }
+
+        .btn-voir:hover {
+            background: rgba(220,80,80,0.28);
+            border-color: var(--red);
+            box-shadow: 0 2px 12px rgba(220,80,80,0.15);
+        }
+
+        .btn-voir-indigo {
+            background: var(--violet-dim);
+            color: var(--violet);
+            border-color: var(--violet-line);
+        }
+
+        .btn-voir-indigo:hover {
+            background: rgba(130,110,200,0.28);
+            border-color: var(--violet);
+            box-shadow: 0 2px 12px rgba(130,110,200,0.15);
+        }
+
+        /* ── Stats grid ── */
+        .stats-grid-4 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem 1rem;
+            text-align: center;
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+        }
+
+        .stat-card.red::before    { background: var(--red); }
+        .stat-card.indigo::before { background: var(--violet); }
+        .stat-card.amber::before  { background: var(--amber); }
+        .stat-card.green::before  { background: var(--green); }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--border-gold);
+            box-shadow: var(--shadow);
+        }
+
+        .stat-value {
+            font-family: var(--font-mono);
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .stat-value.red    { color: var(--red); }
+        .stat-value.indigo { color: var(--violet); }
+        .stat-value.amber  { color: var(--amber); }
+        .stat-value.green  { color: var(--green); }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        /* ── City badges ── */
+        .city-badge-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .city-badge {
+            padding: 0.3rem 0.85rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            background: var(--bg-lift);
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+            font-family: var(--font-body);
+        }
+
+        .city-badge:hover {
+            border-color: var(--violet-line);
+            color: var(--text);
+        }
+
+        .city-badge.selected {
+            background: var(--violet-dim);
+            border-color: var(--violet-line);
+            color: var(--violet);
+            font-weight: 600;
+        }
+
+        /* ── Section divider ── */
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border-gold), transparent);
+            margin: 3rem 0;
+        }
+
+        /* ── Comparison bar ── */
+        .compare-bar {
+            background: var(--bg-lift);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .compare-item { text-align: center; }
+
+        .compare-label {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.3rem;
+        }
+
+        .compare-value {
+            font-family: var(--font-mono);
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .compare-sub {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            margin-top: 0.15rem;
+        }
+
+        .compare-vs {
+            color: var(--text-dim);
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 400;
+            font-style: italic;
+        }
+
+        /* ── Empty state ── */
+        .empty-state {
+            text-align: center;
+            padding: 2.5rem 1rem;
+            color: var(--text-dim);
+        }
+
+        .empty-state .icon { font-size: 2rem; margin-bottom: 0.6rem; }
+        .empty-state p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
+
+        /* ── Back link ── */
+        .back-link {
+            display: inline-block;
+            background: var(--bg-lift);
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            padding: 0.6rem 1.5rem;
+            border-radius: var(--radius);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+            letter-spacing: 0.02em;
+        }
+
+        .back-link:hover {
+            border-color: var(--border-gold);
+            color: var(--gold);
+            transform: translateY(-1px);
+        }
+
+        /* ── Accordion ── */
+        .alert-block { margin-bottom: 0.75rem; }
+
+        .alert-block-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            padding: 0.9rem 1.1rem;
+            background: var(--bg-lift);
+            border: 1px solid var(--red-line);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .alert-block-header:hover { background: var(--bg-panel); border-color: var(--red); }
+
+        .alert-block-header.open {
+            border-radius: var(--radius) var(--radius) 0 0;
+            border-bottom-color: transparent;
+            background: var(--bg-panel);
+        }
+
+        .alert-block-body {
+            background: color-mix(in srgb, var(--bg-card) 97%, rgba(220,80,80,1) 3%);
+            border: 1px solid var(--red-line);
+            border-top: none;
+            border-radius: 0 0 var(--radius) var(--radius);
+            padding: 0.75rem 1rem;
+            display: none;
+        }
+
+        .alert-block-body.open { display: block; }
+
+        .alert-block-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex: 1;
+            flex-wrap: wrap;
+        }
+
+        .alert-criteria-tag {
+            background: var(--red-dim);
+            color: var(--red);
+            border: 1px solid var(--red-line);
+            border-radius: 2px;
+            padding: 0.15rem 0.55rem;
+            font-size: 0.72rem;
+            font-weight: 500;
+            font-family: var(--font-mono);
+        }
+
+        .alert-block-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .match-count-pill {
+            background: var(--green-dim);
+            color: var(--green);
+            border: 1px solid rgba(80,180,110,0.3);
+            border-radius: 2px;
+            padding: 0.15rem 0.6rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            font-family: var(--font-mono);
+        }
+
+        .match-count-pill.zero {
+            background: var(--bg-panel);
+            color: var(--text-dim);
+            border-color: var(--border);
+        }
+
+        .chevron {
+            color: var(--text-dim);
+            font-size: 0.75rem;
+            transition: transform 0.2s;
+        }
+
+        .chevron.open { transform: rotate(180deg); }
+
+        /* ── Profile city label ── */
+        .city-section-label {
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.6rem;
+            margin-top: 1.5rem;
+        }
+
+        /* ── Error msg ── */
+        .form-error {
+            font-size: 0.8rem;
+            color: var(--red);
+            margin-top: 0.6rem;
+            display: none;
+            font-family: var(--font-mono);
+        }
+
+        /* ── Floating dark mode toggle ── */
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dark-mode-toggle:hover {
+            transform: scale(1.1) rotate(15deg);
+            border-color: var(--gold);
+        }
+
+        @media (max-width: 900px) {
+            .dark-mode-toggle { display: none; }
+        }
+
+        /* ── Animations ── */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 { font-size: 1.9rem; }
+            .match-info { gap: 0.7rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Nav bar -->
+<nav class="nav-bar">
+    <a href="index.html" class="nav-link">Dashboard</a>
+    <a href="new-listings.html" class="nav-link">Nouvelles</a>
+    <a href="anomalies.html" class="nav-link">Anomalies</a>
+    <a href="map-advanced.html" class="nav-link">Carte</a>
+    <a href="favorites.html" class="nav-link">Prioritaires</a>
+    <a href="3chambres.html" class="nav-link">3 Chambres</a>
+    <a href="ia-analyse.html" class="nav-link">Analyse IA</a>
+    <a href="stats-by-city.html" class="nav-link">Villes</a>
+    <button class="nav-toggle" id="darkModeToggle" title="Mode clair/sombre">☀️</button>
+</nav>
+
+<div class="page-wrap">
+
+    <!-- Page header -->
+    <div class="page-header">
+        <div class="page-header-label">// Centre de Contrôle</div>
+        <h1>Alertes &amp; Tableau de Bord</h1>
+        <p class="subtitle">Alertes intelligentes · Profil personnel · Suivi marché</p>
+        <div class="header-meta">
+            <div class="header-meta-item">
+                <span>Alertes actives</span>
+                <strong id="hdrAlerts">—</strong>
+            </div>
+            <div class="header-meta-item">
+                <span>Correspondances</span>
+                <strong id="hdrMatches">—</strong>
+            </div>
+            <div class="header-meta-item">
+                <span>Annonces dispo</span>
+                <strong id="hdrTotal">—</strong>
+            </div>
+            <div class="header-meta-item">
+                <span id="lastUpdate">—</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         SECTION 1 : ALERTES MULTI-CRITÈRES
+    ══════════════════════════════════════════ -->
+    <div class="section-label">
+        <span class="section-pill section-pill-red">Section 1</span>
+        <h2>Centre d'Alertes Multi-Critères</h2>
+    </div>
+
+    <!-- Formulaire nouvelle alerte -->
+    <div class="panel panel-red">
+        <div class="panel-title red">Nouvelle Alerte</div>
+        <div class="alert-form-grid">
+            <div class="form-group">
+                <label>Ville cible</label>
+                <select id="alertCity" class="form-input">
+                    <option value="">Toutes les villes</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Prix max (€)</label>
+                <input type="number" id="alertPrice" class="form-input" placeholder="ex: 1800" min="0" step="50">
+            </div>
+            <div class="form-group">
+                <label>Surface min (m²)</label>
+                <input type="number" id="alertSurface" class="form-input" placeholder="ex: 60" min="0" step="5">
+            </div>
+            <div class="form-group">
+                <label>Chambres min</label>
+                <select id="alertRooms" class="form-input">
+                    <option value="">Peu importe</option>
+                    <option value="1">1+</option>
+                    <option value="2">2+</option>
+                    <option value="3">3+</option>
+                    <option value="4">4+</option>
+                </select>
+            </div>
+            <button class="btn-add" onclick="addAlert()">Ajouter</button>
+        </div>
+        <div id="formError" class="form-error"></div>
+    </div>
+
+    <!-- Alertes sauvegardées + leurs matches -->
+    <div id="alertsContainer">
+        <div class="empty-state">
+            <div class="icon">🔕</div>
+            <p>Aucune alerte configurée.<br>Ajoutez votre première alerte ci-dessus.</p>
+        </div>
+    </div>
+
+
+    <!-- ══════════════════════════════════════════
+         SECTION 2 : TABLEAU DE BORD PERSONNEL
+    ══════════════════════════════════════════ -->
+    <div class="section-divider"></div>
+
+    <div class="section-label">
+        <span class="section-pill section-pill-violet">Section 2</span>
+        <h2>Mon Tableau de Bord Personnel</h2>
+    </div>
+
+    <!-- Profil perso -->
+    <div class="panel panel-violet">
+        <div class="panel-title violet">Mon Profil Immo</div>
+        <div class="alert-form-grid">
+            <div class="form-group">
+                <label>Budget max (€/mois)</label>
+                <input type="number" id="profBudget" class="form-input form-input-violet" placeholder="ex: 2000" min="0" step="50">
+            </div>
+            <div class="form-group">
+                <label>Surface min (m²)</label>
+                <input type="number" id="profSurface" class="form-input form-input-violet" placeholder="ex: 70" min="0" step="5">
+            </div>
+            <div class="form-group">
+                <label>Chambres min</label>
+                <select id="profRooms" class="form-input form-input-violet">
+                    <option value="">Peu importe</option>
+                    <option value="1">1+</option>
+                    <option value="2">2+</option>
+                    <option value="3">3+</option>
+                    <option value="4">4+</option>
+                </select>
+            </div>
+            <div></div>
+            <button class="btn-add btn-add-violet" onclick="saveProfile()">Sauvegarder</button>
+        </div>
+
+        <div>
+            <div class="city-section-label">Mes villes cibles <span style="font-weight:300;text-transform:none;letter-spacing:0;">(cliquer pour sélectionner)</span></div>
+            <div class="city-badge-grid" id="cityBadgeGrid"></div>
+        </div>
+    </div>
+
+    <!-- Stats personnelles -->
+    <div class="stats-grid-4" id="profileStats"></div>
+
+    <!-- Comparaison Mon marché vs Global -->
+    <div class="panel" style="margin-bottom:1.25rem;" id="comparePanel"></div>
+
+    <!-- Top 5 meilleures affaires selon mon profil -->
+    <div class="panel panel-violet">
+        <div class="panel-title violet">Top Affaires pour Mon Profil</div>
+        <div id="topDeals">
+            <div class="empty-state">
+                <div class="icon">⚙️</div>
+                <p>Configurez votre profil pour voir les meilleures affaires.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Retour -->
+    <div style="text-align:center; margin-top:2.5rem;">
+        <a href="index.html" class="back-link">← Retour dashboard</a>
+    </div>
+
+</div>
+
+<!-- Floating dark mode toggle -->
+<button class="dark-mode-toggle" id="darkModeToggleFloat">☀️</button>
+
+<script src="data/listings.js"></script>
+<script>
+    /* ── Dark mode ── */
+    const dm=document.getElementById('darkModeToggle');const dmFloat=document.getElementById('darkModeToggleFloat');function applyDM(light){document.body.classList.toggle('light-mode',light);const icon=light?'🌙':'☀️';dm.textContent=icon;if(dmFloat)dmFloat.textContent=icon;localStorage.setItem('darkMode',light);}dm.addEventListener('click',()=>applyDM(!document.body.classList.contains('light-mode')));if(dmFloat)dmFloat.addEventListener('click',()=>dm.click());applyDM(localStorage.getItem('darkMode')==='true');
+
+    /* ── Normalisation villes (fallback si version-display.js pas encore chargé) ── */
+    function nc(city) {
+        if (!city) return '—';
+        if (typeof window.normCity === 'function') return window.normCity(city);
+        return city.replace(/^Luxembourg[-\s]/i, '');
+    }
+
+    const fmt = n => (n != null && n !== '' && !isNaN(n)) ? Number(n).toLocaleString('fr-FR') : '—';
+
+    /* ── État ── */
+    let alerts  = JSON.parse(localStorage.getItem('immo_alerts_v2') || '[]');
+    let profile = JSON.parse(localStorage.getItem('immo_profile_v2') || '{}');
+
+    /* ═══════════════════════════════════
+       INITIALISATION
+    ═══════════════════════════════════ */
+    function init() {
+        if (!window.LISTINGS || !Array.isArray(LISTINGS)) return;
+
+        // Peupler select villes (tri alphabétique, noms normalisés)
+        const citySet = new Set(LISTINGS.map(l => nc(l.city)).filter(Boolean));
+        const cities  = [...citySet].sort();
+        const sel = document.getElementById('alertCity');
+        cities.forEach(c => {
+            const o = document.createElement('option');
+            o.value = c;
+            o.textContent = c;
+            sel.appendChild(o);
+        });
+
+        // Peupler city badges profil
+        const grid = document.getElementById('cityBadgeGrid');
+        const selCities = profile.cities || [];
+        cities.forEach(c => {
+            const b = document.createElement('button');
+            b.className = 'city-badge' + (selCities.includes(c) ? ' selected' : '');
+            b.textContent = c;
+            b.onclick = () => toggleCity(c, b);
+            grid.appendChild(b);
+        });
+
+        // Restaurer profil dans les inputs
+        if (profile.budget)  document.getElementById('profBudget').value  = profile.budget;
+        if (profile.surface) document.getElementById('profSurface').value = profile.surface;
+        if (profile.rooms)   document.getElementById('profRooms').value   = profile.rooms;
+
+        // Header meta
+        document.getElementById('hdrTotal').textContent = LISTINGS.length;
+        updateHeader();
+
+        // Render
+        renderAlerts();
+        renderProfile();
+    }
+
+    /* ═══════════════════════════════════
+       SECTION 1 : ALERTES
+    ═══════════════════════════════════ */
+    function addAlert() {
+        const city    = document.getElementById('alertCity').value;
+        const price   = parseInt(document.getElementById('alertPrice').value) || 0;
+        const surface = parseInt(document.getElementById('alertSurface').value) || 0;
+        const rooms   = parseInt(document.getElementById('alertRooms').value) || 0;
+        const errEl   = document.getElementById('formError');
+
+        if (!price && !surface && !rooms && !city) {
+            errEl.textContent = '⚠️ Renseignez au moins un critère en plus de la ville.';
+            errEl.style.display = 'block';
+            setTimeout(() => errEl.style.display = 'none', 3000);
+            return;
+        }
+
+        errEl.style.display = 'none';
+        alerts.push({ id: Date.now(), city, price, surface, rooms });
+        localStorage.setItem('immo_alerts_v2', JSON.stringify(alerts));
+
+        // Reset form
+        document.getElementById('alertPrice').value   = '';
+        document.getElementById('alertSurface').value = '';
+        document.getElementById('alertCity').value    = '';
+        document.getElementById('alertRooms').value   = '';
+
+        updateHeader();
+        renderAlerts();
+    }
+
+    function removeAlert(id) {
+        alerts = alerts.filter(a => a.id !== id);
+        localStorage.setItem('immo_alerts_v2', JSON.stringify(alerts));
+        updateHeader();
+        renderAlerts();
+    }
+
+    function getAlertMatches(a) {
+        return LISTINGS.filter(l => {
+            if (a.city && nc(l.city) !== a.city) return false;
+            if (a.price   && l.price   > 0 && l.price   > a.price)   return false;
+            if (a.surface && l.surface > 0 && l.surface < a.surface) return false;
+            if (a.rooms   && l.rooms   > 0 && l.rooms   < a.rooms)   return false;
+            return true;
+        });
+    }
+
+    function scoreMatch(l, a) {
+        // Score basé sur l'économie vs le seuil prix
+        if (!a.price || !l.price) return 'ok';
+        const ratio = (a.price - l.price) / a.price;
+        if (ratio >= 0.15) return 'excellent';
+        if (ratio >= 0.05) return 'good';
+        return 'ok';
+    }
+
+    function scoreBadge(score) {
+        if (score === 'excellent') return '<span class="score-badge excellent">🔴 Excellent deal</span>';
+        if (score === 'good')      return '<span class="score-badge good">🟡 Intéressant</span>';
+        return '<span class="score-badge ok">🟢 Correct</span>';
+    }
+
+    function alertCriteriaTags(a) {
+        const tags = [];
+        if (a.city)    tags.push(`📍 ${a.city}`);
+        if (a.price)   tags.push(`💰 ≤${fmt(a.price)}€`);
+        if (a.surface) tags.push(`📐 ≥${a.surface}m²`);
+        if (a.rooms)   tags.push(`🛏️ ≥${a.rooms} ch.`);
+        return tags.map(t => `<span class="alert-criteria-tag">${t}</span>`).join('');
+    }
+
+    function matchRow(l, a) {
+        const score = scoreMatch(l, a);
+        const createdAt = l.created_at ? new Date(l.created_at) : null;
+        const ageH = createdAt ? Math.round((Date.now() - createdAt.getTime()) / 3600000) : null;
+        const isNew = ageH !== null && ageH < 24;
+        return `
+            <div class="match-row score-${score}">
+                <div class="match-info">
+                    <div class="info-chip">
+                        <span class="chip-label">📍 Ville</span>
+                        <span class="chip-value">${nc(l.city)}</span>
+                    </div>
+                    <div class="info-chip">
+                        <span class="chip-label">💰 Prix</span>
+                        <span class="chip-value chip-price">${l.price ? fmt(l.price)+'€' : '—'}</span>
+                    </div>
+                    ${l.surface ? `<div class="info-chip">
+                        <span class="chip-label">📐 Surface</span>
+                        <span class="chip-value">${l.surface} m²</span>
+                    </div>` : ''}
+                    ${l.rooms ? `<div class="info-chip">
+                        <span class="chip-label">🛏️ Ch.</span>
+                        <span class="chip-value">${l.rooms}</span>
+                    </div>` : ''}
+                    ${l.price_m2 ? `<div class="info-chip">
+                        <span class="chip-label">€/m²</span>
+                        <span class="chip-value">${l.price_m2}</span>
+                    </div>` : ''}
+                    ${scoreBadge(score)}
+                    ${isNew ? '<span class="score-badge" style="background:var(--violet-dim);color:var(--violet);border:1px solid var(--violet-line);">🆕 Nouveau</span>' : ''}
+                    <span class="site-tag">${(l.site||'').replace('.lu','')}</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:0.5rem;flex-shrink:0;">
+                    <a href="${l.url}" target="_blank" class="btn-voir">Voir →</a>
+                </div>
+            </div>
+        `;
+    }
+
+    function renderAlerts() {
+        const container = document.getElementById('alertsContainer');
+        if (!alerts.length) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <div class="icon">🔕</div>
+                    <p>Aucune alerte configurée.<br>Ajoutez votre première alerte ci-dessus.</p>
+                </div>`;
+            return;
+        }
+
+        container.innerHTML = alerts.map(a => {
+            const matches = getAlertMatches(a);
+            const sorted  = [...matches].sort((x,y) => {
+                const sx = scoreMatch(x,a), sy = scoreMatch(y,a);
+                const ord = {excellent:0, good:1, ok:2};
+                return ord[sx] - ord[sy];
+            });
+            const countClass = matches.length > 0 ? '' : ' zero';
+            const preview = sorted.slice(0, 5);
+
+            return `
+                <div class="alert-block" id="block-${a.id}">
+                    <div class="alert-block-header" onclick="toggleBlock(${a.id})">
+                        <div class="alert-block-title">
+                            ${alertCriteriaTags(a)}
+                        </div>
+                        <div class="alert-block-actions">
+                            <span class="match-count-pill${countClass}">${matches.length} résultat${matches.length>1?'s':''}</span>
+                            <button class="btn-chip-remove" onclick="event.stopPropagation();removeAlert(${a.id})" title="Supprimer cette alerte">✕</button>
+                            <span class="chevron" id="chev-${a.id}">▼</span>
+                        </div>
+                    </div>
+                    <div class="alert-block-body" id="body-${a.id}">
+                        ${preview.length ? preview.map(l => matchRow(l, a)).join('') : `
+                            <div class="empty-state" style="padding:1.25rem;">
+                                <p>Aucune annonce ne correspond à ces critères pour le moment.</p>
+                            </div>`}
+                        ${sorted.length > 5 ? `<div style="text-align:center;margin-top:0.5rem;">
+                            <span style="font-size:0.78rem;color:var(--text-dim);font-family:var(--font-mono);">... et ${sorted.length - 5} autres annonces</span>
+                        </div>` : ''}
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    function toggleBlock(id) {
+        const body = document.getElementById('body-' + id);
+        const chev = document.getElementById('chev-' + id);
+        const hdr  = body.previousElementSibling;
+        const isOpen = body.classList.contains('open');
+        body.classList.toggle('open', !isOpen);
+        hdr.classList.toggle('open', !isOpen);
+        chev.classList.toggle('open', !isOpen);
+    }
+
+    /* ═══════════════════════════════════
+       SECTION 2 : PROFIL PERSO
+    ═══════════════════════════════════ */
+    function toggleCity(city, btn) {
+        profile.cities = profile.cities || [];
+        const idx = profile.cities.indexOf(city);
+        if (idx === -1) {
+            profile.cities.push(city);
+            btn.classList.add('selected');
+        } else {
+            profile.cities.splice(idx, 1);
+            btn.classList.remove('selected');
+        }
+        localStorage.setItem('immo_profile_v2', JSON.stringify(profile));
+        renderProfile();
+    }
+
+    function saveProfile() {
+        profile.budget  = parseInt(document.getElementById('profBudget').value)  || 0;
+        profile.surface = parseInt(document.getElementById('profSurface').value) || 0;
+        profile.rooms   = parseInt(document.getElementById('profRooms').value)   || 0;
+        localStorage.setItem('immo_profile_v2', JSON.stringify(profile));
+        renderProfile();
+
+        // Feedback visuel
+        const btn = document.querySelector('.btn-add-violet');
+        const orig = btn.textContent;
+        btn.textContent = '✅ Sauvegardé!';
+        setTimeout(() => btn.textContent = orig, 1500);
+    }
+
+    function getProfileMatches() {
+        return LISTINGS.filter(l => {
+            if (profile.budget  && l.price   > 0 && l.price   > profile.budget)   return false;
+            if (profile.surface && l.surface > 0 && l.surface < profile.surface)  return false;
+            if (profile.rooms   && l.rooms   > 0 && l.rooms   < profile.rooms)    return false;
+            const cities = profile.cities || [];
+            if (cities.length && !cities.includes(nc(l.city))) return false;
+            return true;
+        });
+    }
+
+    function renderProfile() {
+        const matches = getProfileMatches();
+        const hasCriteria = profile.budget || profile.surface || profile.rooms || (profile.cities || []).length;
+
+        // Stats cards
+        const prices = matches.filter(l => l.price > 0).map(l => l.price);
+        const avgMatch = prices.length ? Math.round(prices.reduce((a,b)=>a+b,0)/prices.length) : 0;
+        const minMatch = prices.length ? Math.min(...prices) : 0;
+        const allPrices = LISTINGS.filter(l=>l.price>0).map(l=>l.price);
+        const avgGlobal = allPrices.length ? Math.round(allPrices.reduce((a,b)=>a+b,0)/allPrices.length) : 0;
+        const economy   = avgGlobal && avgMatch ? Math.round(((avgGlobal - avgMatch) / avgGlobal) * 100) : 0;
+
+        document.getElementById('profileStats').innerHTML = [
+            { label: 'Annonces compatibles', value: matches.length,              color: 'indigo', icon: '📊' },
+            { label: 'Prix moyen (mon profil)', value: avgMatch ? fmt(avgMatch)+'€' : '—', color: 'amber',  icon: '💰' },
+            { label: 'Meilleure affaire',      value: minMatch ? fmt(minMatch)+'€' : '—', color: 'green',  icon: '🏆' },
+            { label: 'Économie vs marché',     value: economy > 0 ? economy+'%' : '—',   color: 'indigo', icon: '📉' },
+        ].map(s => `
+            <div class="stat-card ${s.color}">
+                <div class="stat-value ${s.color}">${s.value}</div>
+                <div class="stat-label">${s.icon} ${s.label}</div>
+            </div>
+        `).join('');
+
+        // Comparaison mon marché vs global
+        const comparePanel = document.getElementById('comparePanel');
+        if (hasCriteria && avgMatch) {
+            const citiesLabel = (profile.cities||[]).length ? (profile.cities||[]).slice(0,3).join(', ') + ((profile.cities||[]).length > 3 ? '…' : '') : 'Toutes';
+            comparePanel.innerHTML = `
+                <div class="panel-title muted">Mon Marché vs Marché Global</div>
+                <div class="compare-bar">
+                    <div class="compare-item">
+                        <div class="compare-label">MON PROFIL (${matches.length} annonces)</div>
+                        <div class="compare-value" style="color:var(--violet);">${fmt(avgMatch)}€</div>
+                        <div class="compare-sub">Villes: ${citiesLabel}</div>
+                    </div>
+                    <div class="compare-vs">vs</div>
+                    <div class="compare-item">
+                        <div class="compare-label">MARCHÉ GLOBAL (${LISTINGS.length} annonces)</div>
+                        <div class="compare-value" style="color:var(--text);">${fmt(avgGlobal)}€</div>
+                        <div class="compare-sub">Toutes villes confondues</div>
+                    </div>
+                    <div class="compare-item" style="text-align:right;">
+                        <div class="compare-label">DIFFÉRENCE</div>
+                        <div class="compare-value" style="color:${economy >= 0 ? 'var(--green)' : 'var(--red)'};">
+                            ${economy >= 0 ? '−' : '+'}${Math.abs(economy)}%
+                        </div>
+                        <div class="compare-sub">${economy >= 0 ? 'en dessous du marché' : 'au-dessus du marché'}</div>
+                    </div>
+                </div>
+            `;
+        } else {
+            comparePanel.innerHTML = '';
+        }
+
+        // Top 5 affaires
+        const topDeals = document.getElementById('topDeals');
+        if (!hasCriteria) {
+            topDeals.innerHTML = `<div class="empty-state"><div class="icon">⚙️</div><p>Configurez votre profil pour voir les meilleures affaires.</p></div>`;
+            return;
+        }
+
+        if (!matches.length) {
+            topDeals.innerHTML = `<div class="empty-state"><div class="icon">🔍</div><p>Aucune annonce ne correspond à votre profil.<br>Essayez d'assouplir vos critères.</p></div>`;
+            return;
+        }
+
+        // Trier: annonces récentes + prix bas en premier
+        const sorted = [...matches].sort((a,b) => {
+            const scoreA = (a.price > 0 ? -a.price : 0) + (a.created_at ? new Date(a.created_at).getTime() / 100000 : 0);
+            const scoreB = (b.price > 0 ? -b.price : 0) + (b.created_at ? new Date(b.created_at).getTime() / 100000 : 0);
+            return scoreB - scoreA;
+        });
+
+        const top = sorted.slice(0, 5);
+        topDeals.innerHTML = top.map((l, idx) => {
+            const createdAt = l.created_at ? new Date(l.created_at) : null;
+            const ageH = createdAt ? Math.round((Date.now() - createdAt.getTime()) / 3600000) : null;
+            const isNew = ageH !== null && ageH < 24;
+            const medal = idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : `#${idx+1}`;
+            return `
+                <div class="match-row" style="border-left-color: var(--violet);">
+                    <div class="match-info">
+                        <span style="font-size:1.1rem;flex-shrink:0;">${medal}</span>
+                        <div class="info-chip">
+                            <span class="chip-label">📍 Ville</span>
+                            <span class="chip-value">${nc(l.city)}</span>
+                        </div>
+                        <div class="info-chip">
+                            <span class="chip-label">💰 Prix</span>
+                            <span class="chip-value chip-price-indigo">${l.price ? fmt(l.price)+'€' : '—'}</span>
+                        </div>
+                        ${l.surface ? `<div class="info-chip">
+                            <span class="chip-label">📐 Surface</span>
+                            <span class="chip-value">${l.surface} m²</span>
+                        </div>` : ''}
+                        ${l.rooms ? `<div class="info-chip">
+                            <span class="chip-label">🛏️ Ch.</span>
+                            <span class="chip-value">${l.rooms}</span>
+                        </div>` : ''}
+                        ${l.price_m2 ? `<div class="info-chip">
+                            <span class="chip-label">€/m²</span>
+                            <span class="chip-value">${l.price_m2}</span>
+                        </div>` : ''}
+                        ${isNew ? '<span class="score-badge" style="background:var(--violet-dim);color:var(--violet);border:1px solid var(--violet-line);">🆕 Nouveau</span>' : ''}
+                        <span class="site-tag">${(l.site||'').replace('.lu','')}</span>
+                    </div>
+                    <a href="${l.url}" target="_blank" class="btn-voir btn-voir-indigo">Voir →</a>
+                </div>
+            `;
+        }).join('');
+    }
+
+    function updateHeader() {
+        const total = alerts.reduce((acc, a) => acc + getAlertMatches(a).length, 0);
+        document.getElementById('hdrAlerts').textContent  = alerts.length;
+        document.getElementById('hdrMatches').textContent = total;
+    }
+
+    /* ── Service Worker ── */
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
+    }
+
+    /* ── Init ── */
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+</script>
+
+</body>
+</html>

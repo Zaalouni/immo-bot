@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Statistiques immobilières par ville - ImmoLux">
+    <meta name="theme-color" content="#09090F">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ImmoLux Villes">
+    <link rel="apple-touch-icon" href="icon.svg">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https:;">
+    <link rel="manifest" href="manifest.json">
+    <title>Stats par Ville — ImmoLux</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="dark-mode.js" defer></script>
+    <script src="data/version.js"></script>
+    <script src="version-display.js" defer></script>
+    <style>
+        /* ── Variables ────────────────────────────────────────── */
+        :root {
+            --bg:          #09090F;
+            --bg-card:     #111118;
+            --bg-lift:     #16161F;
+            --bg-panel:    #1C1C27;
+            --gold:        #C9A265;
+            --gold-dim:    rgba(201,162,101,0.18);
+            --gold-line:   rgba(201,162,101,0.35);
+            --text:        #E8E4DC;
+            --text-muted:  #7A7A8C;
+            --text-dim:    #4A4A5C;
+            --border:      rgba(255,255,255,0.07);
+            --border-gold: rgba(201,162,101,0.25);
+            --radius:      4px;
+            --radius-lg:   8px;
+            --shadow:      0 4px 32px rgba(0,0,0,0.5);
+            --font-display:'Cormorant Garamond', Georgia, serif;
+            --font-body:   'Outfit', system-ui, sans-serif;
+            --font-mono:   'JetBrains Mono', monospace;
+        }
+
+        body.light-mode {
+            --bg:          #F5F0E8;
+            --bg-card:     #FFFFFF;
+            --bg-lift:     #FAF7F2;
+            --bg-panel:    #F0EAE0;
+            --text:        #1A1A24;
+            --text-muted:  #6B6B7C;
+            --text-dim:    #A0A0B0;
+            --border:      rgba(0,0,0,0.08);
+            --border-gold: rgba(160,110,50,0.3);
+            --gold:        #9A6E2A;
+            --gold-dim:    rgba(154,110,42,0.1);
+            --gold-line:   rgba(154,110,42,0.3);
+            --shadow:      0 4px 24px rgba(0,0,0,0.1);
+        }
+
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            font-size: 15px;
+            line-height: 1.6;
+            transition: background 0.4s, color 0.4s;
+        }
+
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            background-image:
+                linear-gradient(var(--border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none; z-index: 0; opacity: 0.4;
+        }
+
+        .page-wrap {
+            position: relative; z-index: 1;
+            max-width: 1360px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+        }
+
+        /* ── Hero ─────────────────────────────────────────────── */
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: end;
+            gap: 2rem;
+            padding: 3.5rem 0 2.5rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2.5rem;
+            animation: fadeUp 0.7s ease both;
+        }
+
+        .hero-eyebrow {
+            font-size: 0.7rem; font-weight: 600;
+            letter-spacing: 0.2em; text-transform: uppercase;
+            color: var(--gold); margin-bottom: 0.75rem;
+            display: flex; align-items: center; gap: 0.75rem;
+        }
+        .hero-eyebrow::before {
+            content: ''; display: block;
+            width: 2rem; height: 1px; background: var(--gold);
+        }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.4rem, 5vw, 4.2rem);
+            font-weight: 600; line-height: 1.05; letter-spacing: -0.02em;
+        }
+        .hero h1 em { font-style: italic; color: var(--gold); }
+
+        .hero-meta {
+            margin-top: 0.6rem;
+            font-size: 0.8rem; color: var(--text-muted); font-weight: 300;
+        }
+
+        .hero-number {
+            font-family: var(--font-display);
+            font-size: clamp(7rem, 14vw, 12rem);
+            font-weight: 700; line-height: 0.85;
+            color: transparent;
+            -webkit-text-stroke: 1px var(--gold-line);
+            letter-spacing: -0.05em;
+            user-select: none; opacity: 0.6;
+        }
+
+        /* ── Nav ──────────────────────────────────────────────── */
+        .nav-bar {
+            display: flex; gap: 0.4rem; flex-wrap: wrap;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2rem;
+            animation: fadeUp 0.7s ease 0.05s both;
+            align-items: center;
+        }
+
+        .nav-link {
+            font-size: 0.72rem; font-weight: 600;
+            letter-spacing: 0.1em; text-transform: uppercase;
+            text-decoration: none; color: var(--text-muted);
+            padding: 0.4rem 0.9rem;
+            border-radius: var(--radius);
+            border: 1px solid transparent;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .nav-link:hover { color: var(--text); border-color: var(--border); }
+        .nav-link.active {
+            color: var(--gold);
+            border-color: var(--gold-line);
+            background: var(--gold-dim);
+        }
+
+        .nav-toggle {
+            margin-left: auto;
+            background: transparent;
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius);
+            color: var(--gold);
+            font-size: 1rem;
+            padding: 0.35rem 0.65rem;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+        .nav-toggle:hover { background: var(--gold-dim); border-color: var(--gold); }
+
+        /* ── Search + Controls ────────────────────────────────── */
+        .search-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem 2rem;
+            margin-bottom: 1.5rem;
+            animation: fadeUp 0.7s ease 0.1s both;
+        }
+
+        .search-input {
+            width: 100%;
+            background: var(--bg-lift);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--text);
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            padding: 0.75rem 1.25rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .search-input::placeholder { color: var(--text-dim); }
+        .search-input:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 2px var(--gold-dim);
+        }
+
+        .search-info {
+            margin-top: 0.6rem;
+            font-size: 0.8rem; color: var(--text-muted);
+            font-family: var(--font-mono);
+        }
+
+        .controls-row {
+            display: flex; gap: 1.5rem; flex-wrap: wrap;
+            align-items: center;
+            margin-top: 1.25rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .controls-group { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
+
+        .controls-label {
+            font-size: 0.65rem; font-weight: 600;
+            letter-spacing: 0.15em; text-transform: uppercase;
+            color: var(--text-dim); white-space: nowrap;
+        }
+
+        .ctrl-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--text-muted);
+            font-family: var(--font-body);
+            font-size: 0.78rem; font-weight: 500;
+            padding: 0.4rem 0.85rem;
+            cursor: pointer;
+            transition: border-color 0.2s, color 0.2s, background 0.2s;
+        }
+        .ctrl-btn:hover { border-color: var(--gold-line); color: var(--text); }
+        .ctrl-btn.active {
+            background: var(--gold-dim);
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        /* ── Region header ────────────────────────────────────── */
+        .region-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1.25rem;
+            background: var(--bg-panel);
+            border: 1px solid var(--border-gold);
+            border-left: 3px solid var(--gold);
+            border-radius: var(--radius);
+            margin: 1.5rem 0 0.75rem;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--gold);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            position: sticky; top: 8px; z-index: 20;
+        }
+        .region-header:first-child { margin-top: 0; }
+
+        .region-count-badge {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            text-transform: none;
+            letter-spacing: 0;
+        }
+
+        /* ── Accordion ────────────────────────────────────────── */
+        .accordion { margin-bottom: 0.5rem; }
+
+        .accordion-item {
+            background: var(--bg-card) !important;
+            border: 1px solid var(--border) !important;
+            border-radius: var(--radius-lg) !important;
+            margin-bottom: 0.5rem !important;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+
+        .accordion-item:hover {
+            border-color: var(--border-gold) !important;
+        }
+
+        .accordion-item.priority {
+            border-color: var(--border-gold) !important;
+            box-shadow: 0 0 0 1px var(--gold-dim);
+        }
+
+        .accordion-button {
+            background: var(--bg-card) !important;
+            color: var(--text) !important;
+            padding: 1rem 1.25rem !important;
+            font-weight: 500;
+            border: none !important;
+            box-shadow: none !important;
+            font-family: var(--font-body) !important;
+        }
+        .accordion-button:not(.collapsed) {
+            background: var(--bg-lift) !important;
+            color: var(--text) !important;
+            box-shadow: none !important;
+        }
+        .accordion-button::after {
+            filter: invert(1) sepia(1) saturate(0.5) hue-rotate(5deg) brightness(0.8);
+        }
+
+        .accordion-body {
+            background: var(--bg-lift) !important;
+            padding: 1.25rem 1.5rem !important;
+            color: var(--text);
+        }
+
+        .accordion-collapse { background: var(--bg-lift); }
+
+        /* City header inside button */
+        .city-name {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--gold);
+            margin-right: 0.75rem;
+        }
+
+        .city-badge {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            font-weight: 500;
+            padding: 0.15rem 0.55rem;
+            border-radius: 2px;
+            background: var(--gold-dim);
+            border: 1px solid var(--gold-line);
+            color: var(--gold);
+            margin-right: 0.5rem;
+        }
+
+        .transport-icons {
+            display: flex; gap: 0.4rem; flex-wrap: wrap;
+            font-size: 0.78rem; color: var(--text-muted);
+        }
+
+        /* ── Accordion body content ───────────────────────────── */
+        .transport-card {
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            border-left: 2px solid var(--gold);
+            border-radius: var(--radius);
+            padding: 1rem 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .transport-item {
+            margin-top: 0.6rem;
+            padding: 0.5rem 0.75rem;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            font-size: 0.85rem;
+            border: 1px solid var(--border);
+        }
+
+        .amenities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .amenity-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 0.85rem 1rem;
+            font-size: 0.82rem;
+            line-height: 1.55;
+            border-top: 2px solid var(--border);
+        }
+        .amenity-card.schools  { border-top-color: #3b82f6; }
+        .amenity-card.shopping { border-top-color: #10b981; }
+        .amenity-card.work     { border-top-color: var(--gold); }
+
+        .amenity-title {
+            font-size: 0.65rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.12em;
+            color: var(--text-dim);
+            margin-bottom: 0.4rem;
+        }
+
+        /* Market stats badges */
+        .market-stats { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+
+        .stat-badge {
+            font-family: var(--font-mono);
+            font-size: 0.75rem; font-weight: 500;
+            padding: 0.3rem 0.75rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-muted);
+        }
+        .stat-badge.median { border-color: rgba(59,130,246,0.3); color: #60a5fa; }
+        .stat-badge.avg    { border-color: rgba(16,185,129,0.3); color: #34d399; }
+        .stat-badge.m2     { border-color: var(--gold-line);     color: var(--gold); }
+
+        /* Score chip */
+        .score-chip {
+            font-family: var(--font-mono);
+            font-size: 0.7rem; font-weight: 500;
+            padding: 0.15rem 0.5rem;
+            border-radius: 2px;
+            margin-left: 0.3rem;
+            vertical-align: middle;
+        }
+        .score-chip.high   { background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+        .score-chip.medium { background: rgba(245,158,11,0.15);  color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
+        .score-chip.low    { background: rgba(239,68,68,0.1);    color: #ef4444; border: 1px solid rgba(239,68,68,0.2); }
+
+        /* ── Table ────────────────────────────────────────────── */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            margin-bottom: 0;
+        }
+        .table thead tr {
+            border-bottom: 1px solid var(--border-gold);
+        }
+        .table thead th {
+            font-size: 0.65rem; font-weight: 600;
+            letter-spacing: 0.12em; text-transform: uppercase;
+            color: var(--text-dim);
+            padding: 0.6rem 0.75rem;
+            text-align: left;
+        }
+        .table tbody td {
+            padding: 0.6rem 0.75rem;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+            color: var(--text);
+        }
+        .table tbody tr:last-child td { border-bottom: none; }
+        .table tbody tr:hover td { background: var(--bg-panel); }
+        .table-sm td, .table-sm th { padding: 0.5rem 0.65rem; }
+        .mb-0 { margin-bottom: 0 !important; }
+
+        /* ── Btn voir ─────────────────────────────────────────── */
+        .btn-voir {
+            display: inline-flex; align-items: center;
+            padding: 0.3rem 0.7rem;
+            background: transparent;
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius);
+            color: var(--gold);
+            font-size: 0.75rem; font-weight: 500;
+            text-decoration: none;
+            transition: background 0.2s, border-color 0.2s;
+        }
+        .btn-voir:hover { background: var(--gold-dim); border-color: var(--gold); color: var(--gold); }
+
+        /* ── Floating toggle (desktop only) ───────────────────── */
+        .dark-mode-toggle {
+            position: fixed; bottom: 2rem; right: 2rem;
+            width: 44px; height: 44px; border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            font-size: 1.1rem; cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s, border-color 0.2s;
+            z-index: 100;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .dark-mode-toggle:hover { transform: scale(1.1) rotate(15deg); border-color: var(--gold); }
+
+        @media (max-width: 900px) {
+            .dark-mode-toggle { display: none; }
+        }
+
+        /* ── Animations ───────────────────────────────────────── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Responsive ───────────────────────────────────────── */
+        @media (max-width: 900px) {
+            .page-wrap { padding: 0 1rem 3rem; }
+            .hero { grid-template-columns: 1fr; }
+            .hero-number { display: none; }
+            .controls-row { gap: 0.75rem; }
+            .table { font-size: 0.78rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+    <!-- Hero -->
+    <div class="hero">
+        <div>
+            <div class="hero-eyebrow">ImmoLux · Données</div>
+            <h1>Stats par <em>Ville</em></h1>
+            <p class="hero-meta" id="lastUpdate">Chargement…</p>
+        </div>
+        <div class="hero-number">📊</div>
+    </div>
+
+    <!-- Nav -->
+    <nav class="nav-bar">
+        <a href="index.html" class="nav-link">Dashboard</a>
+        <a href="new-listings.html" class="nav-link">Nouvelles</a>
+        <a href="anomalies.html" class="nav-link">Anomalies</a>
+        <a href="map-advanced.html" class="nav-link">Carte</a>
+        <a href="favorites.html" class="nav-link">Prioritaires</a>
+        <a href="3chambres.html" class="nav-link">3 Chambres</a>
+        <a href="ia-analyse.html" class="nav-link">Analyse IA</a>
+        <a href="stats-by-city.html" class="nav-link active">Villes</a>
+        <button class="nav-toggle" id="darkModeToggle" title="Mode clair/sombre" aria-label="Mode clair/sombre">☀️</button>
+    </nav>
+
+    <!-- Search + Controls -->
+    <div class="search-panel">
+        <input type="text" id="searchInput" class="search-input"
+               placeholder="🔍 Filtrer par ville (ex: Luxembourg, Esch...)"
+               onkeyup="filterCities()">
+        <div class="search-info" id="cityCount"></div>
+
+        <div class="controls-row">
+            <div class="controls-group">
+                <span class="controls-label">Trier par</span>
+                <button class="ctrl-btn active" id="sort-alpha"    onclick="setSort('alpha')">A–Z</button>
+                <button class="ctrl-btn"        id="sort-distance" onclick="setSort('distance')">📏 Distance</button>
+                <button class="ctrl-btn"        id="sort-price"    onclick="setSort('price')">💰 Prix</button>
+                <button class="ctrl-btn"        id="sort-count"    onclick="setSort('count')">📊 Annonces</button>
+            </div>
+            <div class="controls-group">
+                <span class="controls-label">Vue</span>
+                <button class="ctrl-btn active" id="view-list"   onclick="setView('list')">📋 Liste</button>
+                <button class="ctrl-btn"        id="view-region" onclick="setView('region')">🗺️ Régions</button>
+            </div>
+            <div class="controls-group">
+                <span class="controls-label">Chambres</span>
+                <select id="filterRooms" class="ctrl-btn" style="cursor:pointer;appearance:none;padding-right:1.5rem;background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%237A7A8C'/%3E%3C/svg%3E\");background-repeat:no-repeat;background-position:right 0.5rem center;" onchange="renderListingsByCity()">
+                    <option value="0">Tous</option>
+                    <option value="1">1 ch.</option>
+                    <option value="2">2 ch.</option>
+                    <option value="3">3 ch.</option>
+                    <option value="4">4 ch.</option>
+                    <option value="5">5+ ch.</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div id="listingsByCityContainer"></div>
+
+</div><!-- /page-wrap -->
+
+<button class="dark-mode-toggle" id="darkModeToggleFloat" title="Mode clair/sombre">☀️</button>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="data/listings.js"></script>
+<script src="data/market-stats.js"></script>
+<script>
+    /* ── Dark mode ── */
+    const dm = document.getElementById('darkModeToggle');
+    const dmFloat = document.getElementById('darkModeToggleFloat');
+
+    function applyDM(light) {
+        document.body.classList.toggle('light-mode', light);
+        const icon = light ? '🌙' : '☀️';
+        dm.textContent = icon;
+        if (dmFloat) dmFloat.textContent = icon;
+        localStorage.setItem('darkMode', light);
+    }
+
+    dm.addEventListener('click', () => applyDM(!document.body.classList.contains('light-mode')));
+    if (dmFloat) dmFloat.addEventListener('click', () => dm.click());
+    applyDM(localStorage.getItem('darkMode') === 'true');
+
+    /* ── normCity ── */
+    if (typeof normCity === 'undefined') {
+        window.normCity = function(city) {
+            return city ? city.replace(/^Luxembourg[-\s]/i, '') : city;
+        };
+    }
+
+    /* ── Transport data ── */
+    let TRANSPORTS = {};
+    fetch('data/city-transports.json')
+        .then(r => r.json())
+        .then(data => {
+            TRANSPORTS = data.cities || {};
+            console.log('✅ Transports loaded:', Object.keys(TRANSPORTS).length, 'cities');
+        })
+        .catch(err => console.log('Transport data not available:', err));
+
+    let allCities = [];
+    let cityStats = {};
+    let currentSort = 'alpha';
+    let currentView = 'list';
+
+    const REGION_ORDER = ['Centre','Nord-Ouest','Nord','Nord-Est','Ouest','Est','Sud-Ouest','Sud','Sud-Est','Autres'];
+    const REGION_ICONS = {
+        'Centre':'🏙️','Nord':'⬆️','Sud':'⬇️','Est':'🌅','Ouest':'🌄',
+        'Nord-Est':'↗️','Nord-Ouest':'↖️','Sud-Est':'↘️','Sud-Ouest':'↙️','Autres':'📍'
+    };
+
+    function setSort(s) {
+        currentSort = s;
+        document.querySelectorAll('[id^="sort-"]').forEach(b => b.classList.remove('active'));
+        document.getElementById('sort-' + s).classList.add('active');
+        renderListingsByCity();
+    }
+
+    function setView(v) {
+        currentView = v;
+        document.querySelectorAll('[id^="view-"]').forEach(b => b.classList.remove('active'));
+        document.getElementById('view-' + v).classList.add('active');
+        renderListingsByCity();
+    }
+
+    function getTransport(city) {
+        return TRANSPORTS[city]
+            || TRANSPORTS['Luxembourg-' + city]
+            || TRANSPORTS['Luxembourg ' + city]
+            || {};
+    }
+
+    function sortCities(cities) {
+        switch(currentSort) {
+            case 'distance':
+                return [...cities].sort((a, b) => {
+                    const da = getTransport(a).distance_km;
+                    const db = getTransport(b).distance_km;
+                    if (da == null && db == null) return a.localeCompare(b);
+                    if (da == null) return 1;
+                    if (db == null) return -1;
+                    return da - db;
+                });
+            case 'price':
+                return [...cities].sort((a, b) =>
+                    (cityStats[b]?.avgPrice || 0) - (cityStats[a]?.avgPrice || 0));
+            case 'count':
+                return [...cities].sort((a, b) =>
+                    (cityStats[b]?.count || 0) - (cityStats[a]?.count || 0));
+            default:
+                return [...cities].sort((a, b) => a.localeCompare(b));
+        }
+    }
+
+    function transportIcon(type) {
+        return type === 'gare' ? '🚉' : type === 'train' ? '🚂' :
+               type === 'bus'  ? '🚌' : type === 'tram'  ? '🚊' :
+               type === 'pied' ? '🚶' : '🚇';
+    }
+
+    function renderCityAccordion(city, listings, idx, PC) {
+        const transport = getTransport(city);
+        const transportList = transport.transports || [];
+        const isPriority = PC.includes(city);
+        const dist = transport.distance_km;
+        const distLabel = dist != null ? `📏 ${dist} km` : '';
+        const avgP = cityStats[city]?.avgPrice;
+
+        return `
+            <div class="accordion" id="accordion-${idx}" style="--index:${idx}">
+                <div class="accordion-item${isPriority ? ' priority' : ''}">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#city-${idx}">
+                            <div style="display:flex;align-items:center;flex-wrap:wrap;gap:0.5rem;width:100%;">
+                                <span class="city-name">${isPriority ? '⭐' : '📍'} ${city}</span>
+                                <span class="city-badge">${listings.length}</span>
+                                ${distLabel ? `<span style="font-size:0.78rem;color:var(--gold);font-family:var(--font-mono);">${distLabel}</span>` : ''}
+                                ${avgP ? `<span style="font-size:0.78rem;color:var(--text-muted);font-family:var(--font-mono);">~${avgP.toLocaleString('fr-FR')}€</span>` : ''}
+                                <div class="transport-icons">
+                                    ${transportList.length > 0
+                                        ? transportList.map(t => `<span>${transportIcon(t.type)} ${t.number}</span>`).join('')
+                                        : '<span style="opacity:.4;font-size:.72rem;">⚠️ N/D</span>'}
+                                </div>
+                                ${transport.score_famille ? (() => {
+                                    const s = transport.score_famille;
+                                    const cls = s >= 80 ? 'high' : s >= 65 ? 'medium' : 'low';
+                                    const icon = s >= 80 ? '👨‍👩‍👧' : s >= 65 ? '👪' : '⚠️';
+                                    return `<span class="score-chip ${cls}">${icon} ${s}/100</span>`;
+                                })() : ''}
+                            </div>
+                        </button>
+                    </h2>
+                    <div id="city-${idx}" class="accordion-collapse collapse" data-bs-parent="#accordion-${idx}">
+                        <div class="accordion-body">
+                            ${transportList.length > 0 ? `
+                                <div class="transport-card">
+                                    <div style="display:flex;justify-content:space-between;margin-bottom:0.75rem;flex-wrap:wrap;gap:0.5rem;">
+                                        <strong style="font-size:.85rem;">🚊 Transport vers Gare Centrale</strong>
+                                        ${dist != null ? `<span style="font-size:.78rem;color:var(--gold);font-family:var(--font-mono);">📏 ${dist} km${transport.region ? ` · ${transport.region}` : ''}</span>` : ''}
+                                    </div>
+                                    ${transportList.map(t => `
+                                        <div class="transport-item">
+                                            ${transportIcon(t.type)}
+                                            <strong>${t.number}</strong> — ${t.description}
+                                            <span style="color:var(--gold);font-family:var(--font-mono);font-size:.82rem;">(${t.duration_min} min)</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            ` : ''}
+                            ${(transport.amenities || transport.work_distances_min) ? `
+                                <div class="amenities-grid">
+                                    ${transport.amenities?.schools ? `
+                                    <div class="amenity-card schools">
+                                        <div class="amenity-title">🏫 Écoles</div>
+                                        <div>Primaires : <strong>${transport.amenities.schools.primary}</strong></div>
+                                        <div>Secondaires : <strong>${transport.amenities.schools.secondary || 0}</strong></div>
+                                        ${transport.amenities.schools.international > 0
+                                            ? `<div>Internationales : <strong>${transport.amenities.schools.international}</strong></div>`
+                                            : `<div style="color:var(--text-dim);font-size:.78rem;">${transport.amenities.schools.nearest_intl || ''}</div>`}
+                                    </div>
+                                    ` : ''}
+                                    ${transport.amenities?.shopping ? `
+                                    <div class="amenity-card shopping">
+                                        <div class="amenity-title">🛒 Commerces</div>
+                                        ${transport.amenities.shopping.supermarkets?.length > 0
+                                            ? `<div>${transport.amenities.shopping.supermarkets.join(' · ')}</div>`
+                                            : '<div style="color:var(--text-dim);font-size:.78rem;">Aucun local</div>'}
+                                        <div style="font-size:.78rem;opacity:.6;margin-top:.25rem;">${transport.amenities.shopping.mall_nearby}</div>
+                                    </div>
+                                    ` : ''}
+                                    ${transport.work_distances_min ? `
+                                    <div class="amenity-card work">
+                                        <div class="amenity-title">💼 Zones d'emploi</div>
+                                        <div>Kirchberg (UE) : <strong>${transport.work_distances_min.kirchberg} min</strong></div>
+                                        <div>Cloche d'Or : <strong>${transport.work_distances_min.cloche_or} min</strong></div>
+                                        <div>Centre-Ville : <strong>${transport.work_distances_min.centre_ville} min</strong></div>
+                                    </div>
+                                    ` : ''}
+                                </div>
+                            ` : ''}
+                            ${(typeof MARKET_STATS !== 'undefined' && MARKET_STATS[city]) ? `
+                                <div class="market-stats">
+                                    <span class="stat-badge median">📊 Médiane: <strong>${MARKET_STATS[city].median_price?.toLocaleString('fr-FR')}€</strong></span>
+                                    <span class="stat-badge avg">💶 Moyenne: <strong>${MARKET_STATS[city].avg_price?.toLocaleString('fr-FR')}€</strong></span>
+                                    ${MARKET_STATS[city].avg_price_m2 ? `<span class="stat-badge m2">📐 Prix/m²: <strong>${MARKET_STATS[city].avg_price_m2}€</strong></span>` : ''}
+                                </div>
+                            ` : ''}
+                            <table class="table table-sm mb-0">
+                                <thead><tr>
+                                    <th>Titre</th><th>Prix</th><th>Ch.</th><th>Surface</th><th></th>
+                                </tr></thead>
+                                <tbody>
+                                    ${listings.map(l => `
+                                        <tr>
+                                            <td><strong>${l.title.substring(0,40)}</strong></td>
+                                            <td style="font-family:var(--font-mono);color:var(--gold);">${l.price.toLocaleString('fr-FR')}€</td>
+                                            <td>${l.rooms || '—'}</td>
+                                            <td>${l.surface ? l.surface + ' m²' : '—'}</td>
+                                            <td><a href="${l.url}" target="_blank" rel="noopener" class="btn-voir">Voir →</a></td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function init() {
+        if (!LISTINGS || LISTINGS.length === 0) return;
+
+        document.getElementById('lastUpdate').textContent =
+            `Mis à jour : ${new Date().toLocaleString('fr-FR')}`;
+
+        const byCity = {};
+        LISTINGS.forEach(l => {
+            const city = normCity(l.city || 'N/A');
+            if (!byCity[city]) byCity[city] = [];
+            byCity[city].push(l);
+        });
+
+        allCities = Object.keys(byCity);
+        allCities.forEach(city => {
+            const listings = byCity[city];
+            const prices   = listings.filter(l => l.price > 0).map(l => l.price);
+            const surfaces = listings.filter(l => l.surface > 0).map(l => l.surface);
+            const rooms    = listings.filter(l => l.rooms > 0).map(l => l.rooms);
+            cityStats[city] = {
+                count: listings.length,
+                minPrice:   prices.length ? Math.min(...prices) : 0,
+                maxPrice:   prices.length ? Math.max(...prices) : 0,
+                avgPrice:   prices.length ? Math.round(prices.reduce((a,b)=>a+b,0)/prices.length) : 0,
+                avgSurface: surfaces.length ? Math.round(surfaces.reduce((a,b)=>a+b,0)/surfaces.length) : 0,
+                avgRooms:   rooms.length ? (rooms.reduce((a,b)=>a+b,0)/rooms.length).toFixed(1) : 0,
+                listings
+            };
+        });
+
+        setTimeout(() => renderListingsByCity(), 500);
+    }
+
+    function filterCities() { renderListingsByCity(); }
+
+    function renderListingsByCity() {
+        const container  = document.getElementById('listingsByCityContainer');
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        const PC         = (typeof PRIORITY_CITIES !== 'undefined') ? PRIORITY_CITIES : [];
+        const filterRooms = parseInt(document.getElementById('filterRooms').value) || 0;
+
+        // Filter by rooms first
+        const sourceListings = filterRooms > 0
+            ? LISTINGS.filter(l => {
+                const r = l.rooms || 0;
+                return filterRooms === 5 ? r >= 5 : r === filterRooms;
+              })
+            : LISTINGS;
+
+        const byCity = {};
+        sourceListings.forEach(l => {
+            const city = normCity(l.city || 'N/A');
+            if (!byCity[city]) byCity[city] = [];
+            byCity[city].push(l);
+        });
+
+        const allC = Object.keys(byCity);
+        const filtered = sortCities(
+            allC.filter(c => c.toLowerCase().includes(searchTerm))
+        );
+
+        const total = filtered.reduce((s, c) => s + byCity[c].length, 0);
+        document.getElementById('cityCount').textContent =
+            `${filtered.length} villes · ${total} annonces`;
+
+        let html = '';
+
+        if (currentView === 'region') {
+            const byRegion = {};
+            filtered.forEach(city => {
+                const t = getTransport(city);
+                const r = t.region || 'Autres';
+                if (!byRegion[r]) byRegion[r] = [];
+                byRegion[r].push(city);
+            });
+
+            let idx = 0;
+            REGION_ORDER.forEach(region => {
+                const cities = byRegion[region];
+                if (!cities || cities.length === 0) return;
+                const regionCount = cities.reduce((s, c) => s + (byCity[c]?.length || 0), 0);
+                html += `
+                    <div class="region-header">
+                        <span>${REGION_ICONS[region] || '📍'} ${region}</span>
+                        <span class="region-count-badge">${cities.length} villes · ${regionCount} annonces</span>
+                    </div>
+                `;
+                cities.forEach(city => {
+                    html += renderCityAccordion(city, byCity[city], idx++, PC);
+                });
+            });
+        } else {
+            filtered.forEach((city, idx) => {
+                html += renderCityAccordion(city, byCity[city], idx, PC);
+            });
+        }
+
+        container.innerHTML = html;
+    }
+
+    /* ── PWA ── */
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
+    }
+
+    init();
+</script>
+
+</body>
+</html>

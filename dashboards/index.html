@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="ImmoLux Dashboard - Annonces immobilières au Luxembourg">
+    <meta name="theme-color" content="#09090F">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ImmoLux">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https:;">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <link rel="apple-touch-icon" href="icon.svg">
+    <title>ImmoLux — Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H" crossorigin="anonymous">
+    <script src="data/version.js"></script>
+    <script src="version-display.js" defer></script>
+    <style>
+        /* ── Design System (shared with 3chambres.html) ─────────── */
+        :root {
+            --bg:          #09090F;
+            --bg-card:     #111118;
+            --bg-lift:     #16161F;
+            --bg-panel:    #1C1C27;
+            --gold:        #C9A265;
+            --gold-dim:    rgba(201,162,101,0.15);
+            --gold-line:   rgba(201,162,101,0.32);
+            --text:        #E8E4DC;
+            --text-muted:  #7A7A8C;
+            --text-dim:    #4A4A5C;
+            --border:      rgba(255,255,255,0.07);
+            --border-gold: rgba(201,162,101,0.22);
+            --radius:      4px;
+            --radius-lg:   8px;
+            --shadow:      0 4px 32px rgba(0,0,0,0.5);
+            --font-display:'Cormorant Garamond', Georgia, serif;
+            --font-body:   'Outfit', system-ui, sans-serif;
+            --font-mono:   'JetBrains Mono', monospace;
+            --green:       #4ADE80;
+            --red:         #F87171;
+            --amber:       #FBBF24;
+        }
+
+        body.light-mode {
+            --bg:          #F5F0E8;
+            --bg-card:     #FFFFFF;
+            --bg-lift:     #FAF7F2;
+            --bg-panel:    #F0EAE0;
+            --text:        #1A1A24;
+            --text-muted:  #6B6B7C;
+            --text-dim:    #A0A0B0;
+            --border:      rgba(0,0,0,0.08);
+            --border-gold: rgba(160,110,50,0.28);
+            --gold:        #9A6E2A;
+            --gold-dim:    rgba(154,110,42,0.1);
+            --gold-line:   rgba(154,110,42,0.28);
+            --shadow:      0 4px 24px rgba(0,0,0,0.1);
+            --green:       #16A34A;
+            --red:         #DC2626;
+            --amber:       #D97706;
+        }
+
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            font-size: 14px;
+            line-height: 1.6;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            background-image:
+                linear-gradient(var(--border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.35;
+        }
+
+        /* ── Command Header ─────────────────────────────────────── */
+        .cmd-header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .cmd-header-inner {
+            max-width: 1360px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .cmd-logo {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .cmd-logo-mark {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 700;
+            font-style: italic;
+            color: var(--gold);
+            letter-spacing: -0.02em;
+        }
+
+        .cmd-logo-sub {
+            font-size: 0.65rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+        }
+
+        .cmd-header-stats {
+            display: flex;
+            gap: 0;
+            flex: 1;
+        }
+
+        .cmd-hstat {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0 1.5rem;
+            border-left: 1px solid var(--border);
+        }
+
+        .cmd-hstat:last-child { border-right: 1px solid var(--border); }
+
+        .cmd-hstat-val {
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--gold);
+        }
+
+        .cmd-hstat-lbl {
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .cmd-update {
+            font-size: 0.68rem;
+            color: var(--text-dim);
+            font-weight: 400;
+            letter-spacing: 0.04em;
+            margin-left: auto;
+            flex-shrink: 0;
+        }
+
+        /* ── Page Wrap ──────────────────────────────────────────── */
+        .page-wrap {
+            position: relative;
+            z-index: 1;
+            max-width: 1360px;
+            margin: 0 auto;
+            padding: 2rem 2rem 4rem;
+        }
+
+        /* ── Stats Bar ──────────────────────────────────────────── */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            animation: fadeUp 0.5s ease both;
+        }
+
+        .stat-cell {
+            background: var(--bg-card);
+            padding: 1.25rem 1.5rem;
+            transition: background 0.2s;
+        }
+
+        .stat-cell:hover { background: var(--bg-lift); }
+
+        .stat-num {
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--gold);
+            display: block;
+            line-height: 1;
+            margin-bottom: 0.3rem;
+        }
+
+        .stat-lbl {
+            font-size: 0.65rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        /* ── Section Label ──────────────────────────────────────── */
+        .section-label {
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* ── Site Badges ────────────────────────────────────────── */
+        .sites-section {
+            margin-bottom: 1.5rem;
+            animation: fadeUp 0.5s ease 0.05s both;
+        }
+
+        /* .site-badge injected by JS */
+        .site-badge {
+            display: inline-block;
+            padding: 0.2rem 0.65rem;
+            border-radius: 3px;
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            color: white;
+            margin: 0 0.3rem 0.3rem 0;
+            opacity: 0.9;
+        }
+
+        /* ── Navigation Grid ────────────────────────────────────── */
+        .nav-section {
+            margin-bottom: 2rem;
+            animation: fadeUp 0.5s ease 0.1s both;
+        }
+
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+
+        .nav-card {
+            background: var(--bg-card);
+            padding: 0.85rem 1rem;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            font-weight: 500;
+            letter-spacing: 0.03em;
+            transition: background 0.15s, color 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            position: relative;
+        }
+
+        .nav-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 2px; height: 100%;
+            background: var(--gold);
+            opacity: 0;
+            transition: opacity 0.15s;
+        }
+
+        .nav-card:hover {
+            background: var(--bg-lift);
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .nav-card:hover::before { opacity: 1; }
+
+        .nav-card-highlight {
+            color: var(--gold);
+            background: var(--gold-dim);
+        }
+
+        .nav-card-highlight:hover { background: rgba(201,162,101,0.22); }
+
+        .nav-card-ai {
+            color: #A78BFA;
+        }
+
+        .nav-card-ai:hover { color: #C4B5FD; }
+
+        /* ── Tabs ───────────────────────────────────────────────── */
+        .view-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+            animation: fadeUp 0.5s ease 0.15s both;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-family: var(--font-body);
+            font-size: 0.78rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 0.85rem 1.5rem;
+            cursor: pointer;
+            position: relative;
+            transition: color 0.2s;
+        }
+
+        .tab-btn::after {
+            content: '';
+            position: absolute;
+            bottom: -1px; left: 0; right: 0;
+            height: 2px;
+            background: var(--gold);
+            transform: scaleX(0);
+            transition: transform 0.25s ease;
+        }
+
+        .tab-btn:hover { color: var(--text); }
+        .tab-btn.active { color: var(--gold); }
+        .tab-btn.active::after { transform: scaleX(1); }
+
+        /* Bootstrap tab pane override */
+        .tab-pane { display: none; }
+        .tab-pane.show.active { display: block; }
+        .tab-pane.fade { opacity: 0; transition: opacity 0.15s; }
+        .tab-pane.fade.show { opacity: 1; }
+
+        /* ── Filter Bar ─────────────────────────────────────────── */
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: flex-end;
+            padding: 1.25rem 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            margin-bottom: 1rem;
+        }
+
+        .filter-group { display: flex; flex-direction: column; gap: 0.35rem; }
+
+        .filter-label {
+            font-size: 0.62rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--gold);
+        }
+
+        .filter-select,
+        .filter-input {
+            background: var(--bg-lift);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--text);
+            font-family: var(--font-body);
+            font-size: 0.82rem;
+            padding: 0.5rem 0.75rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            appearance: none;
+            -webkit-appearance: none;
+            min-width: 120px;
+        }
+
+        .filter-select:focus, .filter-input:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 2px var(--gold-dim);
+        }
+
+        .filter-range { display: flex; gap: 0.4rem; align-items: center; }
+        .filter-range .filter-input { min-width: 80px; }
+        .filter-range-sep { color: var(--text-dim); font-size: 0.75rem; }
+
+        .btn-reset {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 0.5rem 1rem;
+            font-family: var(--font-body);
+            font-size: 0.78rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: border-color 0.2s, color 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-reset:hover { border-color: var(--text-muted); color: var(--text); }
+
+        /* ── Table Toolbar ──────────────────────────────────────── */
+        .table-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.6rem 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-bottom: none;
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        }
+
+        .table-count-label {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+        }
+
+        .btn-export {
+            background: transparent;
+            color: var(--gold);
+            border: 1px solid var(--gold-line);
+            border-radius: var(--radius);
+            padding: 0.35rem 0.85rem;
+            font-family: var(--font-body);
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-export:hover { background: var(--gold-dim); }
+
+        /* ── Data Table ─────────────────────────────────────────── */
+        .table-wrap {
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+            margin-bottom: 2rem;
+        }
+
+        /* Also target Bootstrap .table class from JS-generated HTML */
+        .data-table,
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.82rem;
+        }
+
+        .data-table thead th,
+        .table thead th {
+            background: var(--bg-panel);
+            color: var(--text-muted);
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+            cursor: pointer;
+            user-select: none;
+            transition: color 0.15s;
+        }
+
+        .data-table thead th:hover,
+        .table thead th:hover { color: var(--text); }
+
+        .data-table tbody td,
+        .table tbody td,
+        .table-sm td, .table-sm th {
+            padding: 0.65rem 1rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+            vertical-align: middle;
+        }
+
+        .table-sm td, .table-sm th { padding: 0.45rem 0.75rem; }
+
+        .data-table tbody tr:last-child td,
+        .table tbody tr:last-child td { border-bottom: none; }
+
+        .data-table tbody tr:hover td,
+        .table-hover tbody tr:hover td {
+            background: var(--bg-lift);
+        }
+
+        .data-table tbody td { background: var(--bg-card); }
+        .table tbody td { background: var(--bg-card); }
+
+        .sort-arrow {
+            font-size: 0.7rem;
+            opacity: 0.4;
+            margin-left: 3px;
+        }
+
+        .sort-arrow.active { opacity: 1; color: var(--gold); }
+
+        /* table-responsive from JS */
+        .table-responsive { overflow-x: auto; }
+
+        /* listing-count from JS */
+        .listing-count {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: var(--text-muted);
+        }
+
+        /* Bootstrap utility classes used by JS */
+        .text-center { text-align: center; }
+        .text-muted   { color: var(--text-muted); }
+        .py-3         { padding-top: 1rem; padding-bottom: 1rem; }
+        .py-5         { padding-top: 3rem; padding-bottom: 3rem; }
+        .ms-2         { margin-left: 0.5rem; }
+
+        /* ── City View (from renderCityView JS) ─────────────────── */
+        .city-group {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            transition: border-color 0.2s;
+        }
+
+        .city-group:hover { border-color: var(--border-gold); }
+
+        .city-group h5 {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            font-weight: 600;
+            font-style: italic;
+            color: var(--text);
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        /* ── Price View (from renderPriceView JS) ───────────────── */
+        .price-range-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .price-range-section h5 {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .price-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 3px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+
+        /* ── Map ────────────────────────────────────────────────── */
+        .map-wrap {
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        #map { height: 520px; width: 100%; }
+
+        /* ── Mode Toggle ─────────────────────────────────────────── */
+        .mode-toggle {
+            position: fixed;
+            bottom: 2rem; right: 2rem;
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: border-color 0.2s, color 0.2s, transform 0.2s;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+
+        .mode-toggle:hover { border-color: var(--gold); color: var(--gold); transform: scale(1.08); }
+
+        @media (max-width: 900px) {
+            .mode-toggle { display: none; }
+        }
+
+        /* ── Nav toggle (mobile dark mode button in header) ── */
+        .nav-toggle {
+            margin-left: auto;
+            background: transparent;
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius);
+            color: var(--gold);
+            font-size: 1rem;
+            padding: 0.35rem 0.6rem;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+        .nav-toggle:hover { background: var(--gold-dim); border-color: var(--gold); }
+
+        /* ── Back to Top ─────────────────────────────────────────── */
+        .back-to-top {
+            position: fixed;
+            bottom: 5rem; right: 2rem;
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: border-color 0.2s, color 0.2s;
+            z-index: 100;
+        }
+
+        .back-to-top:hover { border-color: var(--gold); color: var(--gold); }
+
+        /* ── Animations ──────────────────────────────────────────── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Responsive ──────────────────────────────────────────── */
+        @media (max-width: 1024px) {
+            .stats-bar { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .page-wrap { padding: 1.25rem 1rem 3rem; }
+            .cmd-header-inner { padding: 0 1rem; }
+            .cmd-header-stats { gap: 0; }
+            .cmd-hstat { padding: 0 0.75rem; }
+            .cmd-update { display: none; }
+            .stats-bar { grid-template-columns: repeat(2, 1fr); }
+            .nav-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+            .filter-bar { gap: 0.75rem; }
+            .filter-select, .filter-input { min-width: 90px; }
+        }
+
+        @media (max-width: 480px) {
+            .stats-bar { grid-template-columns: 1fr 1fr; }
+            .cmd-hstat-lbl { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── Command Header ──────────────────────────────────────── -->
+<header class="cmd-header">
+    <div class="cmd-header-inner">
+        <div class="cmd-logo">
+            <span class="cmd-logo-mark">ImmoLux</span>
+            <span class="cmd-logo-sub">Dashboard</span>
+        </div>
+        <div class="cmd-header-stats">
+            <div class="cmd-hstat">
+                <span class="cmd-hstat-val" id="totalCount">—</span>
+                <span class="cmd-hstat-lbl">annonces</span>
+            </div>
+            <div class="cmd-hstat">
+                <span class="cmd-hstat-val" id="cityCount">—</span>
+                <span class="cmd-hstat-lbl">villes</span>
+            </div>
+            <div class="cmd-hstat">
+                <span class="cmd-hstat-val" id="siteCount">—</span>
+                <span class="cmd-hstat-lbl">sites</span>
+            </div>
+        </div>
+        <div class="cmd-update" id="lastUpdate">—</div>
+        <button class="nav-toggle" id="darkModeToggle" title="Mode clair/sombre" aria-label="Mode clair/sombre" aria-pressed="false">🌙</button>
+    </div>
+</header>
+
+<!-- ── Main ───────────────────────────────────────────────── -->
+<main class="page-wrap">
+
+    <!-- Stats -->
+    <div class="stats-bar">
+        <div class="stat-cell">
+            <span class="stat-num" id="statTotal">—</span>
+            <span class="stat-lbl">Annonces</span>
+        </div>
+        <div class="stat-cell">
+            <span class="stat-num" id="statAvgPrice">—</span>
+            <span class="stat-lbl">Prix moyen</span>
+        </div>
+        <div class="stat-cell">
+            <span class="stat-num" id="statMinPrice">—</span>
+            <span class="stat-lbl">Prix min</span>
+        </div>
+        <div class="stat-cell">
+            <span class="stat-num" id="statMaxPrice">—</span>
+            <span class="stat-lbl">Prix max</span>
+        </div>
+        <div class="stat-cell">
+            <span class="stat-num" id="statAvgSurface">—</span>
+            <span class="stat-lbl">Surface moy.</span>
+        </div>
+        <div class="stat-cell">
+            <span class="stat-num" id="statCities">—</span>
+            <span class="stat-lbl">Villes</span>
+        </div>
+    </div>
+
+    <!-- Site Badges -->
+    <div class="sites-section">
+        <div class="section-label">Sources actives</div>
+        <div id="siteBadges"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav-section">
+        <div class="section-label">Vues &amp; Analyses</div>
+        <div class="nav-grid">
+            <a href="train-cities.html"         class="nav-card nav-card-highlight">🚆 Villes Train</a>
+            <a href="explorer.html"             class="nav-card nav-card-highlight">🔍 Explorer</a>
+            <a href="dashboard-summary.html"    class="nav-card">📊 Résumé</a>
+            <a href="market-intelligence.html"  class="nav-card">🧠 Synthèse marché</a>
+            <a href="3chambres.html"            class="nav-card nav-card-highlight">🏠 3 Chambres</a>
+            <a href="new-listings.html"         class="nav-card">✨ Nouvelles annonces</a>
+            <a href="map.html"                  class="nav-card">🗺️ Carte</a>
+            <a href="map-advanced.html"         class="nav-card">🗺️ Carte avancée</a>
+            <a href="stats-by-city.html"        class="nav-card">📋 Stats par ville</a>
+            <a href="nearby.html"               class="nav-card">📍 Proximité</a>
+            <a href="photos.html"               class="nav-card">📸 Photos</a>
+            <a href="gallery.html"              class="nav-card">✨ Galerie</a>
+            <a href="data-quality.html"         class="nav-card">📊 Qualité données</a>
+            <a href="anomalies.html"            class="nav-card">⚠️ Anomalies</a>
+            <a href="comparison.html"           class="nav-card">🔄 Comparateur</a>
+            <a href="trends.html"               class="nav-card">📈 Tendances</a>
+            <a href="reports.html"              class="nav-card">📄 Reports</a>
+            <a href="alerts.html"               class="nav-card">⭐ Alertes</a>
+            <a href="favorites.html"            class="nav-card">⭐ Prioritaires</a>
+            <a href="ia-analyse.html"           class="nav-card nav-card-ai">🤖 Analyse IA</a>
+        </div>
+    </nav>
+
+    <!-- Tabs -->
+    <div class="view-tabs">
+        <button class="tab-btn active" data-bs-toggle="tab" data-bs-target="#tab-table">Tableau</button>
+        <button class="tab-btn"        data-bs-toggle="tab" data-bs-target="#tab-city">Par Ville</button>
+        <button class="tab-btn"        data-bs-toggle="tab" data-bs-target="#tab-price">Par Prix</button>
+        <button class="tab-btn"        data-bs-toggle="tab" data-bs-target="#tab-map">Carte</button>
+    </div>
+
+    <div class="tab-content">
+
+        <!-- TAB: Tableau -->
+        <div class="tab-pane fade show active" id="tab-table">
+            <!-- Filters -->
+            <div class="filter-bar">
+                <div class="filter-group">
+                    <label class="filter-label">Ville</label>
+                    <select id="f-city" class="filter-select"><option value="">Toutes</option></select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Site</label>
+                    <select id="f-site" class="filter-select"><option value="">Tous</option></select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Prix €</label>
+                    <div class="filter-range">
+                        <input type="number" id="f-pmin" class="filter-input" placeholder="Min">
+                        <span class="filter-range-sep">—</span>
+                        <input type="number" id="f-pmax" class="filter-input" placeholder="Max">
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">m² min</label>
+                    <input type="number" id="f-smin" class="filter-input" placeholder="0">
+                </div>
+                <div class="filter-group">
+                    <button class="btn-reset" onclick="resetFilters()">Réinitialiser</button>
+                </div>
+            </div>
+
+            <!-- Table toolbar -->
+            <div class="table-toolbar">
+                <span class="table-count-label" id="table-count"></span>
+                <button class="btn-export" onclick="exportCSV()">↓ CSV</button>
+            </div>
+
+            <!-- Table -->
+            <div class="table-wrap">
+                <table class="data-table" id="main-table">
+                    <thead>
+                        <tr>
+                            <th data-col="site">Site <span class="sort-arrow">▲</span></th>
+                            <th data-col="city">Ville <span class="sort-arrow">▲</span></th>
+                            <th data-col="price">Prix <span class="sort-arrow">▲</span></th>
+                            <th data-col="rooms">Ch. <span class="sort-arrow">▲</span></th>
+                            <th data-col="surface">m² <span class="sort-arrow">▲</span></th>
+                            <th data-col="price_m2">€/m² <span class="sort-arrow">▲</span></th>
+                            <th data-col="distance_km">Dist. <span class="sort-arrow">▲</span></th>
+                            <th>Titre</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- TAB: Par Ville -->
+        <div class="tab-pane fade" id="tab-city">
+            <div id="city-container"></div>
+        </div>
+
+        <!-- TAB: Par Prix -->
+        <div class="tab-pane fade" id="tab-price">
+            <div id="price-container"></div>
+        </div>
+
+        <!-- TAB: Carte -->
+        <div class="tab-pane fade" id="tab-map">
+            <div class="map-wrap">
+                <div id="map"></div>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<!-- ── Controls ───────────────────────────────────────────── -->
+<button class="mode-toggle" id="darkModeToggleFloat" aria-label="Mode sombre/clair" aria-pressed="false">🌙</button>
+<button id="backToTop" class="back-to-top" title="Retour en haut" style="display:none;">↑</button>
+
+<!-- ── Scripts ───────────────────────────────────────────── -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin="anonymous"></script>
+<script src="data/listings.js"></script>
+<script src="data/stats.js"></script>
+<script>
+    // normCity: strip "Luxembourg-" prefix (fallback si version-display.js pas encore chargé)
+    if (typeof normCity === 'undefined') {
+        window.normCity = function(city) {
+            return city ? city.replace(/^Luxembourg[-\s]/i, '') : city;
+        };
+    }
+
+    // ==================== DARK/LIGHT MODE ====================
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const darkModeToggleFloat = document.getElementById('darkModeToggleFloat');
+
+    function applyMode(light) {
+        document.body.classList.toggle('light-mode', light);
+        const icon = light ? '🌙' : '☀️';
+        darkModeToggle.textContent = icon;
+        darkModeToggle.setAttribute('aria-pressed', !light);
+        if (darkModeToggleFloat) { darkModeToggleFloat.textContent = icon; darkModeToggleFloat.setAttribute('aria-pressed', !light); }
+    }
+
+    darkModeToggle.addEventListener('click', () => {
+        const isLight = document.body.classList.contains('light-mode');
+        applyMode(!isLight);
+        localStorage.setItem('immoLightMode', !isLight);
+    });
+    if (darkModeToggleFloat) darkModeToggleFloat.addEventListener('click', () => darkModeToggle.click());
+
+    applyMode(localStorage.getItem('immoLightMode') === 'true');
+
+    // ==================== UTILITAIRES ====================
+    function fmt(n) { return n ? n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') : '—'; }
+    function badge(site) {
+        const bg = SITE_COLORS[site] || '#888';
+        return `<span class="site-badge" style="background:${bg}">${site}</span>`;
+    }
+
+    // ==================== TABLEAU TRIABLE ====================
+    let sortCol = 'price';
+    let sortAsc = true;
+    let filtered = [...LISTINGS];
+
+    function applyFilters() {
+        const city = document.getElementById('f-city').value;
+        const pmin = parseInt(document.getElementById('f-pmin').value) || 0;
+        const pmax = parseInt(document.getElementById('f-pmax').value) || 999999;
+        const site = document.getElementById('f-site').value;
+        const smin = parseInt(document.getElementById('f-smin').value) || 0;
+
+        filtered = LISTINGS.filter(l => {
+            if (city && l.city !== city) return false;
+            if (l.price < pmin || l.price > pmax) return false;
+            if (site && l.site !== site) return false;
+            if (smin && (!l.surface || l.surface < smin)) return false;
+            return true;
+        });
+        sortAndRender();
+    }
+
+    function sortAndRender() {
+        filtered.sort((a, b) => {
+            let va = a[sortCol], vb = b[sortCol];
+            if (va == null) va = sortAsc ? Infinity : -Infinity;
+            if (vb == null) vb = sortAsc ? Infinity : -Infinity;
+            if (typeof va === 'string') return sortAsc ? va.localeCompare(vb) : vb.localeCompare(va);
+            return sortAsc ? va - vb : vb - va;
+        });
+        renderTable();
+    }
+
+    function renderTable() {
+        const tbody = document.getElementById('table-body');
+        document.getElementById('table-count').textContent = filtered.length + ' / ' + LISTINGS.length;
+        if (!filtered.length) {
+            tbody.innerHTML = '<tr><td colspan="8" class="text-center text-muted py-3">Aucune annonce</td></tr>';
+            return;
+        }
+        const PC = (typeof PRIORITY_CITIES !== 'undefined') ? PRIORITY_CITIES : [];
+        tbody.innerHTML = filtered.map(l => {
+            const isPriority = PC.includes(normCity(l.city));
+            return `
+            <tr${isPriority ? ' style="background:linear-gradient(90deg,rgba(255,215,0,0.06),transparent)"' : ''}>
+                <td>${badge(l.site)}</td>
+                <td>${isPriority ? '<span title="Ville prioritaire" style="color:#f59e0b;font-size:0.9rem;margin-right:3px;">⭐</span>' : ''}${normCity(l.city) || '—'}</td>
+                <td><strong>${fmt(l.price)}€</strong></td>
+                <td>${l.rooms || '—'}</td>
+                <td>${l.surface || '—'}</td>
+                <td>${l.price_m2 ? `<span style="color:${l.price_m2 < 20 ? 'var(--green)' : l.price_m2 > 30 ? 'var(--red)' : 'var(--amber)'}">${l.price_m2}€</span>` : '—'}</td>
+                <td>${l.distance_km != null ? l.distance_km + ' km' : '—'}</td>
+                <td>
+                    <a href="${l.url}" target="_blank" style="color:var(--gold);text-decoration:none;">${(l.title || 'Voir').substring(0, 40)}</a>
+                    <a href="https://wa.me/?text=${encodeURIComponent(l.city + ' ' + l.price + '€ - ' + l.url)}" target="_blank" title="WhatsApp" style="margin-left:5px;text-decoration:none;">📱</a>
+                    <a href="https://t.me/share/url?url=${encodeURIComponent(l.url)}&text=${encodeURIComponent(l.city + ' ' + l.price + '€')}" target="_blank" title="Telegram" style="text-decoration:none;">✈️</a>
+                </td>
+            </tr>
+        `; }).join('');
+    }
+
+    function resetFilters() {
+        ['f-city','f-pmin','f-pmax','f-site','f-smin'].forEach(id => document.getElementById(id).value = '');
+        applyFilters();
+    }
+
+    // Tri au clic (avec mémorisation)
+    document.querySelectorAll('#main-table th[data-col]').forEach(th => {
+        th.addEventListener('click', () => {
+            const col = th.dataset.col;
+            if (sortCol === col) { sortAsc = !sortAsc; } else { sortCol = col; sortAsc = true; }
+            document.querySelectorAll('.sort-arrow').forEach(a => a.classList.remove('active'));
+            th.querySelector('.sort-arrow').classList.add('active');
+            th.querySelector('.sort-arrow').innerHTML = sortAsc ? '▲' : '▼';
+            saveSort();
+            sortAndRender();
+        });
+    });
+
+    // Filtres en temps réel
+    ['f-city', 'f-site'].forEach(id => document.getElementById(id).addEventListener('change', applyFilters));
+    ['f-pmin', 'f-pmax', 'f-smin'].forEach(id => document.getElementById(id).addEventListener('input', applyFilters));
+
+    function initFilters() {
+        const cities = [...new Set(LISTINGS.map(l => l.city).filter(c => c && c !== 'N/A'))].sort();
+        const sites = [...new Set(LISTINGS.map(l => l.site).filter(Boolean))].sort();
+        const citySelect = document.getElementById('f-city');
+        cities.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = c; citySelect.appendChild(o); });
+        const siteSelect = document.getElementById('f-site');
+        sites.forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; siteSelect.appendChild(o); });
+
+        const badgesDiv = document.getElementById('siteBadges');
+        const siteCounts = {};
+        LISTINGS.forEach(l => siteCounts[l.site] = (siteCounts[l.site] || 0) + 1);
+        badgesDiv.innerHTML = Object.entries(siteCounts).sort((a, b) => b[1] - a[1]).map(([site, count]) => {
+            const bg = SITE_COLORS[site] || '#888';
+            return `<span class="site-badge" style="background:${bg}">${site} (${count})</span>`;
+        }).join(' ');
+    }
+
+    // ==================== VUE PAR VILLE ====================
+    function renderCityView() {
+        const container = document.getElementById('city-container');
+        const groups = {};
+        LISTINGS.forEach(l => { const c = normCity(l.city || 'N/A'); if (!groups[c]) groups[c] = []; groups[c].push(l); });
+        const sorted = Object.entries(groups).sort((a, b) => b[1].length - a[1].length);
+
+        const PC2 = (typeof PRIORITY_CITIES !== 'undefined') ? PRIORITY_CITIES : [];
+        container.innerHTML = sorted.map(([city, items]) => {
+            const isPriorityCity = PC2.includes(city);
+            const prices = items.filter(l => l.price > 0).map(l => l.price);
+            const avg = prices.length ? Math.round(prices.reduce((a,b) => a+b, 0) / prices.length) : 0;
+            const mn = prices.length ? Math.min(...prices) : 0;
+            const mx = prices.length ? Math.max(...prices) : 0;
+            const rows = items.sort((a,b) => (a.price||0) - (b.price||0)).map(l => `
+                <tr>
+                    <td>${badge(l.site)}</td>
+                    <td><strong>${fmt(l.price)}€</strong></td>
+                    <td>${l.rooms || '—'} ch.</td>
+                    <td>${l.surface || '—'} m²</td>
+                    <td>${l.price_m2 ? l.price_m2 + ' €/m²' : '—'}</td>
+                    <td><a href="${l.url}" target="_blank" style="color:var(--gold);text-decoration:none;">${(l.title || 'Voir').substring(0, 45)}</a></td>
+                </tr>
+            `).join('');
+            return `
+                <div class="city-group"${isPriorityCity ? ' style="border-left:3px solid var(--amber);"' : ''}>
+                    <h5>${isPriorityCity ? '<span title="Ville prioritaire" style="color:var(--amber);">⭐</span> ' : ''}${city} <span class="listing-count">${items.length} ann. · moy. ${fmt(avg)}€ · ${fmt(mn)}€ – ${fmt(mx)}€</span></h5>
+                    <div class="table-responsive">
+                    <table class="table table-sm table-hover mb-0">
+                        <thead><tr><th>Site</th><th>Prix</th><th>Ch.</th><th>m²</th><th>€/m²</th><th>Titre</th></tr></thead>
+                        <tbody>${rows}</tbody>
+                    </table>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // ==================== VUE PAR PRIX ====================
+    function renderPriceView() {
+        const container = document.getElementById('price-container');
+        const ranges = [
+            { label: 'Moins de 1 500 €', min: 0,    max: 1499,  color: '#16A34A' },
+            { label: '1 500 – 2 000 €',  min: 1500, max: 1999,  color: '#2563EB' },
+            { label: '2 000 – 2 500 €',  min: 2000, max: 2499,  color: '#D97706' },
+            { label: 'Plus de 2 500 €',  min: 2500, max: 999999, color: '#DC2626' }
+        ];
+        container.innerHTML = ranges.map(r => {
+            const items = LISTINGS.filter(l => l.price >= r.min && l.price <= r.max).sort((a,b) => (a.price||0) - (b.price||0));
+            if (!items.length) return '';
+            const PC3 = (typeof PRIORITY_CITIES !== 'undefined') ? PRIORITY_CITIES : [];
+            const rows = items.map(l => {
+                const ip = PC3.includes(normCity(l.city));
+                return `
+                <tr${ip ? ' style="background:linear-gradient(90deg,rgba(255,215,0,0.06),transparent)"' : ''}>
+                    <td>${badge(l.site)}</td>
+                    <td>${ip ? '<span style="color:var(--amber);">⭐</span> ' : ''}${normCity(l.city) || '—'}</td>
+                    <td><strong>${fmt(l.price)}€</strong></td>
+                    <td>${l.rooms || '—'} ch.</td>
+                    <td>${l.surface || '—'} m²</td>
+                    <td>${l.price_m2 ? l.price_m2 + ' €/m²' : '—'}</td>
+                    <td><a href="${l.url}" target="_blank" style="color:var(--gold);text-decoration:none;">${(l.title || 'Voir').substring(0, 45)}</a></td>
+                </tr>
+            `; }).join('');
+            return `
+                <div class="price-range-section">
+                    <h5><span class="price-badge" style="background:${r.color};color:white">${r.label}</span>
+                        <span class="listing-count ms-2">${items.length} annonces</span></h5>
+                    <div class="table-responsive">
+                    <table class="table table-sm table-hover mb-0">
+                        <thead><tr><th>Site</th><th>Ville</th><th>Prix</th><th>Ch.</th><th>m²</th><th>€/m²</th><th>Titre</th></tr></thead>
+                        <tbody>${rows}</tbody>
+                    </table>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // ==================== CARTE LEAFLET ====================
+    const CITY_COORDS = {
+        'luxembourg': [49.6116, 6.1319], 'limpertsberg': [49.6200, 6.1250],
+        'belair': [49.6100, 6.1150], 'gare': [49.6000, 6.1342],
+        'bonnevoie': [49.5950, 6.1400], 'gasperich': [49.5850, 6.1300],
+        'kirchberg': [49.6300, 6.1500], 'cents': [49.6150, 6.1550],
+        'hollerich': [49.6000, 6.1200], 'merl': [49.6050, 6.1050],
+        'neudorf': [49.6200, 6.1500], 'beggen': [49.6350, 6.1200],
+        'rollingergrund': [49.6200, 6.1100], 'hamm': [49.6050, 6.1500],
+        'cessange': [49.5900, 6.1100], 'clausen': [49.6130, 6.1420],
+        'strassen': [49.6200, 6.0700], 'bertrange': [49.6100, 6.0500],
+        'mamer': [49.6270, 6.0230], 'leudelange': [49.5750, 6.0650],
+        'hesperange': [49.5700, 6.1500], 'walferdange': [49.6600, 6.1300],
+        'steinsel': [49.6750, 6.1250], 'bridel': [49.6550, 6.0800],
+        'howald': [49.5850, 6.1500], 'itzig': [49.5700, 6.1700],
+        'roeser': [49.5450, 6.1500], 'bettembourg': [49.5200, 6.1050],
+        'dudelange': [49.4800, 6.0900], 'kayl': [49.4850, 6.0350],
+        'schifflange': [49.5050, 6.0150], 'mondercange': [49.5350, 6.0200],
+        'sanem': [49.5500, 5.9800], 'differdange': [49.5250, 5.8900],
+        'petange': [49.5600, 5.8700], 'bascharage': [49.5650, 5.9200],
+        'esch': [49.4950, 5.9800], 'esch-sur-alzette': [49.4950, 5.9800],
+        'mersch': [49.7500, 6.1050], 'steinfort': [49.6600, 5.9200],
+        'capellen': [49.6450, 6.0000], 'kehlen': [49.6700, 6.0350],
+        'kopstal': [49.6600, 6.0700], 'sandweiler': [49.5850, 6.2200],
+        'niederanven': [49.6500, 6.2500], 'senningerberg': [49.6400, 6.2200],
+        'alzingen': [49.5600, 6.1600], 'frisange': [49.5100, 6.1900],
+        'bivange': [49.5150, 6.1400], 'bous': [49.5600, 6.3200],
+        'remich': [49.5450, 6.3650], 'mondorf': [49.5050, 6.2800],
+    };
+    function getCityCoords(city) {
+        if (!city) return [49.6116, 6.1319];
+        const key = city.toLowerCase().trim().replace(/^luxembourg[-\s]/i, '').replace(/\s+/g, ' ');
+        return CITY_COORDS[key] || CITY_COORDS[city.toLowerCase().trim()] || [49.6116, 6.1319];
+    }
+
+    let mapInit = false;
+    document.querySelector('[data-bs-target="#tab-map"]').addEventListener('shown.bs.tab', () => {
+        if (mapInit) return;
+        mapInit = true;
+        if (!LISTINGS.length) {
+            document.getElementById('map').innerHTML = '<p class="text-center text-muted py-5">Aucune annonce</p>';
+            return;
+        }
+        const map = L.map('map').setView([49.6116, 6.1319], 10);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(map);
+        const bounds = [];
+        LISTINGS.forEach(l => {
+            const color = SITE_COLORS[l.site] || '#888';
+            const coords = getCityCoords(l.city);
+            bounds.push(coords);
+            L.circleMarker(coords, {
+                radius: 7, fillColor: color, color: '#fff', weight: 2, fillOpacity: 0.85
+            }).addTo(map).bindPopup(`
+                <strong>${normCity(l.city) || '—'}</strong><br>
+                ${fmt(l.price)}€ | ${l.rooms || '?'} ch. | ${l.surface || '?'} m²<br>
+                <a href="${l.url}" target="_blank">Voir l'annonce</a>
+            `);
+        });
+        if (bounds.length) map.fitBounds(bounds, { padding: [30, 30] });
+    });
+
+    // ==================== SERVICE WORKER ====================
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
+    }
+
+    // ==================== STATS DYNAMIQUES ====================
+    function updateStats() {
+        const total = LISTINGS.length;
+        const prices = LISTINGS.filter(l => l.price > 0).map(l => l.price);
+        const surfaces = LISTINGS.filter(l => l.surface > 0).map(l => l.surface);
+        const cities = [...new Set(LISTINGS.map(l => l.city).filter(c => c && c !== 'N/A'))];
+        const sites = [...new Set(LISTINGS.map(l => l.site).filter(Boolean))];
+
+        const avgPrice   = prices.length   ? Math.round(prices.reduce((a,b) => a+b, 0)   / prices.length)   : 0;
+        const minPrice   = prices.length   ? Math.min(...prices)   : 0;
+        const maxPrice   = prices.length   ? Math.max(...prices)   : 0;
+        const avgSurface = surfaces.length ? Math.round(surfaces.reduce((a,b) => a+b, 0) / surfaces.length) : 0;
+
+        document.getElementById('totalCount').textContent    = total;
+        document.getElementById('cityCount').textContent     = cities.length;
+        document.getElementById('siteCount').textContent     = sites.length;
+        document.getElementById('statTotal').textContent     = total;
+        document.getElementById('statAvgPrice').textContent  = fmt(avgPrice) + '€';
+        document.getElementById('statMinPrice').textContent  = fmt(minPrice) + '€';
+        document.getElementById('statMaxPrice').textContent  = fmt(maxPrice) + '€';
+        document.getElementById('statAvgSurface').textContent = avgSurface + ' m²';
+        document.getElementById('statCities').textContent    = cities.length;
+    }
+
+    // ==================== EXPORT CSV ====================
+    function exportCSV() {
+        const headers = ['Site','Ville','Prix','Chambres','Surface','Prix/m²','Distance','Titre','URL'];
+        const rows = filtered.map(l => [
+            l.site||'', l.city||'', l.price||'', l.rooms||'', l.surface||'',
+            l.price_m2||'', l.distance_km||'', (l.title||'').replace(/[";]/g,' '), l.url||''
+        ]);
+        const csv = [headers, ...rows].map(r => r.map(c => `"${c}"`).join(';')).join('\n');
+        const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `immolux_${new Date().toISOString().split('T')[0]}.csv`;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    // ==================== BACK TO TOP ====================
+    const backToTop = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+        backToTop.style.display = window.scrollY > 300 ? 'flex' : 'none';
+    });
+    backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    // ==================== TRI MÉMORISÉ ====================
+    const savedSort = localStorage.getItem('sortPreference');
+    if (savedSort) {
+        const [col, asc] = savedSort.split(':');
+        sortCol = col; sortAsc = asc === 'true';
+    }
+    function saveSort() {
+        localStorage.setItem('sortPreference', `${sortCol}:${sortAsc}`);
+    }
+
+    // ==================== NOUVELLES AUJOURD'HUI ====================
+    function countNewToday() {
+        const today = new Date().toISOString().split('T')[0];
+        const newToday = LISTINGS.filter(l => l.created_at && l.created_at.startsWith(today)).length;
+        if (newToday > 0) {
+            const el = document.getElementById('totalCount');
+            const span = document.createElement('span');
+            span.style.cssText = 'background:var(--green);color:#09090F;padding:1px 7px;border-radius:10px;font-size:0.65rem;margin-left:6px;font-weight:700;';
+            span.textContent = '+' + newToday;
+            el.parentNode.appendChild(span);
+        }
+    }
+
+    // ==================== INIT ====================
+    document.getElementById('lastUpdate').textContent = new Date().toLocaleString('fr-FR');
+    updateStats();
+    countNewToday();
+    initFilters();
+    applyFilters();
+    renderCityView();
+    renderPriceView();
+</script>
+
+</body>
+</html>

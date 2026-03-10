@@ -1,0 +1,2247 @@
+{
+  "description": "Transport data for all Luxembourg cities to Gare Centrale",
+  "reference_point": "Gare Centrale de Luxembourg",
+  "data_source": "mobiliteit.lu, CFL, RGTR (2026)",
+  "last_updated": "2026-03-08",
+  "notes": "Free public transport since March 2020. TICE integrated into RGTR from Jan 2026.",
+  "cities": {
+    "Alzingen": {
+      "region": "Sud-Est",
+      "distance_km": 12,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 190",
+          "duration_min": 25,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Bascharage": {
+      "region": "Sud-Ouest",
+      "distance_km": 20,
+      "transports": [
+        {
+          "type": "train",
+          "number": "CFL Line 70",
+          "duration_min": 25,
+          "description": "Train to Gare"
+        },
+        {
+          "type": "bus",
+          "number": "RGTR 260",
+          "duration_min": 38,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Bastendorf": {
+      "region": "Nord",
+      "distance_km": 55,
+      "transports": [
+        {
+          "type": "train",
+          "number": "CFL Line 10",
+          "duration_min": 50,
+          "description": "Train to Gare"
+        },
+        {
+          "type": "bus",
+          "number": "RGTR 550",
+          "duration_min": 75,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Belval": {
+      "region": "Sud-Ouest",
+      "distance_km": 23,
+      "transports": [
+        {
+          "type": "train",
+          "number": "CFL Line 60",
+          "duration_min": 28,
+          "description": "Train to Gare"
+        },
+        {
+          "type": "bus",
+          "number": "RGTR 175",
+          "duration_min": 45,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Belvaux": {
+      "region": "Sud-Ouest",
+      "distance_km": 22,
+      "transports": [
+        {
+          "type": "train",
+          "number": "CFL Line 60",
+          "duration_min": 26,
+          "description": "Train to Gare"
+        }
+      ]
+    },
+    "Bereldange": {
+      "region": "Nord",
+      "distance_km": 8,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 230",
+          "duration_min": 20,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Bergem": {
+      "region": "Sud",
+      "distance_km": 20,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 260",
+          "duration_min": 38,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Bertrange": {
+      "region": "Ouest",
+      "distance_km": 7,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 2, 10",
+          "duration_min": 18,
+          "description": "Bus to Gare"
+        },
+        {
+          "type": "train",
+          "number": "CFL Line 50",
+          "duration_min": 12,
+          "description": "Train to Gare"
+        }
+      ],
+      "amenities": {
+        "schools": {
+          "primary": 2,
+          "secondary": 0,
+          "international": 0,
+          "nearest_intl": "Strassen (4km)"
+        },
+        "shopping": {
+          "supermarkets": [
+            "Cactus",
+            "Delhaize",
+            "Lidl"
+          ],
+          "mall_nearby": "Bertrange (local)"
+        }
+      },
+      "work_distances_min": {
+        "kirchberg": 20,
+        "cloche_or": 12,
+        "centre_ville": 18
+      },
+      "score_famille": 80
+    },
+    "Bettembourg": {
+      "region": "Sud",
+      "distance_km": 15,
+      "transports": [
+        {
+          "type": "train",
+          "number": "CFL Line 60",
+          "duration_min": 18,
+          "description": "Train to Gare"
+        },
+        {
+          "type": "bus",
+          "number": "RGTR 175",
+          "duration_min": 30,
+          "description": "Bus to Gare"
+        }
+      ],
+      "amenities": {
+        "schools": {
+          "primary": 2,
+          "secondary": 1,
+          "international": 0,
+          "nearest_intl": "Esch (15km)"
+        },
+        "shopping": {
+          "supermarkets": [
+            "Cactus",
+            "Delhaize"
+          ],
+          "mall_nearby": "Belle Etoile (15km)"
+        }
+      },
+      "work_distances_min": {
+        "kirchberg": 35,
+        "cloche_or": 22,
+        "centre_ville": 30
+      },
+      "score_famille": 72
+    },
+    "Bissen": {
+      "region": "Centre",
+      "distance_km": 20,
+      "transports": [
+        {
+          "type": "train",
+          "number": "CFL Line 10",
+          "duration_min": 25,
+          "description": "Train to Gare"
+        },
+        {
+          "type": "bus",
+          "number": "RGTR 400",
+          "duration_min": 40,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Bridel": {
+      "region": "Ouest",
+      "distance_km": 10,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 230",
+          "duration_min": 22,
+          "description": "Bus to Gare"
+        }
+      ],
+      "amenities": {
+        "schools": {
+          "primary": 1,
+          "secondary": 0,
+          "international": 0,
+          "nearest_intl": "Luxembourg (12km)"
+        },
+        "shopping": {
+          "supermarkets": [],
+          "mall_nearby": "Cactus Merl (5km)"
+        }
+      },
+      "work_distances_min": {
+        "kirchberg": 25,
+        "cloche_or": 20,
+        "centre_ville": 22
+      },
+      "score_famille": 72
+    },
+    "Brouch": {
+      "region": "Centre",
+      "distance_km": 18,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 400",
+          "duration_min": 35,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Brouch (Mersch)": {
+      "region": "Centre",
+      "distance_km": 18,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 400",
+          "duration_min": 35,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Cents": {
+      "region": "Est",
+      "distance_km": 2,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 18",
+          "duration_min": 10,
+          "description": "Bus to Gare"
+        }
+      ],
+      "amenities": {
+        "schools": {
+          "primary": 1,
+          "secondary": 0,
+          "international": 0,
+          "nearest_intl": "Kirchberg (4km)"
+        },
+        "shopping": {
+          "supermarkets": [
+            "Auchan"
+          ],
+          "mall_nearby": "Auchan Kirchberg (4km)"
+        }
+      },
+      "work_distances_min": {
+        "kirchberg": 10,
+        "cloche_or": 20,
+        "centre_ville": 12
+      },
+      "score_famille": 75
+    },
+    "Cessange": {
+      "region": "Sud",
+      "distance_km": 3,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 2, 10",
+          "duration_min": 12,
+          "description": "Bus to Gare"
+        }
+      ],
+      "amenities": {
+        "schools": {
+          "primary": 1,
+          "secondary": 1,
+          "international": 0,
+          "nearest_intl": "Ecole Européenne (6km)"
+        },
+        "shopping": {
+          "supermarkets": [
+            "Lidl"
+          ],
+          "mall_nearby": "Cloche d'Or (1km)"
+        }
+      },
+      "work_distances_min": {
+        "kirchberg": 20,
+        "cloche_or": 5,
+        "centre_ville": 15
+      },
+      "score_famille": 77
+    },
+    "Contern": {
+      "region": "Sud-Est",
+      "distance_km": 12,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 190",
+          "duration_min": 25,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Differdange": {
+      "region": "Sud-Ouest",
+      "distance_km": 25,
+      "transports": [
+        {
+          "type": "train",
+          "number": "CFL Line 60",
+          "duration_min": 30,
+          "description": "Train to Gare"
+        },
+        {
+          "type": "bus",
+          "number": "RGTR 175",
+          "duration_min": 50,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Dippach": {
+      "region": "Sud-Ouest",
+      "distance_km": 18,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 260",
+          "duration_min": 35,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Dudelange": {
+      "region": "Sud",
+      "distance_km": 18,
+      "transports": [
+        {
+          "type": "train",
+          "number": "CFL Line 60",
+          "duration_min": 22,
+          "description": "Train to Gare"
+        },
+        {
+          "type": "bus",
+          "number": "RGTR 175",
+          "duration_min": 38,
+          "description": "Bus to Gare"
+        }
+      ],
+      "amenities": {
+        "schools": {
+          "primary": 2,
+          "secondary": 1,
+          "international": 0,
+          "nearest_intl": "Esch (10km)"
+        },
+        "shopping": {
+          "supermarkets": [
+            "Cactus",
+            "Lidl"
+          ],
+          "mall_nearby": "Belle Etoile (10km)"
+        }
+      },
+      "work_distances_min": {
+        "kirchberg": 42,
+        "cloche_or": 28,
+        "centre_ville": 38
+      },
+      "score_famille": 66
+    },
+    "Eich": {
+      "region": "Nord-Ouest",
+      "distance_km": 2,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 11",
+          "duration_min": 10,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Esch-sur-Alzette": {
+      "region": "Sud-Ouest",
+      "distance_km": 20,
+      "transports": [
+        {
+          "type": "train",
+          "number": "CFL Line 60",
+          "duration_min": 25,
+          "description": "Train to Gare"
+        },
+        {
+          "type": "bus",
+          "number": "RGTR 175",
+          "duration_min": 40,
+          "description": "Bus to Gare"
+        }
+      ],
+      "amenities": {
+        "schools": {
+          "primary": 4,
+          "secondary": 2,
+          "international": 0,
+          "nearest_intl": "Esch-Belval (8km)"
+        },
+        "shopping": {
+          "supermarkets": [
+            "Auchan",
+            "Cactus",
+            "Lidl",
+            "Colruyt"
+          ],
+          "mall_nearby": "Belle Etoile (3km)"
+        }
+      },
+      "work_distances_min": {
+        "kirchberg": 42,
+        "cloche_or": 25,
+        "centre_ville": 38
+      },
+      "score_famille": 72
+    },
+    "Fentange": {
+      "region": "Sud-Est",
+      "distance_km": 12,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 175",
+          "duration_min": 25,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Filsdorf": {
+      "region": "Sud-Est",
+      "distance_km": 12,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 190",
+          "duration_min": 25,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Frisange": {
+      "region": "Sud-Est",
+      "distance_km": 18,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 175",
+          "duration_min": 35,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Gare": {
+      "region": "Centre",
+      "distance_km": 0,
+      "transports": [
+        {
+          "type": "gare",
+          "number": "Gare",
+          "duration_min": 0,
+          "description": "Gare Centrale"
+        }
+      ],
+      "amenities": {
+        "schools": {
+          "primary": 2,
+          "secondary": 1,
+          "international": 0,
+          "nearest_intl": "Ecole Européenne (4km)"
+        },
+        "shopping": {
+          "supermarkets": [
+            "Delhaize",
+            "Lidl",
+            "Aldi"
+          ],
+          "mall_nearby": "City Concorde (7km)"
+        }
+      },
+      "work_distances_min": {
+        "kirchberg": 12,
+        "cloche_or": 10,
+        "centre_ville": 5
+      },
+      "score_famille": 71
+    },
+    "Garnich": {
+      "region": "Ouest",
+      "distance_km": 15,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 265",
+          "duration_min": 28,
+          "description": "Bus to Gare"
+        }
+      ],
+      "amenities": {
+        "schools": {
+          "primary": 1,
+          "secondary": 0,
+          "international": 0,
+          "nearest_intl": "Capellen (10km)"
+        },
+        "shopping": {
+          "supermarkets": [],
+          "mall_nearby": "Cactus Mamer (12km)"
+        }
+      },
+      "work_distances_min": {
+        "kirchberg": 38,
+        "cloche_or": 30,
+        "centre_ville": 34
+      },
+      "score_famille": 58
+    },
+    "Grevenmacher": {
+      "region": "Est",
+      "distance_km": 35,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 410, 450",
+          "duration_min": 55,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Habscht": {
+      "region": "Sud-Ouest",
+      "distance_km": 25,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 260",
+          "duration_min": 48,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Hassel": {
+      "region": "Est",
+      "distance_km": 28,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 410",
+          "duration_min": 50,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Hautcharage": {
+      "region": "Sud-Ouest",
+      "distance_km": 18,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 260",
+          "duration_min": 35,
+          "description": "Bus to Gare"
+        }
+      ],
+      "amenities": {
+        "schools": {
+          "primary": 1,
+          "secondary": 0,
+          "international": 0,
+          "nearest_intl": "Bascharage (5km)"
+        },
+        "shopping": {
+          "supermarkets": [
+            "Cactus"
+          ],
+          "mall_nearby": "Cactus Bascharage (5km)"
+        }
+      },
+      "work_distances_min": {
+        "kirchberg": 42,
+        "cloche_or": 30,
+        "centre_ville": 38
+      },
+      "score_famille": 63
+    },
+    "Helmsange": {
+      "region": "Nord",
+      "distance_km": 16,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 230",
+          "duration_min": 30,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Hesperange": {
+      "region": "Sud-Est",
+      "distance_km": 5,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 19",
+          "duration_min": 15,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Hollerich": {
+      "region": "Ouest",
+      "distance_km": 2,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 11",
+          "duration_min": 10,
+          "description": "Bus to Gare"
+        }
+      ],
+      "amenities": {
+        "schools": {
+          "primary": 2,
+          "secondary": 1,
+          "international": 0,
+          "nearest_intl": "Ecole Européenne (4km)"
+        },
+        "shopping": {
+          "supermarkets": [
+            "Lidl",
+            "Delhaize"
+          ],
+          "mall_nearby": "Cloche d'Or (2km)"
+        }
+      },
+      "work_distances_min": {
+        "kirchberg": 18,
+        "cloche_or": 5,
+        "centre_ville": 10
+      },
+      "score_famille": 76
+    },
+    "Howald": {
+      "region": "Sud",
+      "distance_km": 4,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 18, 19",
+          "duration_min": 12,
+          "description": "Bus to Gare"
+        }
+      ],
+      "amenities": {
+        "schools": {
+          "primary": 1,
+          "secondary": 0,
+          "international": 0,
+          "nearest_intl": "Ecole Européenne (6km)"
+        },
+        "shopping": {
+          "supermarkets": [
+            "Cactus"
+          ],
+          "mall_nearby": "Cactus Howald (local)"
+        }
+      },
+      "work_distances_min": {
+        "kirchberg": 18,
+        "cloche_or": 8,
+        "centre_ville": 14
+      },
+      "score_famille": 76
+    },
+    "Hunsdorf": {
+      "region": "Nord",
+      "distance_km": 22,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 230",
+          "duration_min": 42,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Junglinster": {
+      "region": "Est",
+      "distance_km": 25,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 190",
+          "duration_min": 45,
+          "description": "Bus to Gare"
+        }
+      ],
+      "amenities": {
+        "schools": {
+          "primary": 1,
+          "secondary": 1,
+          "international": 0,
+          "nearest_intl": "Luxembourg (28km)"
+        },
+        "shopping": {
+          "supermarkets": [
+            "Cactus"
+          ],
+          "mall_nearby": "Kirchberg (28km)"
+        }
+      },
+      "work_distances_min": {
+        "kirchberg": 28,
+        "cloche_or": 38,
+        "centre_ville": 30
+      },
+      "score_famille": 66
+    },
+    "Kahler": {
+      "region": "Nord",
+      "distance_km": 20,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 230",
+          "duration_min": 38,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Kiischpelt": {
+      "region": "Nord",
+      "distance_km": 60,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 550",
+          "duration_min": 80,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Kirchberg": {
+      "region": "Nord-Est",
+      "distance_km": 3,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 9, 16",
+          "duration_min": 15,
+          "description": "Bus to Gare"
+        },
+        {
+          "type": "tram",
+          "number": "Tram",
+          "duration_min": 12,
+          "description": "Tram to Gare"
+        }
+      ],
+      "amenities": {
+        "schools": {
+          "primary": 1,
+          "secondary": 0,
+          "international": 2,
+          "nearest_intl": "Ecole Européenne (0.5km)"
+        },
+        "shopping": {
+          "supermarkets": [
+            "Auchan"
+          ],
+          "mall_nearby": "Auchan Kirchberg (local)"
+        }
+      },
+      "work_distances_min": {
+        "kirchberg": 0,
+        "cloche_or": 22,
+        "centre_ville": 12
+      },
+      "score_famille": 85
+    },
+    "Kopstal": {
+      "region": "Nord-Ouest",
+      "distance_km": 10,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 230",
+          "duration_min": 22,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Lallange": {
+      "region": "Nord",
+      "distance_km": 22,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 400",
+          "duration_min": 42,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Lasauvage": {
+      "region": "Sud-Ouest",
+      "distance_km": 35,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 260",
+          "duration_min": 65,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Lintgen": {
+      "region": "Centre",
+      "distance_km": 18,
+      "transports": [
+        {
+          "type": "train",
+          "number": "CFL Line 10",
+          "duration_min": 20,
+          "description": "Train to Gare"
+        },
+        {
+          "type": "bus",
+          "number": "RGTR 400",
+          "duration_min": 35,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Luxembourg": {
+      "region": "Centre",
+      "distance_km": 0,
+      "transports": [
+        {
+          "type": "gare",
+          "number": "Gare",
+          "duration_min": 0,
+          "description": "Gare Centrale"
+        }
+      ],
+      "amenities": {
+        "schools": {
+          "primary": 3,
+          "secondary": 2,
+          "international": 1,
+          "nearest_intl": "Ecole Européenne (4km)"
+        },
+        "shopping": {
+          "supermarkets": [
+            "Delhaize",
+            "Cactus",
+            "Aldi"
+          ],
+          "mall_nearby": "City Concorde (5km)"
+        }
+      },
+      "work_distances_min": {
+        "kirchberg": 10,
+        "cloche_or": 15,
+        "centre_ville": 0
+      },
+      "score_famille": 82
+    },
+    "Luxembourg Gare": {
+      "region": "Centre",
+      "distance_km": 0,
+      "transports": [
+        {
+          "type": "gare",
+          "number": "Gare",
+          "duration_min": 0,
+          "description": "Gare Centrale"
+        }
+      ]
+    },
+    "Luxembourg Limpertsberg": {
+      "region": "Nord",
+      "distance_km": 1.5,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 5, 15",
+          "duration_min": 8,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Luxembourg Muhlenbach": {
+      "region": "Nord-Est",
+      "distance_km": 3,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 16",
+          "duration_min": 12,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Luxembourg Neudorf": {
+      "region": "Sud-Est",
+      "distance_km": 2,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 12, 18",
+          "duration_min": 10,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Luxembourg-Beggen": {
+      "region": "Nord",
+      "distance_km": 3,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 15, 17",
+          "duration_min": 12,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Luxembourg-Belair": {
+      "region": "Nord-Ouest",
+      "distance_km": 2,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 4, 5, 14",
+          "duration_min": 10,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Luxembourg-Bonnevoie": {
+      "region": "Sud",
+      "distance_km": 2,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 1, 3",
+          "duration_min": 10,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Luxembourg-Centre": {
+      "region": "Centre",
+      "distance_km": 0.5,
+      "transports": [
+        {
+          "type": "pied",
+          "number": "Walk",
+          "duration_min": 5,
+          "description": "Walking to Gare"
+        }
+      ]
+    },
+    "Luxembourg-Centre Ville": {
+      "region": "Centre",
+      "distance_km": 0.5,
+      "transports": [
+        {
+          "type": "pied",
+          "number": "Walk",
+          "duration_min": 5,
+          "description": "Walking to Gare"
+        }
+      ]
+    },
+    "Luxembourg-Centre ville": {
+      "region": "Centre",
+      "distance_km": 0.5,
+      "transports": [
+        {
+          "type": "pied",
+          "number": "Walk",
+          "duration_min": 5,
+          "description": "Walking to Gare"
+        }
+      ]
+    },
+    "Luxembourg-Cents": {
+      "region": "Est",
+      "distance_km": 2,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 18",
+          "duration_min": 10,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Luxembourg-Cessange": {
+      "region": "Sud",
+      "distance_km": 3,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 2, 10",
+          "duration_min": 12,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Luxembourg-Dommeldange": {
+      "region": "Nord-Est",
+      "distance_km": 3,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 6, 7",
+          "duration_min": 12,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Luxembourg-Eich": {
+      "region": "Nord-Ouest",
+      "distance_km": 2,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 11",
+          "duration_min": 10,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Luxembourg-Gare": {
+      "region": "Centre",
+      "distance_km": 0,
+      "transports": [
+        {
+          "type": "gare",
+          "number": "Gare",
+          "duration_min": 0,
+          "description": "Gare Centrale"
+        }
+      ]
+    },
+    "Luxembourg-Gasperich": {
+      "region": "Sud",
+      "distance_km": 4,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 13, 18",
+          "duration_min": 15,
+          "description": "Bus to Gare"
+        },
+        {
+          "type": "train",
+          "number": "CFL",
+          "duration_min": 8,
+          "description": "Train to Gare"
+        }
+      ]
+    },
+    "Luxembourg-Gasperich - Cloche d'or": {
+      "region": "Sud",
+      "distance_km": 4,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 13, 18",
+          "duration_min": 15,
+          "description": "Bus to Gare"
+        },
+        {
+          "type": "train",
+          "number": "CFL",
+          "duration_min": 8,
+          "description": "Train to Gare"
+        }
+      ]
+    },
+    "Luxembourg-Hamm": {
+      "region": "Est",
+      "distance_km": 3,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 5",
+          "duration_min": 12,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Luxembourg-Hollerich": {
+      "region": "Ouest",
+      "distance_km": 2,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 11",
+          "duration_min": 10,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Luxembourg-Kirchberg": {
+      "region": "Nord-Est",
+      "distance_km": 3,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 9, 16",
+          "duration_min": 15,
+          "description": "Bus to Gare"
+        },
+        {
+          "type": "tram",
+          "number": "Tram",
+          "duration_min": 12,
+          "description": "Tram to Gare"
+        }
+      ]
+    },
+    "Luxembourg-Limpertsberg": {
+      "region": "Nord",
+      "distance_km": 1.5,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 5, 15",
+          "duration_min": 8,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Luxembourg-Merl": {
+      "region": "Ouest",
+      "distance_km": 2,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 2, 11",
+          "duration_min": 10,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Luxembourg-Muhlenbach": {
+      "region": "Nord-Est",
+      "distance_km": 3,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 16",
+          "duration_min": 12,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Luxembourg-Neudorf": {
+      "region": "Sud-Est",
+      "distance_km": 2,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 12, 18",
+          "duration_min": 10,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Luxembourg-Pfaffenthal": {
+      "region": "Est",
+      "distance_km": 1,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 6",
+          "duration_min": 8,
+          "description": "Bus to Gare"
+        },
+        {
+          "type": "pied",
+          "number": "Walk",
+          "duration_min": 15,
+          "description": "Walking to Gare"
+        }
+      ]
+    },
+    "Luxembourg-Rollingergrund": {
+      "region": "Nord-Ouest",
+      "distance_km": 2,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 8",
+          "duration_min": 10,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Luxembourg-Weimerskirch": {
+      "region": "Nord-Est",
+      "distance_km": 3,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 8",
+          "duration_min": 12,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Mamer": {
+      "region": "Ouest",
+      "distance_km": 8,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 10",
+          "duration_min": 20,
+          "description": "Bus to Gare"
+        },
+        {
+          "type": "train",
+          "number": "CFL Line 50",
+          "duration_min": 12,
+          "description": "Train to Gare"
+        }
+      ],
+      "amenities": {
+        "schools": {
+          "primary": 2,
+          "secondary": 1,
+          "international": 0,
+          "nearest_intl": "Bertrange (8km)"
+        },
+        "shopping": {
+          "supermarkets": [
+            "Cactus",
+            "Aldi"
+          ],
+          "mall_nearby": "Bertrange (6km)"
+        }
+      },
+      "work_distances_min": {
+        "kirchberg": 28,
+        "cloche_or": 18,
+        "centre_ville": 24
+      },
+      "score_famille": 78
+    },
+    "Manternach": {
+      "region": "Est",
+      "distance_km": 28,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 410",
+          "duration_min": 50,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Merl": {
+      "region": "Ouest",
+      "distance_km": 2,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 2, 11",
+          "duration_min": 10,
+          "description": "Bus to Gare"
+        }
+      ],
+      "amenities": {
+        "schools": {
+          "primary": 1,
+          "secondary": 0,
+          "international": 1,
+          "nearest_intl": "Ecole Européenne (2km)"
+        },
+        "shopping": {
+          "supermarkets": [
+            "Cactus",
+            "Delhaize"
+          ],
+          "mall_nearby": "Cactus Merl (local)"
+        }
+      },
+      "work_distances_min": {
+        "kirchberg": 14,
+        "cloche_or": 10,
+        "centre_ville": 10
+      },
+      "score_famille": 83
+    },
+    "Mondercange": {
+      "region": "Sud",
+      "distance_km": 18,
+      "transports": [
+        {
+          "type": "train",
+          "number": "CFL Line 60",
+          "duration_min": 23,
+          "description": "Train to Gare"
+        }
+      ]
+    },
+    "Mondorf-Les-Bains": {
+      "region": "Sud-Est",
+      "distance_km": 22,
+      "transports": [
+        {
+          "type": "train",
+          "number": "CFL Line 60",
+          "duration_min": 28,
+          "description": "Train to Gare"
+        },
+        {
+          "type": "bus",
+          "number": "RGTR 185",
+          "duration_min": 45,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Mondorf-les-Bains": {
+      "region": "Sud-Est",
+      "distance_km": 22,
+      "transports": [
+        {
+          "type": "train",
+          "number": "CFL Line 60",
+          "duration_min": 28,
+          "description": "Train to Gare"
+        },
+        {
+          "type": "bus",
+          "number": "RGTR 185",
+          "duration_min": 45,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Moutfort": {
+      "region": "Est",
+      "distance_km": 20,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 190",
+          "duration_min": 38,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Niederfeulen": {
+      "region": "Centre",
+      "distance_km": 20,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 400",
+          "duration_min": 40,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Olm": {
+      "region": "Centre",
+      "distance_km": 18,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 400",
+          "duration_min": 35,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Pétange": {
+      "region": "Ouest",
+      "distance_km": 18,
+      "transports": [
+        {
+          "type": "train",
+          "number": "CFL Line 70",
+          "duration_min": 22,
+          "description": "Train to Gare"
+        },
+        {
+          "type": "bus",
+          "number": "RGTR 260",
+          "duration_min": 35,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "RODANGE": {
+      "region": "Sud-Ouest",
+      "distance_km": 28,
+      "transports": [
+        {
+          "type": "train",
+          "number": "CFL Line 70",
+          "duration_min": 35,
+          "description": "Train to Gare"
+        },
+        {
+          "type": "bus",
+          "number": "RGTR 260",
+          "duration_min": 55,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Remich": {
+      "region": "Sud-Est",
+      "distance_km": 30,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 185",
+          "duration_min": 50,
+          "description": "Bus to Gare"
+        }
+      ],
+      "amenities": {
+        "schools": {
+          "primary": 1,
+          "secondary": 1,
+          "international": 0,
+          "nearest_intl": "Luxembourg (38km)"
+        },
+        "shopping": {
+          "supermarkets": [
+            "Cactus"
+          ],
+          "mall_nearby": "Mondorf (12km)"
+        }
+      },
+      "work_distances_min": {
+        "kirchberg": 42,
+        "cloche_or": 45,
+        "centre_ville": 38
+      },
+      "score_famille": 68
+    },
+    "Reuler": {
+      "region": "Nord",
+      "distance_km": 22,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 550",
+          "duration_min": 45,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Rodange": {
+      "region": "Sud-Ouest",
+      "distance_km": 28,
+      "transports": [
+        {
+          "type": "train",
+          "number": "CFL Line 70",
+          "duration_min": 35,
+          "description": "Train to Gare"
+        },
+        {
+          "type": "bus",
+          "number": "RGTR 260",
+          "duration_min": 55,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Rollingen": {
+      "region": "Est",
+      "distance_km": 25,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 190",
+          "duration_min": 45,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Roussy-le-Village": {
+      "region": "Sud-Est",
+      "distance_km": 32,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 185",
+          "duration_min": 55,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Schifflange": {
+      "region": "Sud",
+      "distance_km": 20,
+      "transports": [
+        {
+          "type": "train",
+          "number": "CFL Line 60",
+          "duration_min": 24,
+          "description": "Train to Gare"
+        },
+        {
+          "type": "bus",
+          "number": "RGTR 175",
+          "duration_min": 40,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Schouweiler": {
+      "region": "Sud-Ouest",
+      "distance_km": 22,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 260",
+          "duration_min": 42,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Senningerberg": {
+      "region": "Est",
+      "distance_km": 10,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 16, 118",
+          "duration_min": 18,
+          "description": "Bus to Gare"
+        }
+      ],
+      "amenities": {
+        "schools": {
+          "primary": 1,
+          "secondary": 0,
+          "international": 1,
+          "nearest_intl": "Kirchberg (5km)"
+        },
+        "shopping": {
+          "supermarkets": [],
+          "mall_nearby": "Auchan Kirchberg (6km)"
+        }
+      },
+      "work_distances_min": {
+        "kirchberg": 12,
+        "cloche_or": 22,
+        "centre_ville": 15
+      },
+      "score_famille": 70
+    },
+    "Sprinkange": {
+      "region": "Centre",
+      "distance_km": 28,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 400",
+          "duration_min": 52,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Steinsel": {
+      "region": "Nord",
+      "distance_km": 12,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 230",
+          "duration_min": 25,
+          "description": "Bus to Gare"
+        },
+        {
+          "type": "train",
+          "number": "CFL Line 10",
+          "duration_min": 15,
+          "description": "Train to Gare"
+        }
+      ]
+    },
+    "Strassen": {
+      "region": "Ouest",
+      "distance_km": 5,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 2, 10",
+          "duration_min": 15,
+          "description": "Bus to Gare"
+        },
+        {
+          "type": "train",
+          "number": "CFL Line 50",
+          "duration_min": 10,
+          "description": "Train to Gare"
+        }
+      ],
+      "amenities": {
+        "schools": {
+          "primary": 2,
+          "secondary": 1,
+          "international": 0,
+          "nearest_intl": "Ecole Européenne (5km)"
+        },
+        "shopping": {
+          "supermarkets": [
+            "Cactus",
+            "Delhaize",
+            "Aldi"
+          ],
+          "mall_nearby": "Cloche d'Or (5km)"
+        }
+      },
+      "work_distances_min": {
+        "kirchberg": 18,
+        "cloche_or": 12,
+        "centre_ville": 15
+      },
+      "score_famille": 82
+    },
+    "Tétange": {
+      "region": "Sud-Ouest",
+      "distance_km": 20,
+      "transports": [
+        {
+          "type": "train",
+          "number": "CFL Line 70",
+          "duration_min": 25,
+          "description": "Train to Gare"
+        },
+        {
+          "type": "bus",
+          "number": "RGTR 260",
+          "duration_min": 40,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Weidingen": {
+      "region": "Nord",
+      "distance_km": 65,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 550",
+          "duration_min": 85,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Weiler La Tour": {
+      "region": "Sud-Est",
+      "distance_km": 22,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 175",
+          "duration_min": 42,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Weiler-La-Tour": {
+      "region": "Sud-Est",
+      "distance_km": 22,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 175",
+          "duration_min": 42,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Weiswampach": {
+      "region": "Nord",
+      "distance_km": 70,
+      "transports": [
+        {
+          "type": "train",
+          "number": "CFL Line 10",
+          "duration_min": 65,
+          "description": "Train to Gare"
+        },
+        {
+          "type": "bus",
+          "number": "RGTR 550",
+          "duration_min": 90,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "_comment_aliases": "--- Alias courts quartiers Luxembourg-Ville (même données que Luxembourg-X) ---",
+    "Belair": {
+      "region": "Nord-Ouest",
+      "distance_km": 2,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 4, 5, 14",
+          "duration_min": 10,
+          "description": "Bus to Gare"
+        }
+      ],
+      "amenities": {
+        "schools": {
+          "primary": 2,
+          "secondary": 1,
+          "international": 0,
+          "nearest_intl": "Ecole Européenne (3km)"
+        },
+        "shopping": {
+          "supermarkets": [
+            "Delhaize",
+            "Aldi"
+          ],
+          "mall_nearby": "City Concorde (8km)"
+        }
+      },
+      "work_distances_min": {
+        "kirchberg": 15,
+        "cloche_or": 12,
+        "centre_ville": 8
+      },
+      "score_famille": 85
+    },
+    "Limpertsberg": {
+      "region": "Nord",
+      "distance_km": 1.5,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 5, 15",
+          "duration_min": 8,
+          "description": "Bus to Gare"
+        }
+      ],
+      "amenities": {
+        "schools": {
+          "primary": 2,
+          "secondary": 1,
+          "international": 1,
+          "nearest_intl": "Ecole Européenne (1km)"
+        },
+        "shopping": {
+          "supermarkets": [
+            "Delhaize",
+            "Cactus"
+          ],
+          "mall_nearby": "City Concorde (6km)"
+        }
+      },
+      "work_distances_min": {
+        "kirchberg": 10,
+        "cloche_or": 18,
+        "centre_ville": 8
+      },
+      "score_famille": 92
+    },
+    "Bonnevoie": {
+      "region": "Sud",
+      "distance_km": 2,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 1, 3",
+          "duration_min": 10,
+          "description": "Bus to Gare"
+        }
+      ],
+      "amenities": {
+        "schools": {
+          "primary": 2,
+          "secondary": 1,
+          "international": 0,
+          "nearest_intl": "Ecole Européenne (5km)"
+        },
+        "shopping": {
+          "supermarkets": [
+            "Lidl",
+            "Aldi"
+          ],
+          "mall_nearby": "Cloche d'Or (3km)"
+        }
+      },
+      "work_distances_min": {
+        "kirchberg": 18,
+        "cloche_or": 8,
+        "centre_ville": 12
+      },
+      "score_famille": 76
+    },
+    "Gasperich": {
+      "region": "Sud",
+      "distance_km": 4,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 13, 18",
+          "duration_min": 15,
+          "description": "Bus to Gare"
+        },
+        {
+          "type": "train",
+          "number": "CFL",
+          "duration_min": 8,
+          "description": "Train to Gare (Cloche d'Or)"
+        }
+      ],
+      "amenities": {
+        "schools": {
+          "primary": 1,
+          "secondary": 0,
+          "international": 0,
+          "nearest_intl": "Ecole Européenne (6km)"
+        },
+        "shopping": {
+          "supermarkets": [
+            "Cactus",
+            "Delhaize",
+            "Lidl",
+            "H&M"
+          ],
+          "mall_nearby": "Cloche d'Or (0.5km) — sur place!"
+        }
+      },
+      "work_distances_min": {
+        "kirchberg": 20,
+        "cloche_or": 2,
+        "centre_ville": 12
+      },
+      "score_famille": 78
+    },
+    "Neudorf": {
+      "region": "Sud-Est",
+      "distance_km": 2,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 12, 18",
+          "duration_min": 10,
+          "description": "Bus to Gare"
+        }
+      ],
+      "amenities": {
+        "schools": {
+          "primary": 1,
+          "secondary": 0,
+          "international": 0,
+          "nearest_intl": "Cessange (4km)"
+        },
+        "shopping": {
+          "supermarkets": [
+            "Cactus"
+          ],
+          "mall_nearby": "Auchan Kirchberg (5km)"
+        }
+      },
+      "work_distances_min": {
+        "kirchberg": 12,
+        "cloche_or": 15,
+        "centre_ville": 10
+      },
+      "score_famille": 76
+    },
+    "Centre": {
+      "region": "Centre",
+      "distance_km": 0.5,
+      "transports": [
+        {
+          "type": "pied",
+          "number": "Walk",
+          "duration_min": 5,
+          "description": "Walking to Gare"
+        }
+      ],
+      "amenities": {
+        "schools": {
+          "primary": 3,
+          "secondary": 2,
+          "international": 1,
+          "nearest_intl": "Ecole Européenne (4km)"
+        },
+        "shopping": {
+          "supermarkets": [
+            "Delhaize",
+            "Cactus",
+            "Aldi"
+          ],
+          "mall_nearby": "City Concorde (5km)"
+        }
+      },
+      "work_distances_min": {
+        "kirchberg": 10,
+        "cloche_or": 15,
+        "centre_ville": 0
+      },
+      "score_famille": 82
+    },
+    "Dommeldange": {
+      "region": "Nord-Est",
+      "distance_km": 3,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 6, 7",
+          "duration_min": 12,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Muhlenbach": {
+      "region": "Nord-Est",
+      "distance_km": 3,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 16",
+          "duration_min": 12,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Rollingergrund": {
+      "region": "Nord-Ouest",
+      "distance_km": 2,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 8",
+          "duration_min": 10,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "_comment_missing": "--- Villes manquantes ajoutées le 2026-03-08 ---",
+    "Roeser": {
+      "region": "Sud",
+      "distance_km": 15,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 175",
+          "duration_min": 30,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Leudelange": {
+      "region": "Sud",
+      "distance_km": 8,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 2, 13",
+          "duration_min": 20,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Steinfort": {
+      "region": "Ouest",
+      "distance_km": 20,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 265",
+          "duration_min": 35,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Mersch": {
+      "region": "Centre",
+      "distance_km": 20,
+      "transports": [
+        {
+          "type": "train",
+          "number": "CFL Line 10",
+          "duration_min": 22,
+          "description": "Train to Gare"
+        },
+        {
+          "type": "bus",
+          "number": "RGTR 400",
+          "duration_min": 40,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Itzig": {
+      "region": "Sud-Est",
+      "distance_km": 10,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 175",
+          "duration_min": 22,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Canach": {
+      "region": "Est",
+      "distance_km": 18,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 190",
+          "duration_min": 35,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Findel": {
+      "region": "Est",
+      "distance_km": 5,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 16, 118",
+          "duration_min": 15,
+          "description": "Bus to Gare (Airport)"
+        }
+      ]
+    },
+    "Berchem": {
+      "region": "Sud",
+      "distance_km": 18,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 175",
+          "duration_min": 35,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "_comment_aliases2": "--- Alias qualité données (variantes orthographiques dans listings) ---",
+    "Alzette": {
+      "region": "Sud-Ouest",
+      "distance_km": 20,
+      "transports": [
+        {
+          "type": "train",
+          "number": "CFL Line 60",
+          "duration_min": 25,
+          "description": "Train to Gare (= Esch-sur-Alzette)"
+        },
+        {
+          "type": "bus",
+          "number": "RGTR 175",
+          "duration_min": 40,
+          "description": "Bus to Gare"
+        }
+      ],
+      "amenities": {
+        "schools": {
+          "primary": 4,
+          "secondary": 2,
+          "international": 0,
+          "nearest_intl": "Esch-Belval (8km)"
+        },
+        "shopping": {
+          "supermarkets": [
+            "Auchan",
+            "Cactus",
+            "Lidl",
+            "Colruyt"
+          ],
+          "mall_nearby": "Belle Etoile (3km)"
+        }
+      },
+      "work_distances_min": {
+        "kirchberg": 42,
+        "cloche_or": 25,
+        "centre_ville": 38
+      },
+      "score_famille": 72
+    },
+    "Esch-Sur-Alzette": {
+      "region": "Sud-Ouest",
+      "distance_km": 20,
+      "transports": [
+        {
+          "type": "train",
+          "number": "CFL Line 60",
+          "duration_min": 25,
+          "description": "Train to Gare"
+        },
+        {
+          "type": "bus",
+          "number": "RGTR 175",
+          "duration_min": 40,
+          "description": "Bus to Gare"
+        }
+      ],
+      "amenities": {
+        "schools": {
+          "primary": 4,
+          "secondary": 2,
+          "international": 0,
+          "nearest_intl": "Esch-Belval (8km)"
+        },
+        "shopping": {
+          "supermarkets": [
+            "Auchan",
+            "Cactus",
+            "Lidl",
+            "Colruyt"
+          ],
+          "mall_nearby": "Belle Etoile (3km)"
+        }
+      },
+      "work_distances_min": {
+        "kirchberg": 42,
+        "cloche_or": 25,
+        "centre_ville": 38
+      },
+      "score_famille": 72
+    },
+    "Roussy-Le-Village": {
+      "region": "Sud-Est",
+      "distance_km": 32,
+      "transports": [
+        {
+          "type": "bus",
+          "number": "RGTR 185",
+          "duration_min": 55,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Bains": {
+      "region": "Sud-Est",
+      "distance_km": 22,
+      "transports": [
+        {
+          "type": "train",
+          "number": "CFL Line 60",
+          "duration_min": 28,
+          "description": "Train to Gare (= Mondorf-les-Bains)"
+        },
+        {
+          "type": "bus",
+          "number": "RGTR 185",
+          "duration_min": 45,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Beringen-Mersch": {
+      "region": "Centre",
+      "distance_km": 20,
+      "transports": [
+        {
+          "type": "train",
+          "number": "CFL Line 10",
+          "duration_min": 22,
+          "description": "Train to Gare (via Mersch)"
+        },
+        {
+          "type": "bus",
+          "number": "RGTR 400",
+          "duration_min": 40,
+          "description": "Bus to Gare"
+        }
+      ]
+    },
+    "Angelsberg": {
+      "region": "Centre",
+      "distance_km": 22,
+      "transports": [
+        {
+          "type": "train",
+          "number": "CFL Line 10",
+          "duration_min": 25,
+          "description": "Train to Gare (via Mersch)"
+        },
+        {
+          "type": "bus",
+          "number": "RGTR 400",
+          "duration_min": 42,
+          "description": "Bus to Gare"
+        }
+      ]
+    }
+  },
+  "amenities_coverage": "25 cities with amenities data"
+}

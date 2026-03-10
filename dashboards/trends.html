@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https:;">
+    <meta name="theme-color" content="#09090F">
+    <link rel="manifest" href="manifest.json">
+    <title>Tendances — ImmoLux</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="data/version.js"></script>
+    <script src="version-display.js" defer></script>
+    <style>
+        :root {
+            --bg: #09090F;
+            --bg-card: #111118;
+            --bg-lift: #16161F;
+            --bg-panel: #1C1C27;
+            --gold: #C9A265;
+            --gold-dim: rgba(201,162,101,0.18);
+            --gold-line: rgba(201,162,101,0.35);
+            --text: #E8E4DC;
+            --text-muted: #7A7A8C;
+            --text-dim: #4A4A5C;
+            --border: rgba(255,255,255,0.07);
+            --border-gold: rgba(201,162,101,0.25);
+            --radius: 4px;
+            --radius-lg: 8px;
+            --shadow: 0 4px 32px rgba(0,0,0,0.5);
+            --font-display: 'Cormorant Garamond', Georgia, serif;
+            --font-body: 'Outfit', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+        body.light-mode {
+            --bg: #F5F0E8;
+            --bg-card: #FFFFFF;
+            --bg-lift: #FAF7F2;
+            --bg-panel: #F0EAE0;
+            --text: #1A1A24;
+            --text-muted: #6B6B7C;
+            --text-dim: #A0A0B0;
+            --border: rgba(0,0,0,0.08);
+            --border-gold: rgba(160,110,50,0.3);
+            --gold: #9A6E2A;
+            --gold-dim: rgba(154,110,42,0.1);
+            --gold-line: rgba(154,110,42,0.3);
+            --shadow: 0 4px 24px rgba(0,0,0,0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 0 0 4rem;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.4;
+        }
+
+        .container-main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── NAV BAR ── */
+        .nav-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            backdrop-filter: blur(12px);
+        }
+        .nav-link {
+            padding: 0.4rem 0.85rem;
+            border-radius: var(--radius);
+            font-size: 0.78rem;
+            font-weight: 500;
+            text-decoration: none;
+            color: var(--text-muted);
+            transition: color 0.2s, background 0.2s;
+            letter-spacing: 0.02em;
+        }
+        .nav-link:hover { color: var(--text); background: var(--bg-lift); }
+        .nav-link.active { color: var(--gold); background: var(--gold-dim); }
+        .nav-toggle {
+            margin-left: auto;
+            padding: 0.35rem 0.75rem;
+            border-radius: var(--radius);
+            background: none;
+            border: 1px solid var(--border-gold);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: border-color 0.2s, color 0.2s;
+        }
+        .nav-toggle:hover { border-color: var(--gold); color: var(--gold); }
+
+        /* ── PAGE HEADER ── */
+        .page-header {
+            padding: 3rem 0 2rem;
+            text-align: center;
+            animation: fadeInDown 0.5s ease;
+        }
+        .page-header h1 {
+            font-family: var(--font-display);
+            font-size: 2.8rem;
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: 0.01em;
+            margin-bottom: 0.5rem;
+        }
+        .page-header h1 span { color: var(--gold); }
+        .page-header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+        .header-rule {
+            width: 48px;
+            height: 1px;
+            background: var(--gold-line);
+            margin: 1rem auto 0;
+        }
+
+        /* ── PERIOD SELECTOR ── */
+        .period-bar {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 0.85rem 1.25rem;
+            margin-bottom: 1.75rem;
+        }
+        .period-label {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-right: 0.25rem;
+        }
+        .period-btn {
+            padding: 0.38rem 0.9rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            font-weight: 600;
+            font-family: var(--font-body);
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.02em;
+        }
+        .period-btn.active {
+            background: var(--gold-dim);
+            color: var(--gold);
+            border-color: var(--border-gold);
+        }
+        .period-btn:hover:not(.active) {
+            background: var(--bg-lift);
+            color: var(--text);
+            border-color: var(--border-gold);
+        }
+        .period-info {
+            margin-left: auto;
+            color: var(--text-dim);
+            font-size: 0.75rem;
+            font-family: var(--font-mono);
+        }
+
+        /* ── KPI GRID ── */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.75rem;
+            animation: fadeIn 0.6s ease 0.1s both;
+        }
+        .kpi-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.4rem 1rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border-top: 2px solid transparent;
+            transition: transform 0.2s, border-color 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        .kpi-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--gold-dim);
+            opacity: 0;
+            transition: opacity 0.3s;
+            border-radius: inherit;
+        }
+        .kpi-card:hover { transform: translateY(-3px); }
+        .kpi-card:hover::after { opacity: 1; }
+        .kpi-card.c-blue   { border-top-color: #6B8AE0; }
+        .kpi-card.c-green  { border-top-color: #4DAA80; }
+        .kpi-card.c-orange { border-top-color: var(--gold); }
+        .kpi-card.c-purple { border-top-color: #8B6ED4; }
+        .kpi-card.c-red    { border-top-color: #C05252; }
+        .kpi-icon  { font-size: 1.5rem; margin-bottom: 0.4rem; position: relative; z-index: 1; }
+        .kpi-value {
+            font-size: 1.55rem;
+            font-weight: 600;
+            color: var(--text);
+            font-family: var(--font-mono);
+            position: relative;
+            z-index: 1;
+        }
+        .kpi-label {
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-top: 0.2rem;
+            position: relative;
+            z-index: 1;
+        }
+        .kpi-trend {
+            font-size: 0.72rem;
+            font-weight: 600;
+            margin-top: 0.4rem;
+            font-family: var(--font-mono);
+            position: relative;
+            z-index: 1;
+        }
+        .trend-up   { color: #C05252; }
+        .trend-down { color: #4DAA80; }
+        .trend-flat { color: var(--text-dim); }
+
+        /* ── CHART CARDS ── */
+        .chart-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.75rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            animation: fadeInUp 0.5s ease both;
+            position: relative;
+            overflow: hidden;
+        }
+        .chart-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--gold-line), transparent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+        .chart-card:hover::before { transform: scaleX(1); }
+        .chart-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+        .chart-title-accent {
+            color: var(--gold);
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-transform: none;
+            letter-spacing: 0.01em;
+        }
+        .chart-sub {
+            font-size: 0.7rem;
+            font-weight: 400;
+            color: var(--text-dim);
+            margin-left: auto;
+            font-family: var(--font-mono);
+            text-transform: none;
+            letter-spacing: 0;
+        }
+        .chart-container { position: relative; height: 320px; width: 100%; }
+        .chart-container.tall { height: 380px; }
+
+        /* ── CITY TABLE ── */
+        .city-trends-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+        .city-trends-table th {
+            padding: 0.65rem 0.85rem;
+            text-align: left;
+            background: var(--bg-lift);
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            border-bottom: 1px solid var(--border);
+            font-family: var(--font-body);
+        }
+        .city-trends-table td {
+            padding: 0.7rem 0.85rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+        }
+        .city-trends-table tr:last-child td { border-bottom: none; }
+        .city-trends-table tr:hover td { background: var(--bg-lift); }
+        .arrow-up   { color: #C05252; font-weight: 700; }
+        .arrow-down { color: #4DAA80; font-weight: 700; }
+        .arrow-flat { color: var(--text-dim); }
+        .mini-bar {
+            height: 3px;
+            border-radius: 2px;
+            background: var(--bg-panel);
+            overflow: hidden;
+            margin-top: 4px;
+        }
+        .mini-bar-fill {
+            height: 100%;
+            border-radius: 2px;
+            background: linear-gradient(90deg, var(--gold-line), var(--gold));
+            transition: width 0.5s ease;
+        }
+
+        /* ── LOADING ── */
+        .loading-overlay {
+            text-align: center;
+            padding: 4rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        .spinner {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            border: 2px solid var(--border);
+            border-top-color: var(--gold);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 0.75rem;
+        }
+
+        /* ── DARK MODE TOGGLE (floating) ── */
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .dark-mode-toggle:hover { transform: scale(1.1) rotate(15deg); border-color: var(--gold); }
+        @media (max-width: 900px) { .dark-mode-toggle { display: none; } }
+
+        /* ── SECTION DIVIDER ── */
+        .section-rule {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border-gold), transparent);
+            margin: 0.5rem 0 1.75rem;
+        }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeInDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:translateY(0); } }
+        @keyframes fadeIn     { from { opacity:0; } to { opacity:1; } }
+        @keyframes fadeInUp   { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+        @keyframes spin       { to { transform: rotate(360deg); } }
+
+        @media (max-width: 768px) {
+            .page-header h1 { font-size: 2rem; }
+            .chart-container { height: 260px; }
+            .chart-container.tall { height: 300px; }
+            .container-main { padding: 0 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAV BAR -->
+<nav class="nav-bar">
+    <a href="index.html" class="nav-link">Dashboard</a>
+    <a href="new-listings.html" class="nav-link">Nouvelles</a>
+    <a href="anomalies.html" class="nav-link">Anomalies</a>
+    <a href="map-advanced.html" class="nav-link">Carte</a>
+    <a href="favorites.html" class="nav-link">Prioritaires</a>
+    <a href="3chambres.html" class="nav-link">3 Chambres</a>
+    <a href="ia-analyse.html" class="nav-link">Analyse IA</a>
+    <a href="stats-by-city.html" class="nav-link">Villes</a>
+    <a href="trends.html" class="nav-link active">Tendances</a>
+    <button class="nav-toggle" id="darkModeToggle" title="Mode clair/sombre">☀️</button>
+</nav>
+
+<div class="container-main">
+
+    <!-- HEADER -->
+    <div class="page-header">
+        <h1>Tendances <span>du Marché</span></h1>
+        <p>Évolution complète des prix, volumes et villes sur tout l'historique disponible</p>
+        <div class="header-rule"></div>
+    </div>
+
+    <!-- PERIOD SELECTOR -->
+    <div class="period-bar">
+        <span class="period-label">Période</span>
+        <button class="period-btn" data-days="7"  onclick="setPeriod(7)">7 jours</button>
+        <button class="period-btn" data-days="14" onclick="setPeriod(14)">14 jours</button>
+        <button class="period-btn active" data-days="0" onclick="setPeriod(0)">Tout l'historique</button>
+        <span class="period-info" id="period-info">Chargement…</span>
+    </div>
+
+    <!-- LOADING -->
+    <div id="loading" class="loading-overlay">
+        <div class="spinner"></div><br>Chargement de l'historique complet…
+    </div>
+
+    <!-- CONTENT (hidden until loaded) -->
+    <div id="main-content" style="display:none;">
+
+        <!-- KPIs -->
+        <div class="kpi-grid" id="kpi-grid">
+            <div class="kpi-card c-blue">
+                <div class="kpi-icon">📅</div>
+                <div class="kpi-value" id="kpi-days">—</div>
+                <div class="kpi-label">Jours d'historique</div>
+                <div class="kpi-trend" id="kpi-days-sub"></div>
+            </div>
+            <div class="kpi-card c-purple">
+                <div class="kpi-icon">🏠</div>
+                <div class="kpi-value" id="kpi-total">—</div>
+                <div class="kpi-label">Annonces aujourd'hui</div>
+                <div class="kpi-trend" id="kpi-total-trend"></div>
+            </div>
+            <div class="kpi-card c-orange">
+                <div class="kpi-icon">💰</div>
+                <div class="kpi-value" id="kpi-avg">—</div>
+                <div class="kpi-label">Prix moyen actuel</div>
+                <div class="kpi-trend" id="kpi-avg-trend"></div>
+            </div>
+            <div class="kpi-card c-green">
+                <div class="kpi-icon">📊</div>
+                <div class="kpi-value" id="kpi-median">—</div>
+                <div class="kpi-label">Prix médian actuel</div>
+                <div class="kpi-trend" id="kpi-median-trend"></div>
+            </div>
+            <div class="kpi-card c-red">
+                <div class="kpi-icon">📐</div>
+                <div class="kpi-value" id="kpi-ppm2">—</div>
+                <div class="kpi-label">Prix/m² moyen</div>
+                <div class="kpi-trend" id="kpi-ppm2-trend"></div>
+            </div>
+        </div>
+
+        <div class="section-rule"></div>
+
+        <!-- CHART 1 : Volume + Prix moyen -->
+        <div class="chart-card">
+            <div class="chart-title">
+                <span class="chart-title-accent">Volume d'annonces &amp; Prix moyen</span>
+                — évolution complète
+                <span class="chart-sub" id="chart1-sub"></span>
+            </div>
+            <div class="chart-container tall">
+                <canvas id="chartVolumePrix"></canvas>
+            </div>
+        </div>
+
+        <!-- CHART 2 : Prix moyen + médian -->
+        <div class="chart-card">
+            <div class="chart-title">
+                <span class="chart-title-accent">Prix moyen &amp; médian</span>
+                — évolution
+                <span class="chart-sub" id="chart2-sub"></span>
+            </div>
+            <div class="chart-container">
+                <canvas id="chartPrixMedian"></canvas>
+            </div>
+        </div>
+
+        <!-- CHART 3 : Prix par ville préférée -->
+        <div class="chart-card">
+            <div class="chart-title">
+                <span class="chart-title-accent">Prix moyen par ville préférée</span>
+                — évolution
+                <span class="chart-sub">Top 6 villes les plus actives</span>
+            </div>
+            <div class="chart-container tall">
+                <canvas id="chartVilles"></canvas>
+            </div>
+        </div>
+
+        <!-- CHART 4 : Prix/m² -->
+        <div class="chart-card">
+            <div class="chart-title">
+                <span class="chart-title-accent">Prix au m²</span>
+                — évolution
+                <span class="chart-sub" id="chart4-sub"></span>
+            </div>
+            <div class="chart-container">
+                <canvas id="chartPPM2"></canvas>
+            </div>
+        </div>
+
+        <!-- CHART 5 : Top sites -->
+        <div class="chart-card">
+            <div class="chart-title">
+                <span class="chart-title-accent">Volume par site immobilier</span>
+                — début vs actuel
+                <span class="chart-sub" id="chart5-sub"></span>
+            </div>
+            <div class="chart-container">
+                <canvas id="chartSites"></canvas>
+            </div>
+        </div>
+
+        <!-- TABLEAU VILLES -->
+        <div class="chart-card">
+            <div class="chart-title">
+                <span class="chart-title-accent">Synthèse par ville préférée</span>
+                — sur la période
+            </div>
+            <div style="overflow-x:auto;">
+                <table class="city-trends-table" id="city-table">
+                    <thead>
+                        <tr>
+                            <th>Ville</th>
+                            <th>1er jour</th>
+                            <th>Dernier jour</th>
+                            <th>Variation €</th>
+                            <th>Variation %</th>
+                            <th>Min observé</th>
+                            <th>Max observé</th>
+                            <th>Jours présente</th>
+                            <th>Tendance</th>
+                        </tr>
+                    </thead>
+                    <tbody id="city-table-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+    </div><!-- /main-content -->
+</div><!-- /container-main -->
+
+<button class="dark-mode-toggle" id="darkModeToggleFloat">☀️</button>
+
+<script src="data/listings.js"></script>
+<script>
+// ═══════════════════════════════════════════════
+// CONFIG
+// ═══════════════════════════════════════════════
+const PREFERRED = [
+    'Luxembourg','Kirchberg','Belair','Gare','Strassen','Howald',
+    'Bonnevoie','Hollerich','Mamer','Gasperich','Limpertsberg','Merl','Bertrange'
+];
+
+const CHART_COLORS = [
+    '#667eea','#10b981','#f59e0b','#ef4444','#8b5cf6','#06b6d4',
+    '#f97316','#84cc16','#ec4899','#14b8a6'
+];
+
+// ═══════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════
+let ALL_HISTORY  = [];   // [{date, listings:[...], stats:{}}]
+let VIEW_HISTORY = [];   // filtered by period
+let PERIOD_DAYS  = 0;    // 0 = all
+
+let charts = {};         // chart instances
+
+// ═══════════════════════════════════════════════
+// DARK MODE
+// ═══════════════════════════════════════════════
+const dm=document.getElementById('darkModeToggle');const dmFloat=document.getElementById('darkModeToggleFloat');function applyDM(light){document.body.classList.toggle('light-mode',light);const icon=light?'🌙':'☀️';dm.textContent=icon;if(dmFloat)dmFloat.textContent=icon;localStorage.setItem('darkMode',light);}dm.addEventListener('click',()=>{applyDM(!document.body.classList.contains('light-mode'));rebuildAllCharts();});if(dmFloat)dmFloat.addEventListener('click',()=>dm.click());applyDM(localStorage.getItem('darkMode')==='true');
+
+function chartColors() {
+    const light = document.body.classList.contains('light-mode');
+    return {
+        text: light ? '#1A1A24' : '#E8E4DC',
+        grid: light ? 'rgba(0,0,0,.07)' : 'rgba(255,255,255,.06)',
+        bg:   light ? 'rgba(255,255,255,.95)' : 'rgba(17,17,24,.85)'
+    };
+}
+
+// ═══════════════════════════════════════════════
+// LOAD ALL HISTORY
+// ═══════════════════════════════════════════════
+async function loadAllHistory() {
+    const results = [];
+    // Try dates from 90 days ago to today
+    const today = new Date();
+    const fetches = [];
+
+    for (let i = 90; i >= 0; i--) {
+        const d = new Date(today);
+        d.setDate(d.getDate() - i);
+        const ds = d.toISOString().split('T')[0];
+        fetches.push(ds);
+    }
+
+    await Promise.all(fetches.map(async (ds) => {
+        try {
+            const r = await fetch(`data/history/${ds}.json?t=${Date.now()}`);
+            if (!r.ok) return;
+            const raw = await r.json();
+            const listings = Array.isArray(raw) ? raw : (raw.listings || raw.data || []);
+            if (!listings.length) return;
+            results.push({ date: ds, listings });
+        } catch (e) { /* not found */ }
+    }));
+
+    // Sort by date
+    results.sort((a, b) => a.date.localeCompare(b.date));
+    return results;
+}
+
+// ═══════════════════════════════════════════════
+// COMPUTE STATS FROM LISTINGS ARRAY
+// ═══════════════════════════════════════════════
+function computeStats(listings) {
+    const prices   = listings.map(l => l.price).filter(p => p > 0).sort((a,b) => a-b);
+    const surfaces = listings.map(l => l.surface).filter(s => s > 0);
+    const ppm2s    = listings.filter(l => l.price > 0 && l.surface > 0).map(l => l.price / l.surface);
+
+    const avg    = prices.length ? Math.round(prices.reduce((a,b)=>a+b,0)/prices.length) : 0;
+    const median = prices.length ? prices[Math.floor(prices.length/2)] : 0;
+    const avgPPM2= ppm2s.length  ? Math.round(ppm2s.reduce((a,b)=>a+b,0)/ppm2s.length) : 0;
+
+    // Cities count
+    const cities = {};
+    listings.forEach(l => {
+        const c = (l.city||'?').trim();
+        cities[c] = (cities[c]||0)+1;
+    });
+
+    // Sites count
+    const sites = {};
+    listings.forEach(l => {
+        const s = l.site || '?';
+        sites[s] = (sites[s]||0)+1;
+    });
+
+    // City avg prices
+    const cityPrices = {};
+    listings.forEach(l => {
+        const c = (l.city||'?').trim();
+        if (l.price > 0) {
+            if (!cityPrices[c]) cityPrices[c] = [];
+            cityPrices[c].push(l.price);
+        }
+    });
+    const cityAvg = {};
+    Object.entries(cityPrices).forEach(([c,ps]) => {
+        cityAvg[c] = Math.round(ps.reduce((a,b)=>a+b,0)/ps.length);
+    });
+
+    return { total: listings.length, avg, median, avgPPM2, cities, sites, cityAvg };
+}
+
+// ═══════════════════════════════════════════════
+// PERIOD SELECTOR
+// ═══════════════════════════════════════════════
+function setPeriod(days) {
+    PERIOD_DAYS = days;
+    document.querySelectorAll('.period-btn').forEach(b => {
+        b.classList.toggle('active', parseInt(b.dataset.days) === days);
+    });
+    applyPeriod();
+    rebuildAllCharts();
+}
+
+function applyPeriod() {
+    if (PERIOD_DAYS === 0) {
+        VIEW_HISTORY = ALL_HISTORY;
+    } else {
+        VIEW_HISTORY = ALL_HISTORY.slice(-PERIOD_DAYS);
+    }
+    const first = VIEW_HISTORY[0]?.date;
+    const last  = VIEW_HISTORY[VIEW_HISTORY.length-1]?.date;
+    const fmtDate = d => {
+        if (!d) return '';
+        const [y,m,day] = d.split('-');
+        return `${day}/${m}/${y}`;
+    };
+    document.getElementById('period-info').textContent =
+        VIEW_HISTORY.length ? `${VIEW_HISTORY.length} jours · du ${fmtDate(first)} au ${fmtDate(last)}` : 'Aucune donnée';
+}
+
+// ═══════════════════════════════════════════════
+// FORMAT HELPERS
+// ═══════════════════════════════════════════════
+function fmtLabel(dateStr) {
+    const [, m, d] = dateStr.split('-');
+    return `${d}/${m}`;
+}
+
+function trendBadge(first, last, unit='€', invert=false) {
+    if (!first || !last) return '<span class="arrow-flat">—</span>';
+    const diff = last - first;
+    const pct  = Math.round(diff / first * 100);
+    if (Math.abs(pct) < 1) return '<span class="arrow-flat">→ stable</span>';
+    const cls  = (diff > 0) === !invert ? 'arrow-up' : 'arrow-down';
+    const sign = diff > 0 ? '+' : '';
+    return `<span class="${cls}">${diff>0?'↑':'↓'} ${sign}${diff}${unit} (${sign}${pct}%)</span>`;
+}
+
+// ═══════════════════════════════════════════════
+// RENDER KPIs
+// ═══════════════════════════════════════════════
+function renderKPIs() {
+    if (!VIEW_HISTORY.length) return;
+
+    const first = computeStats(VIEW_HISTORY[0].listings);
+    const last  = computeStats(VIEW_HISTORY[VIEW_HISTORY.length-1].listings);
+
+    const set = (id, val, trendId, first, last, unit='€', invert=false) => {
+        document.getElementById(id).textContent = val;
+        if (trendId) document.getElementById(trendId).innerHTML = trendBadge(first, last, unit, invert);
+    };
+
+    // Days
+    document.getElementById('kpi-days').textContent = VIEW_HISTORY.length;
+    document.getElementById('kpi-days-sub').textContent =
+        `${fmtLabel(VIEW_HISTORY[0].date)} → ${fmtLabel(VIEW_HISTORY[VIEW_HISTORY.length-1].date)}`;
+
+    set('kpi-total',  last.total,  'kpi-total-trend',  first.total,  last.total,  '', false);
+    set('kpi-avg',    last.avg+'€','kpi-avg-trend',    first.avg,    last.avg,    '€', false);
+    set('kpi-median', last.median+'€','kpi-median-trend',first.median,last.median,'€', false);
+    set('kpi-ppm2',   last.avgPPM2+'€','kpi-ppm2-trend',first.avgPPM2,last.avgPPM2,'€', false);
+}
+
+// ═══════════════════════════════════════════════
+// DESTROY OLD CHARTS
+// ═══════════════════════════════════════════════
+function destroyChart(id) {
+    if (charts[id]) { charts[id].destroy(); delete charts[id]; }
+}
+
+function makeChart(id, cfg) {
+    destroyChart(id);
+    const ctx = document.getElementById(id);
+    if (!ctx) return;
+    charts[id] = new Chart(ctx.getContext('2d'), cfg);
+}
+
+// ═══════════════════════════════════════════════
+// CHART OPTIONS BASE
+// ═══════════════════════════════════════════════
+function baseOpts(extra={}) {
+    const c = chartColors();
+    return {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+            legend: { labels: { color: c.text, font: { size: 12, weight: '600' }, padding: 16 } },
+            tooltip: {
+                backgroundColor: 'rgba(15,15,30,.9)', padding: 12,
+                titleFont: { size: 13, weight: '700' }, bodyFont: { size: 12 },
+                cornerRadius: 10, borderColor: 'rgba(255,255,255,.1)', borderWidth: 1
+            }
+        },
+        scales: {
+            x: {
+                ticks: { color: c.text, font: { size: 11 }, maxRotation: 45 },
+                grid:  { color: c.grid }
+            },
+            y: {
+                ticks: { color: c.text, font: { size: 11 } },
+                grid:  { color: c.grid }
+            },
+            ...extra
+        }
+    };
+}
+
+// ═══════════════════════════════════════════════
+// CHART 1 : Volume + Prix moyen (dual axis)
+// ═══════════════════════════════════════════════
+function renderChart1() {
+    const labels = VIEW_HISTORY.map(h => fmtLabel(h.date));
+    const stats  = VIEW_HISTORY.map(h => computeStats(h.listings));
+    const c = chartColors();
+
+    document.getElementById('chart1-sub').textContent =
+        `${VIEW_HISTORY.length} points · axe gauche = annonces · axe droit = prix €`;
+
+    makeChart('chartVolumePrix', {
+        type: 'line',
+        data: {
+            labels,
+            datasets: [
+                {
+                    label: 'Nb annonces',
+                    data: stats.map(s => s.total),
+                    borderColor: '#667eea', backgroundColor: 'rgba(102,126,234,.12)',
+                    fill: true, tension: .35, borderWidth: 3,
+                    pointRadius: 4, pointHoverRadius: 7, pointBackgroundColor: '#667eea',
+                    yAxisID: 'y'
+                },
+                {
+                    label: 'Prix moyen (€)',
+                    data: stats.map(s => s.avg),
+                    borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,.08)',
+                    fill: false, tension: .35, borderWidth: 3,
+                    pointRadius: 4, pointHoverRadius: 7, pointBackgroundColor: '#10b981',
+                    yAxisID: 'y1'
+                }
+            ]
+        },
+        options: {
+            ...baseOpts({
+                y:  { position:'left',  title:{display:true,text:'Annonces',color:c.text,font:{size:12,weight:'600'}}, ticks:{color:c.text}, grid:{color:c.grid} },
+                y1: { position:'right', title:{display:true,text:'Prix moyen (€)',color:c.text,font:{size:12,weight:'600'}}, ticks:{color:c.text}, grid:{drawOnChartArea:false} }
+            }),
+            responsive: true, maintainAspectRatio: false,
+            interaction: { mode:'index', intersect:false },
+            plugins: baseOpts().plugins
+        }
+    });
+}
+
+// ═══════════════════════════════════════════════
+// CHART 2 : Prix moyen + médian
+// ═══════════════════════════════════════════════
+function renderChart2() {
+    const labels = VIEW_HISTORY.map(h => fmtLabel(h.date));
+    const stats  = VIEW_HISTORY.map(h => computeStats(h.listings));
+    const c = chartColors();
+
+    document.getElementById('chart2-sub').textContent =
+        `Médian = valeur centrale · moins sensible aux extrêmes`;
+
+    makeChart('chartPrixMedian', {
+        type: 'line',
+        data: {
+            labels,
+            datasets: [
+                {
+                    label: 'Prix moyen (€)',
+                    data: stats.map(s => s.avg),
+                    borderColor: '#f59e0b', backgroundColor: 'rgba(245,158,11,.1)',
+                    fill: true, tension: .35, borderWidth: 3,
+                    pointRadius: 4, pointHoverRadius: 7, pointBackgroundColor: '#f59e0b'
+                },
+                {
+                    label: 'Prix médian (€)',
+                    data: stats.map(s => s.median),
+                    borderColor: '#8b5cf6', backgroundColor: 'rgba(139,92,246,.08)',
+                    fill: false, tension: .35, borderWidth: 3, borderDash: [6,3],
+                    pointRadius: 4, pointHoverRadius: 7, pointBackgroundColor: '#8b5cf6'
+                }
+            ]
+        },
+        options: {
+            ...baseOpts(),
+            responsive: true, maintainAspectRatio: false,
+            interaction: { mode:'index', intersect:false },
+            plugins: {
+                ...baseOpts().plugins,
+                annotation: undefined
+            }
+        }
+    });
+}
+
+// ═══════════════════════════════════════════════
+// CHART 3 : Prix par ville préférée
+// ═══════════════════════════════════════════════
+function renderChart3() {
+    const labels = VIEW_HISTORY.map(h => fmtLabel(h.date));
+    const c = chartColors();
+
+    // Find preferred cities with enough data
+    const cityData = {};
+    PREFERRED.forEach(city => { cityData[city] = []; });
+
+    VIEW_HISTORY.forEach(h => {
+        const s = computeStats(h.listings);
+        PREFERRED.forEach(city => {
+            cityData[city].push(s.cityAvg[city] || null);
+        });
+    });
+
+    // Keep only cities with data in at least 30% of days
+    const minDays = Math.max(2, Math.floor(VIEW_HISTORY.length * .3));
+    const activeCities = PREFERRED.filter(city =>
+        cityData[city].filter(v => v !== null).length >= minDays
+    ).slice(0, 6);
+
+    const datasets = activeCities.map((city, i) => ({
+        label: city,
+        data: cityData[city],
+        borderColor: CHART_COLORS[i],
+        backgroundColor: CHART_COLORS[i] + '18',
+        fill: false, tension: .3, borderWidth: 2.5,
+        pointRadius: 3, pointHoverRadius: 6,
+        pointBackgroundColor: CHART_COLORS[i],
+        spanGaps: true
+    }));
+
+    makeChart('chartVilles', {
+        type: 'line',
+        data: { labels, datasets },
+        options: {
+            ...baseOpts(),
+            responsive: true, maintainAspectRatio: false,
+            interaction: { mode:'index', intersect:false },
+            plugins: baseOpts().plugins
+        }
+    });
+}
+
+// ═══════════════════════════════════════════════
+// CHART 4 : Prix/m²
+// ═══════════════════════════════════════════════
+function renderChart4() {
+    const labels = VIEW_HISTORY.map(h => fmtLabel(h.date));
+    const stats  = VIEW_HISTORY.map(h => computeStats(h.listings));
+    const c = chartColors();
+
+    document.getElementById('chart4-sub').textContent = '€ par m² · moyenne des annonces avec surface renseignée';
+
+    makeChart('chartPPM2', {
+        type: 'line',
+        data: {
+            labels,
+            datasets: [{
+                label: 'Prix/m² moyen (€)',
+                data: stats.map(s => s.avgPPM2 || null),
+                borderColor: '#ef4444', backgroundColor: 'rgba(239,68,68,.1)',
+                fill: true, tension: .35, borderWidth: 3,
+                pointRadius: 4, pointHoverRadius: 7, pointBackgroundColor: '#ef4444',
+                spanGaps: true
+            }]
+        },
+        options: {
+            ...baseOpts(),
+            responsive: true, maintainAspectRatio: false,
+            interaction: { mode:'index', intersect:false },
+            plugins: baseOpts().plugins
+        }
+    });
+}
+
+// ═══════════════════════════════════════════════
+// CHART 5 : Sites (first vs last)
+// ═══════════════════════════════════════════════
+function renderChart5() {
+    if (VIEW_HISTORY.length < 2) return;
+
+    const first = computeStats(VIEW_HISTORY[0].listings);
+    const last  = computeStats(VIEW_HISTORY[VIEW_HISTORY.length-1].listings);
+
+    // Top sites by last day
+    const topSites = Object.entries(last.sites)
+        .sort((a,b) => b[1]-a[1]).slice(0,8).map(([s]) => s);
+
+    const firstVals = topSites.map(s => first.sites[s] || 0);
+    const lastVals  = topSites.map(s => last.sites[s]  || 0);
+
+    const firstDate = fmtLabel(VIEW_HISTORY[0].date);
+    const lastDate  = fmtLabel(VIEW_HISTORY[VIEW_HISTORY.length-1].date);
+    document.getElementById('chart5-sub').textContent =
+        `${firstDate} vs ${lastDate}`;
+
+    makeChart('chartSites', {
+        type: 'bar',
+        data: {
+            labels: topSites,
+            datasets: [
+                {
+                    label: `${firstDate} (début)`,
+                    data: firstVals,
+                    backgroundColor: 'rgba(102,126,234,.6)',
+                    borderColor: '#667eea', borderWidth: 2, borderRadius: 6
+                },
+                {
+                    label: `${lastDate} (actuel)`,
+                    data: lastVals,
+                    backgroundColor: 'rgba(16,185,129,.65)',
+                    borderColor: '#10b981', borderWidth: 2, borderRadius: 6
+                }
+            ]
+        },
+        options: {
+            ...baseOpts(),
+            responsive: true, maintainAspectRatio: false,
+            interaction: { mode:'index', intersect:false },
+            plugins: baseOpts().plugins
+        }
+    });
+}
+
+// ═══════════════════════════════════════════════
+// CITY TABLE
+// ═══════════════════════════════════════════════
+function renderCityTable() {
+    const tbody = document.getElementById('city-table-body');
+    tbody.innerHTML = '';
+
+    const rows = PREFERRED.map(city => {
+        // Collect avg price per day where city appears
+        const dayAvgs = VIEW_HISTORY
+            .map(h => {
+                const s = computeStats(h.listings);
+                return s.cityAvg[city] ?? null;
+            })
+            .filter(v => v !== null);
+
+        if (dayAvgs.length < 1) return null;
+
+        const firstDay = VIEW_HISTORY.find(h => computeStats(h.listings).cityAvg[city]);
+        const lastDay  = [...VIEW_HISTORY].reverse().find(h => computeStats(h.listings).cityAvg[city]);
+        const firstAvg = firstDay ? computeStats(firstDay.listings).cityAvg[city] : null;
+        const lastAvg  = lastDay  ? computeStats(lastDay.listings).cityAvg[city]  : null;
+        const minP = Math.min(...dayAvgs);
+        const maxP = Math.max(...dayAvgs);
+        const diff = firstAvg && lastAvg ? lastAvg - firstAvg : 0;
+        const pct  = firstAvg ? Math.round(diff/firstAvg*100) : 0;
+
+        return { city, firstAvg, lastAvg, diff, pct, minP, maxP, days: dayAvgs.length };
+    }).filter(Boolean).sort((a,b) => (b.days - a.days));
+
+    if (!rows.length) {
+        tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:2rem;color:var(--text-dim);">Aucune donnée pour cette période</td></tr>';
+        return;
+    }
+
+    const maxDays = Math.max(...rows.map(r => r.days));
+
+    rows.forEach(r => {
+        const tr = document.createElement('tr');
+        const arrowClass = r.diff > 50 ? 'arrow-up' : r.diff < -50 ? 'arrow-down' : 'arrow-flat';
+        const arrowChar  = r.diff > 50 ? '↑' : r.diff < -50 ? '↓' : '→';
+        const sign = r.diff >= 0 ? '+' : '';
+        const barWidth = Math.round(r.days / maxDays * 100);
+
+        tr.innerHTML = `
+            <td><strong>${r.city}</strong></td>
+            <td>${r.firstAvg ? r.firstAvg+'€' : '—'}</td>
+            <td>${r.lastAvg  ? r.lastAvg+'€'  : '—'}</td>
+            <td class="${arrowClass}">${r.diff ? sign+r.diff+'€' : '—'}</td>
+            <td class="${arrowClass}">${r.pct  ? sign+r.pct+'%' : '—'}</td>
+            <td>${r.minP}€</td>
+            <td>${r.maxP}€</td>
+            <td>
+                ${r.days}j
+                <div class="mini-bar"><div class="mini-bar-fill" style="width:${barWidth}%"></div></div>
+            </td>
+            <td><span class="${arrowClass}">${arrowChar}</span></td>`;
+        tbody.appendChild(tr);
+    });
+}
+
+// ═══════════════════════════════════════════════
+// REBUILD ALL
+// ═══════════════════════════════════════════════
+function rebuildAllCharts() {
+    if (!VIEW_HISTORY.length) return;
+    renderKPIs();
+    renderChart1();
+    renderChart2();
+    renderChart3();
+    renderChart4();
+    renderChart5();
+    renderCityTable();
+}
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+async function init() {
+    ALL_HISTORY = await loadAllHistory();
+
+    document.getElementById('loading').style.display = 'none';
+
+    if (!ALL_HISTORY.length) {
+        document.getElementById('main-content').innerHTML =
+            '<div class="loading-overlay">Aucun historique trouvé dans data/history/</div>';
+        document.getElementById('main-content').style.display = 'block';
+        return;
+    }
+
+    document.getElementById('main-content').style.display = 'block';
+
+    applyPeriod();
+    rebuildAllCharts();
+}
+
+init();
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+</script>
+</body>
+</html>

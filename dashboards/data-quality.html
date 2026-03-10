@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Qualité des données - ImmoLux">
+    <meta name="theme-color" content="#09090F">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Security Headers -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https:;">
+    <link rel="manifest" href="manifest.json">
+    <title>Qualité des Données — ImmoLux</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="data/version.js"></script>
+    <script src="version-display.js" defer></script>
+    <style>
+        :root {
+            --bg: #09090F;
+            --bg-card: #111118;
+            --bg-lift: #16161F;
+            --bg-panel: #1C1C27;
+            --gold: #C9A265;
+            --gold-dim: rgba(201,162,101,0.18);
+            --gold-line: rgba(201,162,101,0.35);
+            --text: #E8E4DC;
+            --text-muted: #7A7A8C;
+            --text-dim: #4A4A5C;
+            --border: rgba(255,255,255,0.07);
+            --border-gold: rgba(201,162,101,0.25);
+            --radius: 4px;
+            --radius-lg: 8px;
+            --shadow: 0 4px 32px rgba(0,0,0,0.5);
+            --font-display: 'Cormorant Garamond', Georgia, serif;
+            --font-body: 'Outfit', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        body.light-mode {
+            --bg: #F5F0E8;
+            --bg-card: #FFFFFF;
+            --bg-lift: #FAF7F2;
+            --bg-panel: #F0EAE0;
+            --text: #1A1A24;
+            --text-muted: #6B6B7C;
+            --text-dim: #A0A0B0;
+            --border: rgba(0,0,0,0.08);
+            --border-gold: rgba(160,110,50,0.3);
+            --gold: #9A6E2A;
+            --gold-dim: rgba(154,110,42,0.1);
+            --gold-line: rgba(154,110,42,0.3);
+            --shadow: 0 4px 24px rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: linear-gradient(var(--border) 1px, transparent 1px),
+                              linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.4;
+        }
+
+        /* NAV BAR */
+        .nav-bar {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0 1.5rem;
+            height: 52px;
+            background: rgba(9,9,15,0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        body.light-mode .nav-bar {
+            background: rgba(245,240,232,0.92);
+        }
+
+        .nav-bar::-webkit-scrollbar { display: none; }
+
+        .nav-link {
+            font-family: var(--font-body);
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 0.35rem 0.75rem;
+            border-radius: var(--radius);
+            white-space: nowrap;
+            transition: color 0.2s, background 0.2s;
+            letter-spacing: 0.02em;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--gold);
+            background: var(--gold-dim);
+        }
+
+        .nav-toggle {
+            margin-left: auto;
+            flex-shrink: 0;
+            background: none;
+            border: 1px solid var(--border-gold);
+            color: var(--text-muted);
+            font-size: 1rem;
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .nav-toggle:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        /* LAYOUT */
+        .page-wrap {
+            position: relative;
+            z-index: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem 4rem;
+        }
+
+        /* HEADER */
+        .page-header {
+            margin-bottom: 2.5rem;
+            animation: fadeInDown 0.6s ease;
+        }
+
+        .page-header h1 {
+            font-family: var(--font-display);
+            font-size: 2.6rem;
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: 0.01em;
+            margin-bottom: 0.4rem;
+        }
+
+        .page-header h1 span.accent {
+            color: var(--gold);
+        }
+
+        .page-subtitle {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .header-divider {
+            width: 48px;
+            height: 1px;
+            background: var(--gold-line);
+            margin: 1rem 0;
+        }
+
+        /* METRICS GRID */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+            animation: fadeIn 0.8s ease 0.1s both;
+        }
+
+        .metric-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-top: 2px solid var(--card-accent, var(--border-gold));
+            border-radius: var(--radius-lg);
+            padding: 1.5rem 1.25rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+            border-color: var(--border-gold);
+        }
+
+        .metric-value {
+            font-size: 1.9rem;
+            font-weight: 700;
+            font-family: var(--font-mono);
+            margin-bottom: 0.4rem;
+            letter-spacing: -0.02em;
+        }
+
+        .metric-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 0.2rem;
+        }
+
+        .metric-sub {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            font-family: var(--font-mono);
+        }
+
+        /* CHART CARDS */
+        .chart-grid {
+            display: grid;
+            grid-template-columns: 5fr 7fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 900px) {
+            .chart-grid { grid-template-columns: 1fr; }
+        }
+
+        .chart-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.75rem;
+            box-shadow: var(--shadow);
+            animation: fadeInUp 0.6s ease both;
+            margin-bottom: 1rem;
+        }
+
+        .chart-card:last-child { margin-bottom: 0; }
+
+        .chart-title {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.25rem;
+            letter-spacing: 0.01em;
+        }
+
+        .chart-title-sub {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-bottom: 1.25rem;
+            font-weight: 400;
+        }
+
+        .chart-divider {
+            height: 1px;
+            background: var(--border);
+            margin-bottom: 1.25rem;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 280px;
+        }
+
+        /* SITE ROWS */
+        .site-row {
+            background: var(--bg-lift);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--row-accent, var(--border-gold));
+            border-radius: var(--radius-lg);
+            padding: 1.1rem 1.25rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            flex-wrap: wrap;
+            transition: background 0.2s, border-color 0.2s, transform 0.2s;
+        }
+
+        .site-row:hover {
+            transform: translateX(4px);
+            background: var(--bg-panel);
+            border-color: var(--border-gold);
+        }
+
+        .site-name-col {
+            font-weight: 600;
+            min-width: 140px;
+            color: var(--gold);
+            font-size: 0.95rem;
+            font-family: var(--font-body);
+            letter-spacing: 0.01em;
+        }
+
+        .score-ring {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #fff;
+            font-family: var(--font-mono);
+            margin: 0 auto 0.2rem;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+            letter-spacing: -0.02em;
+        }
+
+        .score-excellent { background: linear-gradient(135deg, #2D7D46, #3AB56A); }
+        .score-good      { background: linear-gradient(135deg, #1A7A8A, #2AAFCA); }
+        .score-warning   { background: linear-gradient(135deg, #9A7A10, #CCA020); }
+        .score-poor      { background: linear-gradient(135deg, #8B2020, #C43030); }
+
+        .score-count {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            font-weight: 600;
+            text-align: center;
+            font-family: var(--font-mono);
+        }
+
+        .mini-bar-wrap {
+            flex: 1;
+            min-width: 130px;
+        }
+
+        .mini-bar-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 0.35rem;
+            display: flex;
+            justify-content: space-between;
+            font-weight: 500;
+            font-family: var(--font-body);
+        }
+
+        .mini-bar-label span:last-child {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+        }
+
+        .mini-bar {
+            height: 6px;
+            border-radius: 3px;
+            background: var(--bg-panel);
+            overflow: hidden;
+        }
+
+        .mini-bar-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ALERTS */
+        .alert-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.9rem;
+            padding: 0.9rem 1.25rem;
+            border-radius: var(--radius-lg);
+            margin-bottom: 0.6rem;
+            font-size: 0.88rem;
+            border-left: 3px solid;
+            transition: transform 0.2s;
+            background: var(--bg-lift);
+            border-top: 1px solid var(--border);
+            border-right: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .alert-row:hover {
+            transform: translateX(3px);
+        }
+
+        .alert-row .alert-icon {
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            margin-top: 0.05rem;
+        }
+
+        .alert-row strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .alert-row span:last-child {
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .alert-danger-custom  { border-left-color: #C43030; }
+        .alert-warning-custom { border-left-color: #CCA020; }
+        .alert-info-custom    { border-left-color: #2AAFCA; }
+        .alert-ok-custom      { border-left-color: #3AB56A; }
+
+        /* BACK LINK */
+        .back-wrap {
+            text-align: center;
+            margin-top: 2.5rem;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.75rem 2rem;
+            background: transparent;
+            color: var(--gold);
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius-lg);
+            font-family: var(--font-body);
+            font-weight: 500;
+            font-size: 0.88rem;
+            text-decoration: none;
+            transition: background 0.2s, border-color 0.2s, transform 0.2s;
+            letter-spacing: 0.03em;
+        }
+
+        .btn-back:hover {
+            background: var(--gold-dim);
+            border-color: var(--gold);
+            transform: translateY(-2px);
+            color: var(--gold);
+        }
+
+        /* FLOATING DARK MODE TOGGLE */
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dark-mode-toggle:hover {
+            transform: scale(1.1) rotate(15deg);
+            border-color: var(--gold);
+        }
+
+        @media (max-width: 900px) {
+            .dark-mode-toggle { display: none; }
+        }
+
+        /* SECTION LABEL */
+        .section-label {
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-dim);
+            margin-bottom: 0.75rem;
+            padding-left: 0.1rem;
+        }
+
+        /* ANIMATIONS */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .page-header h1 { font-size: 2rem; }
+            .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+            .site-row { flex-direction: column; align-items: flex-start; }
+            .page-wrap { padding: 1.5rem 1rem 3rem; }
+        }
+
+        @media (max-width: 480px) {
+            .metrics-grid { grid-template-columns: 1fr 1fr; }
+            .nav-bar { padding: 0 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav-bar">
+        <a href="index.html" class="nav-link">Dashboard</a>
+        <a href="new-listings.html" class="nav-link">Nouvelles</a>
+        <a href="anomalies.html" class="nav-link">Anomalies</a>
+        <a href="map-advanced.html" class="nav-link">Carte</a>
+        <a href="favorites.html" class="nav-link">Prioritaires</a>
+        <a href="3chambres.html" class="nav-link">3 Chambres</a>
+        <a href="ia-analyse.html" class="nav-link">Analyse IA</a>
+        <a href="stats-by-city.html" class="nav-link">Villes</a>
+        <button class="nav-toggle" id="darkModeToggle" title="Mode clair/sombre">☀️</button>
+    </nav>
+
+    <div class="page-wrap">
+        <!-- Header -->
+        <div class="page-header">
+            <p class="section-label">Monitoring</p>
+            <h1>Qualité des <span class="accent">Données</span></h1>
+            <div class="header-divider"></div>
+            <p class="page-subtitle" id="lastUpdate">Mis à jour: —</p>
+        </div>
+
+        <!-- Métriques globales -->
+        <div class="section-label">Métriques globales</div>
+        <div class="metrics-grid" id="metricsGrid"></div>
+
+        <!-- Graphiques -->
+        <div class="chart-grid">
+            <div class="chart-card" style="animation-delay:0.05s">
+                <div class="chart-title">Score Qualité Global</div>
+                <div class="chart-title-sub">Moyenne pondérée des 5 critères</div>
+                <div class="chart-divider"></div>
+                <div class="chart-container">
+                    <canvas id="chartDoughnut"></canvas>
+                </div>
+            </div>
+            <div class="chart-card" style="animation-delay:0.1s">
+                <div class="chart-title">Couverture par Champ</div>
+                <div class="chart-title-sub">Taux de renseignement par attribut</div>
+                <div class="chart-divider"></div>
+                <div class="chart-container">
+                    <canvas id="chartFields"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Graphique qualité par site -->
+        <div class="chart-card" style="animation-delay:0.15s">
+            <div class="chart-title">Qualité par Site</div>
+            <div class="chart-title-sub">Photos · GPS · Surface par source</div>
+            <div class="chart-divider"></div>
+            <div style="position:relative;height:280px;">
+                <canvas id="chartSites"></canvas>
+            </div>
+        </div>
+
+        <!-- Détail par site -->
+        <div class="chart-card" style="animation-delay:0.2s">
+            <div class="chart-title">Détail par Site</div>
+            <div class="chart-title-sub">Score et couverture individuelle par scraper</div>
+            <div class="chart-divider"></div>
+            <div id="sitesDetail"></div>
+        </div>
+
+        <!-- Alertes -->
+        <div class="chart-card" style="animation-delay:0.25s">
+            <div class="chart-title">Alertes &amp; Problèmes</div>
+            <div class="chart-title-sub">Anomalies détectées automatiquement</div>
+            <div class="chart-divider"></div>
+            <div id="alertsContainer"></div>
+        </div>
+
+        <div class="back-wrap">
+            <a href="index.html" class="btn-back">
+                <span>←</span>
+                <span>Retour au Dashboard</span>
+            </a>
+        </div>
+    </div>
+
+    <button class="dark-mode-toggle" id="darkModeToggleFloat">☀️</button>
+
+    <script src="data/listings.js"></script>
+    <script>
+        // Dark mode
+        const dm = document.getElementById('darkModeToggle');
+        const dmFloat = document.getElementById('darkModeToggleFloat');
+        function applyDM(light) { document.body.classList.toggle('light-mode',light); const icon=light?'🌙':'☀️'; dm.textContent=icon; if(dmFloat)dmFloat.textContent=icon; localStorage.setItem('darkMode',light); }
+        dm.addEventListener('click',()=>applyDM(!document.body.classList.contains('light-mode')));
+        if(dmFloat)dmFloat.addEventListener('click',()=>dm.click());
+        applyDM(localStorage.getItem('darkMode')==='true');
+
+        // normCity fallback
+        if (typeof normCity === 'undefined') {
+            window.normCity = function(city) {
+                return city ? city.replace(/^Luxembourg[-\s]/i, '') : city;
+            };
+        }
+
+        // HELPERS
+        function pct(n, total) { return total ? Math.round(n / total * 100) : 0; }
+        function scoreColor(p) {
+            if (p >= 80) return '#28a745';
+            if (p >= 60) return '#17a2b8';
+            if (p >= 35) return '#ffc107';
+            return '#dc3545';
+        }
+        function scoreClass(p) {
+            if (p >= 80) return 'score-excellent';
+            if (p >= 60) return 'score-good';
+            if (p >= 35) return 'score-warning';
+            return 'score-poor';
+        }
+        function hasValidPhoto(l) {
+            const img = l.image_url || '';
+            if (!img) return false;
+            if (img.startsWith('images/')) return true;
+            if (img.includes('imageGallery')) return false;
+            return img.startsWith('http');
+        }
+
+        // INIT
+        function init() {
+            if (!LISTINGS || !Array.isArray(LISTINGS) || !LISTINGS.length) {
+                document.getElementById('sitesDetail').innerHTML = '<p style="color:var(--text-muted);">Aucune donnée disponible.</p>';
+                return;
+            }
+
+            const total = LISTINGS.length;
+            let withPhotos = 0, withGPS = 0, withSurface = 0, withRooms = 0, withPrice = 0;
+
+            LISTINGS.forEach(l => {
+                if (hasValidPhoto(l))                    withPhotos++;
+                if (l.latitude && l.longitude)           withGPS++;
+                if (l.surface && l.surface > 0)          withSurface++;
+                if (l.rooms   && l.rooms > 0)            withRooms++;
+                if (l.price   && l.price > 0)            withPrice++;
+            });
+
+            const pp = pct(withPhotos, total);
+            const gp = pct(withGPS, total);
+            const sp = pct(withSurface, total);
+            const rp = pct(withRooms, total);
+            const prp = pct(withPrice, total);
+            const globalScore = Math.round((pp + gp + sp + rp + prp) / 5);
+
+            document.getElementById('lastUpdate').textContent = 'Mis à jour: ' + new Date().toLocaleString('fr-FR');
+
+            // Métriques cards
+            document.getElementById('metricsGrid').innerHTML = [
+                { label: 'Total Annonces', val: total.toLocaleString(),            sub: 'dans la base',          color: 'var(--gold)' },
+                { label: 'Photos locales', val: pp + '%',         sub: `${withPhotos}/${total}`, color: scoreColor(pp) },
+                { label: 'GPS',            val: gp + '%',         sub: `${withGPS}/${total}`,   color: scoreColor(gp) },
+                { label: 'Surface',        val: sp + '%',         sub: `${withSurface}/${total}`,color: scoreColor(sp) },
+                { label: 'Chambres',       val: rp + '%',         sub: `${withRooms}/${total}`, color: scoreColor(rp) },
+                { label: 'Prix',           val: prp + '%',        sub: `${withPrice}/${total}`, color: scoreColor(prp) },
+                { label: 'Score Global',   val: globalScore + '%',sub: 'moyenne 5 critères',    color: scoreColor(globalScore) },
+            ].map(m => `
+                <div class="metric-card" style="--card-accent:${m.color};">
+                    <div class="metric-value" style="color:${m.color};">${m.val}</div>
+                    <div class="metric-label">${m.label}</div>
+                    <div class="metric-sub">${m.sub}</div>
+                </div>
+            `).join('');
+
+            renderDoughnut(globalScore);
+            renderFieldsChart(pp, gp, sp, rp, prp);
+            renderSiteStats();
+        }
+
+        // DOUGHNUT — Score Global
+        function renderDoughnut(score) {
+            const colors = document.body.classList.contains('light-mode') ?
+                { text: '#1A1A24', grid: 'rgba(0,0,0,0.08)' } :
+                { text: '#E8E4DC', grid: 'rgba(255,255,255,0.07)' };
+
+            new Chart(document.getElementById('chartDoughnut'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Score', 'Manquant'],
+                    datasets: [{
+                        data: [score, 100 - score],
+                        backgroundColor: [scoreColor(score), colors.grid],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    cutout: '72%',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { enabled: false }
+                    }
+                },
+                plugins: [{
+                    id: 'centerText',
+                    afterDraw(chart) {
+                        const { width, height, ctx } = chart;
+                        ctx.save();
+                        ctx.font = `bold ${height * 0.18}px 'JetBrains Mono', monospace`;
+                        ctx.fillStyle = scoreColor(score);
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText(score + '%', width / 2, height / 2);
+                        ctx.font = `${height * 0.09}px 'Outfit', sans-serif`;
+                        ctx.fillStyle = '#9ca3af';
+                        ctx.fillText('qualité', width / 2, height / 2 + height * 0.13);
+                        ctx.restore();
+                    }
+                }]
+            });
+        }
+
+        // BAR — Couverture par Champ
+        function renderFieldsChart(pp, gp, sp, rp, prp) {
+            const colors = document.body.classList.contains('light-mode') ?
+                { text: '#1A1A24', grid: 'rgba(0,0,0,0.08)' } :
+                { text: '#E8E4DC', grid: 'rgba(255,255,255,0.07)' };
+
+            const labels = ['Photos', 'GPS', 'Surface', 'Chambres', 'Prix'];
+            const values = [pp, gp, sp, rp, prp];
+
+            new Chart(document.getElementById('chartFields'), {
+                type: 'bar',
+                data: {
+                    labels,
+                    datasets: [{
+                        label: 'Couverture (%)',
+                        data: values,
+                        backgroundColor: values.map(v => scoreColor(v) + 'cc'),
+                        borderColor:     values.map(v => scoreColor(v)),
+                        borderWidth: 2,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(0,0,0,0.8)',
+                            padding: 12,
+                            titleFont: { size: 14, weight: '600' },
+                            bodyFont: { size: 13 },
+                            cornerRadius: 8
+                        }
+                    },
+                    scales: {
+                        x: { ticks: { color: colors.text, font: { size: 12, weight: '600' } }, grid: { color: colors.grid } },
+                        y: { min: 0, max: 100, ticks: { callback: v => v + '%', color: colors.text, font: { size: 12 } }, grid: { color: colors.grid } }
+                    }
+                }
+            });
+        }
+
+        // GROUPED BAR — Qualité par Site
+        function renderSiteStats() {
+            const siteStats = {};
+            LISTINGS.forEach(l => {
+                const site = l.site || 'Inconnu';
+                if (!siteStats[site]) siteStats[site] = { total:0, p:0, g:0, s:0, r:0 };
+                siteStats[site].total++;
+                if (hasValidPhoto(l))           siteStats[site].p++;
+                if (l.latitude && l.longitude)  siteStats[site].g++;
+                if (l.surface && l.surface > 0) siteStats[site].s++;
+                if (l.rooms   && l.rooms > 0)   siteStats[site].r++;
+            });
+
+            const sorted = Object.entries(siteStats).sort((a,b) => b[1].total - a[1].total);
+            const labels = sorted.map(([s]) => s.replace('.lu','').replace('.be',''));
+
+            const colors = document.body.classList.contains('light-mode') ?
+                { text: '#1A1A24', grid: 'rgba(0,0,0,0.08)' } :
+                { text: '#E8E4DC', grid: 'rgba(255,255,255,0.07)' };
+
+            new Chart(document.getElementById('chartSites'), {
+                type: 'bar',
+                data: {
+                    labels,
+                    datasets: [
+                        { label: '📷 Photos',   data: sorted.map(([,v]) => pct(v.p, v.total)), backgroundColor: '#667eeacc', borderRadius: 6 },
+                        { label: '📍 GPS',      data: sorted.map(([,v]) => pct(v.g, v.total)), backgroundColor: '#17a2b8cc', borderRadius: 6 },
+                        { label: '📐 Surface',  data: sorted.map(([,v]) => pct(v.s, v.total)), backgroundColor: '#28a745cc', borderRadius: 6 },
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top', labels: { color: colors.text, font: { size: 12, weight: '600' } } },
+                        tooltip: {
+                            backgroundColor: 'rgba(0,0,0,0.8)',
+                            padding: 12,
+                            titleFont: { size: 14, weight: '600' },
+                            bodyFont: { size: 13 },
+                            cornerRadius: 8
+                        }
+                    },
+                    scales: {
+                        x: { ticks: { font: { size: 11 }, color: colors.text }, grid: { color: colors.grid } },
+                        y: { min: 0, max: 100, ticks: { callback: v => v + '%', color: colors.text }, grid: { color: colors.grid } }
+                    }
+                }
+            });
+
+            // Détail par site (rows)
+            const container = document.getElementById('sitesDetail');
+            const alertsData = [];
+
+            container.innerHTML = sorted.map(([site, v]) => {
+                const pp = pct(v.p, v.total), gp = pct(v.g, v.total), sp = pct(v.s, v.total), rp = pct(v.r, v.total);
+                const score = Math.round((pp + gp + sp + rp) / 4);
+                const borderColor = scoreColor(score);
+
+                // Collecter alertes
+                if (pp < 20) alertsData.push({ type:'warning', icon:'⚠️', site, msg:`Faible couverture photos : ${pp}% (${v.p}/${v.total})` });
+                if (gp < 20) alertsData.push({ type:'info',    icon:'ℹ️', site, msg:`GPS limité : ${gp}% géolocalisés` });
+                if (v.total === 1) alertsData.push({ type:'info', icon:'ℹ️', site, msg:`1 seule annonce — scraper peu actif ?` });
+
+                return `
+                    <div class="site-row" style="--row-accent:${borderColor};">
+                        <div class="site-name-col">${site}</div>
+                        <div style="min-width:70px;text-align:center;">
+                            <div class="score-ring ${scoreClass(score)}">${score}%</div>
+                            <div class="score-count">${v.total} ann.</div>
+                        </div>
+                        <div class="mini-bar-wrap">
+                            <div class="mini-bar-label"><span>Photos</span><span>${pp}%</span></div>
+                            <div class="mini-bar"><div class="mini-bar-fill" style="width:${pp}%;background:${scoreColor(pp)};"></div></div>
+                        </div>
+                        <div class="mini-bar-wrap">
+                            <div class="mini-bar-label"><span>GPS</span><span>${gp}%</span></div>
+                            <div class="mini-bar"><div class="mini-bar-fill" style="width:${gp}%;background:#17a2b8;"></div></div>
+                        </div>
+                        <div class="mini-bar-wrap">
+                            <div class="mini-bar-label"><span>Surface</span><span>${sp}%</span></div>
+                            <div class="mini-bar"><div class="mini-bar-fill" style="width:${sp}%;background:#28a745;"></div></div>
+                        </div>
+                        <div class="mini-bar-wrap">
+                            <div class="mini-bar-label"><span>Chambres</span><span>${rp}%</span></div>
+                            <div class="mini-bar"><div class="mini-bar-fill" style="width:${rp}%;background:#6f42c1;"></div></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Alertes
+            const knownBlocked = ['Wortimmo.lu', 'Immoweb.be'];
+            knownBlocked.forEach(site => {
+                if (!siteStats[site]) {
+                    alertsData.push({ type:'danger', icon:'🔴', site, msg:'Site bloqué ou inactif (CAPTCHA/Cloudflare)' });
+                }
+            });
+
+            const alertsContainer = document.getElementById('alertsContainer');
+            if (!alertsData.length) {
+                alertsContainer.innerHTML = '<div class="alert-row alert-ok-custom"><span class="alert-icon">✅</span><span><strong>Aucun problème détecté</strong> — Tous les scrapers fonctionnent normalement.</span></div>';
+            } else {
+                alertsContainer.innerHTML = alertsData.map(a => `
+                    <div class="alert-row alert-${a.type}-custom">
+                        <span class="alert-icon">${a.icon}</span>
+                        <span><strong>${a.site}</strong> — ${a.msg}</span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Service Worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').catch(() => {});
+        }
+
+        init();
+    </script>
+
+</body>
+</html>

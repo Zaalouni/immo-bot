@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Bonnes Affaires Immobilier - ImmoLux">
+    <meta name="theme-color" content="#09090F">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ImmoLux Anomalies">
+    <link rel="apple-touch-icon" href="icon.svg">
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Security Headers -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https:;">
+
+    <title>Bonnes Affaires — ImmoLux</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <style>
+        /* ── Atelier Noir Design System ───────────────────────── */
+        :root {
+            --bg:          #09090F;
+            --bg-card:     #111118;
+            --bg-lift:     #16161F;
+            --bg-panel:    #1C1C27;
+            --gold:        #C9A265;
+            --gold-dim:    rgba(201,162,101,0.18);
+            --gold-line:   rgba(201,162,101,0.35);
+            --text:        #E8E4DC;
+            --text-muted:  #7A7A8C;
+            --text-dim:    #4A4A5C;
+            --border:      rgba(255,255,255,0.07);
+            --border-gold: rgba(201,162,101,0.25);
+            --radius:      4px;
+            --radius-lg:   8px;
+            --shadow:      0 4px 32px rgba(0,0,0,0.5);
+            --font-display:'Cormorant Garamond', Georgia, serif;
+            --font-body:   'Outfit', system-ui, sans-serif;
+            --font-mono:   'JetBrains Mono', monospace;
+
+            /* Semantic colors */
+            --emerald:     #2DD4A4;
+            --emerald-dim: rgba(45,212,164,0.15);
+            --emerald-line:rgba(45,212,164,0.35);
+            --coral:       #E06B6B;
+            --coral-dim:   rgba(224,107,107,0.15);
+            --amber:       #D4942D;
+            --amber-dim:   rgba(212,148,45,0.15);
+        }
+
+        body.light-mode {
+            --bg:          #F5F0E8;
+            --bg-card:     #FFFFFF;
+            --bg-lift:     #FAF7F2;
+            --bg-panel:    #F0EAE0;
+            --text:        #1A1A24;
+            --text-muted:  #6B6B7C;
+            --text-dim:    #A0A0B0;
+            --border:      rgba(0,0,0,0.08);
+            --border-gold: rgba(160,110,50,0.3);
+            --gold:        #9A6E2A;
+            --gold-dim:    rgba(154,110,42,0.1);
+            --gold-line:   rgba(154,110,42,0.3);
+            --shadow:      0 4px 24px rgba(0,0,0,0.1);
+
+            --emerald:     #1A9E7A;
+            --emerald-dim: rgba(26,158,122,0.12);
+            --emerald-line:rgba(26,158,122,0.3);
+            --coral:       #C04444;
+            --coral-dim:   rgba(192,68,68,0.12);
+            --amber:       #A06820;
+            --amber-dim:   rgba(160,104,32,0.12);
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            font-size: 15px;
+            line-height: 1.6;
+            transition: background 0.4s, color 0.4s;
+            overflow-x: hidden;
+        }
+
+        /* Grid texture */
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            background-image:
+                linear-gradient(var(--border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none; z-index: 0; opacity: 0.4;
+        }
+
+        /* ── Animations ───────────────────────────────────────── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Layout ───────────────────────────────────────────── */
+        .page-wrap {
+            position: relative; z-index: 1;
+            max-width: 1360px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+        }
+
+        /* ── Nav Bar ──────────────────────────────────────────── */
+        .nav-bar {
+            display: flex; gap: 0.4rem; flex-wrap: wrap;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2rem;
+            animation: fadeUp 0.7s ease 0.05s both;
+            align-items: center;
+        }
+
+        .nav-link {
+            font-size: 0.72rem; font-weight: 600;
+            letter-spacing: 0.1em; text-transform: uppercase;
+            text-decoration: none; color: var(--text-muted);
+            padding: 0.4rem 0.9rem;
+            border-radius: var(--radius);
+            border: 1px solid transparent;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .nav-link:hover { color: var(--text); border-color: var(--border); }
+        .nav-link.active {
+            color: var(--gold);
+            border-color: var(--gold-line);
+            background: var(--gold-dim);
+        }
+
+        .nav-toggle {
+            margin-left: auto;
+            background: transparent;
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius);
+            color: var(--gold);
+            font-size: 1rem;
+            padding: 0.35rem 0.65rem;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+        .nav-toggle:hover { background: var(--gold-dim); border-color: var(--gold); }
+
+        /* ── Hero ─────────────────────────────────────────────── */
+        .hero {
+            padding: 2.5rem 0 2rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2.5rem;
+            animation: fadeUp 0.6s ease both;
+        }
+
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: 0.01em;
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-title span {
+            color: var(--gold);
+        }
+
+        .hero-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        /* ── Stats Grid ───────────────────────────────────────── */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem 1.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.2s, transform 0.2s;
+            animation: slideUp 0.6s ease both;
+        }
+
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.15s; }
+        .stat-card:nth-child(3) { animation-delay: 0.2s; }
+        .stat-card:nth-child(4) { animation-delay: 0.25s; }
+        .stat-card:nth-child(5) { animation-delay: 0.3s; }
+
+        .stat-card:hover {
+            border-color: var(--border-gold);
+            transform: translateY(-2px);
+        }
+
+        .stat-card.highlight-good {
+            border-left: 2px solid var(--emerald);
+            background: linear-gradient(135deg, var(--bg-card) 70%, var(--emerald-dim));
+        }
+
+        .stat-card.highlight-high {
+            border-left: 2px solid var(--coral);
+            background: linear-gradient(135deg, var(--bg-card) 70%, var(--coral-dim));
+        }
+
+        .stat-label {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-family: var(--font-mono);
+            font-size: 2rem;
+            font-weight: 500;
+            color: var(--text);
+            font-variant-numeric: tabular-nums;
+            line-height: 1;
+        }
+
+        .stat-value.emerald { color: var(--emerald); }
+        .stat-value.coral   { color: var(--coral); }
+        .stat-value.amber   { color: var(--gold); }
+
+        /* ── Section Header ───────────────────────────────────── */
+        .section-header {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 1.35rem;
+            margin: 2rem 0 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text);
+            letter-spacing: 0.01em;
+        }
+
+        .section-header::before {
+            content: '';
+            display: block;
+            width: 3px;
+            height: 1.2rem;
+            background: var(--gold);
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        .section-header.emerald-accent::before {
+            background: var(--emerald);
+        }
+
+        /* ── Table ────────────────────────────────────────────── */
+        .table-glass {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .table-glass table {
+            width: 100%;
+            margin: 0;
+            border-collapse: collapse;
+        }
+
+        .table-glass thead {
+            background: var(--bg-lift);
+            border-bottom: 1px solid var(--border-gold);
+        }
+
+        .table-glass th {
+            font-family: var(--font-body);
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 0.9rem 1rem;
+            color: var(--text-muted);
+            text-align: left;
+        }
+
+        .table-glass td {
+            font-family: var(--font-body);
+            padding: 0.85rem 1rem;
+            color: var(--text);
+            border-bottom: 1px solid var(--border);
+            font-variant-numeric: tabular-nums;
+            font-size: 0.9rem;
+        }
+
+        .table-glass tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .table-glass tbody tr {
+            transition: background 0.15s;
+        }
+
+        .table-glass tbody tr:hover {
+            background: var(--bg-lift);
+        }
+
+        .city-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .price-badge {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: var(--radius);
+            font-size: 0.75rem;
+            font-weight: 600;
+            font-family: var(--font-mono);
+        }
+
+        .price-badge.good {
+            background: var(--emerald-dim);
+            color: var(--emerald);
+            border: 1px solid var(--emerald-line);
+        }
+
+        /* ── Chart Container ──────────────────────────────────── */
+        .chart-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.75rem 2rem;
+            margin: 2rem 0;
+        }
+
+        .chart-title {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+        }
+
+        /* ── Filters Bar ──────────────────────────────────────── */
+        .filters-bar {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+            padding: 1.25rem 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            align-items: flex-end;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .filter-label {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 0.4rem;
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .filter-select {
+            width: 100%;
+            padding: 0.55rem 0.9rem;
+            background: var(--bg-lift);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--text);
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            transition: border-color 0.2s;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        .filter-select:hover {
+            border-color: var(--border-gold);
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 2px var(--gold-dim);
+        }
+
+        .result-count {
+            padding: 0.55rem 0;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 500;
+            font-family: var(--font-mono);
+        }
+
+        /* ── Collapsible Section ──────────────────────────────── */
+        .collapsible-section {
+            margin: 1.5rem 0;
+        }
+
+        .section-toggle {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+            margin-bottom: 0.75rem;
+            color: var(--text);
+        }
+
+        .section-toggle:hover {
+            border-color: var(--border-gold);
+            background: var(--bg-lift);
+        }
+
+        .section-toggle-title {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            letter-spacing: 0.01em;
+        }
+
+        .section-toggle-icon {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            transition: transform 0.3s;
+            display: inline-block;
+        }
+
+        .section-toggle.collapsed .section-toggle-icon {
+            transform: rotate(-90deg);
+        }
+
+        .section-content {
+            max-height: 9000px;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
+            opacity: 1;
+        }
+
+        .section-content.collapsed {
+            max-height: 0;
+            opacity: 0;
+        }
+
+        .section-count {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        /* ── Listing Cards Grid ───────────────────────────────── */
+        .listings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.25rem;
+            margin-top: 0.5rem;
+        }
+
+        .listing-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .listing-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: var(--gold-line);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .listing-card:hover {
+            border-color: var(--border-gold);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+
+        .listing-card:hover::after {
+            opacity: 1;
+        }
+
+        .listing-card.good-deal {
+            border-left: 2px solid var(--emerald);
+            background: linear-gradient(135deg, var(--bg-card) 70%, var(--emerald-dim));
+        }
+
+        .listing-card.good-deal::after {
+            background: var(--emerald-line);
+        }
+
+        .listing-card.high-price {
+            border-left: 2px solid var(--coral);
+            background: linear-gradient(135deg, var(--bg-card) 70%, var(--coral-dim));
+        }
+
+        .listing-card.high-price::after {
+            background: var(--coral-dim);
+        }
+
+        .listing-title {
+            font-family: var(--font-body);
+            font-weight: 500;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            color: var(--text);
+            margin-bottom: 0.9rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .listing-price {
+            font-family: var(--font-mono);
+            font-size: 1.65rem;
+            font-weight: 500;
+            font-variant-numeric: tabular-nums;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+            line-height: 1;
+        }
+
+        .listing-card.good-deal .listing-price {
+            color: var(--emerald);
+        }
+
+        .listing-card.high-price .listing-price {
+            color: var(--coral);
+        }
+
+        .price-context {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.9rem;
+            padding: 0.5rem 0.75rem;
+            background: var(--bg-lift);
+            border-radius: var(--radius);
+            border-left: 2px solid var(--border-gold);
+            line-height: 1.4;
+        }
+
+        .price-context.good {
+            border-left-color: var(--emerald);
+            background: var(--emerald-dim);
+            color: var(--emerald);
+        }
+
+        .price-context.normal {
+            border-left-color: var(--border-gold);
+        }
+
+        .price-context.high {
+            border-left-color: var(--coral);
+            background: var(--coral-dim);
+            color: var(--coral);
+        }
+
+        .ratio-bar {
+            height: 3px;
+            background: var(--bg-panel);
+            border-radius: 2px;
+            margin: 0.75rem 0;
+            overflow: hidden;
+        }
+
+        .ratio-fill {
+            height: 100%;
+            border-radius: 2px;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .ratio-fill.good   { background: var(--emerald); }
+        .ratio-fill.normal { background: var(--gold); }
+        .ratio-fill.high   { background: var(--coral); }
+
+        /* ── Badges ───────────────────────────────────────────── */
+        .listing-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin: 0.85rem 0;
+        }
+
+        .badge {
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0.25rem 0.6rem;
+            border-radius: var(--radius);
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .badge-site {
+            background: var(--bg-panel);
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+        }
+
+        .badge-city {
+            background: var(--amber-dim);
+            color: var(--gold);
+            border: 1px solid rgba(201,162,101,0.2);
+        }
+
+        .badge-deal {
+            background: var(--emerald-dim);
+            color: var(--emerald);
+            border: 1px solid var(--emerald-line);
+        }
+
+        .badge-high {
+            background: var(--coral-dim);
+            color: var(--coral);
+            border: 1px solid rgba(224,107,107,0.3);
+        }
+
+        /* ── Listing Details ──────────────────────────────────── */
+        .listing-details {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .listing-details span {
+            font-family: var(--font-mono);
+        }
+
+        /* ── CTA Button ───────────────────────────────────────── */
+        .listing-btn {
+            width: 100%;
+            padding: 0.65rem 1rem;
+            background: transparent;
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius);
+            color: var(--gold);
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 0.85rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s, color 0.2s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .listing-btn:hover {
+            background: var(--gold-dim);
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .listing-card.good-deal .listing-btn {
+            border-color: var(--emerald-line);
+            color: var(--emerald);
+        }
+
+        .listing-card.good-deal .listing-btn:hover {
+            background: var(--emerald-dim);
+            border-color: var(--emerald);
+        }
+
+        /* ── No Results ───────────────────────────────────────── */
+        .no-results {
+            text-align: center;
+            padding: 4rem 2rem;
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            color: var(--text-muted);
+        }
+
+        /* ── Floating Dark Mode Toggle ────────────────────────── */
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dark-mode-toggle:hover {
+            transform: scale(1.1) rotate(15deg);
+            border-color: var(--gold);
+        }
+
+        @media (max-width: 900px) {
+            .dark-mode-toggle { display: none; }
+        }
+
+        /* ── Responsive ───────────────────────────────────────── */
+        @media (max-width: 768px) {
+            .page-wrap { padding: 0 1rem 3rem; }
+
+            .hero-title { font-size: 1.8rem; }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.75rem;
+            }
+
+            .listings-grid { grid-template-columns: 1fr; }
+
+            .filters-bar { flex-direction: column; gap: 0.75rem; }
+
+            .filter-group { min-width: unset; }
+
+            .table-glass { overflow-x: auto; }
+            .table-glass table { min-width: 600px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-wrap">
+        <!-- Nav Bar -->
+        <nav class="nav-bar">
+            <a href="index.html" class="nav-link">Dashboard</a>
+            <a href="new-listings.html" class="nav-link">Nouvelles</a>
+            <a href="anomalies.html" class="nav-link active">Anomalies</a>
+            <a href="map-advanced.html" class="nav-link">Carte</a>
+            <a href="favorites.html" class="nav-link">Prioritaires</a>
+            <a href="3chambres.html" class="nav-link">3 Chambres</a>
+            <a href="ia-analyse.html" class="nav-link">Analyse IA</a>
+            <a href="stats-by-city.html" class="nav-link">Villes</a>
+            <button class="nav-toggle" id="darkModeToggle" title="Mode clair/sombre" aria-label="Mode clair/sombre">☀️</button>
+        </nav>
+
+        <!-- Hero -->
+        <header class="hero">
+            <h1 class="hero-title">Bonnes <span>Affaires</span> Immobilier</h1>
+            <p class="hero-subtitle">Trouvez les meilleures opportunités — Prix inférieurs à 70% du marché local</p>
+        </header>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Total Annonces</div>
+                <div class="stat-value" id="totalCount">—</div>
+            </div>
+            <div class="stat-card highlight-good">
+                <div class="stat-label">Bonnes Affaires</div>
+                <div class="stat-value emerald" id="goodDealsCount">—</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Prix Normaux</div>
+                <div class="stat-value" id="normalCount">—</div>
+            </div>
+            <div class="stat-card highlight-high">
+                <div class="stat-label">Prix Élevés</div>
+                <div class="stat-value coral" id="highPriceCount">—</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Prix Médian Global</div>
+                <div class="stat-value amber" id="medianPrice">—</div>
+            </div>
+        </div>
+
+        <!-- City Comparison Table -->
+        <div class="section-header">Comparaison des Prix par Ville</div>
+        <div class="table-glass">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ville</th>
+                        <th>Annonces</th>
+                        <th>Prix Médian</th>
+                        <th>Prix Moyen</th>
+                        <th>Fourchette</th>
+                        <th>Bonnes Affaires</th>
+                    </tr>
+                </thead>
+                <tbody id="cityStatsTable">
+                    <!-- Filled by JS -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Chart -->
+        <div class="chart-container">
+            <div class="chart-title">Répartition Prix par Ville (Top 12)</div>
+            <canvas id="priceChart" height="80"></canvas>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters-bar">
+            <div class="filter-group">
+                <label class="filter-label">Ville</label>
+                <select id="filterCity" class="filter-select" onchange="applyFilters()">
+                    <option value="">Toutes les villes</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">Type</label>
+                <select id="filterType" class="filter-select" onchange="applyFilters()">
+                    <option value="GOOD_DEAL">💎 Bonnes affaires uniquement</option>
+                    <option value="">Toutes les annonces</option>
+                    <option value="NONE">💰 Prix normaux</option>
+                    <option value="HIGH">⚠️ Prix élevés</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">Tri</label>
+                <select id="filterSort" class="filter-select" onchange="applyFilters()">
+                    <option value="best_deal">💎 Meilleures affaires d'abord</option>
+                    <option value="price_asc">Prix croissant</option>
+                    <option value="price_desc">Prix décroissant</option>
+                    <option value="ratio_asc">Ratio vs médian ↑</option>
+                </select>
+            </div>
+            <div class="filter-group" style="flex: 0 0 auto; min-width: unset;">
+                <div class="result-count">
+                    <span id="resultCount">—</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Good Deals Section (Always Expanded) -->
+        <div class="collapsible-section" id="sectionGoodDeals">
+            <div class="section-content" id="contentGoodDeals">
+                <div class="section-header emerald-accent">💎 Bonnes Affaires — Prix &lt; 70% du médian</div>
+                <div class="listings-grid" id="gridGoodDeals"></div>
+            </div>
+        </div>
+
+        <!-- Normal Prices Section (Collapsible) -->
+        <div class="collapsible-section" id="sectionNormal">
+            <button class="section-toggle" onclick="toggleSection('contentNormal', this)">
+                <span class="section-toggle-title">
+                    <span class="section-toggle-icon">▼</span>
+                    💰 Prix Normaux
+                </span>
+                <span id="countNormal" class="section-count">—</span>
+            </button>
+            <div class="section-content collapsed" id="contentNormal">
+                <div class="listings-grid" id="gridNormal"></div>
+            </div>
+        </div>
+
+        <!-- High Prices Section (Collapsible) -->
+        <div class="collapsible-section" id="sectionHigh">
+            <button class="section-toggle" onclick="toggleSection('contentHigh', this)">
+                <span class="section-toggle-title">
+                    <span class="section-toggle-icon">▼</span>
+                    ⚠️ Prix Élevés
+                </span>
+                <span id="countHigh" class="section-count" style="color: var(--coral);">—</span>
+            </button>
+            <div class="section-content collapsed" id="contentHigh">
+                <div class="listings-grid" id="gridHigh"></div>
+            </div>
+        </div>
+
+        <div class="no-results" id="noResults" style="display: none;">
+            Aucune annonce ne correspond à vos critères
+        </div>
+    </div>
+
+    <!-- Floating Dark Mode Toggle -->
+    <button class="dark-mode-toggle" id="darkModeToggleFloat" title="Mode clair/sombre">☀️</button>
+
+    <!-- Service Worker -->
+    <script>
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.register("sw.js").catch(() => {});
+        }
+    </script>
+
+    <script src="data/listings.js"></script>
+    <script>
+        // City normalization
+        window.normCity = function(city) {
+            return city ? city.replace(/^Luxembourg[-\s]/i, '') : city;
+        };
+
+        let cityStats = {};
+        let filteredListings = [];
+        let chartInstance = null;
+
+        // Calculate city statistics
+        function calculateCityStats() {
+            const groups = {};
+            LISTINGS.forEach(l => {
+                const city = l.city || '';
+                if (!city) return;
+                if (!groups[city]) groups[city] = [];
+                if (l.price > 0) groups[city].push(l);
+            });
+
+            const stats = {};
+            Object.keys(groups).forEach(city => {
+                const listings = groups[city];
+                const prices = listings.map(l => l.price).sort((a, b) => a - b);
+                const mid = Math.floor(prices.length / 2);
+
+                // Count good deals
+                const median = prices.length % 2 === 0
+                    ? Math.round((prices[mid - 1] + prices[mid]) / 2)
+                    : prices[mid];
+
+                const goodDeals = listings.filter(l => {
+                    const ratio = l.price / median;
+                    return ratio < 0.7;
+                }).length;
+
+                stats[city] = {
+                    median: median,
+                    avg: Math.round(prices.reduce((a, b) => a + b, 0) / prices.length),
+                    min: prices[0],
+                    max: prices[prices.length - 1],
+                    count: prices.length,
+                    goodDeals: goodDeals
+                };
+            });
+            return stats;
+        }
+
+        // Get anomaly type
+        function getAnomaly(listing) {
+            const city = listing.city || '';
+            if (!city || !listing.price || listing.price <= 0) return { type: 'NONE', ratio: 1 };
+            const stats = cityStats[city];
+            if (!stats || !stats.median) return { type: 'NONE', ratio: 1 };
+            const ratio = listing.price / stats.median;
+            if (ratio < 0.7) return { type: 'GOOD_DEAL', ratio };
+            if (ratio > 2.5) return { type: 'HIGH', ratio };
+            return { type: 'NONE', ratio };
+        }
+
+        // Calculate price per m2
+        function computePriceM2(listing) {
+            if (listing.price_m2 && listing.price_m2 > 0) return listing.price_m2;
+            if (listing.price > 0 && listing.surface > 0) return Math.round(listing.price / listing.surface);
+            return 0;
+        }
+
+        // Build city stats table
+        function buildCityStatsTable() {
+            const tbody = document.getElementById('cityStatsTable');
+            const cities = Object.keys(cityStats)
+                .filter(c => cityStats[c].count >= 2)
+                .sort((a, b) => cityStats[b].median - cityStats[a].median);
+
+            tbody.innerHTML = cities.map(city => {
+                const stats = cityStats[city];
+                const displayCity = normCity(city) || city;
+                return `
+                    <tr>
+                        <td class="city-name">${displayCity}</td>
+                        <td>${stats.count}</td>
+                        <td style="font-weight: 600; font-family: var(--font-mono);">${stats.median.toLocaleString('fr-FR')}€</td>
+                        <td style="font-family: var(--font-mono);">${stats.avg.toLocaleString('fr-FR')}€</td>
+                        <td style="font-size: 0.8rem; font-family: var(--font-mono); color: var(--text-muted);">${stats.min.toLocaleString('fr-FR')}€ — ${stats.max.toLocaleString('fr-FR')}€</td>
+                        <td>
+                            ${stats.goodDeals > 0
+                                ? `<span class="price-badge good">${stats.goodDeals}</span>`
+                                : '<span style="color: var(--text-dim);">—</span>'}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Build chart
+        function buildChart() {
+            const cities = Object.keys(cityStats)
+                .filter(c => cityStats[c].count >= 2)
+                .sort((a, b) => cityStats[b].median - cityStats[a].median)
+                .slice(0, 12);
+
+            const medians = cities.map(c => cityStats[c].median);
+            const avgs = cities.map(c => cityStats[c].avg);
+            const labels = cities.map(c => normCity(c) || c);
+
+            const ctx = document.getElementById('priceChart').getContext('2d');
+            if (chartInstance) chartInstance.destroy();
+
+            const isLight = document.body.classList.contains('light-mode');
+            const textColor = isLight ? '#6B6B7C' : '#7A7A8C';
+            const gridColor = isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.05)';
+
+            chartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Prix Médian',
+                            data: medians,
+                            backgroundColor: 'rgba(201, 162, 101, 0.75)',
+                            borderColor: 'rgba(201, 162, 101, 0.9)',
+                            borderWidth: 1,
+                            borderRadius: 3,
+                            borderSkipped: false
+                        },
+                        {
+                            label: 'Prix Moyen',
+                            data: avgs,
+                            backgroundColor: 'rgba(45, 212, 164, 0.55)',
+                            borderColor: 'rgba(45, 212, 164, 0.8)',
+                            borderWidth: 1,
+                            borderRadius: 3,
+                            borderSkipped: false
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: textColor,
+                                font: { family: "'Outfit', sans-serif", size: 12, weight: '600' },
+                                padding: 15
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(9,9,15,0.97)',
+                            titleFont: { family: "'Cormorant Garamond', serif", size: 14, weight: '600' },
+                            bodyFont: { family: "'JetBrains Mono', monospace", size: 12 },
+                            padding: 12,
+                            borderColor: 'rgba(201,162,101,0.4)',
+                            borderWidth: 1,
+                            callbacks: {
+                                label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString('fr-FR')}€`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: textColor,
+                                font: { family: "'Outfit', sans-serif", size: 11 }
+                            },
+                            grid: { color: gridColor }
+                        },
+                        y: {
+                            ticks: {
+                                color: textColor,
+                                font: { family: "'JetBrains Mono', monospace", size: 11 },
+                                callback: v => v.toLocaleString('fr-FR') + '€'
+                            },
+                            grid: { color: gridColor }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Render listing card
+        function renderCard(listing) {
+            const { type, ratio } = getAnomaly(listing);
+            const city = normCity(listing.city) || 'N/A';
+            const pm2 = computePriceM2(listing);
+            const stats = cityStats[listing.city];
+            const median = stats ? stats.median : 0;
+
+            const cardClass = type === 'GOOD_DEAL' ? 'good-deal' : type === 'HIGH' ? 'high-price' : '';
+            const badgeHtml = type === 'GOOD_DEAL'
+                ? '<span class="badge badge-deal">💎 Bonne affaire</span>'
+                : type === 'HIGH'
+                    ? '<span class="badge badge-high">⚠️ Prix élevé</span>'
+                    : '';
+
+            const ratioPercent = Math.min(ratio * 50, 100);
+            const ratioClass = type === 'GOOD_DEAL' ? 'good' : type === 'HIGH' ? 'high' : 'normal';
+
+            let contextText = '';
+            let contextClass = 'normal';
+            if (type === 'GOOD_DEAL' && median > 0) {
+                const savings = median - listing.price;
+                const savingsPercent = Math.round((1 - ratio) * 100);
+                contextText = `Prix médian ville: ${median.toLocaleString('fr-FR')}€ · Économie: ${savings.toLocaleString('fr-FR')}€ (-${savingsPercent}%)`;
+                contextClass = 'good';
+            } else if (type === 'HIGH' && median > 0) {
+                const excess = listing.price - median;
+                const excessPercent = Math.round((ratio - 1) * 100);
+                contextText = `Prix médian ville: ${median.toLocaleString('fr-FR')}€ · Surplus: +${excess.toLocaleString('fr-FR')}€ (+${excessPercent}%)`;
+                contextClass = 'high';
+            } else if (median > 0) {
+                contextText = `Prix médian ville: ${median.toLocaleString('fr-FR')}€ · ${(ratio * 100).toFixed(0)}% du médian`;
+            }
+
+            return `
+                <div class="listing-card ${cardClass}">
+                    <h3 class="listing-title">${listing.title || 'Sans titre'}</h3>
+                    <div class="listing-price">${(listing.price || 0).toLocaleString('fr-FR')}€</div>
+
+                    ${contextText ? `<div class="price-context ${contextClass}">${contextText}</div>` : ''}
+
+                    <div class="ratio-bar">
+                        <div class="ratio-fill ${ratioClass}" style="width: ${ratioPercent}%;"></div>
+                    </div>
+
+                    <div class="listing-badges">
+                        <span class="badge badge-site">${listing.site || 'N/A'}</span>
+                        <span class="badge badge-city">${city}</span>
+                        ${badgeHtml}
+                    </div>
+
+                    <div class="listing-details">
+                        ${listing.surface > 0 ? `<span>${listing.surface} m²</span>` : ''}
+                        ${listing.rooms > 0 ? `<span>${listing.rooms} chambres</span>` : ''}
+                        ${pm2 > 0 ? `<span>${pm2.toLocaleString('fr-FR')} €/m²</span>` : ''}
+                    </div>
+
+                    <a href="${listing.url}" target="_blank" rel="noopener" class="listing-btn">
+                        Voir l'annonce →
+                    </a>
+                </div>
+            `;
+        }
+
+        // Toggle collapsible section
+        function toggleSection(contentId, button) {
+            const content = document.getElementById(contentId);
+            const isCollapsed = content.classList.contains('collapsed');
+
+            if (isCollapsed) {
+                content.classList.remove('collapsed');
+                button.classList.remove('collapsed');
+            } else {
+                content.classList.add('collapsed');
+                button.classList.add('collapsed');
+            }
+        }
+
+        // Apply filters
+        function applyFilters() {
+            const cityFilter = document.getElementById('filterCity').value;
+            const typeFilter = document.getElementById('filterType').value;
+            const sortBy = document.getElementById('filterSort').value;
+
+            let list = LISTINGS.filter(l => {
+                if (cityFilter && l.city !== cityFilter) return false;
+                const { type } = getAnomaly(l);
+                if (typeFilter && type !== typeFilter) return false;
+                return true;
+            });
+
+            // Sort
+            const sortOrder = { GOOD_DEAL: 0, NONE: 1, HIGH: 2 };
+            if (sortBy === 'best_deal') {
+                list.sort((a, b) => {
+                    const ratioA = getAnomaly(a).ratio;
+                    const ratioB = getAnomaly(b).ratio;
+                    return ratioA - ratioB;
+                });
+            } else if (sortBy === 'price_asc') {
+                list.sort((a, b) => a.price - b.price);
+            } else if (sortBy === 'price_desc') {
+                list.sort((a, b) => b.price - a.price);
+            } else if (sortBy === 'ratio_asc') {
+                list.sort((a, b) => getAnomaly(a).ratio - getAnomaly(b).ratio);
+            }
+
+            filteredListings = list;
+            document.getElementById('resultCount').textContent = `${filteredListings.length} annonce${filteredListings.length > 1 ? 's' : ''}`;
+
+            // Separate by type
+            const goodDeals = filteredListings.filter(l => getAnomaly(l).type === 'GOOD_DEAL');
+            const normal = filteredListings.filter(l => getAnomaly(l).type === 'NONE');
+            const high = filteredListings.filter(l => getAnomaly(l).type === 'HIGH');
+
+            // Render sections
+            document.getElementById('gridGoodDeals').innerHTML = goodDeals.map(renderCard).join('');
+            document.getElementById('gridNormal').innerHTML = normal.map(renderCard).join('');
+            document.getElementById('gridHigh').innerHTML = high.map(renderCard).join('');
+
+            // Update counters
+            document.getElementById('countNormal').textContent = `${normal.length} annonces`;
+            document.getElementById('countHigh').textContent = `${high.length} annonces`;
+
+            // Show/hide sections
+            document.getElementById('sectionGoodDeals').style.display = goodDeals.length > 0 ? 'block' : 'none';
+            document.getElementById('sectionNormal').style.display = normal.length > 0 ? 'block' : 'none';
+            document.getElementById('sectionHigh').style.display = high.length > 0 ? 'block' : 'none';
+
+            document.getElementById('noResults').style.display = filteredListings.length === 0 ? 'block' : 'none';
+        }
+
+        // Initialize
+        function init() {
+            cityStats = calculateCityStats();
+
+            // Global stats
+            const prices = LISTINGS.map(l => l.price).filter(p => p > 0).sort((a, b) => a - b);
+            const anomalies = LISTINGS.map(l => getAnomaly(l).type);
+            const goodDeals = anomalies.filter(a => a === 'GOOD_DEAL').length;
+            const normalPrices = anomalies.filter(a => a === 'NONE').length;
+            const highPrices = anomalies.filter(a => a === 'HIGH').length;
+
+            document.getElementById('totalCount').textContent = LISTINGS.length;
+            document.getElementById('goodDealsCount').textContent = goodDeals;
+            document.getElementById('normalCount').textContent = normalPrices;
+            document.getElementById('highPriceCount').textContent = highPrices;
+
+            if (prices.length > 0) {
+                const midIdx = Math.floor(prices.length / 2);
+                const median = prices.length % 2 === 0
+                    ? Math.round((prices[midIdx - 1] + prices[midIdx]) / 2)
+                    : prices[midIdx];
+                document.getElementById('medianPrice').textContent = median.toLocaleString('fr-FR') + '€';
+            }
+
+            // Populate city filter
+            const cities = [...new Set(LISTINGS.map(l => l.city).filter(c => c))].sort();
+            const select = document.getElementById('filterCity');
+            cities.forEach(city => {
+                const opt = document.createElement('option');
+                opt.value = city;
+                opt.textContent = normCity(city) || city;
+                select.appendChild(opt);
+            });
+
+            buildCityStatsTable();
+            buildChart();
+            applyFilters();
+
+            // Set default filter to good deals
+            document.getElementById('filterType').value = 'GOOD_DEAL';
+            applyFilters();
+        }
+
+        // Rebuild chart on dark mode change
+        document.addEventListener('darkModeChanged', buildChart);
+
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+
+    <!-- Dark Mode Logic -->
+    <script>
+        const dm = document.getElementById('darkModeToggle');
+        const dmFloat = document.getElementById('darkModeToggleFloat');
+
+        function applyDM(light) {
+            document.body.classList.toggle('light-mode', light);
+            const icon = light ? '🌙' : '☀️';
+            dm.textContent = icon;
+            if (dmFloat) dmFloat.textContent = icon;
+            localStorage.setItem('darkMode', light);
+            document.dispatchEvent(new Event('darkModeChanged'));
+        }
+
+        dm.addEventListener('click', () => applyDM(!document.body.classList.contains('light-mode')));
+        if (dmFloat) dmFloat.addEventListener('click', () => dm.click());
+        applyDM(localStorage.getItem('darkMode') === 'true');
+    </script>
+
+</body>
+</html>

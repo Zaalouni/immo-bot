@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Villes prioritaires - ImmoLux">
+    <meta name="theme-color" content="#09090F">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ImmoLux Favoris">
+    <link rel="apple-touch-icon" href="icon.svg">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https:;">
+    <link rel="manifest" href="manifest.json">
+    <title>Villes Prioritaires — ImmoLux</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="dark-mode.js" defer></script>
+    <script src="data/version.js"></script>
+    <script src="version-display.js" defer></script>
+    <style>
+        /* ── Variables ────────────────────────────────────────── */
+        :root {
+            --bg:          #09090F;
+            --bg-card:     #111118;
+            --bg-lift:     #16161F;
+            --bg-panel:    #1C1C27;
+            --gold:        #C9A265;
+            --gold-dim:    rgba(201,162,101,0.18);
+            --gold-line:   rgba(201,162,101,0.35);
+            --text:        #E8E4DC;
+            --text-muted:  #7A7A8C;
+            --text-dim:    #4A4A5C;
+            --border:      rgba(255,255,255,0.07);
+            --border-gold: rgba(201,162,101,0.25);
+            --radius:      4px;
+            --radius-lg:   8px;
+            --shadow:      0 4px 32px rgba(0,0,0,0.5);
+            --font-display:'Cormorant Garamond', Georgia, serif;
+            --font-body:   'Outfit', system-ui, sans-serif;
+            --font-mono:   'JetBrains Mono', monospace;
+        }
+
+        body.light-mode {
+            --bg:          #F5F0E8;
+            --bg-card:     #FFFFFF;
+            --bg-lift:     #FAF7F2;
+            --bg-panel:    #F0EAE0;
+            --text:        #1A1A24;
+            --text-muted:  #6B6B7C;
+            --text-dim:    #A0A0B0;
+            --border:      rgba(0,0,0,0.08);
+            --border-gold: rgba(160,110,50,0.3);
+            --gold:        #9A6E2A;
+            --gold-dim:    rgba(154,110,42,0.1);
+            --gold-line:   rgba(154,110,42,0.3);
+            --shadow:      0 4px 24px rgba(0,0,0,0.1);
+        }
+
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            font-size: 15px;
+            line-height: 1.6;
+            transition: background 0.4s, color 0.4s;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.4;
+        }
+
+        .page-wrap {
+            position: relative;
+            z-index: 1;
+            max-width: 1360px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+        }
+
+        /* ── Hero ─────────────────────────────────────────────── */
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: end;
+            gap: 2rem;
+            padding: 3.5rem 0 2.5rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2.5rem;
+            animation: fadeUp 0.7s ease both;
+        }
+
+        .hero-eyebrow {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .hero-eyebrow::before {
+            content: '';
+            display: block;
+            width: 2rem;
+            height: 1px;
+            background: var(--gold);
+        }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.4rem, 5vw, 4.2rem);
+            font-weight: 600;
+            line-height: 1.05;
+            letter-spacing: -0.02em;
+        }
+
+        .hero h1 em { font-style: italic; color: var(--gold); }
+
+        .hero-meta {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-top: 0.75rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .hero-meta strong {
+            font-family: var(--font-mono);
+            color: var(--gold);
+            font-weight: 500;
+        }
+
+        .hero-number {
+            font-family: var(--font-display);
+            font-size: clamp(7rem, 14vw, 12rem);
+            font-weight: 700;
+            line-height: 0.85;
+            color: transparent;
+            -webkit-text-stroke: 1px var(--gold-line);
+            letter-spacing: -0.05em;
+            user-select: none;
+            opacity: 0.6;
+        }
+
+        /* ── Nav ──────────────────────────────────────────────── */
+        .nav-bar {
+            display: flex;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2rem;
+            animation: fadeUp 0.7s ease 0.05s both;
+        }
+
+        .nav-link {
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: var(--text-muted);
+            padding: 0.4rem 0.9rem;
+            border-radius: var(--radius);
+            border: 1px solid transparent;
+            transition: color 0.2s, border-color 0.2s;
+        }
+
+        .nav-link:hover { color: var(--text); border-color: var(--border); }
+
+        .nav-link.active {
+            color: var(--gold);
+            border-color: var(--gold-line);
+            background: var(--gold-dim);
+        }
+
+        /* ── Stats bar ────────────────────────────────────────── */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            margin-bottom: 2rem;
+            animation: fadeUp 0.7s ease 0.1s both;
+        }
+
+        .stat-cell {
+            background: var(--bg-card);
+            padding: 1.25rem 1.5rem;
+            transition: background 0.2s;
+        }
+
+        .stat-cell:hover { background: var(--bg-lift); }
+
+        .stat-num {
+            font-family: var(--font-mono);
+            font-size: 1.6rem;
+            font-weight: 500;
+            color: var(--gold);
+            display: block;
+            line-height: 1;
+            margin-bottom: 0.3rem;
+        }
+
+        .stat-lbl {
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        /* ── Chart ────────────────────────────────────────────── */
+        .chart-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            animation: fadeUp 0.7s ease 0.12s both;
+        }
+
+        .chart-title {
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .chart-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .city-bars { display: flex; flex-direction: column; gap: 0.5rem; }
+
+        .city-bar-row {
+            display: grid;
+            grid-template-columns: 9rem 1fr 5rem;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .city-bar-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .city-bar-track {
+            height: 5px;
+            background: var(--bg-lift);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .city-bar-fill {
+            height: 100%;
+            background: var(--gold);
+            border-radius: 3px;
+            opacity: 0.7;
+            transition: width 0.8s ease;
+        }
+
+        .city-bar-val {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: var(--gold);
+            text-align: right;
+        }
+
+        /* ── Controls panel ───────────────────────────────────── */
+        .controls-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            animation: fadeUp 0.7s ease 0.15s both;
+        }
+
+        .sort-label {
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            white-space: nowrap;
+        }
+
+        .sort-controls { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+
+        .sort-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--text-muted);
+            font-family: var(--font-body);
+            font-size: 0.78rem;
+            font-weight: 500;
+            padding: 0.45rem 0.9rem;
+            cursor: pointer;
+            transition: border-color 0.2s, color 0.2s, background 0.2s;
+        }
+
+        .sort-btn:hover { border-color: var(--gold-line); color: var(--text); }
+
+        .sort-btn.active {
+            background: var(--gold-dim);
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .divider { width: 1px; height: 2rem; background: var(--border); }
+
+        .filter-select {
+            background: var(--bg-lift);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--text);
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            padding: 0.5rem 0.85rem;
+            appearance: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+            transition: border-color 0.2s;
+            min-width: 160px;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 2px var(--gold-dim);
+        }
+
+        /* ── City badges ──────────────────────────────────────── */
+        .city-badges-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--gold);
+            border-radius: var(--radius);
+            padding: 0.9rem 1.25rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            animation: fadeUp 0.7s ease 0.18s both;
+        }
+
+        .badges-label {
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gold);
+            white-space: nowrap;
+        }
+
+        .priority-badge {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            font-weight: 500;
+            padding: 0.2rem 0.6rem;
+            border-radius: 2px;
+            background: var(--gold-dim);
+            border: 1px solid var(--gold-line);
+            color: var(--gold);
+        }
+
+        /* ── Results info ─────────────────────────────────────── */
+        .results-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.7rem 1.25rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            border-left: 3px solid var(--gold);
+            border-radius: var(--radius);
+            margin-bottom: 1.5rem;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        .results-count { font-family: var(--font-mono); color: var(--gold); }
+
+        /* ── City section ─────────────────────────────────────── */
+        .city-section { margin-bottom: 2.5rem; animation: fadeUp 0.4s ease both; }
+
+        .city-group-header {
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 1.25rem;
+        }
+
+        .city-group-name {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            font-weight: 600;
+            font-style: italic;
+            color: var(--text);
+            line-height: 1;
+        }
+
+        .city-count {
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gold);
+            border: 1px solid var(--gold-line);
+            padding: 0.15rem 0.5rem;
+            border-radius: 2px;
+        }
+
+        .city-avg {
+            margin-left: auto;
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        /* ── Listing rows ─────────────────────────────────────── */
+        .listings-table {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+
+        .listing-row {
+            background: var(--bg-card);
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            transition: background 0.2s;
+            position: relative;
+        }
+
+        .listing-row::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 2px;
+            background: var(--gold);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .listing-row:hover { background: var(--bg-lift); }
+        .listing-row:hover::before { opacity: 1; }
+
+        .listing-info {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            flex: 1;
+            flex-wrap: wrap;
+        }
+
+        .info-chip { display: flex; flex-direction: column; gap: 0.1rem; }
+
+        .chip-label {
+            font-size: 0.6rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+        }
+
+        .chip-value {
+            font-family: var(--font-mono);
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .chip-price { color: var(--gold); font-size: 1rem; }
+
+        .site-chip {
+            font-size: 0.6rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 0.15rem 0.5rem;
+            border-radius: 2px;
+            background: var(--gold-dim);
+            border: 1px solid var(--gold-line);
+            color: var(--gold);
+        }
+
+        /* Badge nouveau */
+        .badge-new {
+            font-size: 0.6rem;
+            font-weight: 700;
+            padding: 0.15rem 0.5rem;
+            border-radius: 2px;
+            background: rgba(16,185,129,0.15);
+            border: 1px solid rgba(16,185,129,0.3);
+            color: #10b981;
+            font-family: var(--font-mono);
+        }
+
+        /* Compat Bootstrap classes */
+        .ms-2 { margin-left: 0.5rem; }
+        .badge { display: inline-block; }
+
+        .listing-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .listing-date {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            text-align: right;
+            line-height: 1.4;
+        }
+
+        .btn-view {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.45rem 0.9rem;
+            background: transparent;
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius);
+            color: var(--gold);
+            font-family: var(--font-body);
+            font-size: 0.78rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background 0.2s, border-color 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-view:hover {
+            background: var(--gold-dim);
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        /* ── Pagination ───────────────────────────────────────── */
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .page-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            padding: 0.45rem 0.9rem;
+            cursor: pointer;
+            transition: border-color 0.2s, color 0.2s, background 0.2s;
+        }
+
+        .page-btn:hover:not(:disabled) {
+            border-color: var(--gold-line);
+            color: var(--gold);
+            background: var(--gold-dim);
+        }
+
+        .page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+        .page-btn.active { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+        .page-info { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-dim); padding: 0 0.25rem; }
+
+        /* ── Empty state ──────────────────────────────────────── */
+        .empty-state {
+            padding: 5rem 2rem;
+            text-align: center;
+            color: var(--text-muted);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+        }
+
+        .empty-icon { font-size: 3rem; opacity: 0.4; margin-bottom: 1rem; }
+
+        /* ── Dark toggle ──────────────────────────────────────── */
+        .dark-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s, border-color 0.2s;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dark-toggle:hover { transform: scale(1.1) rotate(15deg); border-color: var(--gold); }
+
+        @media (max-width: 900px) {
+            .dark-toggle { display: none; }
+        }
+
+        /* ── Nav toggle (mobile dark mode button in nav bar) ── */
+        .nav-toggle {
+            margin-left: auto;
+            background: transparent;
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius);
+            color: var(--gold);
+            font-size: 1rem;
+            padding: 0.35rem 0.6rem;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+            line-height: 1;
+        }
+        .nav-toggle:hover { background: var(--gold-dim); border-color: var(--gold); }
+
+        /* ── Animations ───────────────────────────────────────── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Responsive ───────────────────────────────────────── */
+        @media (max-width: 900px) {
+            .page-wrap { padding: 0 1rem 3rem; }
+            .hero { grid-template-columns: 1fr; }
+            .hero-number { display: none; }
+            .stats-bar { grid-template-columns: repeat(2, 1fr); }
+            .city-bar-row { grid-template-columns: 6rem 1fr 4rem; }
+        }
+
+        @media (max-width: 600px) {
+            .listing-row { flex-direction: column; align-items: flex-start; }
+            .listing-actions { width: 100%; justify-content: space-between; }
+            .stats-bar { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+    <!-- Hero -->
+    <div class="hero">
+        <div>
+            <div class="hero-eyebrow">ImmoLux · Surveillance</div>
+            <h1>Villes <em>prioritaires</em></h1>
+            <div class="hero-meta">
+                <span>📅 <span id="lastUpdate">Chargement…</span></span>
+                <span><strong id="totalCount">—</strong> annonces</span>
+                <span><strong id="cityCount">—</strong> villes</span>
+                <span>Moy. <strong id="avgPrice">—</strong></span>
+            </div>
+        </div>
+        <div class="hero-number">⭐</div>
+    </div>
+
+    <!-- Nav -->
+    <nav class="nav-bar">
+        <a href="index.html" class="nav-link">Dashboard</a>
+        <a href="new-listings.html" class="nav-link">Nouvelles</a>
+        <a href="anomalies.html" class="nav-link">Anomalies</a>
+        <a href="map-advanced.html" class="nav-link">Carte</a>
+        <a href="3chambres.html" class="nav-link">3 Chambres</a>
+        <a href="ia-analyse.html" class="nav-link">Analyse IA</a>
+        <a href="favorites.html" class="nav-link active">Villes prioritaires</a>
+        <button class="nav-toggle" id="darkModeToggle" title="Mode clair/sombre" aria-label="Mode clair/sombre">☀️</button>
+    </nav>
+
+    <!-- Stats -->
+    <div class="stats-bar" id="quickStats">
+        <div class="stat-cell"><span class="stat-num" id="s-total">—</span><span class="stat-lbl">Annonces</span></div>
+        <div class="stat-cell"><span class="stat-num" id="s-cities">—</span><span class="stat-lbl">Villes actives</span></div>
+        <div class="stat-cell"><span class="stat-num" id="s-avg">—</span><span class="stat-lbl">Prix moyen</span></div>
+        <div class="stat-cell"><span class="stat-num" id="s-range">—</span><span class="stat-lbl">Min — Max</span></div>
+    </div>
+
+    <!-- Chart prix par ville -->
+    <div class="chart-panel" id="chartPanel" style="display:none">
+        <div class="chart-title">Prix moyen par ville prioritaire</div>
+        <div class="city-bars" id="cityBars"></div>
+    </div>
+
+    <!-- City badges -->
+    <div class="city-badges-panel">
+        <span class="badges-label">Villes surveillées</span>
+        <span id="cityBadges"></span>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls-panel">
+        <span class="sort-label">Tri</span>
+        <div class="sort-controls">
+            <button class="sort-btn active" onclick="setSort('date')">Date</button>
+            <button class="sort-btn" onclick="setSort('price_asc')">Prix ↑</button>
+            <button class="sort-btn" onclick="setSort('price_desc')">Prix ↓</button>
+            <button class="sort-btn" onclick="setSort('surface')">Surface</button>
+        </div>
+        <div class="divider"></div>
+        <select id="filterCity" class="filter-select" onchange="render()">
+            <option value="">Toutes les villes</option>
+        </select>
+        <select id="filterRooms" class="filter-select" onchange="render()" style="min-width:120px">
+            <option value="">Toutes ch.</option>
+            <option value="1">1 chambre</option>
+            <option value="2">2 chambres</option>
+            <option value="3">3 chambres</option>
+            <option value="4">4 chambres</option>
+            <option value="5">5+ chambres</option>
+        </select>
+    </div>
+
+    <!-- Results info -->
+    <div class="results-bar">
+        <span id="resultsInfo"><span class="results-count">—</span> annonces</span>
+        <span id="pageInfo" class="page-info"></span>
+    </div>
+
+    <!-- Listings -->
+    <div id="listingsContainer"></div>
+
+    <!-- Pagination -->
+    <div class="pagination" id="pagination"></div>
+
+</div>
+
+<button class="dark-toggle" id="darkModeToggleFloat" title="Mode clair/sombre" aria-label="Mode sombre/clair" aria-pressed="false">☀️</button>
+
+<script src="data/listings.js"></script>
+<script>
+    /* ── Constants ── */
+    const PAGE_SIZE = 50;
+    let currentPage = 1;
+    let currentSort = 'date';
+    let _filteredItems = [];
+
+    /* ── Dark mode ── */
+    const dmToggle = document.getElementById('darkModeToggle');
+    const dmToggleFloat = document.getElementById('darkModeToggleFloat');
+    function applyFavDarkMode(light) {
+        document.body.classList.toggle('light-mode', light);
+        const icon = light ? '🌙' : '☀️';
+        dmToggle.textContent = icon;
+        dmToggle.setAttribute('aria-pressed', light);
+        if (dmToggleFloat) { dmToggleFloat.textContent = icon; dmToggleFloat.setAttribute('aria-pressed', light); }
+        localStorage.setItem('darkMode', light);
+    }
+    dmToggle.addEventListener('click', () => {
+        applyFavDarkMode(!document.body.classList.contains('light-mode'));
+    });
+    if (dmToggleFloat) dmToggleFloat.addEventListener('click', () => dmToggle.click());
+    applyFavDarkMode(localStorage.getItem('darkMode') === 'true');
+
+    const fmt = n => n ? n.toLocaleString('fr-FR') : '—';
+
+    /* ── Sort ── */
+    function setSort(s) {
+        currentSort = s;
+        document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
+        currentPage = 1;
+        render();
+    }
+
+    /* ── Init ── */
+    function init() {
+        if (!LISTINGS || !Array.isArray(LISTINGS)) return;
+
+        const PC = (typeof PRIORITY_CITIES !== 'undefined') ? PRIORITY_CITIES : [];
+
+        document.getElementById('cityBadges').innerHTML = PC.map(c =>
+            `<span class="priority-badge">${c}</span>`
+        ).join('');
+
+        const citySelect = document.getElementById('filterCity');
+        PC.forEach(c => {
+            const count = LISTINGS.filter(l => (typeof normCity !== 'undefined' ? normCity(l.city) : l.city) === c).length;
+            if (count > 0) {
+                const o = document.createElement('option');
+                o.value = c;
+                o.textContent = `${c} (${count})`;
+                citySelect.appendChild(o);
+            }
+        });
+
+        if (typeof VERSION_INFO !== 'undefined') {
+            document.getElementById('lastUpdate').textContent = VERSION_INFO.built_at || '—';
+        }
+
+        render();
+    }
+
+    /* ── Get filtered items ── */
+    function getFiltered() {
+        const PC = (typeof PRIORITY_CITIES !== 'undefined') ? PRIORITY_CITIES : [];
+        const nc = (typeof normCity !== 'undefined') ? normCity : c => c;
+        const filterCity  = document.getElementById('filterCity').value;
+        const filterRooms = parseInt(document.getElementById('filterRooms').value) || 0;
+
+        let items = LISTINGS.filter(l => {
+            const city = nc(l.city || '');
+            if (!PC.includes(city)) return false;
+            if (filterCity && city !== filterCity) return false;
+            if (filterRooms > 0) {
+                const r = l.rooms || 0;
+                if (filterRooms === 5 ? r < 5 : r !== filterRooms) return false;
+            }
+            return true;
+        });
+
+        if (currentSort === 'date') {
+            items = items.sort((a, b) => (b.created_at || '').localeCompare(a.created_at || ''));
+        } else if (currentSort === 'price_asc') {
+            items = items.sort((a, b) => (a.price || 0) - (b.price || 0));
+        } else if (currentSort === 'price_desc') {
+            items = items.sort((a, b) => (b.price || 0) - (a.price || 0));
+        } else if (currentSort === 'surface') {
+            items = items.sort((a, b) => (b.surface || 0) - (a.surface || 0));
+        }
+        return items;
+    }
+
+    /* ── Render chart ── */
+    function renderChart(items) {
+        const PC = (typeof PRIORITY_CITIES !== 'undefined') ? PRIORITY_CITIES : [];
+        const nc = (typeof normCity !== 'undefined') ? normCity : c => c;
+
+        const cityData = PC.map(city => {
+            const cityItems = items.filter(l => nc(l.city || '') === city && l.price > 0);
+            const avg = cityItems.length
+                ? Math.round(cityItems.reduce((s, l) => s + l.price, 0) / cityItems.length)
+                : 0;
+            return { city, avg, count: cityItems.length };
+        }).filter(d => d.avg > 0);
+
+        if (!cityData.length) {
+            document.getElementById('chartPanel').style.display = 'none';
+            return;
+        }
+
+        document.getElementById('chartPanel').style.display = 'block';
+        const maxAvg = Math.max(...cityData.map(d => d.avg), 1);
+
+        document.getElementById('cityBars').innerHTML = cityData.map(d => {
+            const pct = Math.round((d.avg / maxAvg) * 100);
+            return `<div class="city-bar-row">
+                <span class="city-bar-label">${d.city} <span style="opacity:.5;font-size:.65rem">(${d.count})</span></span>
+                <div class="city-bar-track">
+                    <div class="city-bar-fill" style="width:${pct}%"></div>
+                </div>
+                <span class="city-bar-val">${fmt(d.avg)}€</span>
+            </div>`;
+        }).join('');
+    }
+
+    /* ── Render ── */
+    function render() {
+        const PC = (typeof PRIORITY_CITIES !== 'undefined') ? PRIORITY_CITIES : [];
+        const nc = (typeof normCity !== 'undefined') ? normCity : c => c;
+
+        _filteredItems = getFiltered();
+        const items = _filteredItems;
+
+        // Stats
+        const prices = items.filter(l => l.price > 0).map(l => l.price);
+        const avg = prices.length ? Math.round(prices.reduce((a, b) => a + b, 0) / prices.length) : 0;
+        const mn = prices.length ? Math.min(...prices) : 0;
+        const mx = prices.length ? Math.max(...prices) : 0;
+        const citiesPresent = [...new Set(items.map(l => nc(l.city)))];
+
+        document.getElementById('totalCount').textContent = items.length;
+        document.getElementById('cityCount').textContent = citiesPresent.length;
+        document.getElementById('avgPrice').textContent = avg ? fmt(avg) + '€' : '—';
+
+        document.getElementById('s-total').textContent = items.length;
+        document.getElementById('s-cities').textContent = `${citiesPresent.length}/${PC.length}`;
+        document.getElementById('s-avg').textContent = avg ? fmt(avg) + '€' : '—';
+        document.getElementById('s-range').textContent = mn ? `${fmt(mn)}–${fmt(mx)}€` : '—';
+
+        renderChart(items);
+
+        if (!items.length) {
+            document.getElementById('resultsInfo').innerHTML = '<span class="results-count">0</span> annonce';
+            document.getElementById('listingsContainer').innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-icon">🏠</div>
+                    <p>Aucune annonce dans les villes prioritaires.</p>
+                </div>`;
+            document.getElementById('pagination').innerHTML = '';
+            document.getElementById('pageInfo').textContent = '';
+            return;
+        }
+
+        const totalPages = Math.ceil(items.length / PAGE_SIZE);
+        const start = (currentPage - 1) * PAGE_SIZE;
+        const pageItems = items.slice(start, start + PAGE_SIZE);
+
+        document.getElementById('resultsInfo').innerHTML =
+            `<span class="results-count">${items.length}</span> annonce${items.length !== 1 ? 's' : ''} · page ${currentPage}/${totalPages}`;
+        document.getElementById('pageInfo').textContent =
+            `Affichage ${start + 1}–${Math.min(start + PAGE_SIZE, items.length)}`;
+
+        const filterCity = document.getElementById('filterCity').value;
+
+        if (filterCity) {
+            document.getElementById('listingsContainer').innerHTML =
+                `<div class="listings-table">${pageItems.map(l => listingRow(l, nc)).join('')}</div>`;
+        } else {
+            // Vue groupée par ville
+            const groups = {};
+            PC.forEach(c => { groups[c] = []; });
+            pageItems.forEach(l => {
+                const c = nc(l.city || '');
+                if (groups[c] !== undefined) groups[c].push(l);
+            });
+
+            document.getElementById('listingsContainer').innerHTML = PC.map((city, idx) => {
+                const cityItems = groups[city] || [];
+                if (!cityItems.length) return '';
+                const cityPrices = cityItems.filter(l => l.price > 0).map(l => l.price);
+                const cityAvg = cityPrices.length
+                    ? Math.round(cityPrices.reduce((a, b) => a + b, 0) / cityPrices.length)
+                    : 0;
+                return `
+                    <div class="city-section" style="animation-delay:${idx * 0.05}s">
+                        <div class="city-group-header">
+                            <span class="city-group-name">${city}</span>
+                            <span class="city-count">${cityItems.length} annonce${cityItems.length > 1 ? 's' : ''}</span>
+                            ${cityAvg ? `<span class="city-avg">Moy. ${fmt(cityAvg)}€</span>` : ''}
+                        </div>
+                        <div class="listings-table">
+                            ${cityItems.map(l => listingRow(l, nc)).join('')}
+                        </div>
+                    </div>`;
+            }).join('');
+        }
+
+        renderPagination(totalPages);
+    }
+
+    /* ── Listing row ── */
+    function listingRow(l, nc) {
+        const createdAt = l.created_at ? new Date(l.created_at) : null;
+        const dateStr = createdAt
+            ? createdAt.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: '2-digit' })
+            : '—';
+        const timeStr = createdAt
+            ? createdAt.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })
+            : '';
+        const ageHours = createdAt ? Math.round((Date.now() - createdAt.getTime()) / 3600000) : null;
+        const isRecent = ageHours !== null && ageHours < 24;
+        const pm2 = (l.price > 0 && l.surface > 0) ? Math.round(l.price / l.surface) : null;
+
+        return `
+        <div class="listing-row">
+            <div class="listing-info">
+                <div class="info-chip">
+                    <span class="chip-label">Ville</span>
+                    <span class="chip-value">⭐ ${nc(l.city) || '—'}</span>
+                </div>
+                <div class="info-chip">
+                    <span class="chip-label">Prix</span>
+                    <span class="chip-value chip-price">${l.price ? fmt(l.price) + '€' : '—'}</span>
+                </div>
+                <div class="info-chip">
+                    <span class="chip-label">Surface</span>
+                    <span class="chip-value">${l.surface ? l.surface + ' m²' : '—'}</span>
+                </div>
+                <div class="info-chip">
+                    <span class="chip-label">Ch.</span>
+                    <span class="chip-value">${l.rooms || '—'}</span>
+                </div>
+                ${pm2 ? `<div class="info-chip">
+                    <span class="chip-label">€/m²</span>
+                    <span class="chip-value">${pm2}</span>
+                </div>` : ''}
+                ${l.distance_km != null ? `<div class="info-chip">
+                    <span class="chip-label">Dist.</span>
+                    <span class="chip-value">${l.distance_km} km</span>
+                </div>` : ''}
+                <span class="site-chip">${(l.site || '').replace('.lu', '')}</span>
+                ${isRecent ? '<span class="badge-new ms-2">🆕 Nouveau</span>' : ''}
+            </div>
+            <div class="listing-actions">
+                <div class="listing-date">${dateStr}<br>${timeStr}</div>
+                <a href="${l.url}" target="_blank" rel="noopener" class="btn-view">Voir →</a>
+            </div>
+        </div>`;
+    }
+
+    /* ── Pagination ── */
+    function renderPagination(totalPages) {
+        if (totalPages <= 1) {
+            document.getElementById('pagination').innerHTML = '';
+            return;
+        }
+
+        let html = `<button class="page-btn" onclick="goPage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>← Préc.</button>`;
+
+        const range = [];
+        for (let i = 1; i <= totalPages; i++) {
+            if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
+                range.push(i);
+            }
+        }
+
+        let prev = 0;
+        range.forEach(p => {
+            if (prev && p - prev > 1) html += `<span class="page-info">…</span>`;
+            html += `<button class="page-btn ${p === currentPage ? 'active' : ''}" onclick="goPage(${p})">${p}</button>`;
+            prev = p;
+        });
+
+        html += `<button class="page-btn" onclick="goPage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>Suiv. →</button>`;
+        document.getElementById('pagination').innerHTML = html;
+    }
+
+    function goPage(p) {
+        const totalPages = Math.ceil(_filteredItems.length / PAGE_SIZE);
+        if (p < 1 || p > totalPages) return;
+        currentPage = p;
+        render();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* ── PWA ── */
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
+    }
+
+    /* ── Boot ── */
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+</script>
+</body>
+</html>

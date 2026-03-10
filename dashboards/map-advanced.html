@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carte Avancée — ImmoLux</title>
+
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#09090F">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ImmoLux">
+
+    <!-- Security Headers -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com; style-src 'self' 'unsafe-inline' https://unpkg.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https:;">
+
+    <!-- Atelier Noir Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Leaflet -->
+    <link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet">
+    <link href="https://unpkg.com/leaflet.markercluster@1.5.1/dist/MarkerCluster.css" rel="stylesheet">
+    <link href="https://unpkg.com/leaflet.markercluster@1.5.1/dist/MarkerCluster.Default.css" rel="stylesheet">
+
+    <script src="data/version.js"></script>
+    <script src="version-display.js" defer></script>
+
+    <style>
+        /* ─── Atelier Noir Design System ─── */
+        :root {
+            --bg:          #09090F;
+            --bg-card:     #111118;
+            --bg-lift:     #16161F;
+            --bg-panel:    #1C1C27;
+            --gold:        #C9A265;
+            --gold-dim:    rgba(201,162,101,0.18);
+            --gold-line:   rgba(201,162,101,0.35);
+            --text:        #E8E4DC;
+            --text-muted:  #7A7A8C;
+            --text-dim:    #4A4A5C;
+            --border:      rgba(255,255,255,0.07);
+            --border-gold: rgba(201,162,101,0.25);
+            --radius:      4px;
+            --radius-lg:   8px;
+            --shadow:      0 4px 32px rgba(0,0,0,0.5);
+            --font-display:'Cormorant Garamond', Georgia, serif;
+            --font-body:   'Outfit', system-ui, sans-serif;
+            --font-mono:   'JetBrains Mono', monospace;
+        }
+
+        body.light-mode {
+            --bg:          #F5F0E8;
+            --bg-card:     #FFFFFF;
+            --bg-lift:     #FAF7F2;
+            --bg-panel:    #F0EAE0;
+            --text:        #1A1A24;
+            --text-muted:  #6B6B7C;
+            --text-dim:    #A0A0B0;
+            --border:      rgba(0,0,0,0.08);
+            --border-gold: rgba(160,110,50,0.3);
+            --gold:        #9A6E2A;
+            --gold-dim:    rgba(154,110,42,0.1);
+            --gold-line:   rgba(154,110,42,0.3);
+            --shadow:      0 4px 24px rgba(0,0,0,0.1);
+        }
+
+        /* ─── Reset ─── */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow: hidden;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* ─── Nav Bar ─── */
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0 1.25rem;
+            height: 48px;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-gold);
+            overflow-x: auto;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1000;
+        }
+
+        .nav-bar::-webkit-scrollbar { display: none; }
+        .nav-bar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .nav-link {
+            padding: 0.35rem 0.85rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            border-radius: var(--radius);
+            border: 1px solid transparent;
+            white-space: nowrap;
+            transition: color 0.2s, border-color 0.2s, background 0.2s;
+        }
+
+        .nav-link:hover {
+            color: var(--text);
+            background: var(--gold-dim);
+            border-color: var(--border-gold);
+        }
+
+        .nav-link.active {
+            color: var(--gold);
+            border-color: var(--border-gold);
+            background: var(--gold-dim);
+            font-weight: 600;
+        }
+
+        .nav-toggle {
+            margin-left: auto;
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: transparent;
+            border: 1px solid var(--border-gold);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+        .nav-toggle:hover {
+            border-color: var(--gold);
+            transform: rotate(15deg);
+        }
+
+        /* ─── Main layout ─── */
+        .container-map {
+            display: flex;
+            height: calc(100vh - 48px);
+            gap: 0;
+            overflow: hidden;
+        }
+
+        /* ─── Sidebar ─── */
+        .sidebar {
+            width: 320px;
+            min-width: 280px;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-card);
+            border-right: 1px solid var(--border);
+            overflow: hidden;
+            transition: background 0.3s;
+        }
+
+        .sidebar-filters {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .filter-row {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .filter-label {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .filter-price-row {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .filter-price-row .form-control {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .form-select,
+        .form-control {
+            width: 100%;
+            background: var(--bg-lift);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--text);
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            padding: 0.5rem 0.75rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        .form-select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%237A7A8C' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            padding-right: 2rem;
+        }
+
+        .form-select:focus,
+        .form-control:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 2px var(--gold-dim);
+        }
+
+        .form-select option {
+            background: var(--bg-panel);
+            color: var(--text);
+        }
+
+        .form-control::placeholder {
+            color: var(--text-dim);
+        }
+
+        .form-control[type="number"]::-webkit-inner-spin-button,
+        .form-control[type="number"]::-webkit-outer-spin-button {
+            opacity: 0.4;
+        }
+
+        /* ─── Price toggle button ─── */
+        .btn-price-toggle {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            background: var(--bg-lift);
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius);
+            color: var(--text-muted);
+            font-family: var(--font-body);
+            font-size: 0.82rem;
+            font-weight: 500;
+            cursor: pointer;
+            text-align: left;
+            transition: background 0.2s, color 0.2s, border-color 0.2s;
+        }
+
+        .btn-price-toggle:hover {
+            background: var(--gold-dim);
+            color: var(--text);
+            border-color: var(--gold);
+        }
+
+        .btn-price-toggle.active {
+            background: var(--gold-dim);
+            border-color: var(--gold);
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        /* ─── Sidebar header ─── */
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.6rem 1rem;
+            background: var(--bg-lift);
+            border-bottom: 1px solid var(--border);
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+
+        #withGpsCount {
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        /* ─── Sidebar listings ─── */
+        #sidebarListings {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0.5rem;
+        }
+
+        #sidebarListings::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        #sidebarListings::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        #sidebarListings::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 2px;
+        }
+
+        .listing-item {
+            padding: 0.75rem;
+            border-radius: var(--radius);
+            margin-bottom: 0.35rem;
+            cursor: pointer;
+            background: var(--bg-lift);
+            border: 1px solid transparent;
+            border-left: 3px solid transparent;
+            transition: background 0.2s, border-color 0.2s, transform 0.15s;
+        }
+
+        .listing-item:hover {
+            background: var(--bg-panel);
+            border-color: var(--border-gold);
+            border-left-color: var(--gold);
+            transform: translateX(3px);
+        }
+
+        .listing-item.active {
+            background: var(--bg-panel);
+            border-color: var(--border-gold);
+            border-left-color: var(--gold);
+            box-shadow: 0 2px 12px rgba(201,162,101,0.12);
+        }
+
+        .listing-item h6 {
+            margin: 0 0 0.4rem;
+            font-size: 0.82rem;
+            font-weight: 500;
+            line-height: 1.4;
+            color: var(--text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .listing-item-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.35rem;
+        }
+
+        .listing-item-price {
+            font-weight: 600;
+            color: var(--gold);
+            font-size: 0.95rem;
+            font-family: var(--font-mono);
+        }
+
+        .listing-item .meta {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* ─── Badges ─── */
+        .badge-anomaly {
+            padding: 0.15rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            display: inline-block;
+        }
+
+        .badge-good {
+            background: rgba(16,185,129,0.15);
+            color: #10b981;
+            border: 1px solid rgba(16,185,129,0.3);
+        }
+
+        .badge-high {
+            background: rgba(239,68,68,0.15);
+            color: #ef4444;
+            border: 1px solid rgba(239,68,68,0.3);
+        }
+
+        .no-gps-icon {
+            font-size: 0.68rem;
+            color: var(--text-dim);
+        }
+
+        /* ─── Map container ─── */
+        .map-container {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+
+        /* ─── Map legend ─── */
+        .map-legend {
+            position: absolute;
+            bottom: 28px;
+            right: 12px;
+            z-index: 500;
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius-lg);
+            padding: 0.65rem 0.9rem;
+            box-shadow: var(--shadow);
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text);
+            transition: background 0.3s, border-color 0.3s;
+        }
+
+        .legend-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 0.45rem;
+            vertical-align: middle;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+        }
+
+        .legend-item {
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .legend-item:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ─── Price markers on map ─── */
+        .price-marker {
+            color: white;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 8px;
+            border: 1.5px solid rgba(255,255,255,0.7);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+            white-space: nowrap;
+            cursor: pointer;
+            display: inline-block;
+            transform: translate(-50%, -50%);
+        }
+
+        .price-marker.deal   { background: #10b981; }
+        .price-marker.high   { background: #ef4444; }
+        .price-marker.normal { background: #5B6FDE; }
+
+        /* ─── Leaflet popup ─── */
+        .leaflet-popup-content-wrapper {
+            background: var(--bg-card) !important;
+            color: var(--text) !important;
+            border: 1px solid var(--border-gold) !important;
+            border-radius: var(--radius-lg) !important;
+            box-shadow: var(--shadow) !important;
+        }
+
+        .leaflet-popup-tip {
+            background: var(--bg-card) !important;
+        }
+
+        .leaflet-popup-content {
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            min-width: 200px;
+            color: var(--text);
+        }
+
+        .popup-price {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--gold);
+            font-family: var(--font-mono);
+        }
+
+        .popup-img {
+            width: 100%;
+            height: 110px;
+            object-fit: cover;
+            border-radius: var(--radius);
+            margin-bottom: 0.65rem;
+        }
+
+        .popup-btn {
+            display: block;
+            width: 100%;
+            margin-top: 0.65rem;
+            padding: 0.45rem 0.75rem;
+            background: var(--gold-dim);
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius);
+            color: var(--gold);
+            text-decoration: none;
+            font-family: var(--font-body);
+            font-size: 0.82rem;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .popup-btn:hover {
+            background: var(--gold);
+            color: var(--bg);
+        }
+
+        /* ─── Floating dark mode toggle (desktop) ─── */
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s, border-color 0.2s;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+        }
+
+        .dark-mode-toggle:hover {
+            transform: scale(1.1) rotate(15deg);
+            border-color: var(--gold);
+        }
+
+        @media (max-width: 900px) {
+            .dark-mode-toggle { display: none; }
+        }
+
+        /* ─── Leaflet cluster overrides ─── */
+        .marker-cluster-small div,
+        .marker-cluster-medium div,
+        .marker-cluster-large div {
+            font-family: var(--font-mono);
+        }
+
+        /* ─── Mobile ─── */
+        @media (max-width: 768px) {
+            .nav-bar {
+                height: 44px;
+                padding: 0 0.75rem;
+            }
+
+            .container-map {
+                flex-direction: column;
+                height: calc(100vh - 44px);
+            }
+
+            .sidebar {
+                width: 100%;
+                min-width: unset;
+                height: 220px;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .sidebar-filters {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                padding: 0.6rem;
+            }
+
+            .filter-row {
+                flex: 1;
+                min-width: 130px;
+            }
+
+            .map-container {
+                flex: 1;
+            }
+        }
+
+        /* ─── Scrollbar global ─── */
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    </style>
+</head>
+<body>
+
+    <!-- Nav Bar -->
+    <nav class="nav-bar">
+        <a href="index.html" class="nav-link">Dashboard</a>
+        <a href="new-listings.html" class="nav-link">Nouvelles</a>
+        <a href="anomalies.html" class="nav-link">Anomalies</a>
+        <a href="map-advanced.html" class="nav-link active">Carte</a>
+        <a href="favorites.html" class="nav-link">Prioritaires</a>
+        <a href="3chambres.html" class="nav-link">3 Chambres</a>
+        <a href="ia-analyse.html" class="nav-link">Analyse IA</a>
+        <a href="stats-by-city.html" class="nav-link">Villes</a>
+        <button class="nav-toggle" id="darkModeToggle" title="Mode clair/sombre">☀️</button>
+    </nav>
+
+    <div class="container-map">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-filters">
+                <div class="filter-row">
+                    <label class="filter-label" for="filterCity">Ville</label>
+                    <select id="filterCity" class="form-select" onchange="applyMapFilters()">
+                        <option value="">Toutes les villes</option>
+                    </select>
+                </div>
+                <div class="filter-row">
+                    <label class="filter-label" for="filterSite">Site</label>
+                    <select id="filterSite" class="form-select" onchange="applyMapFilters()">
+                        <option value="">Tous les sites</option>
+                    </select>
+                </div>
+                <div class="filter-row">
+                    <label class="filter-label">Prix</label>
+                    <div class="filter-price-row">
+                        <input type="number" id="filterPriceMin" class="form-control" placeholder="Min €" oninput="applyMapFilters()">
+                        <input type="number" id="filterPriceMax" class="form-control" placeholder="Max €" oninput="applyMapFilters()">
+                    </div>
+                </div>
+                <div class="filter-row">
+                    <label class="filter-label" for="filterAnomaly">Anomalie</label>
+                    <select id="filterAnomaly" class="form-select" onchange="applyMapFilters()">
+                        <option value="">Toutes anomalies</option>
+                        <option value="GOOD_DEAL">Bonnes affaires</option>
+                        <option value="HIGH">Prix hauts</option>
+                        <option value="NONE">Prix normaux</option>
+                    </select>
+                </div>
+                <div class="filter-row">
+                    <button id="togglePriceLabels" class="btn-price-toggle" onclick="togglePriceMode()">
+                        💰 Afficher les prix
+                    </button>
+                </div>
+            </div>
+
+            <div class="sidebar-header">
+                <span id="listingCount">0 annonce(s)</span>
+                <span id="withGpsCount"></span>
+            </div>
+
+            <div id="sidebarListings"></div>
+        </div>
+
+        <!-- Map -->
+        <div class="map-container">
+            <div id="map"></div>
+            <div class="map-legend">
+                <div class="legend-item">
+                    <span class="legend-dot" style="background:#10b981;"></span>
+                    Bonne affaire
+                </div>
+                <div class="legend-item">
+                    <span class="legend-dot" style="background:#5B6FDE;"></span>
+                    Prix normal
+                </div>
+                <div class="legend-item">
+                    <span class="legend-dot" style="background:#ef4444;"></span>
+                    Prix haut
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating dark mode toggle (desktop only) -->
+    <button class="dark-mode-toggle" id="darkModeToggleFloat" title="Mode clair/sombre">☀️</button>
+
+    <!-- Leaflet -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.1/dist/leaflet.markercluster.js"></script>
+
+    <!-- Data -->
+    <script src="data/listings.js"></script>
+    <script src="data/anomalies.js"></script>
+
+    <script>
+        // ─── Dark mode ───
+        const dm = document.getElementById('darkModeToggle');
+        const dmFloat = document.getElementById('darkModeToggleFloat');
+        function applyDM(light) {
+            document.body.classList.toggle('light-mode', light);
+            const icon = light ? '🌙' : '☀️';
+            dm.textContent = icon;
+            if (dmFloat) dmFloat.textContent = icon;
+            localStorage.setItem('darkMode', light);
+        }
+        dm.addEventListener('click', () => applyDM(!document.body.classList.contains('light-mode')));
+        if (dmFloat) dmFloat.addEventListener('click', () => dm.click());
+        applyDM(localStorage.getItem('darkMode') === 'true');
+
+        // ─── Utility ───
+        if (typeof normCity === 'undefined') {
+            window.normCity = function(city) {
+                return city ? city.replace(/^Luxembourg[-\s]/i, '') : city;
+            };
+        }
+
+        if (typeof ANOMALIES === 'undefined') window.ANOMALIES = {};
+
+        const cityMedians = (function() {
+            const groups = {};
+            LISTINGS.forEach(l => {
+                const c = normCity(l.city || '');
+                if (!c || !l.price || l.price <= 0) return;
+                if (!groups[c]) groups[c] = [];
+                groups[c].push(l.price);
+            });
+            const medians = {};
+            Object.keys(groups).forEach(c => {
+                const sorted = groups[c].slice().sort((a, b) => a - b);
+                const mid = Math.floor(sorted.length / 2);
+                medians[c] = sorted.length % 2 === 0
+                    ? Math.round((sorted[mid - 1] + sorted[mid]) / 2)
+                    : sorted[mid];
+            });
+            return medians;
+        })();
+
+        function getAnomalyType(listing) {
+            const staticAnomaly = ANOMALIES[listing.listing_id];
+            if (staticAnomaly && staticAnomaly !== 'NONE') return staticAnomaly;
+            const city = normCity(listing.city || '');
+            const median = cityMedians[city];
+            if (!median || !listing.price || listing.price <= 0) return 'NONE';
+            const ratio = listing.price / median;
+            if (ratio < 0.7) return 'GOOD_DEAL';
+            if (ratio > 2.5) return 'HIGH';
+            return 'NONE';
+        }
+
+        const ANOMALY_COLORS = { 'GOOD_DEAL': '#10b981', 'HIGH': '#ef4444', 'NONE': '#5B6FDE' };
+
+        let map, markerClusterGroup, plainLayerGroup;
+        let currentMarkers = {};
+        let priceMode = false;
+
+        function togglePriceMode() {
+            priceMode = !priceMode;
+            const btn = document.getElementById('togglePriceLabels');
+            btn.classList.toggle('active', priceMode);
+            btn.textContent = priceMode ? '💰 Masquer les prix' : '💰 Afficher les prix';
+            applyMapFilters();
+        }
+
+        function initMap() {
+            map = L.map('map').setView([49.6116, 6.1319], 10);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 19
+            }).addTo(map);
+
+            markerClusterGroup = L.markerClusterGroup({
+                maxClusterRadius: 60,
+                iconCreateFunction: cluster => {
+                    const n = cluster.getChildCount();
+                    const size = n < 10 ? 36 : n < 50 ? 44 : 54;
+                    return L.divIcon({
+                        html: `<div style="background:#5B6FDE;color:white;width:${size}px;height:${size}px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.9rem;border:3px solid rgba(255,255,255,0.85);box-shadow:0 4px 12px rgba(0,0,0,0.4);font-family:'JetBrains Mono',monospace;">${n}</div>`,
+                        iconSize: [size, size],
+                        className: ''
+                    });
+                }
+            });
+            plainLayerGroup = L.layerGroup();
+            map.addLayer(markerClusterGroup);
+        }
+
+        function populateFilters() {
+            const cities = [...new Set(LISTINGS.map(l => l.city).filter(Boolean))].sort();
+            const sites  = [...new Set(LISTINGS.map(l => l.site).filter(Boolean))].sort();
+
+            const cityEl = document.getElementById('filterCity');
+            cities.forEach(c => {
+                const o = document.createElement('option');
+                o.value = c;
+                o.textContent = normCity(c) || c;
+                cityEl.appendChild(o);
+            });
+
+            const siteEl = document.getElementById('filterSite');
+            sites.forEach(s => {
+                const o = document.createElement('option');
+                o.value = o.textContent = s;
+                siteEl.appendChild(o);
+            });
+        }
+
+        function applyMapFilters() {
+            const city      = document.getElementById('filterCity').value;
+            const site      = document.getElementById('filterSite').value;
+            const priceMin  = parseInt(document.getElementById('filterPriceMin').value) || 0;
+            const priceMax  = parseInt(document.getElementById('filterPriceMax').value) || Infinity;
+            const anomalyF  = document.getElementById('filterAnomaly').value;
+
+            const filtered = LISTINGS.filter(l => {
+                if (city && l.city !== city) return false;
+                if (site && l.site !== site) return false;
+                if (l.price < priceMin || l.price > priceMax) return false;
+                if (anomalyF && getAnomalyType(l) !== anomalyF) return false;
+                return true;
+            });
+
+            // Vider les deux layers
+            markerClusterGroup.clearLayers();
+            plainLayerGroup.clearLayers();
+            currentMarkers = {};
+
+            // Switcher le layer actif selon le mode
+            if (priceMode) {
+                if (map.hasLayer(markerClusterGroup)) map.removeLayer(markerClusterGroup);
+                if (!map.hasLayer(plainLayerGroup)) map.addLayer(plainLayerGroup);
+            } else {
+                if (map.hasLayer(plainLayerGroup)) map.removeLayer(plainLayerGroup);
+                if (!map.hasLayer(markerClusterGroup)) map.addLayer(markerClusterGroup);
+            }
+
+            renderSidebar(filtered);
+            addMarkers(filtered);
+        }
+
+        function renderSidebar(listings) {
+            const withGps = listings.filter(l => l.latitude && l.longitude).length;
+            document.getElementById('listingCount').textContent = `${listings.length} annonce${listings.length > 1 ? 's' : ''}`;
+            document.getElementById('withGpsCount').textContent = withGps > 0 ? `📍 ${withGps}` : '';
+
+            const container = document.getElementById('sidebarListings');
+            if (listings.length === 0) {
+                container.innerHTML = '<div style="padding:1.5rem;color:var(--text-muted);text-align:center;font-size:0.85rem;">Aucune annonce</div>';
+                return;
+            }
+
+            container.innerHTML = listings.map(l => {
+                const anomaly = getAnomalyType(l);
+                const badge = anomaly === 'GOOD_DEAL'
+                    ? '<span class="badge-anomaly badge-good">Affaire</span>'
+                    : anomaly === 'HIGH'
+                        ? '<span class="badge-anomaly badge-high">Haut</span>'
+                        : '';
+                const hasGps = l.latitude && l.longitude;
+                return `
+                <div class="listing-item" data-id="${l.listing_id}" onclick="selectListing('${l.listing_id}')">
+                    <h6 title="${(l.title || '').replace(/"/g, '&quot;')}">${l.title || 'Sans titre'}</h6>
+                    <div class="listing-item-meta-row">
+                        <span class="listing-item-price">${(l.price || 0).toLocaleString('fr-FR')}€</span>
+                        ${badge}
+                        ${!hasGps ? '<span class="no-gps-icon" title="Pas de GPS">📍❌</span>' : ''}
+                    </div>
+                    <div class="meta">
+                        ${normCity(l.city) || l.city || ''}${l.surface > 0 ? ` · ${l.surface}m²` : ''}${l.rooms > 0 ? ` · ${l.rooms}ch` : ''}${l.distance_km ? ` · ${parseFloat(l.distance_km).toFixed(1)}km` : ''}
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function buildPopup(l) {
+            const anomaly = getAnomalyType(l);
+            const imgHtml = l.image_url
+                ? `<img src="${l.image_url}" class="popup-img" alt="" onerror="this.style.display='none'">`
+                : '';
+            const anomalyLabel = anomaly === 'GOOD_DEAL'
+                ? '<span style="color:#10b981;font-weight:700;font-size:0.8rem;">✅ Bonne affaire</span><br>'
+                : anomaly === 'HIGH'
+                    ? '<span style="color:#ef4444;font-weight:700;font-size:0.8rem;">⚠️ Prix haut</span><br>'
+                    : '';
+            return `
+                ${imgHtml}
+                ${anomalyLabel}
+                <strong style="font-size:0.88rem;line-height:1.4;display:block;margin-bottom:0.3rem;">${(l.title || 'Sans titre').substring(0, 60)}</strong>
+                <span class="popup-price">${(l.price || 0).toLocaleString('fr-FR')}€</span><br>
+                <span style="font-size:0.8rem;color:var(--text-muted);">
+                    ${normCity(l.city) || l.city || ''}${l.surface > 0 ? ` · ${l.surface}m²` : ''}${l.rooms > 0 ? ` · ${l.rooms} ch.` : ''}${l.distance_km ? ` · ${parseFloat(l.distance_km).toFixed(1)}km` : ''}
+                </span><br>
+                <small style="color:var(--text-dim);">${l.site || ''}</small>
+                <a href="${l.url}" target="_blank" rel="noopener" class="popup-btn">Voir l'annonce →</a>
+            `;
+        }
+
+        function addMarkers(listings) {
+            const prices = listings.map(x => x.price).filter(p => p > 0);
+            const maxP = Math.max(...prices) || 1;
+
+            listings.forEach(l => {
+                if (!l.latitude || !l.longitude) return;
+
+                const anomaly = getAnomalyType(l);
+                const color   = ANOMALY_COLORS[anomaly] || '#5B6FDE';
+                const popup   = buildPopup(l);
+                let marker;
+
+                if (priceMode) {
+                    // Mode prix : divIcon avec label "X €"
+                    const priceLabel = l.price > 0
+                        ? (l.price >= 1000
+                            ? Math.round(l.price / 100) / 10 + 'k€'
+                            : l.price + '€')
+                        : '?€';
+                    const cls = anomaly === 'GOOD_DEAL' ? 'deal' : anomaly === 'HIGH' ? 'high' : 'normal';
+                    const icon = L.divIcon({
+                        html: `<div class="price-marker ${cls}">${priceLabel}</div>`,
+                        className: '',
+                        iconSize: [1, 1],
+                        iconAnchor: [0, 0],
+                        popupAnchor: [0, -16]
+                    });
+                    marker = L.marker([l.latitude, l.longitude], { icon })
+                        .bindPopup(popup, { maxWidth: 240 });
+                } else {
+                    // Mode normal : cercle coloré
+                    const radius = l.price > 0 ? 8 + Math.round((l.price / maxP) * 6) : 8;
+                    marker = L.circleMarker([l.latitude, l.longitude], {
+                        radius,
+                        fillColor: color,
+                        color: '#fff',
+                        weight: 2,
+                        opacity: 1,
+                        fillOpacity: 0.85
+                    }).bindPopup(popup, { maxWidth: 240 });
+                }
+
+                marker.on('click', () => selectListing(l.listing_id));
+
+                if (priceMode) {
+                    plainLayerGroup.addLayer(marker);
+                } else {
+                    markerClusterGroup.addLayer(marker);
+                }
+                currentMarkers[l.listing_id] = marker;
+            });
+        }
+
+        function selectListing(listingId) {
+            document.querySelectorAll('.listing-item').forEach(el => el.classList.remove('active'));
+            const item = document.querySelector(`.listing-item[data-id="${listingId}"]`);
+            if (item) {
+                item.classList.add('active');
+                item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+
+            const marker = currentMarkers[listingId];
+            if (marker) {
+                const latlng = marker.getLatLng ? marker.getLatLng() : marker._latlng;
+                map.setView(latlng, 15);
+                marker.openPopup();
+            }
+        }
+
+        function init() {
+            document.getElementById('lastUpdate') &&
+                (document.getElementById('lastUpdate').textContent =
+                    `Mis à jour: ${new Date().toLocaleString('fr-FR')}`);
+
+            if (typeof LISTINGS === 'undefined' || !LISTINGS || LISTINGS.length === 0) {
+                document.getElementById('sidebarListings').innerHTML =
+                    '<div style="padding:1.5rem;color:#ef4444;font-size:0.85rem;">Données non disponibles</div>';
+                return;
+            }
+
+            initMap();
+            populateFilters();
+            applyMapFilters();
+        }
+
+        // Service Worker
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.register("sw.js").then(() => {}).catch(() => {});
+        }
+
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https:;">
+    <title>Appartements 3 Chambres — ImmoLux</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#09090F">
+    <script src="dark-mode.js" defer></script>
+    <script src="data/version.js"></script>
+    <script src="version-display.js" defer></script>
+    <style>
+        /* ── Variables ──────────────────────────────────────────── */
+        :root {
+            --bg:          #09090F;
+            --bg-card:     #111118;
+            --bg-lift:     #16161F;
+            --bg-panel:    #1C1C27;
+            --gold:        #C9A265;
+            --gold-dim:    rgba(201,162,101,0.18);
+            --gold-line:   rgba(201,162,101,0.35);
+            --text:        #E8E4DC;
+            --text-muted:  #7A7A8C;
+            --text-dim:    #4A4A5C;
+            --border:      rgba(255,255,255,0.07);
+            --border-gold: rgba(201,162,101,0.25);
+            --radius:      4px;
+            --radius-lg:   8px;
+            --shadow:      0 4px 32px rgba(0,0,0,0.5);
+            --shadow-gold: 0 4px 24px rgba(201,162,101,0.12);
+            --font-display:'Cormorant Garamond', Georgia, serif;
+            --font-body:   'Outfit', system-ui, sans-serif;
+            --font-mono:   'JetBrains Mono', monospace;
+        }
+
+        /* Light mode */
+        body.light-mode {
+            --bg:          #F5F0E8;
+            --bg-card:     #FFFFFF;
+            --bg-lift:     #FAF7F2;
+            --bg-panel:    #F0EAE0;
+            --text:        #1A1A24;
+            --text-muted:  #6B6B7C;
+            --text-dim:    #A0A0B0;
+            --border:      rgba(0,0,0,0.08);
+            --border-gold: rgba(160,110,50,0.3);
+            --gold:        #9A6E2A;
+            --gold-dim:    rgba(154,110,42,0.1);
+            --gold-line:   rgba(154,110,42,0.3);
+            --shadow:      0 4px 24px rgba(0,0,0,0.1);
+        }
+
+        /* ── Reset ──────────────────────────────────────────────── */
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            font-size: 15px;
+            line-height: 1.6;
+            transition: background 0.4s, color 0.4s;
+        }
+
+        /* Subtle grid texture overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.4;
+        }
+
+        /* ── Layout ─────────────────────────────────────────────── */
+        .page-wrap {
+            position: relative;
+            z-index: 1;
+            max-width: 1360px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+        }
+
+        /* ── Hero Header ─────────────────────────────────────────── */
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: end;
+            gap: 2rem;
+            padding: 4rem 0 3rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 3rem;
+            animation: fadeUp 0.7s ease both;
+        }
+
+        .hero-text {}
+
+        .hero-eyebrow {
+            font-family: var(--font-body);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .hero-eyebrow::before {
+            content: '';
+            display: block;
+            width: 2rem;
+            height: 1px;
+            background: var(--gold);
+        }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.8rem, 6vw, 5rem);
+            font-weight: 600;
+            line-height: 1.05;
+            color: var(--text);
+            letter-spacing: -0.02em;
+        }
+
+        .hero h1 em {
+            font-style: italic;
+            color: var(--gold);
+        }
+
+        .hero-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.75rem;
+            font-weight: 300;
+        }
+
+        .hero-number {
+            font-family: var(--font-display);
+            font-size: clamp(8rem, 18vw, 16rem);
+            font-weight: 700;
+            line-height: 0.85;
+            color: transparent;
+            -webkit-text-stroke: 1px var(--gold-line);
+            letter-spacing: -0.05em;
+            user-select: none;
+            opacity: 0.6;
+        }
+
+        /* ── Stats Bar ───────────────────────────────────────────── */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            margin-bottom: 2.5rem;
+            animation: fadeUp 0.7s ease 0.1s both;
+        }
+
+        .stat-cell {
+            background: var(--bg-card);
+            padding: 1.5rem 2rem;
+            transition: background 0.2s;
+        }
+
+        .stat-cell:hover { background: var(--bg-lift); }
+
+        .stat-num {
+            font-family: var(--font-mono);
+            font-size: 2rem;
+            font-weight: 500;
+            color: var(--gold);
+            display: block;
+            line-height: 1;
+            margin-bottom: 0.4rem;
+        }
+
+        .stat-lbl {
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        /* ── Filters Panel ───────────────────────────────────────── */
+        .filters-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.75rem 2rem;
+            margin-bottom: 2rem;
+            animation: fadeUp 0.7s ease 0.15s both;
+        }
+
+        .filters-panel-title {
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .filters-panel-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .filters-row {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr 1fr;
+            gap: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .filter-group { display: flex; flex-direction: column; gap: 0.4rem; }
+
+        .filter-label {
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--gold);
+        }
+
+        .filter-select,
+        .filter-input {
+            background: var(--bg-lift);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--text);
+            font-family: var(--font-body);
+            font-size: 0.88rem;
+            padding: 0.6rem 0.9rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        .filter-select:focus,
+        .filter-input:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 2px var(--gold-dim);
+        }
+
+        .filter-range { display: flex; gap: 0.5rem; align-items: center; }
+        .filter-range .filter-input { flex: 1; }
+        .filter-range-sep { color: var(--text-dim); font-size: 0.8rem; }
+
+        .filters-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+            padding-top: 0.25rem;
+        }
+
+        .btn-apply {
+            background: var(--gold);
+            color: #09090F;
+            border: none;
+            border-radius: var(--radius);
+            padding: 0.65rem 1.5rem;
+            font-family: var(--font-body);
+            font-size: 0.82rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.15s;
+        }
+
+        .btn-apply:hover { opacity: 0.88; transform: translateY(-1px); }
+
+        .btn-reset {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 0.65rem 1.25rem;
+            font-family: var(--font-body);
+            font-size: 0.82rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .btn-reset:hover { border-color: var(--text-muted); color: var(--text); }
+
+        /* ── Results Bar ─────────────────────────────────────────── */
+        .results-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.85rem 1.25rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            border-left: 3px solid var(--gold);
+            border-radius: var(--radius);
+            margin-bottom: 2rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            animation: fadeUp 0.7s ease 0.2s both;
+        }
+
+        /* ── View Tabs ───────────────────────────────────────────── */
+        .view-tabs {
+            display: flex;
+            gap: 0;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2rem;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-family: var(--font-body);
+            font-size: 0.82rem;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 0.85rem 1.5rem;
+            cursor: pointer;
+            position: relative;
+            transition: color 0.2s;
+        }
+
+        .tab-btn::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0; right: 0;
+            height: 2px;
+            background: var(--gold);
+            transform: scaleX(0);
+            transition: transform 0.25s ease;
+        }
+
+        .tab-btn:hover { color: var(--text); }
+
+        .tab-btn.active {
+            color: var(--gold);
+        }
+
+        .tab-btn.active::after { transform: scaleX(1); }
+
+        /* ── Tab Content ─────────────────────────────────────────── */
+        .tab-pane { display: none; }
+        .tab-pane.show.active { display: block; }
+
+        /* ── Listings Grid ───────────────────────────────────────── */
+        .listings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        /* ── Listing Card ────────────────────────────────────────── */
+        .listing-card {
+            background: var(--bg-card);
+            display: flex;
+            flex-direction: column;
+            transition: background 0.2s;
+            animation: fadeUp 0.4s ease both;
+        }
+
+        .listing-card:hover { background: var(--bg-lift); }
+
+        .listing-header {
+            padding: 1.25rem 1.5rem 1rem;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+        }
+
+        .listing-header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 2px;
+            height: 100%;
+            background: var(--gold);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .listing-card:hover .listing-header::before { opacity: 1; }
+
+        .listing-site {
+            display: inline-block;
+            font-size: 0.62rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gold);
+            border: 1px solid var(--gold-line);
+            padding: 0.2rem 0.6rem;
+            border-radius: 2px;
+            margin-bottom: 0.6rem;
+        }
+
+        .listing-title {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text);
+            line-height: 1.3;
+            margin: 0;
+        }
+
+        .listing-body {
+            padding: 1.25rem 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .listing-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .meta-item {}
+
+        .meta-label {
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+
+        .meta-value {
+            font-family: var(--font-mono);
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: var(--gold);
+            line-height: 1;
+        }
+
+        .listing-details {
+            display: flex;
+            gap: 1.25rem;
+            flex-wrap: wrap;
+        }
+
+        .detail-item {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .listing-footer {
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .btn-view {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0.65rem 0.9rem;
+            background: transparent;
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius);
+            color: var(--gold);
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-decoration: none;
+            transition: background 0.2s, border-color 0.2s;
+            cursor: pointer;
+        }
+
+        .btn-view:hover {
+            background: var(--gold-dim);
+            border-color: var(--gold);
+            color: var(--gold);
+            text-decoration: none;
+        }
+
+        .btn-view-arrow {
+            font-size: 1rem;
+            transition: transform 0.2s;
+        }
+
+        .btn-view:hover .btn-view-arrow { transform: translateX(3px); }
+
+        /* ── City Groups ─────────────────────────────────────────── */
+        .city-group {
+            margin-bottom: 2.5rem;
+            animation: fadeUp 0.4s ease both;
+        }
+
+        .city-group-header {
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .city-group-name {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            font-weight: 600;
+            font-style: italic;
+            color: var(--text);
+            line-height: 1;
+        }
+
+        .city-count {
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gold);
+            border: 1px solid var(--gold-line);
+            padding: 0.15rem 0.55rem;
+            border-radius: 2px;
+        }
+
+        .city-stats {
+            margin-left: auto;
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        .city-stat-val {
+            color: var(--text);
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+        }
+
+        .city-listings {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+
+        /* ── Empty State ─────────────────────────────────────────── */
+        .empty-state {
+            grid-column: 1 / -1;
+            padding: 5rem 2rem;
+            text-align: center;
+            color: var(--text-muted);
+            background: var(--bg-card);
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-state p {
+            font-size: 0.9rem;
+            font-weight: 300;
+        }
+
+        /* ── Footer Nav ──────────────────────────────────────────── */
+        .page-footer {
+            display: flex;
+            justify-content: center;
+            padding-top: 3rem;
+            border-top: 1px solid var(--border);
+            margin-top: 3rem;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.75rem 2rem;
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-family: var(--font-body);
+            font-size: 0.82rem;
+            font-weight: 500;
+            text-decoration: none;
+            letter-spacing: 0.06em;
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .btn-back:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+            text-decoration: none;
+        }
+
+        /* ── Mode Toggle ─────────────────────────────────────────── */
+        .mode-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: border-color 0.2s, color 0.2s, transform 0.2s;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+
+        .mode-toggle:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+            transform: scale(1.08);
+        }
+
+        @media (max-width: 900px) {
+            .mode-toggle { display: none; }
+        }
+
+        /* ── Nav bar ─────────────────────────────────────────────── */
+        .nav-bar {
+            display: flex;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 0;
+            align-items: center;
+        }
+
+        .nav-link {
+            font-family: var(--font-body);
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: var(--text-muted);
+            padding: 0.4rem 0.9rem;
+            border-radius: var(--radius);
+            border: 1px solid transparent;
+            transition: color 0.2s, border-color 0.2s;
+        }
+
+        .nav-link:hover { color: var(--text); border-color: var(--border); }
+
+        .nav-link.active {
+            color: var(--gold);
+            border-color: var(--gold-line);
+        }
+
+        /* ── Nav toggle (mobile dark mode button in nav bar) ── */
+        .nav-toggle {
+            margin-left: auto;
+            background: transparent;
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius);
+            color: var(--gold);
+            font-size: 1rem;
+            padding: 0.35rem 0.6rem;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+            line-height: 1;
+        }
+        .nav-toggle:hover { background: var(--gold-dim); border-color: var(--gold); }
+
+        /* ── Animations ──────────────────────────────────────────── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Responsive ──────────────────────────────────────────── */
+        @media (max-width: 900px) {
+            .hero { grid-template-columns: 1fr; }
+            .hero-number { display: none; }
+            .filters-row { grid-template-columns: 1fr; }
+            .stats-bar { grid-template-columns: 1fr 1fr 1fr; }
+        }
+
+        @media (max-width: 640px) {
+            .page-wrap { padding: 0 1rem 3rem; }
+            .hero { padding: 2.5rem 0 2rem; }
+            .stats-bar { grid-template-columns: 1fr; }
+            .listings-grid { grid-template-columns: 1fr; }
+            .city-listings { grid-template-columns: 1fr; }
+            .city-stats { display: none; }
+            .filters-panel { padding: 1.25rem; }
+            .stat-cell { padding: 1.25rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="page-wrap">
+
+    <!-- ── Nav ─────────────────────────────────────────────────── -->
+    <nav class="nav-bar">
+        <a href="index.html" class="nav-link">Dashboard</a>
+        <a href="new-listings.html" class="nav-link">Nouvelles</a>
+        <a href="anomalies.html" class="nav-link">Anomalies</a>
+        <a href="map-advanced.html" class="nav-link">Carte</a>
+        <a href="favorites.html" class="nav-link">Villes</a>
+        <a href="ia-analyse.html" class="nav-link">Analyse IA</a>
+        <a href="3chambres.html" class="nav-link active">3 Chambres</a>
+        <button class="nav-toggle" id="darkModeToggle" title="Mode clair/sombre" aria-label="Mode clair/sombre">🌙</button>
+    </nav>
+
+    <!-- ── Hero ────────────────────────────────────────────────── -->
+    <header class="hero">
+        <div class="hero-text">
+            <p class="hero-eyebrow">Marché immobilier Luxembourg</p>
+            <h1>Appartements<br><em>3 Chambres</em></h1>
+            <p class="hero-meta" id="lastUpdate">Chargement des données…</p>
+        </div>
+        <div class="hero-number" aria-hidden="true">3</div>
+    </header>
+
+    <!-- ── Stats ────────────────────────────────────────────────── -->
+    <div class="stats-bar">
+        <div class="stat-cell">
+            <span class="stat-num" id="totalCount">—</span>
+            <span class="stat-lbl">Annonces</span>
+        </div>
+        <div class="stat-cell">
+            <span class="stat-num" id="avgPrice">—</span>
+            <span class="stat-lbl">Prix moyen / mois</span>
+        </div>
+        <div class="stat-cell">
+            <span class="stat-num" id="avgSurface">—</span>
+            <span class="stat-lbl">Surface moyenne</span>
+        </div>
+    </div>
+
+    <!-- ── Filters ──────────────────────────────────────────────── -->
+    <div class="filters-panel">
+        <div class="filters-panel-title">Filtres</div>
+        <div class="filters-row">
+            <div class="filter-group">
+                <label class="filter-label">Ville</label>
+                <select id="filterCity" class="filter-select">
+                    <option value="">Toutes les villes</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">Prix €/mois</label>
+                <div class="filter-range">
+                    <input type="number" id="filterMinPrice" class="filter-input" placeholder="Min" min="0">
+                    <span class="filter-range-sep">—</span>
+                    <input type="number" id="filterMaxPrice" class="filter-input" placeholder="Max" min="0">
+                </div>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">Surface m²</label>
+                <div class="filter-range">
+                    <input type="number" id="filterMinSurface" class="filter-input" placeholder="Min" min="0">
+                    <span class="filter-range-sep">—</span>
+                    <input type="number" id="filterMaxSurface" class="filter-input" placeholder="Max" min="0">
+                </div>
+            </div>
+        </div>
+        <div class="filters-actions">
+            <button class="btn-apply" id="applyFilters">Appliquer</button>
+            <button class="btn-reset" id="resetFilters">Réinitialiser</button>
+        </div>
+    </div>
+
+    <!-- ── Results bar ──────────────────────────────────────────── -->
+    <div class="results-bar" id="resultsInfo">Chargement…</div>
+
+    <!-- ── View Tabs ─────────────────────────────────────────────── -->
+    <div class="view-tabs">
+        <button class="tab-btn active" data-bs-toggle="tab" data-bs-target="#tab-grid">Vue grille</button>
+        <button class="tab-btn" data-bs-toggle="tab" data-bs-target="#tab-city">Par ville</button>
+    </div>
+
+    <!-- ── Tab Content ──────────────────────────────────────────── -->
+    <div class="tab-content">
+        <!-- GRID TAB -->
+        <div class="tab-pane fade show active" id="tab-grid">
+            <div class="listings-grid" id="listingsGrid"></div>
+        </div>
+
+        <!-- CITY TAB -->
+        <div class="tab-pane fade" id="tab-city">
+            <div id="listingsByCity"></div>
+        </div>
+    </div>
+
+    <!-- ── Footer ───────────────────────────────────────────────── -->
+    <div class="page-footer">
+        <a href="index.html" class="btn-back">
+            <span>←</span>
+            <span>Retour au Dashboard</span>
+        </a>
+    </div>
+</div>
+
+<!-- ── Dark/Light Toggle ──────────────────────────────────────── -->
+<button class="mode-toggle" id="darkModeToggleFloat" aria-label="Mode sombre/clair">🌙</button>
+
+<!-- ── Scripts ───────────────────────────────────────────────── -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="data/listings.js"></script>
+<script>
+    // ── Dark/Light mode ─────────────────────────────────────────
+    const dm = document.getElementById("darkModeToggle");
+    const dmFloat = document.getElementById("darkModeToggleFloat");
+
+    function applyMode(light) {
+        document.body.classList.toggle("light-mode", light);
+        const icon = light ? "🌙" : "☀️";
+        dm.textContent = icon;
+        if (dmFloat) dmFloat.textContent = icon;
+    }
+
+    dm.addEventListener("click", () => {
+        const isLight = document.body.classList.contains("light-mode");
+        applyMode(!isLight);
+        localStorage.setItem("immoLightMode", !isLight);
+    });
+    if (dmFloat) dmFloat.addEventListener("click", () => dm.click());
+
+    applyMode(localStorage.getItem("immoLightMode") === "true");
+
+    // ── Data ─────────────────────────────────────────────────────
+    let apartments3BR = [];
+    let filteredApartments = [];
+    let allCities = [];
+
+    function init() {
+        if (typeof LISTINGS === 'undefined' || !LISTINGS.length) {
+            document.getElementById('listingsGrid').innerHTML =
+                '<div class="empty-state"><div class="empty-state-icon">📭</div><p>Aucune donnée disponible</p></div>';
+            return;
+        }
+
+        apartments3BR = LISTINGS.filter(apt => apt.rooms === 3);
+        filteredApartments = [...apartments3BR];
+        allCities = [...new Set(apartments3BR.map(apt => apt.city))].sort();
+
+        const citySelect = document.getElementById('filterCity');
+        allCities.forEach(city => {
+            const option = document.createElement('option');
+            option.value = city;
+            option.textContent = city;
+            citySelect.appendChild(option);
+        });
+
+        updateStats();
+        renderListings(filteredApartments);
+        renderListingsByCity(filteredApartments);
+        updateResultsInfo();
+
+        document.getElementById('applyFilters').addEventListener('click', applyFilters);
+        document.getElementById('resetFilters').addEventListener('click', resetFilters);
+
+        ['filterCity', 'filterMinPrice', 'filterMaxPrice', 'filterMinSurface', 'filterMaxSurface'].forEach(id => {
+            document.getElementById(id).addEventListener('change', applyFilters);
+        });
+
+        // Tab switching (custom, no Bootstrap CSS needed)
+        const tabButtons = document.querySelectorAll('[data-bs-toggle="tab"]');
+        tabButtons.forEach(btn => {
+            btn.addEventListener('click', function () {
+                tabButtons.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                const target = this.dataset.bsTarget;
+                document.querySelectorAll('.tab-pane').forEach(p => {
+                    p.classList.remove('show', 'active');
+                });
+                const pane = document.querySelector(target);
+                if (pane) pane.classList.add('show', 'active');
+            });
+        });
+
+        document.getElementById('lastUpdate').textContent =
+            'Mis à jour · ' + new Date().toLocaleString('fr-FR');
+    }
+
+    function updateStats(listings) {
+        const source = listings || apartments3BR;
+        const total = source.length;
+        const avgPrice   = total > 0 ? Math.round(source.reduce((s, a) => s + a.price, 0)   / total) : 0;
+        const avgSurface = total > 0 ? Math.round(source.reduce((s, a) => s + a.surface, 0) / total) : 0;
+
+        document.getElementById('totalCount').textContent  = total.toString();
+        document.getElementById('avgPrice').textContent    = avgPrice.toLocaleString('fr-FR') + '€';
+        document.getElementById('avgSurface').textContent  = avgSurface + ' m²';
+    }
+
+    function applyFilters() {
+        const city       = document.getElementById('filterCity').value;
+        const minPrice   = parseInt(document.getElementById('filterMinPrice').value)   || 0;
+        const maxPrice   = parseInt(document.getElementById('filterMaxPrice').value)   || Infinity;
+        const minSurface = parseInt(document.getElementById('filterMinSurface').value) || 0;
+        const maxSurface = parseInt(document.getElementById('filterMaxSurface').value) || Infinity;
+
+        filteredApartments = apartments3BR.filter(apt =>
+            apt.rooms === 3 &&
+            (!city || apt.city === city) &&
+            apt.price   >= minPrice   && apt.price   <= maxPrice &&
+            apt.surface >= minSurface && apt.surface <= maxSurface
+        );
+
+        renderListings(filteredApartments);
+        renderListingsByCity(filteredApartments);
+        updateStats(filteredApartments);
+        updateResultsInfo();
+    }
+
+    function resetFilters() {
+        ['filterCity','filterMinPrice','filterMaxPrice','filterMinSurface','filterMaxSurface']
+            .forEach(id => document.getElementById(id).value = '');
+        filteredApartments = [...apartments3BR];
+        renderListings(filteredApartments);
+        renderListingsByCity(filteredApartments);
+        updateStats(filteredApartments);
+        updateResultsInfo();
+    }
+
+    function updateResultsInfo() {
+        const total = filteredApartments.length;
+        const all   = apartments3BR.length;
+        const avgPrice = total > 0
+            ? Math.round(filteredApartments.reduce((s, a) => s + a.price, 0) / total)
+            : 0;
+
+        let info = `${total} annonce${total !== 1 ? 's' : ''} trouvée${total !== 1 ? 's' : ''}`;
+        if (total > 0) info += `  ·  Prix moyen ${avgPrice.toLocaleString('fr-FR')} €`;
+        if (total !== all) info += `  ·  ${all} au total`;
+
+        document.getElementById('resultsInfo').textContent = info;
+    }
+
+    function cardHTML(apt) {
+        return `
+        <div class="listing-card">
+            <div class="listing-header">
+                <span class="listing-site">${apt.site}</span>
+                <h3 class="listing-title">${apt.title}</h3>
+            </div>
+            <div class="listing-body">
+                <div class="listing-meta">
+                    <div class="meta-item">
+                        <span class="meta-label">Prix / mois</span>
+                        <span class="meta-value">${apt.price.toLocaleString('fr-FR')}€</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Surface</span>
+                        <span class="meta-value">${apt.surface} m²</span>
+                    </div>
+                </div>
+                <div class="listing-details">
+                    <span class="detail-item">📍 ${apt.city}</span>
+                    <span class="detail-item">${apt.distance_km} km</span>
+                    <span class="detail-item">${apt.price_m2} €/m²</span>
+                </div>
+                <div class="listing-footer">
+                    <a href="${apt.url}" target="_blank" rel="noopener noreferrer" class="btn-view">
+                        <span>Voir l'annonce</span>
+                        <span class="btn-view-arrow">→</span>
+                    </a>
+                </div>
+            </div>
+        </div>`;
+    }
+
+    function renderListings(listings) {
+        const grid = document.getElementById('listingsGrid');
+        if (!listings.length) {
+            grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔍</div><p>Aucun appartement ne correspond aux critères</p></div>';
+            return;
+        }
+        grid.innerHTML = listings.map(cardHTML).join('');
+    }
+
+    function renderListingsByCity(listings) {
+        const container = document.getElementById('listingsByCity');
+        if (!listings.length) {
+            container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔍</div><p>Aucun appartement ne correspond aux critères</p></div>';
+            return;
+        }
+
+        const byCity = {};
+        listings.forEach(apt => {
+            if (!byCity[apt.city]) byCity[apt.city] = [];
+            byCity[apt.city].push(apt);
+        });
+
+        container.innerHTML = Object.keys(byCity).sort().map(city => {
+            const apts = byCity[city];
+            const avgP = Math.round(apts.reduce((s, a) => s + a.price, 0)   / apts.length);
+            const avgS = Math.round(apts.reduce((s, a) => s + a.surface, 0) / apts.length);
+            return `
+            <div class="city-group">
+                <div class="city-group-header">
+                    <span class="city-group-name">${city}</span>
+                    <span class="city-count">${apts.length} annonce${apts.length !== 1 ? 's' : ''}</span>
+                    <div class="city-stats">
+                        <span>Moy. <span class="city-stat-val">${avgP.toLocaleString('fr-FR')} €</span></span>
+                        <span>Surface <span class="city-stat-val">${avgS} m²</span></span>
+                    </div>
+                </div>
+                <div class="city-listings">
+                    ${apts.map(cardHTML).join('')}
+                </div>
+            </div>`;
+        }).join('');
+    }
+
+    // ── Init ──────────────────────────────────────────────────────
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+</script>
+</body>
+</html>

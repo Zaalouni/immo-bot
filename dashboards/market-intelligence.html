@@ -1,0 +1,1700 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Synthèse & Intelligence Marché - ImmoLux Luxembourg">
+    <meta name="theme-color" content="#09090F">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <link rel="manifest" href="manifest.json">
+    <title>Synthèse Marché — ImmoLux</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="data/version.js"></script>
+    <script src="version-display.js" defer></script>
+    <style>
+        :root {
+            --bg:#09090F;
+            --bg-card:#111118;
+            --bg-lift:#16161F;
+            --bg-panel:#1C1C27;
+            --gold:#C9A265;
+            --gold-dim:rgba(201,162,101,0.18);
+            --gold-line:rgba(201,162,101,0.35);
+            --text:#E8E4DC;
+            --text-muted:#7A7A8C;
+            --text-dim:#4A4A5C;
+            --border:rgba(255,255,255,0.07);
+            --border-gold:rgba(201,162,101,0.25);
+            --radius:4px;
+            --radius-lg:8px;
+            --shadow:0 4px 32px rgba(0,0,0,0.5);
+            --font-display:'Cormorant Garamond',Georgia,serif;
+            --font-body:'Outfit',system-ui,sans-serif;
+            --font-mono:'JetBrains Mono',monospace;
+        }
+        body.light-mode {
+            --bg:#F5F0E8;
+            --bg-card:#FFFFFF;
+            --bg-lift:#FAF7F2;
+            --bg-panel:#F0EAE0;
+            --text:#1A1A24;
+            --text-muted:#6B6B7C;
+            --text-dim:#A0A0B0;
+            --border:rgba(0,0,0,0.08);
+            --border-gold:rgba(160,110,50,0.3);
+            --gold:#9A6E2A;
+            --gold-dim:rgba(154,110,42,0.1);
+            --gold-line:rgba(154,110,42,0.3);
+            --shadow:0 4px 24px rgba(0,0,0,0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 0 0 4rem;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.4;
+        }
+
+        /* ── NAV BAR ── */
+        .nav-bar {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: .25rem .5rem;
+            padding: .75rem 1.5rem;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-gold);
+        }
+        .nav-link {
+            font-family: var(--font-body);
+            font-size: .8rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: .35rem .7rem;
+            border-radius: var(--radius);
+            border: 1px solid transparent;
+            transition: color .2s, border-color .2s, background .2s;
+            letter-spacing: .02em;
+        }
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--gold);
+            border-color: var(--border-gold);
+            background: var(--gold-dim);
+        }
+        .nav-toggle {
+            margin-left: auto;
+            background: none;
+            border: 1px solid var(--border-gold);
+            color: var(--text-muted);
+            border-radius: var(--radius);
+            padding: .3rem .6rem;
+            cursor: pointer;
+            font-size: .9rem;
+            transition: color .2s, border-color .2s;
+        }
+        .nav-toggle:hover { color: var(--gold); border-color: var(--gold); }
+
+        /* ── LAYOUT ── */
+        .container-main {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── PAGE HEADER ── */
+        .page-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: fadeInDown .5s ease;
+        }
+        .page-header h1 {
+            font-family: var(--font-display);
+            font-size: 2.8rem;
+            font-weight: 600;
+            color: var(--gold);
+            letter-spacing: .02em;
+            margin-bottom: .4rem;
+        }
+        .page-header p {
+            color: var(--text-muted);
+            font-size: .9rem;
+            font-weight: 400;
+        }
+        .page-header #last-update-display {
+            margin-top: .35rem;
+            font-size: .75rem;
+            color: var(--text-dim);
+            font-family: var(--font-mono);
+        }
+
+        /* ── DEADLINE BANNER ── */
+        .deadline-banner {
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius-lg);
+            padding: 1.1rem 1.5rem;
+            margin-bottom: 1.75rem;
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            animation: fadeIn .5s ease .05s both;
+            background: var(--bg-card);
+            position: relative;
+            overflow: hidden;
+        }
+        .deadline-banner::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            opacity: .06;
+        }
+        .deadline-banner.urgent  { border-color: rgba(239,68,68,.5); }
+        .deadline-banner.urgent::before  { background: #ef4444; }
+        .deadline-banner.warning { border-color: rgba(245,158,11,.45); }
+        .deadline-banner.warning::before { background: #f59e0b; }
+        .deadline-banner.ok      { border-color: var(--border-gold); }
+        .deadline-banner.ok::before      { background: var(--gold); }
+
+        .deadline-left { display: flex; align-items: center; gap: 1rem; position: relative; }
+        .deadline-icon { font-size: 2rem; flex-shrink: 0; }
+        .deadline-label { color: var(--text); }
+        .deadline-label .big { font-family: var(--font-display); font-size: 1.6rem; font-weight: 600; line-height: 1; color: var(--gold); }
+        .deadline-banner.urgent .deadline-label .big  { color: #f87171; }
+        .deadline-banner.warning .deadline-label .big { color: #fbbf24; }
+        .deadline-label .sub { font-size: .8rem; font-weight: 400; color: var(--text-muted); margin-top: .25rem; }
+        .deadline-right { display: flex; gap: .6rem; flex-wrap: wrap; position: relative; }
+        .deadline-stat {
+            background: var(--bg-lift);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: .5rem .85rem;
+            text-align: center;
+            min-width: 68px;
+        }
+        .deadline-stat .ds-val {
+            font-family: var(--font-mono);
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--gold);
+            line-height: 1;
+        }
+        .deadline-banner.urgent  .ds-val { color: #f87171; }
+        .deadline-banner.warning .ds-val { color: #fbbf24; }
+        .deadline-stat .ds-lbl { font-size: .6rem; font-weight: 500; color: var(--text-dim); text-transform: uppercase; letter-spacing: .06em; margin-top: .2rem; }
+
+        /* ── FILTER PANEL ── */
+        .filter-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem 1.75rem;
+            margin-bottom: 1.75rem;
+            animation: fadeIn .5s ease .1s both;
+        }
+        .filter-panel h5 {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--gold);
+            margin-bottom: 1.2rem;
+            letter-spacing: .02em;
+        }
+
+        .filter-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .filter-group label {
+            font-size: .7rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            margin-bottom: .4rem;
+            display: block;
+        }
+
+        .filter-group input[type="date"],
+        .filter-group input[type="number"] {
+            width: 100%;
+            background: var(--bg-lift);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: .45rem .7rem;
+            font-size: .88rem;
+            font-family: var(--font-mono);
+            font-weight: 500;
+            color: var(--text);
+            transition: border-color .2s;
+            appearance: none;
+        }
+        .filter-group input[type="date"]:focus,
+        .filter-group input[type="number"]:focus {
+            outline: none;
+            border-color: var(--border-gold);
+        }
+        .filter-group input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1) opacity(.4);
+        }
+        body.light-mode .filter-group input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: none;
+        }
+
+        .city-chips { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .4rem; }
+        .city-chip {
+            padding: .25rem .65rem;
+            border-radius: var(--radius);
+            font-size: .72rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            background: var(--bg-lift);
+            color: var(--text-muted);
+            transition: all .15s;
+        }
+        .city-chip.active {
+            background: var(--gold-dim);
+            border-color: var(--border-gold);
+            color: var(--gold);
+        }
+        .city-chip:hover { color: var(--gold); border-color: var(--border-gold); }
+
+        .btn-apply {
+            background: var(--gold-dim);
+            color: var(--gold);
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius);
+            padding: .5rem 1.2rem;
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: .82rem;
+            cursor: pointer;
+            transition: background .2s, box-shadow .2s;
+            width: 100%;
+            letter-spacing: .02em;
+        }
+        .btn-apply:hover { background: rgba(201,162,101,.28); box-shadow: 0 0 16px rgba(201,162,101,.2); }
+
+        .btn-reset {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: .5rem 1.2rem;
+            font-family: var(--font-body);
+            font-weight: 500;
+            font-size: .82rem;
+            cursor: pointer;
+            transition: color .2s, border-color .2s;
+            width: 100%;
+        }
+        .btn-reset:hover { color: var(--text); border-color: var(--text-muted); }
+
+        .filter-summary-bar {
+            margin-top: .9rem;
+            padding-top: .9rem;
+            border-top: 1px solid var(--border);
+            font-size: .75rem;
+            color: var(--text-dim);
+            font-family: var(--font-mono);
+        }
+        .filter-summary-bar strong { color: var(--gold); }
+
+        /* ── KPI GRID ── */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .kpi-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem 1rem;
+            text-align: center;
+            transition: transform .2s, border-color .2s;
+            position: relative;
+            overflow: hidden;
+        }
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+        }
+        .kpi-card:hover { transform: translateY(-2px); border-color: var(--border-gold); }
+        .kpi-card.blue::before   { background: #60a5fa; }
+        .kpi-card.green::before  { background: #34d399; }
+        .kpi-card.orange::before { background: #fbbf24; }
+        .kpi-card.red::before    { background: #f87171; }
+        .kpi-card.purple::before { background: var(--gold); }
+        .kpi-value {
+            font-family: var(--font-mono);
+            font-size: 1.65rem;
+            font-weight: 600;
+            color: var(--text);
+            line-height: 1;
+            margin-bottom: .4rem;
+        }
+        .kpi-label {
+            font-size: .68rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: .06em;
+        }
+
+        /* ── CARDS ── */
+        .card-glass {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: border-color .2s;
+        }
+        .card-glass:hover { border-color: var(--border-gold); }
+        .card-title {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--gold);
+            margin-bottom: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            letter-spacing: .02em;
+        }
+
+        /* ── TWO-COL ROW ── */
+        .row-2col {
+            display: grid;
+            grid-template-columns: 5fr 7fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        @media (max-width: 900px) {
+            .row-2col { grid-template-columns: 1fr; }
+        }
+
+        /* ── BUDGET GAUGE ── */
+        .budget-gauge-wrap { position: relative; margin: .5rem 0 1rem; }
+        .gauge-track {
+            height: 26px;
+            background: var(--bg-lift);
+            border-radius: var(--radius);
+            overflow: hidden;
+            position: relative;
+            border: 1px solid var(--border);
+        }
+        .gauge-segment {
+            position: absolute;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .65rem;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: var(--bg);
+            white-space: nowrap;
+            overflow: hidden;
+            transition: width .6s ease;
+        }
+        .gauge-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: .68rem;
+            font-family: var(--font-mono);
+            color: var(--text-dim);
+            margin-top: .4rem;
+        }
+        .budget-line {
+            position: absolute;
+            top: -6px;
+            width: 2px;
+            height: calc(100% + 12px);
+            background: #f87171;
+            z-index: 10;
+            transition: left .6s ease;
+        }
+        .budget-line::before {
+            content: '▼ Budget max';
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: .6rem;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: #f87171;
+            white-space: nowrap;
+        }
+
+        #budget-verdict {
+            font-family: var(--font-body);
+            font-size: .88rem;
+        }
+        #budget-detail {
+            font-size: .78rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-family: var(--font-body);
+        }
+        #budget-detail strong { color: var(--text); }
+
+        /* ── BAR CHART ── */
+        .bar-chart { display: flex; gap: .5rem; align-items: flex-end; height: 140px; }
+        .bar-wrap {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: .3rem;
+        }
+        .bar-count {
+            font-size: .65rem;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+        .bar {
+            width: 100%;
+            border-radius: var(--radius) var(--radius) 0 0;
+            transition: height .5s ease;
+            position: relative;
+            min-height: 4px;
+        }
+        .bar-label {
+            font-size: .6rem;
+            font-family: var(--font-mono);
+            font-weight: 500;
+            color: var(--text-dim);
+            text-align: center;
+        }
+        .bar.in-budget  { background: linear-gradient(to top, #059669, #34d399); }
+        .bar.out-budget { background: linear-gradient(to top, var(--bg-lift), var(--bg-panel)); border: 1px solid var(--border); }
+        .bar.current-bar { background: linear-gradient(to top, var(--gold), rgba(201,162,101,.5)) !important; }
+
+        .chart-legend {
+            margin-top: .75rem;
+            font-size: .72rem;
+            color: var(--text-muted);
+            display: flex;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+        }
+        .legend-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+            margin-right: .35rem;
+            vertical-align: middle;
+        }
+
+        /* ── CITY TABLE ── */
+        .city-table { width: 100%; border-collapse: collapse; font-size: .85rem; }
+        .city-table th {
+            padding: .6rem .75rem;
+            text-align: left;
+            background: var(--bg-lift);
+            font-size: .65rem;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            border-bottom: 1px solid var(--border-gold);
+        }
+        .city-table td {
+            padding: .65rem .75rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+        }
+        .city-table tr:hover td { background: var(--bg-lift); }
+        .city-table td strong { color: var(--gold); }
+        .badge-score {
+            display: inline-block;
+            padding: .18rem .5rem;
+            border-radius: var(--radius);
+            font-size: .68rem;
+            font-family: var(--font-mono);
+            font-weight: 700;
+        }
+        .score-A { background: rgba(52,211,153,.15); color: #34d399; border: 1px solid rgba(52,211,153,.3); }
+        .score-B { background: rgba(96,165,250,.15); color: #60a5fa; border: 1px solid rgba(96,165,250,.3); }
+        .score-C { background: rgba(251,191,36,.15);  color: #fbbf24; border: 1px solid rgba(251,191,36,.3); }
+        .score-D { background: rgba(248,113,113,.15); color: #f87171; border: 1px solid rgba(248,113,113,.3); }
+
+        /* ── DEALS LIST ── */
+        .deal-card {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+            padding: .85rem 1rem;
+            border-radius: var(--radius);
+            margin-bottom: .5rem;
+            background: var(--bg-lift);
+            border: 1px solid var(--border);
+            transition: border-color .2s, background .2s, transform .15s;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .deal-card:hover {
+            background: var(--gold-dim);
+            border-color: var(--border-gold);
+            transform: translateX(3px);
+        }
+        .deal-rank {
+            width: 28px;
+            height: 28px;
+            border-radius: var(--radius);
+            background: var(--gold-dim);
+            border: 1px solid var(--border-gold);
+            color: var(--gold);
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: .8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .deal-info { flex: 1; min-width: 0; }
+        .deal-title { font-size: .83rem; font-weight: 500; color: var(--text); margin-bottom: .2rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .deal-meta  { font-size: .72rem; color: var(--text-muted); font-family: var(--font-mono); }
+        .deal-price { font-family: var(--font-mono); font-size: .95rem; font-weight: 600; color: var(--gold); white-space: nowrap; }
+        .deal-ppm2  { font-size: .68rem; font-family: var(--font-mono); color: var(--text-muted); text-align: right; }
+
+        /* ── INSIGHTS ── */
+        .insight-card {
+            border-radius: var(--radius);
+            padding: 1rem 1.2rem;
+            margin-bottom: .65rem;
+            border-left: 3px solid;
+            display: flex;
+            gap: .75rem;
+            align-items: flex-start;
+            background: var(--bg-lift);
+        }
+        .insight-card.green  { border-color: #34d399; }
+        .insight-card.blue   { border-color: #60a5fa; }
+        .insight-card.orange { border-color: #fbbf24; }
+        .insight-card.red    { border-color: #f87171; }
+        .insight-icon { font-size: 1.25rem; flex-shrink: 0; }
+        .insight-text strong { font-size: .85rem; color: var(--text); }
+        .insight-text p { font-size: .78rem; color: var(--text-muted); margin: .25rem 0 0; line-height: 1.6; }
+
+        /* ── MARKET CONTEXT ── */
+        .context-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 1rem;
+        }
+        .context-stat {
+            background: var(--bg-lift);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.1rem 1rem;
+            text-align: center;
+            transition: border-color .2s;
+        }
+        .context-stat:hover { border-color: var(--border-gold); }
+        .context-stat .val {
+            font-family: var(--font-mono);
+            font-size: 1.7rem;
+            font-weight: 600;
+            color: var(--gold);
+        }
+        .context-stat .lbl {
+            font-size: .72rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-top: .3rem;
+        }
+        .context-stat .trend {
+            font-size: .72rem;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            margin-top: .35rem;
+        }
+        .trend-up   { color: #f87171; }
+        .trend-down { color: #34d399; }
+
+        .market-summary {
+            margin-top: 1rem;
+            padding: .85rem 1rem;
+            background: var(--bg-lift);
+            border-radius: var(--radius);
+            border-left: 3px solid #60a5fa;
+            font-size: .8rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+        .market-summary strong { color: var(--text); }
+        .market-sources { font-size: .68rem; font-family: var(--font-mono); color: var(--text-dim); margin-top: .5rem; display: block; }
+
+        /* ── TAGS ── */
+        .tag {
+            display: inline-block;
+            padding: .12rem .45rem;
+            border-radius: var(--radius);
+            font-size: .67rem;
+            font-family: var(--font-mono);
+            font-weight: 600;
+        }
+        .tag-green  { background: rgba(52,211,153,.12);  color: #34d399; border: 1px solid rgba(52,211,153,.25); }
+        .tag-red    { background: rgba(248,113,113,.12); color: #f87171; border: 1px solid rgba(248,113,113,.25); }
+        .tag-yellow { background: rgba(251,191,36,.12);  color: #fbbf24; border: 1px solid rgba(251,191,36,.25); }
+
+        /* ── EMPTY STATE ── */
+        .empty-state { text-align: center; padding: 2rem; color: var(--text-dim); }
+        .empty-state .emoji { font-size: 2rem; margin-bottom: .5rem; }
+
+        /* ── NEW LISTINGS GRID ── */
+        .new-listing-card {
+            display: block;
+            background: var(--bg-lift);
+            border: 1px solid rgba(52,211,153,.25);
+            border-radius: var(--radius);
+            padding: .8rem 1rem;
+            text-decoration: none;
+            color: inherit;
+            transition: border-color .15s, transform .15s, box-shadow .15s;
+        }
+        .new-listing-card:hover {
+            border-color: #34d399;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(52,211,153,.1);
+        }
+        .new-listing-title {
+            font-size: .82rem;
+            font-weight: 500;
+            color: var(--text);
+            line-height: 1.4;
+            margin-bottom: .3rem;
+        }
+        .new-listing-price {
+            font-family: var(--font-mono);
+            font-size: .88rem;
+            font-weight: 600;
+            color: #34d399;
+        }
+        .new-listing-meta {
+            font-size: .72rem;
+            font-family: var(--font-mono);
+            color: var(--text-muted);
+            margin-top: .25rem;
+        }
+        .new-listing-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: .5rem;
+            margin-bottom: .2rem;
+        }
+
+        /* ── SECTION DIVIDER ── */
+        .section-note {
+            font-size: .7rem;
+            color: var(--text-dim);
+            font-family: var(--font-mono);
+            margin-top: .6rem;
+        }
+
+        /* ── NEW LISTINGS BADGE ── */
+        #new-listings-count {
+            background: rgba(52,211,153,.15);
+            color: #34d399;
+            border: 1px solid rgba(52,211,153,.3);
+            font-size: .68rem;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            padding: .15rem .5rem;
+            border-radius: var(--radius);
+        }
+        .card-title-note {
+            font-family: var(--font-body);
+            font-size: .72rem;
+            font-weight: 400;
+            color: var(--text-dim);
+        }
+
+        /* ── FLOATING DARK MODE ── */
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            z-index: 1000;
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            color: var(--gold);
+            border-radius: 50%;
+            width: 42px;
+            height: 42px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: background .2s, transform .2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .dark-mode-toggle:hover { background: var(--gold-dim); transform: scale(1.1); }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn     { from { opacity: 0; transform: translateY(10px);  } to { opacity: 1; transform: translateY(0); } }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 600px) {
+            .container-main { padding: 1.25rem 1rem; }
+            .page-header h1 { font-size: 2rem; }
+            .kpi-value { font-size: 1.35rem; }
+            .filter-row { grid-template-columns: 1fr 1fr; }
+        }
+
+        hr.divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAV BAR -->
+<nav class="nav-bar">
+    <a href="index.html" class="nav-link">Dashboard</a>
+    <a href="new-listings.html" class="nav-link">Nouvelles</a>
+    <a href="anomalies.html" class="nav-link">Anomalies</a>
+    <a href="map-advanced.html" class="nav-link">Carte</a>
+    <a href="favorites.html" class="nav-link">Prioritaires</a>
+    <a href="3chambres.html" class="nav-link">3 Chambres</a>
+    <a href="ia-analyse.html" class="nav-link">Analyse IA</a>
+    <a href="stats-by-city.html" class="nav-link">Villes</a>
+    <a href="market-intelligence.html" class="nav-link active">Synthèse</a>
+    <button class="nav-toggle" id="darkModeToggle" title="Mode clair/sombre">☀️</button>
+</nav>
+
+<div class="container-main">
+
+    <!-- HEADER -->
+    <div class="page-header">
+        <h1>Synthèse & Intelligence Marché</h1>
+        <p>Analyse personnalisée du marché locatif luxembourgeois · Mise à jour en temps réel</p>
+        <p id="last-update-display"></p>
+    </div>
+
+    <!-- ══════════════ DEADLINE BANNER ══════════════ -->
+    <div class="deadline-banner urgent" id="deadline-banner">
+        <div class="deadline-left">
+            <div class="deadline-icon" id="deadline-icon">⏳</div>
+            <div class="deadline-label">
+                <div class="big" id="deadline-main">Calcul…</div>
+                <div class="sub" id="deadline-sub">Date limite pour signer un bail</div>
+            </div>
+        </div>
+        <div class="deadline-right" id="deadline-stats"></div>
+    </div>
+
+    <!-- ══════════════ FILTER PANEL ══════════════ -->
+    <div class="filter-panel">
+        <h5>Mes critères de recherche</h5>
+        <div class="filter-row">
+
+            <!-- Date limite -->
+            <div class="filter-group">
+                <label>Date limite bail</label>
+                <input type="date" id="f-deadline" value="2026-05-15" onchange="applyFilters()">
+            </div>
+
+            <!-- Budget min -->
+            <div class="filter-group">
+                <label>Budget min (€)</label>
+                <input type="number" id="f-budget-min" value="0" min="0" max="5000" step="50" oninput="applyFilters()">
+            </div>
+
+            <!-- Budget max -->
+            <div class="filter-group">
+                <label>Budget max (€)</label>
+                <input type="number" id="f-budget-max" value="9999" min="500" max="9999" step="50" oninput="applyFilters()">
+            </div>
+
+            <!-- Surface min -->
+            <div class="filter-group">
+                <label>Surface min (m²)</label>
+                <input type="number" id="f-surface-min" value="0" min="0" max="300" step="5" oninput="applyFilters()">
+            </div>
+
+            <!-- Chambres min -->
+            <div class="filter-group">
+                <label>Chambres min</label>
+                <input type="number" id="f-rooms-min" value="0" min="0" max="8" step="1" oninput="applyFilters()">
+            </div>
+
+            <!-- Boutons -->
+            <div class="filter-group">
+                <label>&nbsp;</label>
+                <button class="btn-apply" onclick="applyFilters()">Analyser</button>
+            </div>
+            <div class="filter-group">
+                <label>&nbsp;</label>
+                <button class="btn-reset" onclick="resetFilters()">Réinitialiser</button>
+            </div>
+        </div>
+
+        <!-- Villes -->
+        <div class="filter-group" style="margin-top:1rem;">
+            <label>Villes (toutes si aucune sélectionnée)</label>
+            <div class="city-chips" id="city-chips"></div>
+        </div>
+
+        <div class="filter-summary-bar">
+            <span id="filter-summary">Chargement…</span>
+        </div>
+    </div>
+
+    <!-- ══════════════ KPI ROW ══════════════ -->
+    <div class="kpi-grid">
+        <div class="kpi-card blue">
+            <div class="kpi-value" id="kpi-total">—</div>
+            <div class="kpi-label">Annonces correspondantes</div>
+        </div>
+        <div class="kpi-card green">
+            <div class="kpi-value" id="kpi-median">—</div>
+            <div class="kpi-label">Prix médian</div>
+        </div>
+        <div class="kpi-card orange">
+            <div class="kpi-value" id="kpi-avg">—</div>
+            <div class="kpi-label">Prix moyen</div>
+        </div>
+        <div class="kpi-card purple">
+            <div class="kpi-value" id="kpi-ppm2">—</div>
+            <div class="kpi-label">€/m² moyen</div>
+        </div>
+        <div class="kpi-card red">
+            <div class="kpi-value" id="kpi-best">—</div>
+            <div class="kpi-label">Meilleure offre</div>
+        </div>
+    </div>
+
+    <!-- ══════════════ ROW 1 : Budget gauge + Distribution ══════════════ -->
+    <div class="row-2col">
+
+        <!-- Budget gauge -->
+        <div class="card-glass">
+            <div class="card-title">Budget vs Marché</div>
+            <div id="budget-gauge-container">
+                <div class="budget-gauge-wrap" id="gauge-wrap">
+                    <div class="gauge-track" id="gauge-track">
+                        <!-- segments injected by JS -->
+                    </div>
+                    <div class="gauge-labels" id="gauge-labels"></div>
+                </div>
+                <div id="budget-verdict" style="margin-top:.75rem;"></div>
+            </div>
+            <hr class="divider">
+            <div id="budget-detail"></div>
+        </div>
+
+        <!-- Distribution des prix -->
+        <div class="card-glass">
+            <div class="card-title">Distribution des prix <span class="card-title-note">(toutes les annonces)</span></div>
+            <div class="bar-chart" id="price-distribution"></div>
+            <div class="chart-legend">
+                <span><span class="legend-dot" style="background:linear-gradient(#059669,#34d399);"></span>Dans le budget</span>
+                <span><span class="legend-dot" style="background:var(--bg-panel);border:1px solid var(--border);"></span>Hors budget</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════════ ROW 2 : Villes préférées ══════════════ -->
+    <div class="card-glass">
+        <div class="card-title">Analyse par ville <span class="card-title-note">(filtre actif)</span></div>
+        <div style="overflow-x:auto;">
+            <table class="city-table" id="city-table">
+                <thead>
+                    <tr>
+                        <th>Ville</th>
+                        <th>Annonces</th>
+                        <th>Prix min</th>
+                        <th>Prix moy</th>
+                        <th>Prix max</th>
+                        <th>Surface moy</th>
+                        <th>€/m² est.</th>
+                        <th>Dispo budget</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody id="city-table-body"></tbody>
+            </table>
+        </div>
+        <p class="section-note">Score A = meilleur rapport qualité/prix · B = bon · C = correct · D = cher</p>
+    </div>
+
+    <!-- ══════════════ ROW 3 : Nouvelles annonces ══════════════ -->
+    <div class="card-glass">
+        <div class="card-title" style="display:flex;align-items:center;gap:.6rem;">
+            Nouvelles annonces
+            <span id="new-listings-count"></span>
+            <span class="card-title-note">(dernières 48h · tous critères)</span>
+        </div>
+        <div id="new-listings-section"></div>
+    </div>
+
+    <!-- ══════════════ ROW 4 : Meilleures affaires ══════════════ -->
+    <div class="card-glass">
+        <div class="card-title">Top 10 — Meilleures affaires <span class="card-title-note">(prix/m² le plus bas · villes sélectionnées)</span></div>
+        <div id="best-deals"></div>
+    </div>
+
+    <!-- ══════════════ ROW 5 : Conseils stratégiques ══════════════ -->
+    <div class="card-glass">
+        <div class="card-title">Analyse stratégique personnalisée</div>
+        <div id="strategic-insights"></div>
+    </div>
+
+    <!-- ══════════════ ROW 6 : Contexte marché ══════════════ -->
+    <div class="card-glass">
+        <div class="card-title">Contexte marché Luxembourg 2025–2026 <span class="card-title-note">(données officielles)</span></div>
+        <div class="context-grid">
+            <div class="context-stat">
+                <div class="val">30.72€</div>
+                <div class="lbl">Loyer moyen / m² / mois</div>
+                <div class="trend trend-up">↑ +7.23% vs fév. 2025</div>
+            </div>
+            <div class="context-stat">
+                <div class="val">+16%</div>
+                <div class="lbl">Offre annonces locatives</div>
+                <div class="trend trend-down">↑ Q3 2024 → Q3 2025 (positif)</div>
+            </div>
+            <div class="context-stat">
+                <div class="val">+1.9%</div>
+                <div class="lbl">Loyers annoncés trim.</div>
+                <div class="trend" style="color:var(--text-dim);">Q2 → Q3 2025 (hausse modérée)</div>
+            </div>
+            <div class="context-stat">
+                <div class="val">~2400€</div>
+                <div class="lbl">Loyer marché 80m²</div>
+                <div class="trend" style="color:var(--text-dim);">30€/m² × 80m² (référence)</div>
+            </div>
+        </div>
+        <div class="market-summary">
+            <strong>Résumé du marché :</strong> Le marché locatif luxembourgeois reste sous pression structurelle mais connaît une phase de stabilisation relative en 2025-2026. L'offre augmente (+16%), ce qui est favorable aux locataires. Les loyers progressent modérément (+1.2% sur 12 mois en Q3 2025). Un budget de 2 000-2 500€ pour un 80m²+ reste <strong>réaliste mais serré</strong> à Luxembourg-Ville.
+            <span class="market-sources">Sources : gouvernement.lu · logement.public.lu · communautefrancaisluxembourg.com · switchr.lu</span>
+        </div>
+    </div>
+
+</div><!-- /container-main -->
+
+<!-- FLOATING DARK MODE TOGGLE -->
+<button class="dark-mode-toggle" id="darkModeToggleFloat">☀️</button>
+
+<script>
+// ═══════════════════════════════════════════════
+// DARK MODE
+// ═══════════════════════════════════════════════
+const dm = document.getElementById('darkModeToggle');
+const dmFloat = document.getElementById('darkModeToggleFloat');
+function applyDM(light) { document.body.classList.toggle('light-mode',light); const icon=light?'🌙':'☀️'; dm.textContent=icon; if(dmFloat)dmFloat.textContent=icon; localStorage.setItem('darkMode',light); }
+dm.addEventListener('click',()=>applyDM(!document.body.classList.contains('light-mode')));
+if(dmFloat)dmFloat.addEventListener('click',()=>dm.click());
+applyDM(localStorage.getItem('darkMode')==='true');
+
+// ═══════════════════════════════════════════════
+// DATA & STATE
+// ═══════════════════════════════════════════════
+let ALL_LISTINGS = [];
+let FILTERED    = [];
+
+const PREFERRED_CITIES = [
+    'Luxembourg','Kirchberg','Belair','Gare','Strassen','Howald',
+    'Bonnevoie','Hollerich','Cessange','Mamer','Gasperich',
+    'Limpertsberg','Merl','Bertrange'
+];
+
+const ALL_CITY_LIST = [
+    'Belair','Limpertsberg','Hollerich','Strassen','Bertrange','Luxembourg',
+    'Bonnevoie','Kirchberg','Esch-Sur-Alzette','Gare','Mamer','Cessange',
+    'Howald','Gasperich','Merl','Neudorf','Remich','Centre','Hesperange',
+    'Differdange','Bettembourg','Kayl','Muhlenbach','Cents','Dommeldange',
+    'Eich','Rollingergrund','Olm','Garnich','Schouweiler','Junglinster',
+    'Kehlen','Petange','Schifflange','Crauthem'
+];
+
+const PRICE_RANGES = [
+    {label:'1500-1800',min:1500,max:1800},
+    {label:'1800-2000',min:1800,max:2000},
+    {label:'2000-2200',min:2000,max:2200},
+    {label:'2200-2400',min:2200,max:2400},
+    {label:'2400-2600',min:2400,max:2600},
+    {label:'2600-2800',min:2600,max:2800},
+    {label:'2800+',    min:2800,max:99999},
+];
+
+let activeCities = new Set(); // empty = all
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+async function init() {
+    try {
+        const res = await fetch('data/listings.json?t=' + Date.now());
+        ALL_LISTINGS = await res.json();
+        if (!Array.isArray(ALL_LISTINGS)) ALL_LISTINGS = ALL_LISTINGS.listings || [];
+    } catch(e) {
+        ALL_LISTINGS = [];
+    }
+    buildCityChips();
+    applyFilters();
+    setLastUpdate();
+}
+
+function setLastUpdate() {
+    if (ALL_LISTINGS.length === 0) return;
+    const sorted = [...ALL_LISTINGS].sort((a,b) => (b.created_at||'').localeCompare(a.created_at||''));
+    const latest = sorted[0]?.created_at;
+    if (latest) {
+        const d = new Date(latest);
+        document.getElementById('last-update-display').textContent =
+            `Dernière annonce : ${d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})}`;
+    }
+}
+
+// ═══════════════════════════════════════════════
+// CITY CHIPS
+// ═══════════════════════════════════════════════
+function buildCityChips() {
+    const container = document.getElementById('city-chips');
+    // Count per city
+    const counts = {};
+    ALL_LISTINGS.forEach(l => {
+        const c = normalize(l.city);
+        counts[c] = (counts[c]||0)+1;
+    });
+
+    // Top cities by count, prioritize preferred
+    const cities = [...new Set([
+        ...PREFERRED_CITIES,
+        ...ALL_CITY_LIST
+    ])].filter(c => counts[normalize(c)] > 0);
+
+    container.innerHTML = '';
+    cities.slice(0,22).forEach(city => {
+        const n = normalize(city);
+        const cnt = counts[n] || 0;
+        if (!cnt) return;
+        const chip = document.createElement('span');
+        chip.className = 'city-chip' + (PREFERRED_CITIES.includes(city) ? ' preferred-city' : '');
+        chip.textContent = `${city} (${cnt})`;
+        chip.dataset.city = city;
+        chip.addEventListener('click', () => toggleCity(city, chip));
+        container.appendChild(chip);
+    });
+}
+
+function toggleCity(city, chip) {
+    if (activeCities.has(city)) {
+        activeCities.delete(city);
+        chip.classList.remove('active');
+    } else {
+        activeCities.add(city);
+        chip.classList.add('active');
+    }
+}
+
+function normalize(s) {
+    return (s||'').toLowerCase().trim().replace(/[-_]/g,' ').replace(/\s+/g,' ').replace(/^luxembourg\s+/,'');
+}
+
+// ═══════════════════════════════════════════════
+// FILTERS
+// ═══════════════════════════════════════════════
+function getFilters() {
+    return {
+        budgetMin:  parseInt(document.getElementById('f-budget-min').value) || 0,
+        budgetMax:  parseInt(document.getElementById('f-budget-max').value) || 99999,
+        surfaceMin: parseInt(document.getElementById('f-surface-min').value) || 0,
+        roomsMin:   parseInt(document.getElementById('f-rooms-min').value) || 0,
+        deadline:   document.getElementById('f-deadline').value || '2026-05-15',
+        cities: [...activeCities],
+    };
+}
+
+function applyFilters() {
+    const f = getFilters();
+
+    FILTERED = ALL_LISTINGS.filter(l => {
+        const price   = l.price   || 0;
+        const surface = l.surface || 0;
+        const rooms   = l.rooms   || 0;
+        const city    = normalize(l.city);
+
+        if (price < f.budgetMin || price > f.budgetMax) return false;
+        if (surface > 0 && surface < f.surfaceMin) return false;
+        if (rooms > 0 && rooms < f.roomsMin) return false;
+        if (f.cities.length > 0) {
+            const match = f.cities.some(c => normalize(c) === city);
+            if (!match) return false;
+        }
+        return true;
+    });
+
+    updateFilterSummary(f);
+    renderDeadlineBanner(f);
+    renderKPIs(f);
+    renderBudgetGauge(f);
+    renderDistribution(f);
+    renderCityTable(f);
+    renderNewListings();
+    renderBestDeals(f);
+    renderInsights(f);
+}
+
+function resetFilters() {
+    document.getElementById('f-budget-min').value  = 0;
+    document.getElementById('f-budget-max').value  = 9999;
+    document.getElementById('f-surface-min').value = 0;
+    document.getElementById('f-rooms-min').value   = 0;
+    document.getElementById('f-deadline').value    = '2026-05-15';
+    activeCities.clear();
+    document.querySelectorAll('.city-chip').forEach(c => c.classList.remove('active'));
+    applyFilters();
+}
+
+function updateFilterSummary(f) {
+    const total = ALL_LISTINGS.filter(l => l.price > 0).length;
+    const pct = total > 0 ? Math.round(FILTERED.length / total * 100) : 0;
+    const cityStr = f.cities.length > 0 ? f.cities.join(', ') : 'toutes les villes';
+    document.getElementById('filter-summary').innerHTML =
+        `<strong>${FILTERED.length}</strong> annonces correspondent · <strong>${pct}%</strong> du marché total (${total}) ·
+         Budget <strong>${f.budgetMin}€–${f.budgetMax}€</strong> · Surface <strong>≥${f.surfaceMin}m²</strong> ·
+         <strong>≥${f.roomsMin} ch.</strong> · Villes : <strong>${cityStr}</strong>`;
+}
+
+// ═══════════════════════════════════════════════
+// KPIs
+// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════
+// DEADLINE BANNER
+// ═══════════════════════════════════════════════
+function renderDeadlineBanner(f) {
+    const deadline  = new Date(f.deadline + 'T00:00:00');
+    const now       = new Date();
+    const diffMs    = deadline - now;
+    const diffDays  = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+
+    const banner = document.getElementById('deadline-banner');
+    const iconEl = document.getElementById('deadline-icon');
+    const mainEl = document.getElementById('deadline-main');
+    const subEl  = document.getElementById('deadline-sub');
+    const stats  = document.getElementById('deadline-stats');
+
+    // Urgency level
+    let level, icon, mainText, subText;
+    if (diffDays < 0) {
+        level = 'urgent'; icon = '❌';
+        mainText = `DEADLINE DÉPASSÉE (${Math.abs(diffDays)} jours)`;
+        subText  = `Date limite bail : ${deadline.toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'})}`;
+    } else if (diffDays <= 14) {
+        level = 'urgent'; icon = '🚨';
+        mainText = `CRITIQUE — ${diffDays} jours restants`;
+        subText  = `Signer un bail avant le ${deadline.toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'})} — ACTION IMMÉDIATE`;
+    } else if (diffDays <= 30) {
+        level = 'urgent'; icon = '⚠️';
+        mainText = `URGENT — ${diffDays} jours restants`;
+        subText  = `Date limite bail : ${deadline.toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'})} — Intensifie les visites`;
+    } else if (diffDays <= 60) {
+        level = 'warning'; icon = '⏰';
+        mainText = `${diffDays} jours restants`;
+        subText  = `Date limite bail : ${deadline.toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'})} — Fenêtre de recherche active`;
+    } else {
+        level = 'ok'; icon = '📅';
+        mainText = `${diffDays} jours restants`;
+        subText  = `Date limite bail : ${deadline.toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'})} — Bonne avance`;
+    }
+
+    banner.className = `deadline-banner ${level}`;
+    iconEl.textContent = icon;
+    mainEl.textContent = mainText;
+    subEl.textContent  = subText;
+
+    // Stats: semaines, mois, fenêtre visites
+    const weeks  = Math.floor(diffDays / 7);
+    const months = (diffDays / 30).toFixed(1);
+    // Ideal visit window: listings appear ~4-6 weeks before move-in
+    const visitStart = new Date(deadline);
+    visitStart.setDate(visitStart.getDate() - 42); // -6 weeks
+    const visitLabel = visitStart > now
+        ? visitStart.toLocaleDateString('fr-FR',{day:'2-digit',month:'short'})
+        : 'MAINTENANT';
+
+    stats.innerHTML = `
+        <div class="deadline-stat">
+            <div class="ds-val">${diffDays < 0 ? '0' : diffDays}</div>
+            <div class="ds-lbl">Jours</div>
+        </div>
+        <div class="deadline-stat">
+            <div class="ds-val">${diffDays < 0 ? '0' : weeks}</div>
+            <div class="ds-lbl">Semaines</div>
+        </div>
+        <div class="deadline-stat">
+            <div class="ds-val">${diffDays < 0 ? '0' : months}</div>
+            <div class="ds-lbl">Mois</div>
+        </div>
+        <div class="deadline-stat" style="min-width:90px;">
+            <div class="ds-val" style="font-size:.95rem;">${visitLabel}</div>
+            <div class="ds-lbl">Visites dès</div>
+        </div>`;
+}
+
+function renderKPIs(f) {
+    const prices = FILTERED.map(l => l.price).filter(p => p>0).sort((a,b)=>a-b);
+    const surfaces = FILTERED.map(l => l.surface).filter(s => s>0);
+
+    const median = prices.length ? prices[Math.floor(prices.length/2)] : 0;
+    const avg    = prices.length ? Math.round(prices.reduce((a,b)=>a+b,0)/prices.length) : 0;
+    const best   = prices.length ? prices[0] : 0;
+
+    // avg price/m²
+    const ppm2Vals = FILTERED.filter(l=>l.price>0&&l.surface>0).map(l=>l.price/l.surface);
+    const avgPPM2  = ppm2Vals.length ? Math.round(ppm2Vals.reduce((a,b)=>a+b,0)/ppm2Vals.length) : 0;
+
+    document.getElementById('kpi-total').textContent  = FILTERED.length;
+    document.getElementById('kpi-median').textContent = median ? median+'€' : '—';
+    document.getElementById('kpi-avg').textContent    = avg    ? avg+'€'    : '—';
+    document.getElementById('kpi-ppm2').textContent   = avgPPM2 ? avgPPM2+'€' : '—';
+    document.getElementById('kpi-best').textContent   = best   ? best+'€'   : '—';
+}
+
+// ═══════════════════════════════════════════════
+// BUDGET GAUGE
+// ═══════════════════════════════════════════════
+function renderBudgetGauge(f) {
+    const globalMin = 1500, globalMax = 2800;
+    const range = globalMax - globalMin;
+
+    // Count by segment
+    const segments = PRICE_RANGES.map(r => ({
+        ...r,
+        count: ALL_LISTINGS.filter(l => l.price >= r.min && l.price < r.max).length,
+        inBudget: r.min >= f.budgetMin && r.max <= f.budgetMax + 1,
+    }));
+
+    const total = segments.reduce((s,r) => s + r.count, 0);
+
+    const track = document.getElementById('gauge-track');
+    track.innerHTML = '';
+
+    const colors = ['#a78bfa','#818cf8','#60a5fa','#34d399','#fbbf24','#f87171','#6b7280'];
+    let offset = 0;
+
+    segments.forEach((seg, i) => {
+        const pct = total > 0 ? (seg.count / total * 100) : 0;
+        if (pct < 0.5) { offset += pct; return; }
+
+        const div = document.createElement('div');
+        div.className = 'gauge-segment';
+        div.style.left   = offset + '%';
+        div.style.width  = pct + '%';
+        div.style.background = seg.inBudget
+            ? `linear-gradient(135deg, #059669, #34d399)`
+            : `linear-gradient(135deg, ${colors[i]}, ${colors[i]}99)`;
+        div.style.opacity = seg.inBudget ? '1' : '0.45';
+        div.title = `${seg.label}€ : ${seg.count} annonces (${Math.round(pct)}%)`;
+        if (pct > 8) div.textContent = Math.round(pct) + '%';
+        track.appendChild(div);
+        offset += pct;
+    });
+
+    // Budget max line
+    const linePos = Math.max(0, Math.min(100, (f.budgetMax - globalMin) / range * 100));
+    const line = document.createElement('div');
+    line.className = 'budget-line';
+    line.style.left = linePos + '%';
+    track.appendChild(line);
+
+    // Labels
+    document.getElementById('gauge-labels').innerHTML =
+        `<span>${globalMin}€</span><span>${Math.round((globalMin+globalMax)/2)}€</span><span>${globalMax}€+</span>`;
+
+    // In-budget count
+    const inBudgetCount = ALL_LISTINGS.filter(l => l.price >= f.budgetMin && l.price <= f.budgetMax).length;
+    const inBudgetPct   = total > 0 ? Math.round(inBudgetCount/total*100) : 0;
+
+    let verdictColor = inBudgetPct >= 50 ? '#34d399' : inBudgetPct >= 30 ? '#fbbf24' : '#f87171';
+    let verdictText  = inBudgetPct >= 60 ? '✅ Ton budget couvre bien le marché'
+                     : inBudgetPct >= 35 ? '⚠️ Ton budget est dans la zone tendue'
+                     : '❗ Ton budget est en-dessous du marché principal';
+
+    document.getElementById('budget-verdict').innerHTML =
+        `<span style="font-weight:600;color:${verdictColor};font-size:.88rem;">${verdictText}</span>`;
+
+    document.getElementById('budget-detail').innerHTML =
+        `<strong>${inBudgetCount}</strong> annonces (${inBudgetPct}% du total) sont dans ton budget ${f.budgetMin}–${f.budgetMax}€.<br>
+         Le cœur du marché se situe entre <strong>2200–2600€</strong> (53% des annonces).`;
+}
+
+// ═══════════════════════════════════════════════
+// PRICE DISTRIBUTION CHART
+// ═══════════════════════════════════════════════
+function renderDistribution(f) {
+    const container = document.getElementById('price-distribution');
+    container.innerHTML = '';
+
+    const counts = PRICE_RANGES.map(r => ({
+        ...r,
+        count: ALL_LISTINGS.filter(l => l.price >= r.min && l.price < r.max).length,
+        inBudget: r.max <= f.budgetMax + 1 && r.min >= f.budgetMin,
+    }));
+
+    const maxCount = Math.max(...counts.map(c => c.count), 1);
+
+    counts.forEach(r => {
+        const heightPct = (r.count / maxCount * 100);
+        const wrap = document.createElement('div');
+        wrap.className = 'bar-wrap';
+
+        const cnt = document.createElement('div');
+        cnt.className = 'bar-count';
+        cnt.textContent = r.count;
+
+        const bar = document.createElement('div');
+        bar.className = 'bar ' + (r.inBudget ? 'in-budget' : 'out-budget');
+        bar.style.height = heightPct + '%';
+        bar.title = `${r.label}€ : ${r.count} annonces`;
+
+        const lbl = document.createElement('div');
+        lbl.className = 'bar-label';
+        lbl.textContent = r.label.replace('2800+','2800+').replace(/(\d{4})/g, (m,g1) => g1.slice(0,2)+'.'+g1.slice(2));
+
+        wrap.appendChild(cnt);
+        wrap.appendChild(bar);
+        wrap.appendChild(lbl);
+        container.appendChild(wrap);
+    });
+}
+
+// ═══════════════════════════════════════════════
+// CITY TABLE
+// ═══════════════════════════════════════════════
+function renderCityTable(f) {
+    const tbody = document.getElementById('city-table-body');
+    tbody.innerHTML = '';
+
+    // Get cities to show: active selection or preferred list
+    const citiesToShow = f.cities.length > 0 ? f.cities : PREFERRED_CITIES;
+
+    const rows = citiesToShow.map(city => {
+        const items = FILTERED.filter(l => normalize(l.city) === normalize(city));
+        if (items.length === 0) return null;
+
+        const prices   = items.map(l => l.price).filter(p => p > 0).sort((a,b)=>a-b);
+        const surfaces = items.map(l => l.surface).filter(s => s > 0);
+        const pMin = prices[0] || 0;
+        const pMax = prices[prices.length-1] || 0;
+        const pAvg = prices.length ? Math.round(prices.reduce((a,b)=>a+b,0)/prices.length) : 0;
+        const sAvg = surfaces.length ? Math.round(surfaces.reduce((a,b)=>a+b,0)/surfaces.length) : 0;
+        const ppm2 = (pAvg > 0 && sAvg > 0) ? Math.round(pAvg / sAvg * 10) / 10 : 0;
+
+        // Dispo budget (within budget range)
+        const inBudget = items.filter(l => l.price >= f.budgetMin && l.price <= f.budgetMax).length;
+        const inBudgetPct = items.length > 0 ? Math.round(inBudget/items.length*100) : 0;
+
+        // Score A-D based on avg price vs budget center
+        const budgetCenter = (f.budgetMin + f.budgetMax) / 2;
+        const ratio = pAvg / budgetCenter;
+        const score = ratio <= 0.92 ? 'A' : ratio <= 1.00 ? 'B' : ratio <= 1.08 ? 'C' : 'D';
+
+        return { city, count: items.length, pMin, pMax, pAvg, sAvg, ppm2, inBudget, inBudgetPct, score };
+    }).filter(Boolean).sort((a,b) => a.pAvg - b.pAvg);
+
+    if (rows.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="9" class="empty-state"><div class="emoji">🔍</div><p>Aucune ville avec ce filtre</p></td></tr>';
+        return;
+    }
+
+    rows.forEach(r => {
+        const tr = document.createElement('tr');
+        const inBudgetTag = r.inBudgetPct >= 60
+            ? `<span class="tag tag-green">${r.inBudget}/${r.count} (${r.inBudgetPct}%)</span>`
+            : r.inBudgetPct >= 30
+            ? `<span class="tag tag-yellow">${r.inBudget}/${r.count} (${r.inBudgetPct}%)</span>`
+            : `<span class="tag tag-red">${r.inBudget}/${r.count} (${r.inBudgetPct}%)</span>`;
+
+        tr.innerHTML = `
+            <td><strong>${r.city}</strong></td>
+            <td>${r.count}</td>
+            <td>${r.pMin ? r.pMin+'€' : '—'}</td>
+            <td><strong>${r.pAvg ? r.pAvg+'€' : '—'}</strong></td>
+            <td>${r.pMax ? r.pMax+'€' : '—'}</td>
+            <td>${r.sAvg ? r.sAvg+'m²' : '—'}</td>
+            <td>${r.ppm2 ? r.ppm2+'€' : '—'}</td>
+            <td>${inBudgetTag}</td>
+            <td><span class="badge-score score-${r.score}">${r.score}</span></td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+// ═══════════════════════════════════════════════
+// NEW LISTINGS (48h)
+// ═══════════════════════════════════════════════
+function renderNewListings() {
+    const container = document.getElementById('new-listings-section');
+    container.innerHTML = '';
+
+    const cutoff = new Date();
+    cutoff.setHours(cutoff.getHours() - 48);
+
+    const newOnes = ALL_LISTINGS
+        .filter(l => l.created_at && new Date(l.created_at) >= cutoff)
+        .sort((a,b) => (b.created_at||'').localeCompare(a.created_at||''));
+
+    document.getElementById('new-listings-count').textContent = newOnes.length;
+
+    if (newOnes.length === 0) {
+        container.innerHTML = '<div class="empty-state"><div class="emoji">🔍</div><p>Aucune nouvelle annonce dans les dernières 48h.</p></div>';
+        return;
+    }
+
+    const grid = document.createElement('div');
+    grid.style.cssText = 'display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.75rem;';
+
+    newOnes.slice(0, 20).forEach(l => {
+        const card = document.createElement('a');
+        card.href = l.url || '#';
+        card.target = '_blank';
+        card.rel = 'noopener';
+        card.className = 'new-listing-card';
+
+        const d = new Date(l.created_at);
+        const timeStr = d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
+        const surface = l.surface ? `${l.surface}m²` : '';
+        const rooms   = l.rooms   ? `${l.rooms} ch.` : '';
+        const city    = normalize(l.city) || '—';
+        const cityDisplay = city.charAt(0).toUpperCase() + city.slice(1);
+
+        card.innerHTML = `
+            <div class="new-listing-header">
+                <div class="new-listing-title">${l.title || '—'}</div>
+                <div class="new-listing-price">${l.price ? l.price+'€' : '—'}</div>
+            </div>
+            <div class="new-listing-meta">${cityDisplay}${[rooms,surface].filter(Boolean).length ? ' · '+[rooms,surface].filter(Boolean).join(' · ') : ''}</div>
+            <div class="new-listing-meta" style="margin-top:.25rem;color:var(--text-dim);">🕐 ${timeStr} · ${l.site||''}</div>`;
+        grid.appendChild(card);
+    });
+
+    container.appendChild(grid);
+
+    if (newOnes.length > 20) {
+        const more = document.createElement('div');
+        more.style.cssText = 'text-align:center;margin-top:.75rem;font-size:.75rem;font-family:var(--font-mono);color:var(--text-dim);';
+        more.textContent = `+ ${newOnes.length - 20} autres nouvelles annonces → voir page Nouvelles`;
+        container.appendChild(more);
+    }
+}
+
+// ═══════════════════════════════════════════════
+// BEST DEALS
+// ═══════════════════════════════════════════════
+function renderBestDeals(f) {
+    const container = document.getElementById('best-deals');
+    container.innerHTML = '';
+
+    const citiesToShow = f.cities.length > 0 ? f.cities : PREFERRED_CITIES;
+    const cityNorms = citiesToShow.map(normalize);
+
+    const deals = FILTERED
+        .filter(l => l.price > 0 && l.surface > 0 && cityNorms.includes(normalize(l.city)))
+        .map(l => ({ ...l, ppm2: Math.round(l.price / l.surface * 10) / 10 }))
+        .sort((a,b) => a.ppm2 - b.ppm2)
+        .slice(0, 10);
+
+    if (deals.length === 0) {
+        container.innerHTML = '<div class="empty-state"><div class="emoji">🔍</div><p>Aucune annonce avec ce filtre dans tes villes.</p></div>';
+        return;
+    }
+
+    deals.forEach((deal, i) => {
+        const card = document.createElement('a');
+        card.href   = deal.url || '#';
+        card.target = '_blank';
+        card.rel    = 'noopener';
+        card.className = 'deal-card';
+
+        const rooms   = deal.rooms   ? `${deal.rooms} ch.` : '';
+        const surface = deal.surface ? `${deal.surface}m²` : '';
+        const date    = deal.time_ago || '';
+
+        card.innerHTML = `
+            <div class="deal-rank">${i+1}</div>
+            <div class="deal-info">
+                <div class="deal-title">${deal.title || '—'}</div>
+                <div class="deal-meta">${deal.city} · ${[rooms, surface, date].filter(Boolean).join(' · ')}</div>
+            </div>
+            <div style="text-align:right;flex-shrink:0;">
+                <div class="deal-price">${deal.price}€</div>
+                <div class="deal-ppm2">${deal.ppm2}€/m²</div>
+            </div>
+        `;
+        container.appendChild(card);
+    });
+}
+
+// ═══════════════════════════════════════════════
+// STRATEGIC INSIGHTS
+// ═══════════════════════════════════════════════
+function renderInsights(f) {
+    const container = document.getElementById('strategic-insights');
+    container.innerHTML = '';
+
+    const insights = [];
+    const prices = FILTERED.map(l=>l.price).filter(p=>p>0).sort((a,b)=>a-b);
+    const inBudget = ALL_LISTINGS.filter(l=>l.price>=f.budgetMin&&l.price<=f.budgetMax).length;
+    const total    = ALL_LISTINGS.filter(l=>l.price>0).length;
+    const pct      = total>0 ? Math.round(inBudget/total*100) : 0;
+    const median   = prices.length ? prices[Math.floor(prices.length/2)] : 0;
+
+    // Budget analysis
+    if (pct >= 55) {
+        insights.push({type:'green', icon:'✅', title:`Ton budget est bien positionné (${pct}% du marché accessible)`,
+            text:`Avec ${f.budgetMin}–${f.budgetMax}€, tu accèdes à plus de la moitié des annonces. Tu as un bon pouvoir de négociation.`});
+    } else if (pct >= 30) {
+        insights.push({type:'orange', icon:'⚠️', title:`Budget dans la zone tendue (${pct}% du marché)`,
+            text:`Ton budget couvre moins de la moitié du marché. Focus sur Bertrange, Bonnevoie, Kirchberg et Gare pour maximiser les options.`});
+    } else {
+        insights.push({type:'red', icon:'❗', title:`Budget en-dessous du marché principal (${pct}%)`,
+            text:`Moins de 30% des annonces entrent dans ton budget. Élargis le budget max ou accepte des critères de surface plus souples.`});
+    }
+
+    // Best cities in budget
+    const goodCities = PREFERRED_CITIES.filter(city => {
+        const items = FILTERED.filter(l => normalize(l.city)===normalize(city));
+        const inB   = items.filter(l => l.price>=f.budgetMin&&l.price<=f.budgetMax);
+        return items.length >= 3 && inB.length/items.length >= 0.5;
+    });
+    if (goodCities.length > 0) {
+        insights.push({type:'green', icon:'🎯', title:`Meilleures villes dans ton budget`,
+            text:`${goodCities.slice(0,5).join(', ')} → plus de 50% des annonces sont dans ta fourchette. Commence par là.`});
+    }
+
+    // Surface insight
+    if (f.surfaceMin >= 80) {
+        const surfaceOk = FILTERED.filter(l=>l.surface>=f.surfaceMin).length;
+        const surfacePct = FILTERED.length > 0 ? Math.round(surfaceOk/FILTERED.length*100) : 0;
+        if (surfacePct < 60) {
+            insights.push({type:'orange', icon:'📐', title:`Surface ≥${f.surfaceMin}m² : filtre restrictif (${surfacePct}% des annonces)`,
+                text:`Envisage de descendre à ${f.surfaceMin-10}m² pour élargir ta recherche, surtout si le budget est serré.`});
+        } else {
+            insights.push({type:'blue', icon:'📐', title:`Surface ≥${f.surfaceMin}m² : bonne couverture (${surfacePct}%)`,
+                text:`La plupart des annonces dans ta fourchette respectent le critère de surface.`});
+        }
+    }
+
+    // Median vs budget
+    if (median > f.budgetMax) {
+        insights.push({type:'red', icon:'📊', title:`Prix médian (${median}€) supérieur à ton budget max (${f.budgetMax}€)`,
+            text:`Le marché médian est au-dessus de ton budget. Attends des baisses de prix ou recherche en dehors de Luxembourg-Ville.`});
+    } else if (median <= f.budgetMax && median >= f.budgetMin) {
+        insights.push({type:'green', icon:'📊', title:`Prix médian (${median}€) dans ta fourchette — bonne position !`,
+            text:`Le marché médian colle à ton budget. Tu es bien placé pour négocier.`});
+    }
+
+    // Timing — deadline-aware
+    const deadline   = new Date((f.deadline || '2026-05-15') + 'T00:00:00');
+    const now2       = new Date();
+    const daysLeft   = Math.ceil((deadline - now2) / (1000*60*60*24));
+    const deadlineFmt = deadline.toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'});
+    const visitStart = new Date(deadline);
+    visitStart.setDate(visitStart.getDate() - 42);
+    const visitFmt   = visitStart > now2
+        ? visitStart.toLocaleDateString('fr-FR',{day:'2-digit',month:'long'})
+        : 'maintenant';
+
+    let timingType, timingTitle, timingText;
+    if (daysLeft <= 0) {
+        timingType  = 'red';
+        timingTitle = `❌ Date limite dépassée — situation critique`;
+        timingText  = `La date limite du ${deadlineFmt} est passée. Contacte des agences en urgence absolue pour des disponibilités immédiates.`;
+    } else if (daysLeft <= 14) {
+        timingType  = 'red';
+        timingTitle = `🚨 CRITIQUE — ${daysLeft} jours pour signer un bail (${deadlineFmt})`;
+        timingText  = `Fenêtre de sécurité quasi-fermée. Relance tous les contacts actifs, accepte des compromis sur les critères secondaires. Priorité absolue.`;
+    } else if (daysLeft <= 30) {
+        timingType  = 'red';
+        timingTitle = `⚠️ URGENT — ${daysLeft} jours restants, bail à signer avant le ${deadlineFmt}`;
+        timingText  = `Intensifie les visites immédiatement. Les annonces actuelles sont celles que tu peux encore signer à temps. Ne reporte plus de visite.`;
+    } else if (daysLeft <= 60) {
+        timingType  = 'orange';
+        timingTitle = `⏰ Fenêtre active — ${daysLeft} jours, deadline le ${deadlineFmt}`;
+        timingText  = `Les annonces disponibles maintenant correspondent à ta fenêtre cible. Commence les visites dès cette semaine. Prépare ton dossier complet.`;
+    } else {
+        timingType  = 'blue';
+        timingTitle = `📅 Bonne avance — ${daysLeft} jours, deadline le ${deadlineFmt}`;
+        timingText  = `Fenêtre de visite optimale à partir du ${visitFmt} (~6 semaines avant la deadline). Continue à surveiller les nouvelles annonces via Telegram.`;
+    }
+    insights.push({type: timingType, icon: daysLeft <= 30 ? '🚨' : daysLeft <= 60 ? '⏰' : '📅',
+        title: timingTitle, text: timingText});
+
+    // Strategy tip
+    insights.push({type:'blue', icon:'💬', title:`Message de candidature — ton profil est fort`,
+        text:`CDI Luxembourg, famille stable, dossier complet, revenus confirmés → utilise systématiquement le message personnalisé de ton .env. Les propriétaires privilégient la sécurité.`});
+
+    insights.forEach(ins => {
+        const div = document.createElement('div');
+        div.className = `insight-card ${ins.type}`;
+        div.innerHTML = `
+            <div class="insight-icon">${ins.icon}</div>
+            <div class="insight-text">
+                <strong>${ins.title}</strong>
+                <p>${ins.text}</p>
+            </div>`;
+        container.appendChild(div);
+    });
+}
+
+// ═══════════════════════════════════════════════
+// START
+// ═══════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>

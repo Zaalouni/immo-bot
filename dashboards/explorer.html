@@ -1,0 +1,1775 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Explorer - Trouvez votre bien immobilier parfait au Luxembourg">
+    <meta name="theme-color" content="#09090F">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https:;">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <link rel="apple-touch-icon" href="icon.svg">
+    <title>Explorer — ImmoLux</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <script src="data/version.js"></script>
+    <script src="version-display.js" defer></script>
+    <style>
+        :root {
+            --bg: #09090F;
+            --bg-card: #111118;
+            --bg-lift: #16161F;
+            --bg-panel: #1C1C27;
+            --gold: #C9A265;
+            --gold-dim: rgba(201,162,101,0.18);
+            --gold-line: rgba(201,162,101,0.35);
+            --text: #E8E4DC;
+            --text-muted: #7A7A8C;
+            --text-dim: #4A4A5C;
+            --border: rgba(255,255,255,0.07);
+            --border-gold: rgba(201,162,101,0.25);
+            --radius: 4px;
+            --radius-lg: 8px;
+            --shadow: 0 4px 32px rgba(0,0,0,0.5);
+            --font-display: 'Cormorant Garamond', Georgia, serif;
+            --font-body: 'Outfit', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        body.light-mode {
+            --bg: #F5F0E8;
+            --bg-card: #FFFFFF;
+            --bg-lift: #FAF7F2;
+            --bg-panel: #F0EAE0;
+            --text: #1A1A24;
+            --text-muted: #6B6B7C;
+            --text-dim: #A0A0B0;
+            --border: rgba(0,0,0,0.08);
+            --border-gold: rgba(160,110,50,0.3);
+            --gold: #9A6E2A;
+            --gold-dim: rgba(154,110,42,0.1);
+            --gold-line: rgba(154,110,42,0.3);
+            --shadow: 0 4px 24px rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.4;
+        }
+
+        /* ── Navigation Bar ── */
+        .nav-bar {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0 1.5rem;
+            height: 52px;
+            background: rgba(9,9,15,0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .nav-bar::-webkit-scrollbar { display: none; }
+
+        .nav-link {
+            flex-shrink: 0;
+            padding: 0.35rem 0.85rem;
+            border-radius: var(--radius);
+            font-size: 0.8rem;
+            font-weight: 500;
+            font-family: var(--font-body);
+            color: var(--text-muted);
+            text-decoration: none;
+            letter-spacing: 0.02em;
+            transition: color 0.2s, background 0.2s;
+            white-space: nowrap;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--gold);
+            background: var(--gold-dim);
+        }
+
+        .nav-toggle {
+            margin-left: auto;
+            flex-shrink: 0;
+            background: none;
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            padding: 0.3rem 0.6rem;
+            cursor: pointer;
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .nav-toggle:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        /* ── Main Container ── */
+        .explorer-container {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1600px;
+            margin: 0 auto;
+            min-height: calc(100vh - 52px);
+        }
+
+        /* ── Filters Sidebar ── */
+        .filters-sidebar {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            height: fit-content;
+            position: sticky;
+            top: 72px;
+            max-height: calc(100vh - 100px);
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border-gold) var(--bg-panel);
+        }
+
+        .filters-sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .filters-sidebar::-webkit-scrollbar-track {
+            background: var(--bg-panel);
+        }
+
+        .filters-sidebar::-webkit-scrollbar-thumb {
+            background: var(--border-gold);
+            border-radius: 3px;
+        }
+
+        .filters-title {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* ── Filter Group ── */
+        .filter-group {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .filter-group:last-of-type {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .filter-group-title {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--gold);
+            letter-spacing: 0.1em;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-group-title .icon {
+            font-size: 1.1rem;
+        }
+
+        /* ── Checkboxes & Radios ── */
+        .filter-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            cursor: pointer;
+            padding: 0.4rem 0.5rem;
+            border-radius: var(--radius);
+            transition: background 0.2s;
+        }
+
+        .filter-option:hover {
+            background: var(--bg-lift);
+        }
+
+        .filter-option input[type="checkbox"],
+        .filter-option input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--gold);
+        }
+
+        .filter-option label {
+            flex: 1;
+            font-size: 0.85rem;
+            color: var(--text);
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .filter-count {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* ── Sliders ── */
+        .slider-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .slider-wrapper {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        input[type="range"] {
+            flex: 1;
+            height: 5px;
+            border-radius: 5px;
+            background: var(--bg-panel);
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--gold);
+            cursor: pointer;
+            transition: transform 0.2s;
+            box-shadow: 0 0 8px var(--gold-dim);
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--gold);
+            cursor: pointer;
+            border: none;
+            transition: transform 0.2s;
+            box-shadow: 0 0 8px var(--gold-dim);
+        }
+
+        input[type="range"]::-moz-range-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .slider-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+        }
+
+        .slider-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .slider-input-label {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        .slider-input-group input {
+            padding: 0.4rem 0.5rem;
+            background: var(--bg-lift);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text);
+            transition: border-color 0.2s;
+        }
+
+        .slider-input-group input:focus {
+            outline: none;
+            border-color: var(--border-gold);
+        }
+
+        /* ── Select (Dropdown) ── */
+        .filter-select {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            background: var(--bg-lift);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            color: var(--text);
+            cursor: pointer;
+            transition: border-color 0.2s;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237A7A8C' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            padding-right: 2rem;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--border-gold);
+        }
+
+        .filter-select option {
+            background: var(--bg-lift);
+            color: var(--text);
+        }
+
+        /* ── Buttons ── */
+        .filter-button {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            margin-top: 1rem;
+            background: var(--gold);
+            color: var(--bg);
+            border: none;
+            border-radius: var(--radius);
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .filter-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(201,162,101,0.3);
+        }
+
+        /* ── Results Section ── */
+        .results-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .results-count {
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        .results-count .count-number {
+            font-size: 1.3rem;
+            color: var(--gold);
+        }
+
+        /* ── View Switcher ── */
+        .view-switcher {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .view-button {
+            padding: 0.5rem 0.75rem;
+            background: var(--bg-lift);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .view-button:hover {
+            border-color: var(--border-gold);
+            color: var(--text);
+        }
+
+        .view-button.active {
+            background: var(--gold-dim);
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        /* ── Results Grid (Grille) ── */
+        .results-grid {
+            display: none;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .results-grid.active {
+            display: grid;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .listing-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .listing-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-gold);
+            box-shadow: var(--shadow);
+        }
+
+        .listing-image {
+            width: 100%;
+            height: 160px;
+            background: var(--bg-lift);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 2.5rem;
+            overflow: hidden;
+        }
+
+        .listing-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .listing-content {
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .listing-price {
+            font-family: var(--font-mono);
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 0.4rem;
+        }
+
+        .listing-city {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .listing-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .listing-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .listing-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: auto;
+        }
+
+        .btn-view {
+            flex: 1;
+            padding: 0.5rem 0.75rem;
+            background: var(--bg-lift);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--gold);
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-view:hover {
+            background: var(--gold-dim);
+            border-color: var(--gold);
+        }
+
+        .btn-favorite {
+            padding: 0.5rem 0.75rem;
+            background: var(--bg-lift);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1rem;
+        }
+
+        .btn-favorite:hover,
+        .btn-favorite.active {
+            background: var(--gold-dim);
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        /* ── Results Table (Liste) ── */
+        .results-table {
+            display: none;
+            width: 100%;
+            border-collapse: collapse;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .results-table.active {
+            display: table;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .results-table thead th {
+            background: var(--bg-lift);
+            color: var(--text-muted);
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            border-bottom: 1px solid var(--border-gold);
+        }
+
+        .results-table tbody tr {
+            border-bottom: 1px solid var(--border);
+            transition: background 0.2s;
+        }
+
+        .results-table tbody tr:hover {
+            background: var(--bg-lift);
+        }
+
+        .results-table tbody td {
+            padding: 0.85rem 1rem;
+            font-size: 0.85rem;
+            color: var(--text);
+        }
+
+        .results-table tbody td:first-child {
+            color: var(--gold);
+            font-weight: 600;
+            font-family: var(--font-mono);
+        }
+
+        .results-table .td-city {
+            color: var(--text-muted);
+        }
+
+        .results-table .td-actions {
+            text-align: right;
+        }
+
+        .results-table a {
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.75rem;
+            transition: opacity 0.2s;
+        }
+
+        .results-table a:hover {
+            opacity: 0.8;
+        }
+
+        /* ── Results Map ── */
+        .results-map {
+            display: none;
+            width: 100%;
+            height: 600px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+        }
+
+        .results-map.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        /* ── Empty State ── */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-muted);
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-state-text {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* ── Animations ── */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Dark Mode Toggle ── */
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dark-mode-toggle:hover {
+            transform: scale(1.1) rotate(15deg);
+            border-color: var(--gold);
+        }
+
+        @media (max-width: 900px) {
+            .dark-mode-toggle { display: none; }
+        }
+
+        /* ── Mobile Responsive ── */
+        @media (max-width: 1024px) {
+            .explorer-container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+
+            .filters-sidebar {
+                position: relative;
+                top: auto;
+                max-height: none;
+            }
+
+            .results-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .explorer-container {
+                padding: 1rem;
+                gap: 1rem;
+            }
+
+            .filters-sidebar {
+                display: none;
+            }
+
+            .filters-sidebar.mobile-open {
+                display: block;
+                position: fixed;
+                left: 0;
+                right: 0;
+                top: 52px;
+                bottom: 0;
+                z-index: 40;
+                max-height: none;
+                width: 100%;
+                border-radius: 0;
+                overflow-y: auto;
+            }
+
+            .results-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 1rem;
+            }
+
+            .results-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .view-switcher {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .results-map {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="nav-bar">
+        <a href="index.html" class="nav-link">Dashboard</a>
+        <a href="explorer.html" class="nav-link active">Explorer</a>
+        <a href="new-listings.html" class="nav-link">Nouvelles</a>
+        <a href="anomalies.html" class="nav-link">Anomalies</a>
+        <a href="map-advanced.html" class="nav-link">Carte</a>
+        <a href="favorites.html" class="nav-link">Prioritaires</a>
+        <a href="stats-by-city.html" class="nav-link">Villes</a>
+        <button class="nav-toggle" id="mobileFilterToggle" title="Afficher/Masquer les filtres" aria-label="Toggle filters menu">🔽</button>
+        <button class="nav-toggle" id="darkModeToggle" title="Mode clair/sombre" aria-label="Toggle dark/light mode">☀️</button>
+    </nav>
+
+    <div class="explorer-container">
+
+        <!-- Filters Sidebar -->
+        <aside class="filters-sidebar" id="filtersSidebar">
+            <h2 class="filters-title">Filtres</h2>
+
+            <!-- PRIX (MAIN FILTERS - TOP) -->
+            <div class="filter-group">
+                <div class="filter-group-title">
+                    <span class="icon">💶</span>
+                    <span>Prix (€)</span>
+                </div>
+                <div class="slider-group">
+                    <div class="slider-wrapper">
+                        <input type="range" id="priceMin" min="500" max="3000" value="500">
+                        <input type="range" id="priceMax" min="500" max="3000" value="3000">
+                    </div>
+                    <div class="slider-inputs">
+                        <div class="slider-input-group">
+                            <label class="slider-input-label">Min</label>
+                            <input type="number" id="priceMinInput" min="500" max="3000" value="500" step="100">
+                        </div>
+                        <div class="slider-input-group">
+                            <label class="slider-input-label">Max</label>
+                            <input type="number" id="priceMaxInput" min="500" max="3000" value="3000" step="100">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CHAMBRES (MAIN FILTERS) -->
+            <div class="filter-group">
+                <div class="filter-group-title">
+                    <span class="icon">🛏️</span>
+                    <span>Chambres</span>
+                </div>
+                <div class="slider-group">
+                    <div class="slider-wrapper">
+                        <input type="range" id="roomsMin" min="0" max="5" value="0">
+                        <input type="range" id="roomsMax" min="0" max="5" value="5">
+                    </div>
+                    <div class="slider-inputs">
+                        <div class="slider-input-group">
+                            <label class="slider-input-label">Min</label>
+                            <input type="number" id="roomsMinInput" min="0" max="5" value="0">
+                        </div>
+                        <div class="slider-input-group">
+                            <label class="slider-input-label">Max</label>
+                            <input type="number" id="roomsMaxInput" min="0" max="5" value="5">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PÉRIODE (MAIN FILTERS) -->
+            <div class="filter-group">
+                <div class="filter-group-title">
+                    <span class="icon">📅</span>
+                    <span>Période</span>
+                </div>
+                <div class="filter-options">
+                    <div class="filter-option">
+                        <input type="radio" name="period" id="period-all" value="all" checked>
+                        <label for="period-all">Tous</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="radio" name="period" id="period-7" value="7">
+                        <label for="period-7">Derniers 7 jours</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="radio" name="period" id="period-30" value="30">
+                        <label for="period-30">Derniers 30 jours</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="radio" name="period" id="period-90" value="90">
+                        <label for="period-90">Derniers 90 jours</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LOCALISATION (OTHER FILTERS) -->
+            <div class="filter-group">
+                <div class="filter-group-title">
+                    <span class="icon">📍</span>
+                    <span>Localisation</span>
+                </div>
+                <div class="filter-options" id="cityFilter">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- TYPE DE BIEN (OTHER FILTERS) -->
+            <div class="filter-group">
+                <div class="filter-group-title">
+                    <span class="icon">🏠</span>
+                    <span>Type de Bien</span>
+                </div>
+                <div class="filter-options" id="typeFilter">
+                    <div class="filter-option">
+                        <input type="radio" name="type" id="type-all" value="" checked>
+                        <label for="type-all">Tous les types</label>
+                    </div>
+                    <!-- Dynamic options will be added here -->
+                </div>
+            </div>
+
+            <!-- SURFACE (OTHER FILTERS) -->
+            <div class="filter-group">
+                <div class="filter-group-title">
+                    <span class="icon">📏</span>
+                    <span>Surface (m²)</span>
+                </div>
+                <div class="slider-group">
+                    <div class="slider-wrapper">
+                        <input type="range" id="surfaceMin" min="15" max="500" value="30">
+                        <input type="range" id="surfaceMax" min="15" max="500" value="500">
+                    </div>
+                    <div class="slider-inputs">
+                        <div class="slider-input-group">
+                            <label class="slider-input-label">Min</label>
+                            <input type="number" id="surfaceMinInput" min="15" max="500" value="30">
+                        </div>
+                        <div class="slider-input-group">
+                            <label class="slider-input-label">Max</label>
+                            <input type="number" id="surfaceMaxInput" min="15" max="500" value="500">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TRAIN (OTHER FILTERS) -->
+            <div class="filter-group">
+                <div class="filter-group-title">
+                    <span class="icon">🚂</span>
+                    <span>Proximité Train</span>
+                </div>
+                <div class="filter-options">
+                    <div class="filter-option">
+                        <input type="radio" name="train" id="train-all" value="" checked>
+                        <label for="train-all">Tous</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="radio" name="train" id="train-1" value="1">
+                        <label for="train-1">À moins de 1 km</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="radio" name="train" id="train-2" value="2">
+                        <label for="train-2">À moins de 2 km</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="radio" name="train" id="train-5" value="5">
+                        <label for="train-5">À moins de 5 km</label>
+                    </div>
+                    <div class="filter-option">
+                        <input type="radio" name="train" id="train-10" value="10">
+                        <label for="train-10">À moins de 10 km</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SITE SOURCE (OTHER FILTERS) -->
+            <div class="filter-group">
+                <div class="filter-group-title">
+                    <span class="icon">🌐</span>
+                    <span>Site Source</span>
+                </div>
+                <div class="filter-options" id="siteFilter">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- GPS (OTHER FILTERS) -->
+            <div class="filter-group">
+                <div class="filter-group-title">
+                    <span class="icon">🗺️</span>
+                    <span>GPS</span>
+                </div>
+                <div class="filter-options">
+                    <div class="filter-option">
+                        <input type="checkbox" id="gpsOnly">
+                        <label for="gpsOnly">Avec coordonnées GPS seulement</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reset Button -->
+            <button class="filter-button" id="resetBtn">🔄 Réinitialiser</button>
+        </aside>
+
+        <!-- Results Section -->
+        <section class="results-section">
+            <div class="results-header">
+                <div class="results-count">
+                    <span class="count-number" id="countNumber">—</span>
+                    <span> annonces trouvées</span>
+                </div>
+                <div class="view-switcher">
+                    <button class="view-button active" data-view="grid" title="Grille">📱 Grille</button>
+                    <button class="view-button" data-view="table" title="Liste">≡ Liste</button>
+                    <button class="view-button" data-view="map" title="Carte">🗺️ Carte</button>
+                </div>
+            </div>
+
+            <!-- Grid View (Défaut) -->
+            <div class="results-grid active" id="resultsGrid">
+                <div class="empty-state">
+                    <div class="empty-state-icon">⏳</div>
+                    <div class="empty-state-text">Chargement des annonces...</div>
+                </div>
+            </div>
+
+            <!-- Table View -->
+            <table class="results-table" id="resultsTable">
+                <thead>
+                    <tr>
+                        <th>Prix</th>
+                        <th>Titre</th>
+                        <th class="td-city">Ville</th>
+                        <th>Ch</th>
+                        <th>Surface</th>
+                        <th>Date</th>
+                        <th class="td-actions">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="resultsTableBody">
+                </tbody>
+            </table>
+
+            <!-- Map View -->
+            <div class="results-map" id="resultsMap"></div>
+        </section>
+
+    </div>
+
+    <!-- Floating Dark Mode Toggle -->
+    <button class="dark-mode-toggle" id="darkModeToggleFloat">☀️</button>
+
+    <script src="data/listings.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // ═══════════════════════════════════════════════════════════════════════
+        // CONFIGURATION & STATE
+        // ═══════════════════════════════════════════════════════════════════════
+
+        // Gares ferroviaires Luxembourg (latitude, longitude)
+        const TRAIN_STATIONS = {
+            'Luxembourg': { lat: 49.6016, lng: 6.1319 },
+            'Esch-sur-Alzette': { lat: 49.5347, lng: 5.9779 },
+            'Differdange': { lat: 49.5414, lng: 5.8951 },
+            'Dudelange': { lat: 49.4925, lng: 5.9586 },
+            'Belfort': { lat: 49.6083, lng: 5.9050 },
+            'Pétange': { lat: 49.5547, lng: 5.8622 },
+            'Wiltz': { lat: 49.9519, lng: 6.0422 },
+            'Diekirch': { lat: 49.8678, lng: 6.2622 },
+            'Ettelbruck': { lat: 49.8564, lng: 6.1061 },
+            'Remich': { lat: 49.3519, lng: 6.3583 }
+        };
+
+        // Configuration constants
+        const CONFIG = {
+            TRAIN_DISTANCE_THRESHOLD: 10, // km
+            DEFAULT_ROOMS_MAX: 5,
+            DEFAULT_SURFACE_MIN: 30,
+            DEFAULT_SURFACE_MAX: 500,
+            DEFAULT_PRICE_MIN: 500,
+            DEFAULT_PRICE_MAX: 3000,
+            MAP_DEFAULT_ZOOM: 9,
+            MAP_DEFAULT_CENTER: [49.615, 6.129],
+            DEBOUNCE_DELAY: 300 // ms
+        };
+
+        let filteredListings = [];
+        let currentView = 'grid';
+        let map = null;
+        let mapMarkers = [];
+        let filterDebounceTimer = null;
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // DARK MODE
+        // ═══════════════════════════════════════════════════════════════════════
+        const dm = document.getElementById('darkModeToggle');
+        const dmFloat = document.getElementById('darkModeToggleFloat');
+
+        function applyDarkMode(light) {
+            document.body.classList.toggle('light-mode', light);
+            const icon = light ? '🌙' : '☀️';
+            dm.textContent = icon;
+            if (dmFloat) dmFloat.textContent = icon;
+            localStorage.setItem('darkMode', light);
+        }
+
+        dm.addEventListener('click', () => {
+            applyDarkMode(!document.body.classList.contains('light-mode'));
+            if (map) map.invalidateSize();
+        });
+
+        if (dmFloat) dmFloat.addEventListener('click', () => dm.click());
+        applyDarkMode(localStorage.getItem('darkMode') === 'true');
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // UTILITIES
+        // ═══════════════════════════════════════════════════════════════════════
+
+        // HTML entity escaping for XSS prevention
+        function escapeHtml(text) {
+            if (!text) return '';
+            return String(text)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        // Escape URL attributes to prevent injection
+        function escapeUrl(url) {
+            if (!url || typeof url !== 'string') return '#';
+            return url.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
+
+        function formatPrice(price) {
+            return parseInt(price || 0).toLocaleString('fr-FR');
+        }
+
+        function getDaysOld(dateStr) {
+            if (!dateStr) return 999;
+            try {
+                const d = new Date(dateStr);
+                const now = new Date();
+                return Math.floor((now - d) / (1000 * 60 * 60 * 24));
+            } catch (e) {
+                console.warn('Invalid date:', dateStr);
+                return 999;
+            }
+        }
+
+        // Calculate geodesic distance between coordinates using simplified Haversine formula
+        function getClosestTrainDistance(lat, lng) {
+            if (!lat || !lng || typeof lat !== 'number' || typeof lng !== 'number') return Infinity;
+            if (!Number.isFinite(lat) || !Number.isFinite(lng)) return Infinity;
+
+            let minDist = Infinity;
+            for (const station of Object.values(TRAIN_STATIONS)) {
+                // Simplified Haversine: assumes small angles, approximates Earth radius
+                const dist = Math.hypot(
+                    (lat - station.lat) * 111,
+                    (lng - station.lng) * 111 * Math.cos(lat * Math.PI / 180)
+                );
+                minDist = Math.min(minDist, dist);
+            }
+            return minDist;
+        }
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // INIT FILTERS
+        // ═══════════════════════════════════════════════════════════════════════
+
+        // Find closest train station for a city (cached for performance)
+        const trainStationCache = {};
+        function getClosestTrainStation(city) {
+            if (trainStationCache[city] !== undefined) {
+                return trainStationCache[city];
+            }
+
+            const cityListing = LISTINGS.find(l => l.city === city);
+            if (!cityListing || !cityListing.latitude || !cityListing.longitude) {
+                trainStationCache[city] = null;
+                return null;
+            }
+
+            let closest = null;
+            let minDist = Infinity;
+
+            for (const [stationName, station] of Object.entries(TRAIN_STATIONS)) {
+                const dist = Math.hypot(
+                    (cityListing.latitude - station.lat) * 111,
+                    (cityListing.longitude - station.lng) * 111 * Math.cos(cityListing.latitude * Math.PI / 180)
+                );
+                if (dist < minDist) {
+                    minDist = dist;
+                    closest = { name: stationName, dist: dist };
+                }
+            }
+
+            trainStationCache[city] = closest;
+            return closest;
+        }
+
+        function initFilters() {
+            if (!LISTINGS || LISTINGS.length === 0) return;
+
+            // Cities
+            const cities = [...new Set(LISTINGS.map(l => l.city).filter(Boolean))].sort();
+            const cityCounts = {};
+            LISTINGS.forEach(l => {
+                if (l.city) cityCounts[l.city] = (cityCounts[l.city] || 0) + 1;
+            });
+
+            // Group cities by train station
+            const citiesByStation = {};
+            const citiesNoStation = [];
+
+            cities.forEach(city => {
+                const closest = getClosestTrainStation(city);
+                if (closest && closest.dist <= CONFIG.TRAIN_DISTANCE_THRESHOLD) {
+                    if (!citiesByStation[closest.name]) {
+                        citiesByStation[closest.name] = [];
+                    }
+                    citiesByStation[closest.name].push({ city, dist: closest.dist });
+                } else {
+                    citiesNoStation.push(city);
+                }
+            });
+
+            const cityFilter = document.getElementById('cityFilter');
+
+            // Add cities grouped by train station
+            Object.keys(citiesByStation).sort().forEach(stationName => {
+                const stationDiv = document.createElement('div');
+                stationDiv.style.marginBottom = '0.75rem';
+                stationDiv.style.paddingBottom = '0.75rem';
+                stationDiv.style.borderBottom = '1px solid var(--border)';
+
+                const stationLabel = document.createElement('div');
+                stationLabel.style.fontSize = '0.65rem';
+                stationLabel.style.fontWeight = '700';
+                stationLabel.style.color = 'var(--gold)';
+                stationLabel.style.textTransform = 'uppercase';
+                stationLabel.style.letterSpacing = '0.05em';
+                stationLabel.style.marginBottom = '0.5rem';
+                stationLabel.textContent = `🚂 ${stationName}`;
+                stationDiv.appendChild(stationLabel);
+
+                citiesByStation[stationName].sort((a, b) => a.dist - b.dist).forEach(({ city, dist }) => {
+                    const div = document.createElement('div');
+                    div.className = 'filter-option';
+                    div.innerHTML = `
+                        <input type="checkbox" id="city-${city}" value="${city}" data-filter="city">
+                        <label for="city-${city}">
+                            <span>${city}</span>
+                            <span class="filter-count" title="Distance à la gare">${cityCounts[city]} (${dist.toFixed(1)}km)</span>
+                        </label>
+                    `;
+                    stationDiv.appendChild(div);
+                });
+
+                cityFilter.appendChild(stationDiv);
+            });
+
+            // Add other cities (no nearby train station)
+            if (citiesNoStation.length > 0) {
+                const otherDiv = document.createElement('div');
+                otherDiv.style.marginTop = '0.75rem';
+
+                const otherLabel = document.createElement('div');
+                otherLabel.style.fontSize = '0.65rem';
+                otherLabel.style.fontWeight = '700';
+                otherLabel.style.color = 'var(--text-muted)';
+                otherLabel.style.textTransform = 'uppercase';
+                otherLabel.style.letterSpacing = '0.05em';
+                otherLabel.style.marginBottom = '0.5rem';
+                otherLabel.textContent = '📍 Autres Villes';
+                otherDiv.appendChild(otherLabel);
+
+                citiesNoStation.forEach(city => {
+                    const div = document.createElement('div');
+                    div.className = 'filter-option';
+                    div.innerHTML = `
+                        <input type="checkbox" id="city-${city}" value="${city}" data-filter="city">
+                        <label for="city-${city}">
+                            <span>${city}</span>
+                            <span class="filter-count">(${cityCounts[city]})</span>
+                        </label>
+                    `;
+                    otherDiv.appendChild(div);
+                });
+
+                cityFilter.appendChild(otherDiv);
+            }
+
+            // Type de bien (détecté depuis titles)
+            const types = new Set();
+            LISTINGS.forEach(l => {
+                if (l.title.toLowerCase().includes('maison')) types.add('Maison');
+                if (l.title.toLowerCase().includes('appartement')) types.add('Appartement');
+                if (l.title.toLowerCase().includes('studio')) types.add('Studio');
+                if (l.title.toLowerCase().includes('commerce')) types.add('Commerce');
+            });
+            if (types.size === 0) types.add('Appartement');
+
+            const typeFilter = document.getElementById('typeFilter');
+            Array.from(types).sort().forEach(type => {
+                const div = document.createElement('div');
+                div.className = 'filter-option';
+                div.innerHTML = `
+                    <input type="radio" name="type" id="type-${type}" value="${type}" data-filter="type">
+                    <label for="type-${type}">${type}</label>
+                `;
+                typeFilter.appendChild(div);
+            });
+
+            // Sites
+            const sites = [...new Set(LISTINGS.map(l => l.site).filter(Boolean))].sort();
+            const siteCounts = {};
+            LISTINGS.forEach(l => {
+                if (l.site) siteCounts[l.site] = (siteCounts[l.site] || 0) + 1;
+            });
+
+            const siteFilter = document.getElementById('siteFilter');
+            sites.forEach(site => {
+                const div = document.createElement('div');
+                div.className = 'filter-option';
+                div.innerHTML = `
+                    <input type="checkbox" id="site-${site}" value="${site}" data-filter="site">
+                    <label for="site-${site}">
+                        <span>${site}</span>
+                        <span class="filter-count">(${siteCounts[site]})</span>
+                    </label>
+                `;
+                siteFilter.appendChild(div);
+            });
+        }
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // FILTER & DISPLAY
+        // ═══════════════════════════════════════════════════════════════════════
+
+        function applyFilters() {
+            if (!LISTINGS) return;
+
+            filteredListings = LISTINGS.filter(listing => {
+                // Cities
+                const cities = Array.from(document.querySelectorAll('input[data-filter="city"]:checked')).map(el => el.value);
+                if (cities.length > 0 && !cities.includes(listing.city)) return false;
+
+                // Type
+                const typeSelected = document.querySelector('input[name="type"]:checked')?.value;
+                if (typeSelected) {
+                    const listingType = listing.title.toLowerCase();
+                    if (typeSelected === 'Maison' && !listingType.includes('maison')) return false;
+                    if (typeSelected === 'Appartement' && !listingType.includes('appartement')) return false;
+                    if (typeSelected === 'Studio' && !listingType.includes('studio')) return false;
+                    if (typeSelected === 'Commerce' && !listingType.includes('commerce')) return false;
+                }
+
+                // Chambres
+                const roomsMin = parseInt(document.getElementById('roomsMin').value);
+                const roomsMax = parseInt(document.getElementById('roomsMax').value);
+                if (listing.rooms < roomsMin || listing.rooms > roomsMax) return false;
+
+                // Surface
+                const surfaceMin = parseInt(document.getElementById('surfaceMin').value);
+                const surfaceMax = parseInt(document.getElementById('surfaceMax').value);
+                if (listing.surface < surfaceMin || listing.surface > surfaceMax) return false;
+
+                // Prix
+                const priceMin = parseInt(document.getElementById('priceMin').value);
+                const priceMax = parseInt(document.getElementById('priceMax').value);
+                if (listing.price < priceMin || listing.price > priceMax) return false;
+
+                // Période
+                const period = document.querySelector('input[name="period"]:checked')?.value;
+                if (period !== 'all') {
+                    const daysOld = getDaysOld(listing.created_at);
+                    if (daysOld > parseInt(period)) return false;
+                }
+
+                // Train
+                const trainDist = document.querySelector('input[name="train"]:checked')?.value;
+                if (trainDist) {
+                    const dist = getClosestTrainDistance(listing.latitude, listing.longitude);
+                    if (dist > parseFloat(trainDist)) return false;
+                }
+
+                // Sites
+                const sites = Array.from(document.querySelectorAll('input[data-filter="site"]:checked')).map(el => el.value);
+                if (sites.length > 0 && !sites.includes(listing.site)) return false;
+
+                // GPS
+                const gpsOnly = document.getElementById('gpsOnly').checked;
+                if (gpsOnly && (!listing.latitude || !listing.longitude)) return false;
+
+                return true;
+            });
+
+            // Update count
+            document.getElementById('countNumber').textContent = filteredListings.length.toLocaleString();
+
+            // Render current view
+            if (currentView === 'grid') renderGrid();
+            else if (currentView === 'table') renderTable();
+            else if (currentView === 'map') renderMap();
+        }
+
+        function renderGrid() {
+            const grid = document.getElementById('resultsGrid');
+            if (filteredListings.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1/-1;">
+                        <div class="empty-state-icon">🔍</div>
+                        <div class="empty-state-text">Aucune annonce ne correspond à vos critères</div>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = filteredListings.map((l) => {
+                const title = escapeHtml(l.title || '').substring(0, 60);
+                const city = escapeHtml(l.city || '—');
+                const imgSrc = l.local_image
+                    ? `<img src="${escapeUrl(l.local_image)}" alt="${title}">`
+                    : '📷';
+                const url = escapeUrl(l.url || '#');
+                const listingId = escapeHtml(l.listing_id || '');
+
+                return `
+                <div class="listing-card">
+                    <div class="listing-image">
+                        ${imgSrc}
+                    </div>
+                    <div class="listing-content">
+                        <div class="listing-price">${formatPrice(l.price)}€</div>
+                        <div class="listing-city">${city}</div>
+                        <div class="listing-meta">
+                            ${l.rooms > 0 ? `<span class="listing-meta-item">🛏️ ${l.rooms}ch</span>` : ''}
+                            ${l.surface > 0 ? `<span class="listing-meta-item">📏 ${l.surface}m²</span>` : ''}
+                        </div>
+                        <div class="listing-actions">
+                            <a href="${url}" target="_blank" rel="noopener" class="btn-view">Voir</a>
+                            <button class="btn-favorite" data-id="${listingId}" title="Ajouter aux favoris">⭐</button>
+                        </div>
+                    </div>
+                </div>
+            `;}).join('');
+
+            // Attach favorite listeners
+            grid.querySelectorAll('.btn-favorite').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    btn.classList.toggle('active');
+                    saveFavorite(btn.dataset.id, btn.classList.contains('active'));
+                });
+            });
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('resultsTableBody');
+            if (filteredListings.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 2rem; color: var(--text-muted);">Aucune annonce</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = filteredListings.map(l => {
+                const url = escapeUrl(l.url || '#');
+                const title = escapeHtml(l.title || '').substring(0, 40);
+                const city = escapeHtml(l.city || '—');
+
+                return `
+                <tr>
+                    <td>${formatPrice(l.price)}€</td>
+                    <td>${title}...</td>
+                    <td class="td-city">${city}</td>
+                    <td>${l.rooms > 0 ? l.rooms : '—'}</td>
+                    <td>${l.surface > 0 ? l.surface + 'm²' : '—'}</td>
+                    <td>${getDaysOld(l.created_at)}j</td>
+                    <td class="td-actions">
+                        <a href="${url}" target="_blank" rel="noopener">Voir →</a>
+                    </td>
+                </tr>
+            `;}).join('');
+        }
+
+        function renderMap() {
+            if (!map) {
+                const mapEl = document.getElementById('resultsMap');
+                if (!mapEl) {
+                    console.warn('Map element not found');
+                    return;
+                }
+                map = L.map(mapEl).setView(CONFIG.MAP_DEFAULT_CENTER, CONFIG.MAP_DEFAULT_ZOOM);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '© OpenStreetMap'
+                }).addTo(map);
+                setTimeout(() => map.invalidateSize(), 100);
+            }
+
+            // Clear old markers
+            mapMarkers.forEach(m => map.removeLayer(m));
+            mapMarkers = [];
+
+            if (filteredListings.length === 0) {
+                map.invalidateSize();
+                return;
+            }
+
+            // Add markers for valid listings with coordinates
+            filteredListings.forEach(l => {
+                if (l.latitude && l.longitude && Number.isFinite(l.latitude) && Number.isFinite(l.longitude)) {
+                    const city = escapeHtml(l.city || '');
+                    const url = escapeUrl(l.url || '#');
+                    const popup = `<strong>${formatPrice(l.price)}€</strong><br/>${city}<br/><a href="${url}" target="_blank" rel="noopener">Voir</a>`;
+
+                    const marker = L.circleMarker([l.latitude, l.longitude], {
+                        radius: 6,
+                        fillColor: '#C9A265',
+                        color: '#C9A265',
+                        weight: 2,
+                        opacity: 0.8,
+                        fillOpacity: 0.6
+                    }).bindPopup(popup);
+
+                    marker.addTo(map);
+                    mapMarkers.push(marker);
+                }
+            });
+
+            // Fit bounds with error handling
+            if (mapMarkers.length > 0) {
+                try {
+                    const group = new L.featureGroup(mapMarkers);
+                    const bounds = group.getBounds();
+                    if (bounds.isValid()) {
+                        map.fitBounds(bounds.pad(0.1));
+                    }
+                } catch (e) {
+                    console.warn('Could not fit map bounds:', e);
+                }
+            }
+
+            map.invalidateSize();
+        }
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // EVENT LISTENERS
+        // ═══════════════════════════════════════════════════════════════════════
+
+        // Debounced filter application to improve performance
+        function triggerFilterApply() {
+            clearTimeout(filterDebounceTimer);
+            filterDebounceTimer = setTimeout(() => {
+                applyFilters();
+            }, CONFIG.DEBOUNCE_DELAY);
+        }
+
+        // Attach event listeners with delegation for dynamic filter elements
+        function attachFilterListeners() {
+            const filtersSidebar = document.getElementById('filtersSidebar');
+
+            // Delegate events on sidebar for checkbox and radio changes
+            filtersSidebar.addEventListener('change', (e) => {
+                if (e.target.type === 'checkbox' || e.target.type === 'radio') {
+                    triggerFilterApply();
+                }
+                // Handle number inputs (sync to slider and apply filters)
+                if (e.target.type === 'number') {
+                    const sliderId = e.target.id.replace('Input', '').replace('Min', 'Min').replace('Max', 'Max');
+                    const slider = document.getElementById(sliderId);
+                    if (slider) {
+                        let val = parseInt(e.target.value) || 0;
+                        // Prevent min > max and vice versa
+                        const isMin = sliderId.includes('Min');
+                        const isMax = sliderId.includes('Max');
+
+                        if (isMin) {
+                            const maxInputId = sliderId.replace('Min', 'Max') + 'Input';
+                            const maxInput = document.getElementById(maxInputId);
+                            if (maxInput) {
+                                const maxVal = parseInt(maxInput.value);
+                                if (val > maxVal) maxInput.value = val;
+                            }
+                        } else if (isMax) {
+                            const minInputId = sliderId.replace('Max', 'Min') + 'Input';
+                            const minInput = document.getElementById(minInputId);
+                            if (minInput) {
+                                const minVal = parseInt(minInput.value);
+                                if (val < minVal) minInput.value = val;
+                            }
+                        }
+                        slider.value = val;
+                    }
+                    triggerFilterApply();
+                }
+            });
+
+            // Delegate events for range sliders (input event for live feedback)
+            filtersSidebar.addEventListener('input', (e) => {
+                if (e.target.type === 'range') {
+                    const inputId = e.target.id.replace('Min', 'MinInput').replace('Max', 'MaxInput');
+                    const inputElem = document.getElementById(inputId);
+                    if (inputElem) inputElem.value = e.target.value;
+
+                    // Prevent min > max by syncing slider values
+                    const isMin = e.target.id.includes('Min');
+                    if (isMin) {
+                        const maxSliderId = e.target.id.replace('Min', 'Max');
+                        const maxSlider = document.getElementById(maxSliderId);
+                        if (maxSlider && parseInt(e.target.value) > parseInt(maxSlider.value)) {
+                            maxSlider.value = e.target.value;
+                            const maxInputId = maxSliderId + 'Input';
+                            const maxInput = document.getElementById(maxInputId);
+                            if (maxInput) maxInput.value = e.target.value;
+                        }
+                    } else {
+                        const minSliderId = e.target.id.replace('Max', 'Min');
+                        const minSlider = document.getElementById(minSliderId);
+                        if (minSlider && parseInt(e.target.value) < parseInt(minSlider.value)) {
+                            minSlider.value = e.target.value;
+                            const minInputId = minSliderId + 'Input';
+                            const minInput = document.getElementById(minInputId);
+                            if (minInput) minInput.value = e.target.value;
+                        }
+                    }
+                    triggerFilterApply();
+                }
+            });
+        }
+
+        // Setup view switcher and reset button
+        function setupUIControls() {
+            // View switcher
+            document.querySelectorAll('.view-button').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.view-button').forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    currentView = e.target.dataset.view;
+
+                    document.querySelectorAll('.results-grid, .results-table, .results-map').forEach(el => {
+                        el.classList.remove('active');
+                    });
+
+                    if (currentView === 'grid') {
+                        document.getElementById('resultsGrid').classList.add('active');
+                        renderGrid();
+                    } else if (currentView === 'table') {
+                        document.getElementById('resultsTable').classList.add('active');
+                        renderTable();
+                    } else if (currentView === 'map') {
+                        document.getElementById('resultsMap').classList.add('active');
+                        renderMap();
+                    }
+                });
+            });
+
+            // Reset button
+            const resetBtn = document.getElementById('resetBtn');
+            if (resetBtn) {
+                resetBtn.addEventListener('click', () => {
+                    document.querySelectorAll('input[type="checkbox"]').forEach(el => el.checked = false);
+                    document.querySelectorAll('input[type="radio"]').forEach(el => el.checked = el.id.endsWith('-all'));
+
+                    // Reset to default values from CONFIG
+                    document.getElementById('roomsMin').value = 0;
+                    document.getElementById('roomsMax').value = CONFIG.DEFAULT_ROOMS_MAX;
+                    document.getElementById('roomsMinInput').value = 0;
+                    document.getElementById('roomsMaxInput').value = CONFIG.DEFAULT_ROOMS_MAX;
+
+                    document.getElementById('surfaceMin').value = CONFIG.DEFAULT_SURFACE_MIN;
+                    document.getElementById('surfaceMax').value = CONFIG.DEFAULT_SURFACE_MAX;
+                    document.getElementById('surfaceMinInput').value = CONFIG.DEFAULT_SURFACE_MIN;
+                    document.getElementById('surfaceMaxInput').value = CONFIG.DEFAULT_SURFACE_MAX;
+
+                    document.getElementById('priceMin').value = CONFIG.DEFAULT_PRICE_MIN;
+                    document.getElementById('priceMax').value = CONFIG.DEFAULT_PRICE_MAX;
+                    document.getElementById('priceMinInput').value = CONFIG.DEFAULT_PRICE_MIN;
+                    document.getElementById('priceMaxInput').value = CONFIG.DEFAULT_PRICE_MAX;
+
+                    applyFilters();
+                });
+            }
+        }
+
+        // Favorites
+        function saveFavorite(id, isFav) {
+            let favs = JSON.parse(localStorage.getItem('favorites') || '[]');
+            if (isFav) {
+                if (!favs.includes(id)) favs.push(id);
+            } else {
+                favs = favs.filter(f => f !== id);
+            }
+            localStorage.setItem('favorites', JSON.stringify(favs));
+        }
+
+        function loadFavorites() {
+            const favs = JSON.parse(localStorage.getItem('favorites') || '[]');
+            document.querySelectorAll('.btn-favorite').forEach(btn => {
+                if (favs.includes(btn.dataset.id)) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        // Mobile filter sidebar toggle
+        const mobileFilterToggle = document.getElementById('mobileFilterToggle');
+        const filtersSidebar = document.getElementById('filtersSidebar');
+
+        if (mobileFilterToggle && filtersSidebar) {
+            mobileFilterToggle.addEventListener('click', () => {
+                filtersSidebar.classList.toggle('mobile-open');
+                // Update button visual state
+                mobileFilterToggle.style.display = window.innerWidth > 768 ? 'none' : 'block';
+            });
+
+            // Close sidebar when clicking a filter option
+            filtersSidebar.addEventListener('change', () => {
+                if (window.innerWidth <= 768) {
+                    filtersSidebar.classList.remove('mobile-open');
+                }
+            });
+
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768) {
+                    filtersSidebar.classList.remove('mobile-open');
+                }
+            });
+        }
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // INIT
+        // ═══════════════════════════════════════════════════════════════════════
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (!LISTINGS || !Array.isArray(LISTINGS) || LISTINGS.length === 0) {
+                console.error('No listings data available');
+                document.getElementById('resultsGrid').innerHTML = `
+                    <div class="empty-state" style="grid-column: 1/-1;">
+                        <div class="empty-state-icon">⚠️</div>
+                        <div class="empty-state-text">Impossible de charger les annonces</div>
+                    </div>
+                `;
+                return;
+            }
+            initFilters();
+
+            // Setup all event listeners AFTER initFilters creates dynamic elements
+            attachFilterListeners();
+            setupUIControls();
+
+            applyFilters();
+            loadFavorites();
+
+            // Hide mobile toggle on desktop
+            if (mobileFilterToggle) {
+                mobileFilterToggle.style.display = window.innerWidth > 768 ? 'none' : 'block';
+            }
+        });
+
+        // Service Worker registration with error handling
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').catch(err => {
+                console.debug('Service Worker registration failed:', err);
+            });
+        }
+    </script>
+
+</body>
+</html>
