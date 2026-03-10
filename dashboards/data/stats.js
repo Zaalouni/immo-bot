@@ -1,17 +1,17 @@
-// Genere le 10/03/2026 18:36
+// Genere le 10/03/2026 22:30
 const STATS = {
-  "total": 428,
-  "avg_price": 2250,
+  "total": 431,
+  "avg_price": 2249,
   "min_price": 1500,
   "max_price": 2700,
   "avg_surface": 91,
   "cities": 88,
   "sites": {
     "Remax.lu": 6,
-    "Nextimmo.lu": 37,
+    "Nextimmo.lu": 38,
     "VIVI.lu": 58,
-    "Immotop.lu": 7,
-    "Athome.lu": 181,
+    "Immotop.lu": 8,
+    "Athome.lu": 182,
     "Wortimmo.lu": 80,
     "Accord-Immo.lu": 1,
     "Newimmo.lu": 6,
@@ -30,13 +30,13 @@ const STATS = {
   "by_city": [
     {
       "city": "Belair",
-      "count": 28,
-      "avg_price": 2306
+      "count": 30,
+      "avg_price": 2292
     },
     {
       "city": "Luxembourg",
-      "count": 21,
-      "avg_price": 2268
+      "count": 22,
+      "avg_price": 2262
     },
     {
       "city": "Hollerich",
@@ -472,7 +472,7 @@ const STATS = {
   "by_price_range": {
     "< 1500": 0,
     "1500 - 2000": 75,
-    "2000 - 2500": 256,
+    "2000 - 2500": 259,
     "> 2500": 97
   }
 };

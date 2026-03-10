@@ -1,5 +1,5 @@
-// Genere le 10/03/2026 18:36
-// 428 annonces depuis listings.db
+// Genere le 10/03/2026 22:30
+// 431 annonces depuis listings.db
 const LISTINGS = [
   {
     "listing_id": "remax_280071131-3",
@@ -13,7 +13,7 @@ const LISTINGS = [
     "latitude": 49.6116,
     "longitude": 6.1319,
     "distance_km": 1.3,
-    "created_at": "2026-03-10 17:34:07",
+    "created_at": "2026-03-10 21:29:59",
     "image_url": "images/remax_280071131-3.jpg",
     "price_m2": null,
     "local_image": "images/remax_280071131-3.jpg"
@@ -30,7 +30,7 @@ const LISTINGS = [
     "latitude": 49.6116,
     "longitude": 6.1319,
     "distance_km": 1.3,
-    "created_at": "2026-03-10 17:33:57",
+    "created_at": "2026-03-10 21:29:49",
     "image_url": "images/remax_280071131-2.jpg",
     "price_m2": null,
     "local_image": "images/remax_280071131-2.jpg"
@@ -47,7 +47,7 @@ const LISTINGS = [
     "latitude": 49.6116,
     "longitude": 6.1319,
     "distance_km": 1.3,
-    "created_at": "2026-03-10 17:33:46",
+    "created_at": "2026-03-10 21:29:39",
     "image_url": "images/remax_280371001-49.jpg",
     "price_m2": null,
     "local_image": "images/remax_280371001-49.jpg"
@@ -64,10 +64,27 @@ const LISTINGS = [
     "latitude": 49.62024,
     "longitude": 6.11959,
     "distance_km": 2.5,
-    "created_at": "2026-03-10 17:33:35",
+    "created_at": "2026-03-10 21:29:28",
     "image_url": "images/nextimmo_46887.jpg",
     "price_m2": 28.2,
     "local_image": "images/nextimmo_46887.jpg"
+  },
+  {
+    "listing_id": "nextimmo_46913",
+    "site": "Nextimmo.lu",
+    "title": "Appartement a Luxembourg-Belair - 87m2 - 2 chambres",
+    "city": "Belair",
+    "price": 2100,
+    "rooms": 2,
+    "surface": 87,
+    "url": "https://nextimmo.lu/properties/46913",
+    "latitude": 49.6118253,
+    "longitude": 6.1112341,
+    "distance_km": 2.1,
+    "created_at": "2026-03-10 21:29:18",
+    "image_url": "images/nextimmo_46913.jpg",
+    "price_m2": 24.1,
+    "local_image": "images/nextimmo_46913.jpg"
   },
   {
     "listing_id": "nextimmo_46569",
@@ -81,7 +98,7 @@ const LISTINGS = [
     "latitude": 49.49424,
     "longitude": 5.97579,
     "distance_km": 16.4,
-    "created_at": "2026-03-10 17:33:25",
+    "created_at": "2026-03-10 21:29:07",
     "image_url": "images/nextimmo_46569.jpg",
     "price_m2": null,
     "local_image": "images/nextimmo_46569.jpg"
@@ -98,7 +115,7 @@ const LISTINGS = [
     "latitude": 49.56,
     "longitude": 5.87,
     "distance_km": 19.6,
-    "created_at": "2026-03-10 17:33:14",
+    "created_at": "2026-03-10 21:28:56",
     "image_url": null,
     "price_m2": 25.3
   },
@@ -114,10 +131,27 @@ const LISTINGS = [
     "latitude": 49.6116,
     "longitude": 6.1319,
     "distance_km": 1.3,
-    "created_at": "2026-03-10 17:33:03",
+    "created_at": "2026-03-10 21:28:45",
     "image_url": "images/immotop_1889161.jpg",
     "price_m2": 27.2,
     "local_image": "images/immotop_1889161.jpg"
+  },
+  {
+    "listing_id": "immotop_1888999",
+    "site": "Immotop.lu",
+    "title": "Appartement 2 chambres Rue Des Pommiers, Cents, Luxembourg",
+    "city": "Luxembourg",
+    "price": 2150,
+    "rooms": 2,
+    "surface": 90,
+    "url": "https://www.immotop.lu/annonces/1888999/",
+    "latitude": 49.6116,
+    "longitude": 6.1319,
+    "distance_km": 1.3,
+    "created_at": "2026-03-10 21:28:26",
+    "image_url": "images/immotop_1888999.jpg",
+    "price_m2": 23.9,
+    "local_image": "images/immotop_1888999.jpg"
   },
   {
     "listing_id": "athome_9022606",
@@ -131,7 +165,7 @@ const LISTINGS = [
     "latitude": 49.5997273,
     "longitude": 6.1257009,
     "distance_km": 0.6,
-    "created_at": "2026-03-10 17:32:52",
+    "created_at": "2026-03-10 21:28:16",
     "image_url": "images/athome_9022606.jpg",
     "price_m2": 27.7,
     "local_image": "images/athome_9022606.jpg"
@@ -148,7 +182,7 @@ const LISTINGS = [
     "latitude": 49.6096932,
     "longitude": 6.1059588,
     "distance_km": 2.3,
-    "created_at": "2026-03-10 17:32:41",
+    "created_at": "2026-03-10 21:28:05",
     "image_url": "images/athome_9025611.jpg",
     "price_m2": 27.4,
     "local_image": "images/athome_9025611.jpg"
@@ -165,7 +199,7 @@ const LISTINGS = [
     "latitude": 49.6096932,
     "longitude": 6.1059588,
     "distance_km": 2.3,
-    "created_at": "2026-03-10 17:32:30",
+    "created_at": "2026-03-10 21:27:54",
     "image_url": "images/athome_9025612.jpg",
     "price_m2": 27.4,
     "local_image": "images/athome_9025612.jpg"
@@ -182,10 +216,27 @@ const LISTINGS = [
     "latitude": 49.753244,
     "longitude": 6.106107799999999,
     "distance_km": 17.2,
-    "created_at": "2026-03-10 17:32:19",
+    "created_at": "2026-03-10 21:27:43",
     "image_url": "images/athome_9025507.jpg",
     "price_m2": 24.7,
     "local_image": "images/athome_9025507.jpg"
+  },
+  {
+    "listing_id": "athome_9025630",
+    "site": "Athome.lu",
+    "title": "*** TRES BELLE SITUATION AU COEUR DE LUXEMBOURG-BELAIR ? AU CALME ? LU",
+    "city": "Belair",
+    "price": 2100,
+    "rooms": 2,
+    "surface": 87,
+    "url": "https://www.athome.lu/location/appartement/luxembourg-belair/id-9025630.html",
+    "latitude": 49.6117044,
+    "longitude": 6.1090813,
+    "distance_km": 2.2,
+    "created_at": "2026-03-10 21:27:32",
+    "image_url": "images/athome_9025630.jpg",
+    "price_m2": 24.1,
+    "local_image": "images/athome_9025630.jpg"
   },
   {
     "listing_id": "athome_8303441",
@@ -199,7 +250,7 @@ const LISTINGS = [
     "latitude": 49.5024342,
     "longitude": 5.9722212,
     "distance_km": 15.9,
-    "created_at": "2026-03-10 17:32:12",
+    "created_at": "2026-03-10 21:27:26",
     "image_url": "images/athome_8303441.jpg",
     "price_m2": 19.5,
     "local_image": "images/athome_8303441.jpg"

@@ -843,7 +843,7 @@
                 // Collecter alertes
                 if (pp < 20) alertsData.push({ type:'warning', icon:'⚠️', site, msg:`Faible couverture photos : ${pp}% (${v.p}/${v.total})` });
                 if (gp < 20) alertsData.push({ type:'info',    icon:'ℹ️', site, msg:`GPS limité : ${gp}% géolocalisés` });
-                if (v.total === 1) alertsData.push({ type:'info', icon:'ℹ️', site, msg:`1 seule annonce — scraper peu actif ?` });
+                if (v.total === 0) alertsData.push({ type:'warning', icon:'⚠️', site, msg:`Aucune annonce — scraper inactif ?` });
 
                 return `
                     <div class="site-row" style="--row-accent:${borderColor};">
@@ -873,7 +873,7 @@
             }).join('');
 
             // Alertes
-            const knownBlocked = ['Wortimmo.lu', 'Immoweb.be'];
+            const knownBlocked = ['Immoweb.be'];
             knownBlocked.forEach(site => {
                 if (!siteStats[site]) {
                     alertsData.push({ type:'danger', icon:'🔴', site, msg:'Site bloqué ou inactif (CAPTCHA/Cloudflare)' });
