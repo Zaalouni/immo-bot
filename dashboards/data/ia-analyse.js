@@ -1,5 +1,5 @@
-// Généré automatiquement par ia_analyse.py — 10/03/2026 18:36
-// 428 annonces analysées (0 via IA, 0 score local)
+// Généré automatiquement par ia_analyse.py — 10/03/2026 22:35
+// 431 annonces analysées (3 via IA, 0 score local)
 const IA_ANALYSES = [
   {
     "listing_id": "wortimmo_496346",
@@ -2245,6 +2245,58 @@ const IA_ANALYSES = [
     "ia": true
   },
   {
+    "listing_id": "nextimmo_46913",
+    "site": "Nextimmo.lu",
+    "title": "Appartement a Luxembourg-Belair - 87m2 - 2 chambres",
+    "city": "Luxembourg-Belair",
+    "price": 2100,
+    "rooms": 2,
+    "surface": 87,
+    "url": "https://nextimmo.lu/properties/46913",
+    "image_url": "https://storage.googleapis.com/nextimmo-upload/images/thumb/69b0572debe0f024ee178d00/7aab429aca0078bc9740c59e81fab594.jpg",
+    "distance_km": 2.1,
+    "created_at": "2026-03-10 21:29:18",
+    "resume": "Appartement 2 chambres à Luxembourg-Belair, à 2,1 km du centre-ville, pour 2100€/mois.",
+    "points_positifs": [
+      "Surface de 87m², ce qui correspond à un prix raisonnable de 24€/m²",
+      "Proximité du centre-ville (2,1km)",
+      "2 chambres disponibles"
+    ],
+    "points_negatifs": [
+      "Prix un peu élevé pour le budget du locataire (2100€/mois)"
+    ],
+    "score_ia": 85,
+    "score_local": 65,
+    "verdict": "À voir",
+    "ia": true
+  },
+  {
+    "listing_id": "athome_9025630",
+    "site": "Athome.lu",
+    "title": "*** TRES BELLE SITUATION AU COEUR DE LUXEMBOURG-BELAIR ? AU CALME ? LU",
+    "city": "Luxembourg-Belair",
+    "price": 2100,
+    "rooms": 2,
+    "surface": 87,
+    "url": "https://www.athome.lu/location/appartement/luxembourg-belair/id-9025630.html",
+    "image_url": "https://i1.static.athome.eu/images/annonces2/image_/e5/8b/98/e571e7a8c8cedc659c21df455482d4653cfae025.jpg",
+    "distance_km": 2.2,
+    "created_at": "2026-03-10 21:27:32",
+    "resume": "Bel appartement de 87m² dans le quartier calme de Luxembourg-Belair, à 2,2km du centre-ville.",
+    "points_positifs": [
+      "Emplacement calme",
+      "Proche du centre-ville (2,2km)",
+      "Prix raisonnable (24€/m²)"
+    ],
+    "points_negatifs": [
+      "Prix légèrement supérieur au budget (2100€ vs 1700-2550€)"
+    ],
+    "score_ia": 85,
+    "score_local": 73,
+    "verdict": "À voir",
+    "ia": true
+  },
+  {
     "listing_id": "athome_8991743",
     "site": "Athome.lu",
     "title": "***Avant toute demande de visite, veuillez svp au préalable nous décri",
@@ -2319,6 +2371,32 @@ const IA_ANALYSES = [
     ],
     "score_ia": 83,
     "score_local": 60,
+    "verdict": "À voir",
+    "ia": true
+  },
+  {
+    "listing_id": "immotop_1888999",
+    "site": "Immotop.lu",
+    "title": "Appartement 2 chambres Rue Des Pommiers, Cents, Luxembourg",
+    "city": "Luxembourg",
+    "price": 2150,
+    "rooms": 2,
+    "surface": 90,
+    "url": "https://www.immotop.lu/annonces/1888999/",
+    "image_url": "https://pic.immotop.lu/image/149009423/xxs-c.jpg",
+    "distance_km": 1.3,
+    "created_at": "2026-03-10 21:28:26",
+    "resume": "Appartement 2 chambres à 1,3km du centre-ville de Luxembourg pour 2150€/mois.",
+    "points_positifs": [
+      "Emplacement proche du centre-ville",
+      "Surface de 90m²",
+      "Prix raisonnable par m² (24€/m²)"
+    ],
+    "points_negatifs": [
+      "Prix légèrement supérieur au budget du locataire"
+    ],
+    "score_ia": 83,
+    "score_local": 69,
     "verdict": "À voir",
     "ia": true
   },
@@ -11204,8 +11282,8 @@ const IA_ANALYSES = [
   }
 ];
 const IA_META = {
-  generated_at: "10/03/2026 18:36",
-  total: 428,
-  with_ia: 422,
+  generated_at: "10/03/2026 22:35",
+  total: 431,
+  with_ia: 425,
   model: "llama-3.1-8b-instant"
 };
