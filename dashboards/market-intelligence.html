@@ -7,6 +7,10 @@
     <meta name="description" content="Synthèse & Intelligence Marché - ImmoLux Luxembourg">
     <meta name="theme-color" content="#09090F">
     <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ImmoLux">
+    <link rel="apple-touch-icon" href="icon.svg">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
     <link rel="manifest" href="manifest.json">
@@ -1695,6 +1699,11 @@ function renderInsights(f) {
 // START
 // ═══════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', init);
+
+// ── Service Worker ──
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+}
 </script>
 </body>
 </html>

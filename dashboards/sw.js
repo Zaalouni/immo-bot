@@ -3,22 +3,34 @@
 // Version: 20260310-1836
 // =============================================================================
 
-const CACHE_NAME = 'immo-lux-v20260310-1836';
-const STATIC_CACHE = 'immo-static-v1';
-const DYNAMIC_CACHE = 'immo-dynamic-v1';
+const CACHE_NAME = 'immo-lux-v20260310-2100';
+const STATIC_CACHE = 'immo-static-v20260310';
+const DYNAMIC_CACHE = 'immo-dynamic-v20260310';
 
 // Assets statiques à pré-cacher
 const STATIC_ASSETS = [
   './',
   './index.html',
-  './photos.html',
-  './map.html',
-  './new-listings.html',
-  './stats-by-city.html',
+  './3chambres.html',
   './alerts.html',
-  './trends.html',
-  './nearby.html',
+  './anomalies.html',
+  './comparison.html',
+  './dashboard-summary.html',
+  './data-quality.html',
+  './explorer.html',
+  './favorites.html',
+  './gallery.html',
   './ia-analyse.html',
+  './map.html',
+  './map-advanced.html',
+  './market-intelligence.html',
+  './nearby.html',
+  './new-listings.html',
+  './photos.html',
+  './reports.html',
+  './stats-by-city.html',
+  './train-cities.html',
+  './trends.html',
   './icon.svg',
   './manifest.json',
   './dark-mode.js',

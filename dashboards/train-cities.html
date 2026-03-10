@@ -13,6 +13,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#09090F">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ImmoLux">
+    <link rel="apple-touch-icon" href="icon.svg">
     <script src="dark-mode.js" defer></script>
     <script src="data/version.js"></script>
     <script src="version-display.js" defer></script>
@@ -1871,6 +1876,11 @@
         document.addEventListener('DOMContentLoaded', init);
     } else {
         init();
+    }
+
+    // ── Service Worker ──
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
     }
 </script>
 </body>
