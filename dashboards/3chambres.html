@@ -950,8 +950,9 @@
         filteredApartments = apartments3BR.filter(apt =>
             apt.rooms === 3 &&
             (!city || apt.city === city) &&
-            apt.price   >= minPrice   && apt.price   <= maxPrice &&
-            apt.surface >= minSurface && apt.surface <= maxSurface
+            apt.price >= minPrice && apt.price <= maxPrice &&
+            (!minSurface || apt.surface === 0 || apt.surface >= minSurface) &&
+            (!maxSurface || maxSurface === Infinity || apt.surface === 0 || apt.surface <= maxSurface)
         );
 
         renderListings(filteredApartments);

@@ -1,5 +1,5 @@
-// Généré automatiquement par ia_analyse.py — 10/03/2026 22:35
-// 431 annonces analysées (3 via IA, 0 score local)
+// Généré automatiquement par ia_analyse.py — 10/03/2026 23:35
+// 431 annonces analysées (0 via IA, 0 score local)
 const IA_ANALYSES = [
   {
     "listing_id": "wortimmo_496346",
@@ -11282,7 +11282,7 @@ const IA_ANALYSES = [
   }
 ];
 const IA_META = {
-  generated_at: "10/03/2026 22:35",
+  generated_at: "10/03/2026 23:35",
   total: 431,
   with_ia: 425,
   model: "llama-3.1-8b-instant"
