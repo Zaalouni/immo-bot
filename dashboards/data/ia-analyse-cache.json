@@ -11277,5 +11277,293 @@
     "score_local": 73,
     "verdict": "À voir",
     "ia": true
+  },
+  "nexvia_5398631": {
+    "listing_id": "nexvia_5398631",
+    "site": "Nexvia",
+    "title": "14 Rue Chingiz T. Aitmatov, Luxembourg - Dommeldange",
+    "city": "Dommeldange",
+    "price": 2300,
+    "rooms": 2,
+    "surface": 87,
+    "url": "https://www.nexvia.lu/fr/rent/detail/5398631/apartment-luxembourg-dommeldange",
+    "image_url": "https://nexvia-listings.b-cdn.net/stored-photo/19650b62-7b11-11e9-8606-0cc47a9452c2/_69ae8f682f9829_66664282[.jpg]?optimizer=image&width=1920&height=1080&format=jpeg&quality=80&nxversion=3569742796bd663f0b5b1c794f6a593a",
+    "distance_km": 4.5,
+    "created_at": "2026-03-12 08:20:52",
+    "resume": "Bien situé dans la commune de Dommeldange, à 4.5km du centre-ville de Luxembourg, ce 2 pièces offre une superficie de 87m² pour 2300€/mois.",
+    "points_positifs": [
+      "Situé dans une commune calme et verdoyante",
+      "Proche du centre-ville de Luxembourg",
+      "Prix raisonnable pour la superficie"
+    ],
+    "points_negatifs": [
+      "Distance du centre-ville un peu importante"
+    ],
+    "score_ia": 85,
+    "score_local": 55,
+    "verdict": "À voir",
+    "ia": true
+  },
+  "nextimmo_46935": {
+    "listing_id": "nextimmo_46935",
+    "site": "Nextimmo.lu",
+    "title": "Appartement a Luxembourg-Bonnevoie - 70m2 - 2 chambres",
+    "city": "Luxembourg-Bonnevoie",
+    "price": 1950,
+    "rooms": 2,
+    "surface": 70,
+    "url": "https://nextimmo.lu/properties/46935",
+    "image_url": "https://storage.nextimmo.lu/images/thumb/c77e05355deb00730617a9ff7c728c11/901bd862217029d0dd2bc51e51e6fd54.jpg",
+    "distance_km": 0.7,
+    "created_at": "2026-03-12 08:20:39",
+    "resume": "Appartement de 70m² à 2 chambres à Luxembourg-Bonnevoie, à 0,7km du centre-ville.",
+    "points_positifs": [
+      "Proche du centre-ville",
+      "Prix raisonnable (28€/m²)",
+      "Location possible dans le budget du locataire"
+    ],
+    "points_negatifs": [
+      "Surface inférieure à 75m²",
+      "Nombre de chambres inférieur à 3"
+    ],
+    "score_ia": 80,
+    "score_local": 65,
+    "verdict": "À voir",
+    "ia": true
+  },
+  "vivi_213391": {
+    "listing_id": "vivi_213391",
+    "site": "VIVI.lu",
+    "title": "Appartement 2 chambres à louer",
+    "city": "Petange",
+    "price": 1900,
+    "rooms": 2,
+    "surface": 75,
+    "url": "https://www.vivi.lu/fr/propriete/lieu/appartement/petange/appartement-2-chambres-a-louer/213391",
+    "image_url": null,
+    "distance_km": 19.6,
+    "created_at": "2026-03-12 08:20:28",
+    "resume": "Appartement 2 chambres à louer à Petange, à 19,6 km du centre-ville, pour 1900€/mois.",
+    "points_positifs": [
+      "Prix compétitif par rapport à la surface (25€/m²)",
+      "Localisation dans la région du Luxembourg"
+    ],
+    "points_negatifs": [
+      "Distance importante du centre-ville (19,6 km)"
+    ],
+    "score_ia": 80,
+    "score_local": 52,
+    "verdict": "À voir",
+    "ia": true
+  },
+  "vivi_213393": {
+    "listing_id": "vivi_213393",
+    "site": "VIVI.lu",
+    "title": "Appartement 3 chambres à louer",
+    "city": "Esch Sur Alzette",
+    "price": 2400,
+    "rooms": 3,
+    "surface": 123,
+    "url": "https://www.vivi.lu/fr/propriete/lieu/appartement/esch-sur-alzette/appartement-3-chambres-a-louer/213393",
+    "image_url": null,
+    "distance_km": 16.1,
+    "created_at": "2026-03-12 08:20:16",
+    "resume": "Appartement 3 chambres à louer à Esch Sur Alzette, à 16.1km du centre-ville.",
+    "points_positifs": [
+      "Surface de 123m², ce qui correspond à un prix raisonnable de 20€/m²",
+      "Prix de location de 2400€/mois, dans la fourchette souhaitée du locataire",
+      "3 chambres disponibles"
+    ],
+    "points_negatifs": [
+      "Distance du centre-ville un peu éloignée à 16.1km"
+    ],
+    "score_ia": 85,
+    "score_local": 50,
+    "verdict": "À voir",
+    "ia": true
+  },
+  "vivi_213413": {
+    "listing_id": "vivi_213413",
+    "site": "VIVI.lu",
+    "title": "Appartement 2 chambres à louer",
+    "city": "Mersch",
+    "price": 2100,
+    "rooms": 2,
+    "surface": 85,
+    "url": "https://www.vivi.lu/fr/propriete/lieu/appartement/mersch/appartement-2-chambres-a-louer/213413",
+    "image_url": null,
+    "distance_km": 16.8,
+    "created_at": "2026-03-12 08:20:03",
+    "resume": "Appartement 2 chambres à louer à Mersch, à 16.8km du centre-ville, pour 2100€/mois.",
+    "points_positifs": [
+      "Surface de 85m², ce qui correspond à un prix raisonnable de 25€/m²",
+      "Nombre de chambres correspond à la recherche du locataire",
+      "Site de location réputé VIVI.lu"
+    ],
+    "points_negatifs": [
+      "Distance du centre-ville est relativement importante (16.8km)",
+      "Prix de location est légèrement supérieur au budget du locataire"
+    ],
+    "score_ia": 75,
+    "score_local": 47,
+    "verdict": "À voir",
+    "ia": true
+  },
+  "immotop_1879617": {
+    "listing_id": "immotop_1879617",
+    "site": "Immotop.lu",
+    "title": "Appartement 2 chambres 30, Rue Frantz Seimetz, Limpertsberg, Luxembour",
+    "city": "Luxembourg",
+    "price": 2400,
+    "rooms": 2,
+    "surface": 98,
+    "url": "https://www.immotop.lu/annonces/1879617/",
+    "image_url": "https://pic.immotop.lu/image/148876873/xxs-c.jpg",
+    "distance_km": 1.3,
+    "created_at": "2026-03-12 08:19:52",
+    "resume": "Appartement 2 chambres à Limpertsberg, à 1,3km du centre-ville de Luxembourg.",
+    "points_positifs": [
+      "Emplacement proche du centre-ville",
+      "Surface de 98m²",
+      "Prix raisonnable par m² (24€/m²)"
+    ],
+    "points_negatifs": [
+      "Prix de location un peu élevé (2400€/mois)"
+    ],
+    "score_ia": 80,
+    "score_local": 64,
+    "verdict": "À voir",
+    "ia": true
+  },
+  "immotop_1884919": {
+    "listing_id": "immotop_1884919",
+    "site": "Immotop.lu",
+    "title": "Appartement 2 chambres 2b Rue de la Vallée, Strassen",
+    "city": "Strassen",
+    "price": 2400,
+    "rooms": 2,
+    "surface": 88,
+    "url": "https://www.immotop.lu/annonces/1884919/",
+    "image_url": "https://pic.immotop.lu/image/148949489/xxs-c.jpg",
+    "distance_km": 5.1,
+    "created_at": "2026-03-12 08:19:40",
+    "resume": "Appartement 2 chambres à Strassen, à 5,1km du centre-ville, pour 2400€/mois.",
+    "points_positifs": [
+      "Superficie de 88m², correspondant à un prix raisonnable de 27€/m²",
+      "Emplacement dans la commune de Strassen, proche du centre-ville"
+    ],
+    "points_negatifs": [
+      "Prix un peu élevé pour le budget du locataire (1700-2550€)"
+    ],
+    "score_ia": 80,
+    "score_local": 55,
+    "verdict": "À voir",
+    "ia": true
+  },
+  "athome_9026673": {
+    "listing_id": "athome_9026673",
+    "site": "Athome.lu",
+    "title": "Homeseek (contact direct 691 262 005) a le plaisir de vous proposer ce",
+    "city": "Luxembourg-Eich",
+    "price": 2180,
+    "rooms": 2,
+    "surface": 77,
+    "url": "https://www.athome.lu/location/appartement/luxembourg-eich/id-9026673.html",
+    "image_url": "https://i1.static.athome.eu/images/annonces2/image_/17/cb/98/cd3f13fbd156ba4faffcf87cba42c0a1fdaa8383.jpg",
+    "distance_km": 3.6,
+    "created_at": "2026-03-12 08:19:29",
+    "resume": "Appartement de 77m² à 2 chambres à Luxembourg-Eich, à 3.6km du centre-ville.",
+    "points_positifs": [
+      "Prix compétitif (28€/m²)",
+      "Proximité du centre-ville",
+      "Surface suffisante (77m²)"
+    ],
+    "points_negatifs": [
+      "Prix légèrement supérieur au budget du locataire"
+    ],
+    "score_ia": 85,
+    "score_local": 60,
+    "verdict": "À voir",
+    "ia": true
+  },
+  "athome_9026792": {
+    "listing_id": "athome_9026792",
+    "site": "Athome.lu",
+    "title": "!! L'appartement se prête uniquement pour un couple au maximum !!\n\n* Q",
+    "city": "Luxembourg-Merl",
+    "price": 2000,
+    "rooms": 2,
+    "surface": 73,
+    "url": "https://www.athome.lu/location/appartement/luxembourg-merl/id-9026792.html",
+    "image_url": "https://i1.static.athome.eu/images/annonces2/image_/8e/cb/98/43ad14913beb3e3a3921c7926406d36a7d9acb62.jpg",
+    "distance_km": 2.3,
+    "created_at": "2026-03-12 08:19:18",
+    "resume": "Appartement de 73m² à Luxembourg-Merl pour un couple, 2 chambres, 2000€/mois",
+    "points_positifs": [
+      "Prix raisonnable par rapport à la surface",
+      "Emplacement relativement central",
+      "Site de location fiable"
+    ],
+    "points_negatifs": [
+      "Limite de 1 couple, pas adapté à des locataires avec enfants ou amis",
+      "Prix peut être un peu élevé pour un couple"
+    ],
+    "score_ia": 75,
+    "score_local": 65,
+    "verdict": "À voir",
+    "ia": true
+  },
+  "athome_9026500": {
+    "listing_id": "athome_9026500",
+    "site": "Athome.lu",
+    "title": "Bel appartement situé au rez-de-chaussée d'un immeuble à Luxembourg-Bo",
+    "city": "Luxembourg-Bonnevoie",
+    "price": 1950,
+    "rooms": 2,
+    "surface": 70,
+    "url": "https://www.athome.lu/location/appartement/luxembourg-bonnevoie/id-9026500.html",
+    "image_url": "https://i1.static.athome.eu/images/annonces2/image_/4c/bb/98/1c78fd77280d56879f1b9d17b482c9a0bfe45a45.jpg",
+    "distance_km": 0.5,
+    "created_at": "2026-03-12 08:19:06",
+    "resume": "Appartement de 2 chambres à Luxembourg-Bonnevoie, à 0,5km du centre-ville, pour 1950€/mois.",
+    "points_positifs": [
+      "Emplacement central",
+      "Surface de 70m²",
+      "Prix compétitif par m²"
+    ],
+    "points_negatifs": [
+      "Prix légèrement supérieur au budget du locataire",
+      "Surface légèrement inférieure à la demande"
+    ],
+    "score_ia": 80,
+    "score_local": 65,
+    "verdict": "À voir",
+    "ia": true
+  },
+  "athome_9026569": {
+    "listing_id": "athome_9026569",
+    "site": "Athome.lu",
+    "title": "For rent by Supereal. Fantastic high-end two-bedroom duplex apartment ",
+    "city": "Luxembourg-Centre ville",
+    "price": 2450,
+    "rooms": 2,
+    "surface": 70,
+    "url": "https://www.athome.lu/location/appartement/luxembourg-centre-ville/id-9026569.html",
+    "image_url": "https://i1.static.athome.eu/images/annonces2/image_/90/cb/98/e545b2a099914e4881ce7fec48468f9eab337f3a.jpg",
+    "distance_km": 0.6,
+    "created_at": "2026-03-12 08:18:59",
+    "resume": "Appartement duplex haut de gamme de 2 chambres dans le centre-ville de Luxembourg",
+    "points_positifs": [
+      "Emplacement idéal dans le centre-ville de Luxembourg",
+      "Surface de 70m² pour un prix raisonnable de 35€/m²",
+      "Meublé par Supereal, ce qui peut être un avantage pour les locataires"
+    ],
+    "points_negatifs": [
+      "Le prix de 2450€/mois est légèrement au-dessus du budget du locataire"
+    ],
+    "score_ia": 85,
+    "score_local": 57,
+    "verdict": "À voir",
+    "ia": true
   }
 }

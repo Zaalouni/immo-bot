@@ -1,24 +1,24 @@
-// Genere le 10/03/2026 23:35
+// Genere le 12/03/2026 09:21
 const STATS = {
-  "total": 431,
-  "avg_price": 2249,
+  "total": 442,
+  "avg_price": 2247,
   "min_price": 1500,
   "max_price": 2700,
   "avg_surface": 91,
   "cities": 88,
   "sites": {
+    "Nexvia": 4,
+    "Nextimmo.lu": 39,
+    "VIVI.lu": 61,
+    "Immotop.lu": 10,
+    "Athome.lu": 186,
     "Remax.lu": 6,
-    "Nextimmo.lu": 38,
-    "VIVI.lu": 58,
-    "Immotop.lu": 8,
-    "Athome.lu": 182,
     "Wortimmo.lu": 80,
     "Accord-Immo.lu": 1,
     "Newimmo.lu": 6,
     "LuxExpats.lu": 3,
     "DDImmo.lu": 10,
     "Rockenbrod.lu": 5,
-    "Nexvia": 3,
     "Floor.lu": 2,
     "Weckbecker.lu": 6,
     "SothebysRealty.lu": 5,
@@ -35,8 +35,8 @@ const STATS = {
     },
     {
       "city": "Luxembourg",
-      "count": 22,
-      "avg_price": 2262
+      "count": 23,
+      "avg_price": 2268
     },
     {
       "city": "Hollerich",
@@ -54,14 +54,29 @@ const STATS = {
       "avg_price": 2273
     },
     {
+      "city": "Centre",
+      "count": 14,
+      "avg_price": 2303
+    },
+    {
       "city": "Garnich",
       "count": 14,
       "avg_price": 2339
     },
     {
-      "city": "Centre",
+      "city": "Bonnevoie",
       "count": 13,
-      "avg_price": 2292
+      "avg_price": 2134
+    },
+    {
+      "city": "Esch-Sur-Alzette",
+      "count": 13,
+      "avg_price": 2176
+    },
+    {
+      "city": "Strassen",
+      "count": 13,
+      "avg_price": 2414
     },
     {
       "city": "Schouweiler",
@@ -69,24 +84,9 @@ const STATS = {
       "avg_price": 2177
     },
     {
-      "city": "Esch-Sur-Alzette",
-      "count": 12,
-      "avg_price": 2158
-    },
-    {
-      "city": "Strassen",
-      "count": 12,
-      "avg_price": 2415
-    },
-    {
       "city": "Neudorf",
       "count": 11,
       "avg_price": 2422
-    },
-    {
-      "city": "Bonnevoie",
-      "count": 11,
-      "avg_price": 2168
     },
     {
       "city": "Bertrange",
@@ -149,6 +149,16 @@ const STATS = {
       "avg_price": 2316
     },
     {
+      "city": "Dommeldange",
+      "count": 5,
+      "avg_price": 2470
+    },
+    {
+      "city": "Petange",
+      "count": 5,
+      "avg_price": 2000
+    },
+    {
       "city": "Gasperich",
       "count": 5,
       "avg_price": 2430
@@ -174,11 +184,6 @@ const STATS = {
       "avg_price": 2380
     },
     {
-      "city": "Petange",
-      "count": 4,
-      "avg_price": 2025
-    },
-    {
       "city": "Hassel",
       "count": 4,
       "avg_price": 1850
@@ -187,11 +192,6 @@ const STATS = {
       "city": "Kehlen",
       "count": 4,
       "avg_price": 2375
-    },
-    {
-      "city": "Dommeldange",
-      "count": 4,
-      "avg_price": 2512
     },
     {
       "city": "Rollingen",
@@ -227,6 +227,16 @@ const STATS = {
       "city": "Senningerberg",
       "count": 4,
       "avg_price": 2035
+    },
+    {
+      "city": "Mersch",
+      "count": 3,
+      "avg_price": 1950
+    },
+    {
+      "city": "Eich",
+      "count": 3,
+      "avg_price": 2350
     },
     {
       "city": "Frisange",
@@ -269,9 +279,9 @@ const STATS = {
       "avg_price": 2566
     },
     {
-      "city": "Mersch",
+      "city": "Merl",
       "count": 2,
-      "avg_price": 1875
+      "avg_price": 2310
     },
     {
       "city": "Verlorenkost",
@@ -307,11 +317,6 @@ const STATS = {
       "city": "Hunsdorf",
       "count": 2,
       "avg_price": 2200
-    },
-    {
-      "city": "Eich",
-      "count": 2,
-      "avg_price": 2435
     },
     {
       "city": "Kahler",
@@ -419,11 +424,6 @@ const STATS = {
       "avg_price": 2150
     },
     {
-      "city": "Merl",
-      "count": 1,
-      "avg_price": 2620
-    },
-    {
       "city": "Weiler-La-Tour",
       "count": 1,
       "avg_price": 2500
@@ -471,24 +471,24 @@ const STATS = {
   ],
   "by_price_range": {
     "< 1500": 0,
-    "1500 - 2000": 75,
-    "2000 - 2500": 259,
+    "1500 - 2000": 78,
+    "2000 - 2500": 267,
     "> 2500": 97
   }
 };
 const SITE_COLORS = {
-  "Remax.lu": "#FF6384",
+  "Nexvia": "#FF6384",
   "Nextimmo.lu": "#36A2EB",
   "VIVI.lu": "#FFCE56",
   "Immotop.lu": "#4BC0C0",
   "Athome.lu": "#9966FF",
-  "Wortimmo.lu": "#FF9F40",
-  "Accord-Immo.lu": "#2ECC71",
-  "Newimmo.lu": "#E74C3C",
-  "LuxExpats.lu": "#3498DB",
-  "DDImmo.lu": "#FF6384",
-  "Rockenbrod.lu": "#36A2EB",
-  "Nexvia": "#FFCE56",
+  "Remax.lu": "#FF9F40",
+  "Wortimmo.lu": "#2ECC71",
+  "Accord-Immo.lu": "#E74C3C",
+  "Newimmo.lu": "#3498DB",
+  "LuxExpats.lu": "#FF6384",
+  "DDImmo.lu": "#36A2EB",
+  "Rockenbrod.lu": "#FFCE56",
   "Floor.lu": "#4BC0C0",
   "Weckbecker.lu": "#9966FF",
   "SothebysRealty.lu": "#FF9F40",
