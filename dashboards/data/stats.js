@@ -1,18 +1,18 @@
-// Genere le 12/03/2026 09:21
+// Genere le 13/03/2026 09:29
 const STATS = {
-  "total": 442,
-  "avg_price": 2247,
+  "total": 457,
+  "avg_price": 2244,
   "min_price": 1500,
   "max_price": 2700,
   "avg_surface": 91,
-  "cities": 88,
+  "cities": 90,
   "sites": {
+    "Remax.lu": 9,
+    "Nextimmo.lu": 40,
+    "Immotop.lu": 12,
+    "Athome.lu": 195,
     "Nexvia": 4,
-    "Nextimmo.lu": 39,
     "VIVI.lu": 61,
-    "Immotop.lu": 10,
-    "Athome.lu": 186,
-    "Remax.lu": 6,
     "Wortimmo.lu": 80,
     "Accord-Immo.lu": 1,
     "Newimmo.lu": 6,
@@ -30,18 +30,18 @@ const STATS = {
   "by_city": [
     {
       "city": "Belair",
-      "count": 30,
-      "avg_price": 2292
+      "count": 31,
+      "avg_price": 2289
     },
     {
       "city": "Luxembourg",
-      "count": 23,
-      "avg_price": 2268
+      "count": 27,
+      "avg_price": 2243
     },
     {
       "city": "Hollerich",
-      "count": 17,
-      "avg_price": 2364
+      "count": 18,
+      "avg_price": 2355
     },
     {
       "city": "Gare",
@@ -49,14 +49,14 @@ const STATS = {
       "avg_price": 2190
     },
     {
+      "city": "Centre",
+      "count": 15,
+      "avg_price": 2283
+    },
+    {
       "city": "Limpertsberg",
       "count": 15,
       "avg_price": 2273
-    },
-    {
-      "city": "Centre",
-      "count": 14,
-      "avg_price": 2303
     },
     {
       "city": "Garnich",
@@ -84,14 +84,14 @@ const STATS = {
       "avg_price": 2177
     },
     {
+      "city": "Bertrange",
+      "count": 11,
+      "avg_price": 2300
+    },
+    {
       "city": "Neudorf",
       "count": 11,
       "avg_price": 2422
-    },
-    {
-      "city": "Bertrange",
-      "count": 10,
-      "avg_price": 2280
     },
     {
       "city": "Bettembourg",
@@ -124,6 +124,11 @@ const STATS = {
       "avg_price": 2260
     },
     {
+      "city": "Bridel",
+      "count": 7,
+      "avg_price": 2040
+    },
+    {
       "city": "Sprinkange",
       "count": 7,
       "avg_price": 1985
@@ -142,6 +147,11 @@ const STATS = {
       "city": "Olm",
       "count": 7,
       "avg_price": 2300
+    },
+    {
+      "city": "Cents",
+      "count": 6,
+      "avg_price": 2316
     },
     {
       "city": "Junglinster",
@@ -174,14 +184,9 @@ const STATS = {
       "avg_price": 2100
     },
     {
-      "city": "Bridel",
-      "count": 5,
-      "avg_price": 2000
-    },
-    {
-      "city": "Cents",
-      "count": 5,
-      "avg_price": 2380
+      "city": "Bereldange",
+      "count": 4,
+      "avg_price": 2450
     },
     {
       "city": "Hassel",
@@ -229,6 +234,11 @@ const STATS = {
       "avg_price": 2035
     },
     {
+      "city": "Contern",
+      "count": 3,
+      "avg_price": 2250
+    },
+    {
       "city": "Mersch",
       "count": 3,
       "avg_price": 1950
@@ -272,11 +282,6 @@ const STATS = {
       "city": "Belvaux",
       "count": 3,
       "avg_price": 2250
-    },
-    {
-      "city": "Bereldange",
-      "count": 3,
-      "avg_price": 2566
     },
     {
       "city": "Merl",
@@ -329,11 +334,6 @@ const STATS = {
       "avg_price": 2400
     },
     {
-      "city": "Contern",
-      "count": 2,
-      "avg_price": 2400
-    },
-    {
       "city": "Leudelange",
       "count": 2,
       "avg_price": 2400
@@ -352,6 +352,16 @@ const STATS = {
       "city": "Moutfort",
       "count": 2,
       "avg_price": 2350
+    },
+    {
+      "city": "Reckange-(mersch)",
+      "count": 1,
+      "avg_price": 2200
+    },
+    {
+      "city": "Lorentzweiler",
+      "count": 1,
+      "avg_price": 2100
     },
     {
       "city": "Syre",
@@ -471,18 +481,18 @@ const STATS = {
   ],
   "by_price_range": {
     "< 1500": 0,
-    "1500 - 2000": 78,
-    "2000 - 2500": 267,
-    "> 2500": 97
+    "1500 - 2000": 80,
+    "2000 - 2500": 279,
+    "> 2500": 98
   }
 };
 const SITE_COLORS = {
-  "Nexvia": "#FF6384",
+  "Remax.lu": "#FF6384",
   "Nextimmo.lu": "#36A2EB",
-  "VIVI.lu": "#FFCE56",
-  "Immotop.lu": "#4BC0C0",
-  "Athome.lu": "#9966FF",
-  "Remax.lu": "#FF9F40",
+  "Immotop.lu": "#FFCE56",
+  "Athome.lu": "#4BC0C0",
+  "Nexvia": "#9966FF",
+  "VIVI.lu": "#FF9F40",
   "Wortimmo.lu": "#2ECC71",
   "Accord-Immo.lu": "#E74C3C",
   "Newimmo.lu": "#3498DB",

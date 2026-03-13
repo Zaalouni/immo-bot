@@ -1,5 +1,5 @@
-// Généré automatiquement par ia_analyse.py — 12/03/2026 09:23
-// 442 annonces analysées (11 via IA, 0 score local)
+// Généré automatiquement par ia_analyse.py — 13/03/2026 09:30
+// 457 annonces analysées (15 via IA, 0 score local)
 const IA_ANALYSES = [
   {
     "listing_id": "wortimmo_496346",
@@ -2397,6 +2397,136 @@ const IA_ANALYSES = [
     ],
     "score_ia": 85,
     "score_local": 57,
+    "verdict": "À voir",
+    "ia": true
+  },
+  {
+    "listing_id": "nextimmo_12783",
+    "site": "Nextimmo.lu",
+    "title": "Appartement a Bridel - 100m2 - 2 chambres",
+    "city": "Bridel",
+    "price": 2140,
+    "rooms": 2,
+    "surface": 100,
+    "url": "https://nextimmo.lu/properties/12783",
+    "image_url": "https://storage.nextimmo.lu/images/thumb/81a8735f6532eb20e9fa32e1d6349397/03b2f8105201c049a79e45662494cc7b.jpg",
+    "distance_km": 7.2,
+    "created_at": "2026-03-13 08:28:39",
+    "resume": "Appartement à 2 chambres à Bridel, à 7,2 km du centre-ville, pour 2140€/mois.",
+    "points_positifs": [
+      "Surface de 100m²",
+      "Prix raisonnable par m² (21€/m²)",
+      "Proximité de la ville de Luxembourg"
+    ],
+    "points_negatifs": [
+      "Distance du centre-ville relativement éloignée (7,2 km)"
+    ],
+    "score_ia": 85,
+    "score_local": 68,
+    "verdict": "À voir",
+    "ia": true
+  },
+  {
+    "listing_id": "immotop_1856543",
+    "site": "Immotop.lu",
+    "title": "Appartement 2 chambres neuf, quatrième étage, Bertrange",
+    "city": "Bertrange",
+    "price": 2500,
+    "rooms": 2,
+    "surface": 84,
+    "url": "https://www.immotop.lu/annonces/1856543/",
+    "image_url": "https://pic.immotop.lu/image/148535273/xxs-c.jpg",
+    "distance_km": 6.2,
+    "created_at": "2026-03-13 08:28:17",
+    "resume": "Appartement 2 chambres neuf à Bertrange, à 6.2km du centre-ville.",
+    "points_positifs": [
+      "Prix compétitif (30€/m²)",
+      "Appartement neuf",
+      "2 chambres"
+    ],
+    "points_negatifs": [
+      "Distance du centre-ville relativement éloignée"
+    ],
+    "score_ia": 85,
+    "score_local": 72,
+    "verdict": "À voir",
+    "ia": true
+  },
+  {
+    "listing_id": "athome_9029264",
+    "site": "Athome.lu",
+    "title": "Très bel appartement rénové et lumineux, idéalement situé à quelques m",
+    "city": "Luxembourg-Belair",
+    "price": 2200,
+    "rooms": 2,
+    "surface": 92,
+    "url": "https://www.athome.lu/location/appartement/luxembourg-belair/id-9029264.html",
+    "image_url": "https://i1.static.athome.eu/images/annonces2/image_/09/6c/98/2c08a63c5701154a70638abd54a8eeb0a2e25c3a.jpg",
+    "distance_km": 2.2,
+    "created_at": "2026-03-13 08:27:54",
+    "resume": "Appartement rénové et lumineux à Luxembourg-Belair, à 2.2km du centre-ville.",
+    "points_positifs": [
+      "Prix raisonnable par rapport à la surface (24€/m²)",
+      "Emplacement idéal à proximité du centre-ville",
+      "Appartement rénové et lumineux"
+    ],
+    "points_negatifs": [
+      "Prix légèrement supérieur au budget du locataire"
+    ],
+    "score_ia": 85,
+    "score_local": 89,
+    "verdict": "À voir",
+    "ia": true
+  },
+  {
+    "listing_id": "athome_9001787",
+    "site": "Athome.lu",
+    "title": "AXHOME Immo vous propose ce récent appartement avec 2 chambres à couch",
+    "city": "Contern",
+    "price": 1950,
+    "rooms": 2,
+    "surface": 93,
+    "url": "https://www.athome.lu/location/appartement/contern/id-9001787.html",
+    "image_url": "https://i1.static.athome.eu/images/annonces2/image_/b3/b5/98/1e048ea22b5ce87f24abafbf4dbf7b9738697d89.jpg",
+    "distance_km": 9.0,
+    "created_at": "2026-03-13 08:27:43",
+    "resume": "Appartement récent de 93m² avec 2 chambres à louer à Contern, à 9km du centre-ville de Luxembourg.",
+    "points_positifs": [
+      "Prix compétitif (21€/m²)",
+      "Appartement récent",
+      "Proche de Contern"
+    ],
+    "points_negatifs": [
+      "Distance du centre-ville relativement éloignée"
+    ],
+    "score_ia": 85,
+    "score_local": 59,
+    "verdict": "À voir",
+    "ia": true
+  },
+  {
+    "listing_id": "athome_8879165",
+    "site": "Athome.lu",
+    "title": "Situé à Bridel, dans une rue calme et résidentielle de la commune de K",
+    "city": "Bridel",
+    "price": 2140,
+    "rooms": 4,
+    "surface": 100,
+    "url": "https://www.athome.lu/location/appartement/bridel/id-8879165.html",
+    "image_url": "https://i1.static.athome.eu/images/annonces2/image_/d3/c7/78/423fc3929cfcbfca68c9cf042e96bdd296bd4312.jpg",
+    "distance_km": 6.9,
+    "created_at": "2026-03-13 08:26:46",
+    "resume": "Bien situé à Bridel, 4 chambres dans une rue calme, à 6.9km du centre-ville de Luxembourg.",
+    "points_positifs": [
+      "Emplacement calme et résidentiel",
+      "4 chambres disponibles",
+      "Surface de 100m²"
+    ],
+    "points_negatifs": [
+      "Prix un peu élevé (21€/m²)"
+    ],
+    "score_ia": 85,
+    "score_local": 76,
     "verdict": "À voir",
     "ia": true
   },
@@ -7765,6 +7895,220 @@ const IA_ANALYSES = [
     "ia": true
   },
   {
+    "listing_id": "remax_280221031-196",
+    "site": "Remax.lu",
+    "title": "Appartement à louer — Luxembourg",
+    "city": "Luxembourg",
+    "price": 2200,
+    "rooms": 0,
+    "surface": 0,
+    "url": "https://www.remax.lu/fr-lu/mandats-de-vente/appartement/a-louer/luxembourg/86-rue-de-lacierie-1112/280221031-196",
+    "image_url": "https://www.remax.lu/images/remax/default_image.gif",
+    "distance_km": 1.3,
+    "created_at": "2026-03-13 08:29:02",
+    "resume": "Appartement à louer à Luxembourg, 1,3km du centre-ville, pour 2200€/mois.",
+    "points_positifs": [
+      "Emplacement proche du centre-ville",
+      "Prix compétitif par rapport à la surface",
+      "Agence réputée (Remax)"
+    ],
+    "points_negatifs": [
+      "Surface inconnue",
+      "Nombre de chambres inconnu"
+    ],
+    "score_ia": 80,
+    "score_local": 65,
+    "verdict": "À voir",
+    "ia": true
+  },
+  {
+    "listing_id": "immotop_1847365",
+    "site": "Immotop.lu",
+    "title": "Appartement 2 chambres rez-de-chaussée, Gare, Luxembourg",
+    "city": "Luxembourg",
+    "price": 2000,
+    "rooms": 2,
+    "surface": 90,
+    "url": "https://www.immotop.lu/annonces/1847365/",
+    "image_url": "https://pic.immotop.lu/image/148398059/xxs-c.jpg",
+    "distance_km": 1.3,
+    "created_at": "2026-03-13 08:28:28",
+    "resume": "Appartement 2 chambres rez-de-chaussée à Luxembourg, à 1.3km du centre-ville, pour 2000€/mois.",
+    "points_positifs": [
+      "Emplacement proche de la gare",
+      "Surface de 90m²",
+      "Prix raisonnable par m²"
+    ],
+    "points_negatifs": [
+      "Distance du centre-ville un peu importante",
+      "Prix légèrement supérieur au budget du locataire"
+    ],
+    "score_ia": 80,
+    "score_local": 59,
+    "verdict": "À voir",
+    "ia": true
+  },
+  {
+    "listing_id": "athome_9029209",
+    "site": "Athome.lu",
+    "title": "Très bel appartement entièrement meublé, situé au 1er étage d’une rési",
+    "city": "Reckange (Mersch)",
+    "price": 2200,
+    "rooms": 3,
+    "surface": 122,
+    "url": "https://www.athome.lu/location/appartement/reckange-(mersch)/id-9029209.html",
+    "image_url": "https://i1.static.athome.eu/images/annonces2/image_/95/6c/98/c2cf5f2fe8e29eaedd454a6d09170e3a83fc8074.jpg",
+    "distance_km": 17.0,
+    "created_at": "2026-03-13 08:28:05",
+    "resume": "Appartement meublé 3 chambres à Reckange, à 17km du centre-ville de Luxembourg.",
+    "points_positifs": [
+      "Appartement entièrement meublé",
+      "Surface de 122m²",
+      "Prix compétitif (18€/m²)"
+    ],
+    "points_negatifs": [
+      "Éloigné du centre-ville (17km)",
+      "Hors du périmètre de recherche (Reckange et non Luxembourg)"
+    ],
+    "score_ia": 80,
+    "score_local": 65,
+    "verdict": "À voir",
+    "ia": true
+  },
+  {
+    "listing_id": "athome_9028266",
+    "site": "Athome.lu",
+    "title": "L'agence Property Invest a le plaisir de vous proposer ce magnifique a",
+    "city": "Lorentzweiler",
+    "price": 2100,
+    "rooms": 5,
+    "surface": 89,
+    "url": "https://www.athome.lu/location/appartement/lorentzweiler/id-9028266.html",
+    "image_url": "https://i1.static.athome.eu/images/annonces2/image_/aa/2c/98/71e819f2ef1e0119c7df1e5e93c4eb88914a9f62.jpg",
+    "distance_km": 11.2,
+    "created_at": "2026-03-13 08:27:31",
+    "resume": "Bien de 5 chambres dans un village proche de Luxembourg, à 24€/m².",
+    "points_positifs": [
+      "Surface de 89m², ce qui est généralement suffisant pour un locataire.",
+      "Prix raisonnable par rapport à la surface, à 24€/m².",
+      "L'agence Property Invest propose ce bien, ce qui peut être un atout."
+    ],
+    "points_negatifs": [
+      "La distance au centre-ville est de 11.2km, ce qui peut être un inconvénient pour certains locataires."
+    ],
+    "score_ia": 80,
+    "score_local": 55,
+    "verdict": "À voir",
+    "ia": true
+  },
+  {
+    "listing_id": "athome_9028202",
+    "site": "Athome.lu",
+    "title": "RE/MAX Forum et Harald-Sven SONTAG (621 300 716), spécialistes de l'im",
+    "city": "Luxembourg-Hollerich",
+    "price": 2200,
+    "rooms": 3,
+    "surface": 77,
+    "url": "https://www.athome.lu/location/appartement/luxembourg-hollerich/id-9028202.html",
+    "image_url": "https://i1.static.athome.eu/images/annonces2/image_/a6/2c/98/d7a69c6ddd5f1c553ae1d8c2c9d8282f92d79a90.jpg",
+    "distance_km": 1.2,
+    "created_at": "2026-03-13 08:27:20",
+    "resume": "Appartement de 77m² avec 3 chambres à Luxembourg-Hollerich, à 1.2km du centre-ville.",
+    "points_positifs": [
+      "Superficie de 77m², correspondant à la recherche du locataire",
+      "Prix raisonnable de 29€/m²",
+      "Proximité du centre-ville"
+    ],
+    "points_negatifs": [
+      "Prix légèrement supérieur au budget du locataire"
+    ],
+    "score_ia": 80,
+    "score_local": 65,
+    "verdict": "À voir",
+    "ia": true
+  },
+  {
+    "listing_id": "athome_9027949",
+    "site": "Athome.lu",
+    "title": "Appartement lumineux avec terrasse à louer dans un quartier calme et a",
+    "city": "Luxembourg-Cents",
+    "price": 2000,
+    "rooms": 6,
+    "surface": 89,
+    "url": "https://www.athome.lu/location/appartement/luxembourg-cents/id-9027949.html",
+    "image_url": "https://i1.static.athome.eu/images/annonces2/image_/d6/1c/98/070d93ecb1af4fdbc30378b141f7e100bad9d23c.jpg",
+    "distance_km": 2.9,
+    "created_at": "2026-03-13 08:27:08",
+    "resume": "Appartement lumineux avec terrasse dans quartier calme, 6 chambres, 89m², 2.9km du centre-ville.",
+    "points_positifs": [
+      "Surface importante (89m²)",
+      "Terrasse pour profiter du soleil",
+      "Emplacement calme"
+    ],
+    "points_negatifs": [
+      "Prix élevé (2000€/mois)",
+      "Distance du centre-ville relativement importante (2.9km)"
+    ],
+    "score_ia": 80,
+    "score_local": 99,
+    "verdict": "À voir",
+    "ia": true
+  },
+  {
+    "listing_id": "athome_9027959",
+    "site": "Athome.lu",
+    "title": "*** BERELDANGE ***\n\nL'Agence Real Estate vous propose un appartement d",
+    "city": "Bereldange",
+    "price": 2100,
+    "rooms": 2,
+    "surface": 102,
+    "url": "https://www.athome.lu/location/appartement/bereldange/id-9027959.html",
+    "image_url": "https://i1.static.athome.eu/images/annonces2/image_/77/1c/98/dcc954319b8c20e1cd192e21fbb5d1e0f6c2afa1.jpg",
+    "distance_km": 6.1,
+    "created_at": "2026-03-13 08:26:57",
+    "resume": "Appartement de 102m² à 2 chambres dans la commune de Bereldange, à 6,1km du centre-ville de Luxembourg.",
+    "points_positifs": [
+      "Superficie de 102m²",
+      "Prix compétitif de 21€/m²",
+      "Proche du centre-ville de Luxembourg"
+    ],
+    "points_negatifs": [
+      "Prix légèrement supérieur au budget du locataire",
+      "Pas de détails supplémentaires sur l'appartement"
+    ],
+    "score_ia": 80,
+    "score_local": 68,
+    "verdict": "À voir",
+    "ia": true
+  },
+  {
+    "listing_id": "athome_9027978",
+    "site": "Athome.lu",
+    "title": "MT REAL ESTATE INVEST vous propose à la location :\n\nAppartement non-me",
+    "city": "Luxembourg-Centre Ville",
+    "price": 2000,
+    "rooms": 2,
+    "surface": 70,
+    "url": "https://www.athome.lu/location/appartement/luxembourg-centre-ville/id-9027978.html",
+    "image_url": "https://i1.static.athome.eu/images/annonces2/image_/a8/1c/98/31aabb42b130c931fca81aec0b21578b090ec745.jpg",
+    "distance_km": 1.2,
+    "created_at": "2026-03-13 08:26:40",
+    "resume": "Appartement de 2 chambres à 1.2km du centre-ville de Luxembourg pour 2000€/mois.",
+    "points_positifs": [
+      "Emplacement central",
+      "Surface raisonnable pour le prix",
+      "Possibilité de location pour des personnes avec un budget élevé"
+    ],
+    "points_negatifs": [
+      "Prix un peu élevé pour les locataires avec un budget moyen",
+      "Pas de détails sur les équipements et les services inclus"
+    ],
+    "score_ia": 80,
+    "score_local": 65,
+    "verdict": "À voir",
+    "ia": true
+  },
+  {
     "listing_id": "wortimmo_478012",
     "site": "Wortimmo.lu",
     "title": "Appartement 2 chambre(s) à louer à Mondorf-les-Bains",
@@ -9229,6 +9573,33 @@ const IA_ANALYSES = [
     "points_negatifs": [
       "Limite de 1 couple, pas adapté à des locataires avec enfants ou amis",
       "Prix peut être un peu élevé pour un couple"
+    ],
+    "score_ia": 75,
+    "score_local": 65,
+    "verdict": "À voir",
+    "ia": true
+  },
+  {
+    "listing_id": "remax_280071131-5",
+    "site": "Remax.lu",
+    "title": "Appartement à louer — Luxembourg",
+    "city": "Luxembourg",
+    "price": 1990,
+    "rooms": 0,
+    "surface": 0,
+    "url": "https://www.remax.lu/fr-lu/mandats-de-vente/appartement/a-louer/luxembourg/280071131-5",
+    "image_url": "https://www.remax.lu/images/remax/default_image.gif",
+    "distance_km": 1.3,
+    "created_at": "2026-03-13 08:28:51",
+    "resume": "Appartement à louer à Luxembourg, mais aucune information sur la superficie ou le nombre de chambres.",
+    "points_positifs": [
+      "Emplacement proche du centre-ville (1.3km)",
+      "Prix compétitif par rapport au budget du locataire (1990€/mois)",
+      "Agence réputée (Remax.lu)"
+    ],
+    "points_negatifs": [
+      "Manque de informations sur la superficie et le nombre de chambres",
+      "Pas de correspondance avec les critères de recherche (2+ chambres, 75m²+)"
     ],
     "score_ia": 75,
     "score_local": 65,
@@ -11254,6 +11625,32 @@ const IA_ANALYSES = [
     "ia": true
   },
   {
+    "listing_id": "remax_280221049-2",
+    "site": "Remax.lu",
+    "title": "Appartement à louer — Luxembourg",
+    "city": "Luxembourg",
+    "price": 2200,
+    "rooms": 0,
+    "surface": 0,
+    "url": "https://www.remax.lu/fr-lu/mandats-de-vente/appartement/a-louer/luxembourg/280221049-2",
+    "image_url": "https://www.remax.lu/images/remax/default_image.gif",
+    "distance_km": 1.3,
+    "created_at": "2026-03-13 08:29:13",
+    "resume": "Appartement à louer à Luxembourg, 1,3km du centre-ville, mais surface et nombre de chambres non précisés.",
+    "points_positifs": [
+      "Proche du centre-ville (1,3km)",
+      "Prix compétitif (2200€/mois)"
+    ],
+    "points_negatifs": [
+      "Surface et nombre de chambres non précisés",
+      "Pas de photos ou description détaillée"
+    ],
+    "score_ia": 60,
+    "score_local": 65,
+    "verdict": "À voir",
+    "ia": true
+  },
+  {
     "listing_id": "propertyinvest_office-bereldange",
     "site": "PropertyInvest.lu",
     "title": "Office in Bereldange",
@@ -11570,8 +11967,8 @@ const IA_ANALYSES = [
   }
 ];
 const IA_META = {
-  generated_at: "12/03/2026 09:23",
-  total: 442,
-  with_ia: 436,
+  generated_at: "13/03/2026 09:30",
+  total: 457,
+  with_ia: 451,
   model: "llama-3.1-8b-instant"
 };
