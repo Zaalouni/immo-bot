@@ -1,62 +1,83 @@
-// Genere le 13/03/2026 10:16
+// Genere le 14/03/2026 09:40
 const STATS = {
-  "total": 457,
-  "avg_price": 2244,
-  "min_price": 1500,
+  "total": 565,
+  "avg_price": 2198,
+  "min_price": 1356,
   "max_price": 2700,
-  "avg_surface": 91,
-  "cities": 90,
+  "avg_surface": 88,
+  "cities": 95,
   "sites": {
-    "Remax.lu": 9,
-    "Nextimmo.lu": 40,
-    "Immotop.lu": 12,
-    "Athome.lu": 195,
+    "Immo.lu": 1,
+    "LuxExpats.lu": 6,
+    "ImmoSolutions.lu": 5,
+    "Weckbecker.lu": 7,
+    "DDImmo.lu": 14,
+    "Remax.lu": 10,
+    "PropertyInvest.lu": 5,
+    "Nextimmo.lu": 62,
+    "VIVI.lu": 75,
+    "Immotop.lu": 14,
+    "Athome.lu": 250,
     "Nexvia": 4,
-    "VIVI.lu": 61,
     "Wortimmo.lu": 80,
     "Accord-Immo.lu": 1,
     "Newimmo.lu": 6,
-    "LuxExpats.lu": 3,
-    "DDImmo.lu": 10,
     "Rockenbrod.lu": 5,
     "Floor.lu": 2,
-    "Weckbecker.lu": 6,
     "SothebysRealty.lu": 5,
-    "ImmoSolutions.lu": 4,
     "Sigelux.lu": 1,
-    "Luxhome.lu": 12,
-    "PropertyInvest.lu": 1
+    "Luxhome.lu": 12
   },
   "by_city": [
     {
       "city": "Belair",
-      "count": 31,
-      "avg_price": 2289
+      "count": 36,
+      "avg_price": 2279
     },
     {
       "city": "Luxembourg",
-      "count": 27,
-      "avg_price": 2243
-    },
-    {
-      "city": "Hollerich",
-      "count": 18,
-      "avg_price": 2355
-    },
-    {
-      "city": "Gare",
-      "count": 16,
-      "avg_price": 2190
+      "count": 35,
+      "avg_price": 2168
     },
     {
       "city": "Centre",
-      "count": 15,
-      "avg_price": 2283
+      "count": 28,
+      "avg_price": 2214
     },
     {
       "city": "Limpertsberg",
+      "count": 22,
+      "avg_price": 2268
+    },
+    {
+      "city": "Hollerich",
+      "count": 19,
+      "avg_price": 2344
+    },
+    {
+      "city": "Gare",
+      "count": 17,
+      "avg_price": 2190
+    },
+    {
+      "city": "Esch-Sur-Alzette",
+      "count": 16,
+      "avg_price": 2068
+    },
+    {
+      "city": "Strassen",
       "count": 15,
-      "avg_price": 2273
+      "avg_price": 2399
+    },
+    {
+      "city": "Olm",
+      "count": 14,
+      "avg_price": 2178
+    },
+    {
+      "city": "Bonnevoie",
+      "count": 14,
+      "avg_price": 2103
     },
     {
       "city": "Garnich",
@@ -64,19 +85,14 @@ const STATS = {
       "avg_price": 2339
     },
     {
-      "city": "Bonnevoie",
+      "city": "Kirchberg",
       "count": 13,
-      "avg_price": 2134
+      "avg_price": 2156
     },
     {
-      "city": "Esch-Sur-Alzette",
+      "city": "Gasperich",
       "count": 13,
-      "avg_price": 2176
-    },
-    {
-      "city": "Strassen",
-      "count": 13,
-      "avg_price": 2414
+      "avg_price": 2260
     },
     {
       "city": "Schouweiler",
@@ -85,13 +101,53 @@ const STATS = {
     },
     {
       "city": "Bertrange",
-      "count": 11,
-      "avg_price": 2300
+      "count": 12,
+      "avg_price": 2225
     },
     {
       "city": "Neudorf",
+      "count": 12,
+      "avg_price": 2395
+    },
+    {
+      "city": "Dudelange",
       "count": 11,
-      "avg_price": 2422
+      "avg_price": 1827
+    },
+    {
+      "city": "Mamer",
+      "count": 10,
+      "avg_price": 2320
+    },
+    {
+      "city": "Belval",
+      "count": 10,
+      "avg_price": 2122
+    },
+    {
+      "city": "Muhlenbach",
+      "count": 10,
+      "avg_price": 2385
+    },
+    {
+      "city": "Remich",
+      "count": 10,
+      "avg_price": 2420
+    },
+    {
+      "city": "Differdange",
+      "count": 10,
+      "avg_price": 1990
+    },
+    {
+      "city": "Cessange",
+      "count": 10,
+      "avg_price": 2410
+    },
+    {
+      "city": "Bridel",
+      "count": 9,
+      "avg_price": 2031
     },
     {
       "city": "Bettembourg",
@@ -99,34 +155,19 @@ const STATS = {
       "avg_price": 2127
     },
     {
-      "city": "Cessange",
-      "count": 9,
-      "avg_price": 2438
-    },
-    {
-      "city": "Mamer",
-      "count": 9,
-      "avg_price": 2355
-    },
-    {
-      "city": "Remich",
-      "count": 9,
-      "avg_price": 2511
-    },
-    {
-      "city": "Differdange",
+      "city": "Junglinster",
       "count": 8,
-      "avg_price": 2000
+      "avg_price": 2206
     },
     {
-      "city": "Kirchberg",
-      "count": 8,
-      "avg_price": 2260
-    },
-    {
-      "city": "Bridel",
+      "city": "Howald",
       "count": 7,
-      "avg_price": 2040
+      "avg_price": 2121
+    },
+    {
+      "city": "Cents",
+      "count": 7,
+      "avg_price": 2307
     },
     {
       "city": "Sprinkange",
@@ -134,29 +175,24 @@ const STATS = {
       "avg_price": 1985
     },
     {
-      "city": "Belval",
-      "count": 7,
-      "avg_price": 2089
+      "city": "Merl",
+      "count": 5,
+      "avg_price": 2194
     },
     {
-      "city": "Muhlenbach",
-      "count": 7,
-      "avg_price": 2450
+      "city": "Hassel",
+      "count": 5,
+      "avg_price": 1810
     },
     {
-      "city": "Olm",
-      "count": 7,
-      "avg_price": 2300
+      "city": "Bereldange",
+      "count": 5,
+      "avg_price": 2320
     },
     {
-      "city": "Cents",
-      "count": 6,
-      "avg_price": 2316
-    },
-    {
-      "city": "Junglinster",
-      "count": 6,
-      "avg_price": 2316
+      "city": "Lallange",
+      "count": 5,
+      "avg_price": 2060
     },
     {
       "city": "Dommeldange",
@@ -169,29 +205,14 @@ const STATS = {
       "avg_price": 2000
     },
     {
-      "city": "Gasperich",
-      "count": 5,
-      "avg_price": 2430
-    },
-    {
-      "city": "Howald",
-      "count": 5,
-      "avg_price": 2370
-    },
-    {
-      "city": "Dudelange",
-      "count": 5,
-      "avg_price": 2100
-    },
-    {
-      "city": "Bereldange",
+      "city": "Steinsel",
       "count": 4,
-      "avg_price": 2450
+      "avg_price": 2212
     },
     {
-      "city": "Hassel",
+      "city": "Eich",
       "count": 4,
-      "avg_price": 1850
+      "avg_price": 2287
     },
     {
       "city": "Kehlen",
@@ -214,11 +235,6 @@ const STATS = {
       "avg_price": 2250
     },
     {
-      "city": "Lallange",
-      "count": 4,
-      "avg_price": 2162
-    },
-    {
       "city": "Alzette",
       "count": 4,
       "avg_price": 2350
@@ -234,6 +250,21 @@ const STATS = {
       "avg_price": 2035
     },
     {
+      "city": "Mondorf-Les-Bains",
+      "count": 3,
+      "avg_price": 2033
+    },
+    {
+      "city": "Tuntange",
+      "count": 3,
+      "avg_price": 1600
+    },
+    {
+      "city": "Leudelange",
+      "count": 3,
+      "avg_price": 2166
+    },
+    {
       "city": "Contern",
       "count": 3,
       "avg_price": 2250
@@ -242,11 +273,6 @@ const STATS = {
       "city": "Mersch",
       "count": 3,
       "avg_price": 1950
-    },
-    {
-      "city": "Eich",
-      "count": 3,
-      "avg_price": 2350
     },
     {
       "city": "Frisange",
@@ -274,29 +300,39 @@ const STATS = {
       "avg_price": 2300
     },
     {
-      "city": "Steinsel",
-      "count": 3,
-      "avg_price": 2216
-    },
-    {
       "city": "Belvaux",
       "count": 3,
       "avg_price": 2250
     },
     {
-      "city": "Merl",
+      "city": "Lorentzweiler",
       "count": 2,
-      "avg_price": 2310
+      "avg_price": 2100
+    },
+    {
+      "city": "Crauthem",
+      "count": 2,
+      "avg_price": 1975
+    },
+    {
+      "city": "Rumelange",
+      "count": 2,
+      "avg_price": 2500
+    },
+    {
+      "city": "Kayl",
+      "count": 2,
+      "avg_price": 1600
+    },
+    {
+      "city": "Rollingergrund",
+      "count": 2,
+      "avg_price": 2050
     },
     {
       "city": "Verlorenkost",
       "count": 2,
       "avg_price": 1900
-    },
-    {
-      "city": "Tuntange",
-      "count": 2,
-      "avg_price": 1700
     },
     {
       "city": "Schifflange",
@@ -314,11 +350,6 @@ const STATS = {
       "avg_price": 2200
     },
     {
-      "city": "Mondorf-Les-Bains",
-      "count": 2,
-      "avg_price": 2000
-    },
-    {
       "city": "Hunsdorf",
       "count": 2,
       "avg_price": 2200
@@ -330,11 +361,6 @@ const STATS = {
     },
     {
       "city": "Hesperange",
-      "count": 2,
-      "avg_price": 2400
-    },
-    {
-      "city": "Leudelange",
       "count": 2,
       "avg_price": 2400
     },
@@ -354,14 +380,24 @@ const STATS = {
       "avg_price": 2350
     },
     {
+      "city": "Weimerskirch",
+      "count": 1,
+      "avg_price": 1600
+    },
+    {
+      "city": "Nospelt",
+      "count": 1,
+      "avg_price": 1900
+    },
+    {
+      "city": "Weimershof",
+      "count": 1,
+      "avg_price": 2100
+    },
+    {
       "city": "Reckange-(mersch)",
       "count": 1,
       "avg_price": 2200
-    },
-    {
-      "city": "Lorentzweiler",
-      "count": 1,
-      "avg_price": 2100
     },
     {
       "city": "Syre",
@@ -377,11 +413,6 @@ const STATS = {
       "city": "Rippig",
       "count": 1,
       "avg_price": 2500
-    },
-    {
-      "city": "Crauthem",
-      "count": 1,
-      "avg_price": 1900
     },
     {
       "city": "Gare-Boulevard-De-La-Ptrusse",
@@ -439,11 +470,6 @@ const STATS = {
       "avg_price": 2500
     },
     {
-      "city": "Rollingergrund",
-      "count": 1,
-      "avg_price": 2500
-    },
-    {
       "city": "Bascharage",
       "count": 1,
       "avg_price": 1650
@@ -480,30 +506,31 @@ const STATS = {
     }
   ],
   "by_price_range": {
-    "< 1500": 0,
-    "1500 - 2000": 80,
-    "2000 - 2500": 279,
-    "> 2500": 98
+    "< 1500": 5,
+    "1500 - 2000": 120,
+    "2000 - 2500": 340,
+    "> 2500": 100
   }
 };
 const SITE_COLORS = {
-  "Remax.lu": "#FF6384",
-  "Nextimmo.lu": "#36A2EB",
-  "Immotop.lu": "#FFCE56",
-  "Athome.lu": "#4BC0C0",
-  "Nexvia": "#9966FF",
-  "VIVI.lu": "#FF9F40",
-  "Wortimmo.lu": "#2ECC71",
-  "Accord-Immo.lu": "#E74C3C",
-  "Newimmo.lu": "#3498DB",
-  "LuxExpats.lu": "#FF6384",
-  "DDImmo.lu": "#36A2EB",
-  "Rockenbrod.lu": "#FFCE56",
-  "Floor.lu": "#4BC0C0",
-  "Weckbecker.lu": "#9966FF",
-  "SothebysRealty.lu": "#FF9F40",
-  "ImmoSolutions.lu": "#2ECC71",
-  "Sigelux.lu": "#E74C3C",
-  "Luxhome.lu": "#3498DB",
-  "PropertyInvest.lu": "#FF6384"
+  "Immo.lu": "#FF6384",
+  "LuxExpats.lu": "#36A2EB",
+  "ImmoSolutions.lu": "#FFCE56",
+  "Weckbecker.lu": "#4BC0C0",
+  "DDImmo.lu": "#9966FF",
+  "Remax.lu": "#FF9F40",
+  "PropertyInvest.lu": "#2ECC71",
+  "Nextimmo.lu": "#E74C3C",
+  "VIVI.lu": "#3498DB",
+  "Immotop.lu": "#FF6384",
+  "Athome.lu": "#36A2EB",
+  "Nexvia": "#FFCE56",
+  "Wortimmo.lu": "#4BC0C0",
+  "Accord-Immo.lu": "#9966FF",
+  "Newimmo.lu": "#FF9F40",
+  "Rockenbrod.lu": "#2ECC71",
+  "Floor.lu": "#E74C3C",
+  "SothebysRealty.lu": "#3498DB",
+  "Sigelux.lu": "#FF6384",
+  "Luxhome.lu": "#36A2EB"
 };
