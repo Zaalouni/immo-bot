@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Auto-Bot LU — Comparateur</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#212529">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="AutoBot LU">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+  <meta name="description" content="Comparateur de voitures au Luxembourg — Auto-Bot">
+  <meta name="robots" content="noindex,nofollow">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
+
+  <style>
+    body { background: #f8f9fa; font-size: 14px; }
+    .navbar-brand { font-weight: 700; font-size: 1.1rem; }
+    .nav-pills .nav-link.active { background: #212529; }
+    .nav-pills .nav-link { color: #212529; }
+    #stats-bar { background: #212529; color: #fff; padding: 8px 0; font-size: 13px; }
+
+    /* Sélecteurs */
+    .picker-card { background: #fff; border-radius: 8px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,.1); }
+    .picker-card h6 { font-weight: 700; color: #212529; margin-bottom: 12px; }
+
+    /* Table comparaison */
+    .compare-table { border-radius: 8px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,.1); background: #fff; }
+    .compare-table th { background: #212529; color: #fff; text-align: center; width: 33%; padding: 12px; }
+    .compare-table th.row-header { background: #495057; text-align: left; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .5px; }
+    .compare-table td { text-align: center; padding: 10px 14px; border-bottom: 1px solid #f0f0f0; font-size: 14px; }
+    .compare-table td.row-lbl { text-align: left; color: #555; font-weight: 500; background: #f8f9fa; }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .win { color: #198754; font-weight: 700; }
+    .lose { color: #dc3545; }
+    .neutral { color: #555; }
+
+    /* Photo */
+    .car-photo { width: 100%; height: 160px; object-fit: cover; border-radius: 6px; margin-bottom: 10px; background: #eee; }
+    .car-photo-placeholder { width: 100%; height: 160px; background: linear-gradient(135deg,#e9ecef,#dee2e6); border-radius: 6px; display:flex; align-items:center; justify-content:center; font-size:3rem; margin-bottom:10px; }
+
+    /* Select2 */
+    .select2-container { width: 100% !important; }
+    .select2-container--default .select2-selection--single { height: 38px; border: 1px solid #ced4da; border-radius: 6px; padding: 4px 8px; }
+    .select2-container--default .select2-selection--single .select2-selection__arrow { height: 36px; }
+
+    /* Badge annonce -->
+    .badge-site { font-size: 10px; padding: 2px 6px; }
+    #version-bar { text-align:center; padding:6px; font-size:11px; color:#aaa; background:#fff; border-top:1px solid #eee; }
+
+    /* Score bars */
+    .score-bar { height: 8px; border-radius: 4px; background: #dee2e6; overflow: hidden; margin-top: 4px; }
+    .score-bar-fill { height: 100%; border-radius: 4px; }
+
+    /* Responsive */
+    @media (max-width:768px) {
+      .compare-table th, .compare-table td { font-size: 12px; padding: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar navbar-dark bg-dark px-3">
+  <span class="navbar-brand">🚗 Auto-Bot Luxembourg</span>
+  <ul class="nav nav-pills">
+    <li class="nav-item"><a class="nav-link" href="index.html">Annonces</a></li>
+    <li class="nav-item"><a class="nav-link" href="deals.html">Deals</a></li>
+    <li class="nav-item"><a class="nav-link" href="rapport.html">Rapport</a></li>
+    <li class="nav-item"><a class="nav-link" href="watchlist.html">Watchlist</a></li>
+    <li class="nav-item"><a class="nav-link" href="market.html">Marché</a></li>
+    <li class="nav-item"><a class="nav-link active" href="compare.html">Comparer</a></li>
+    <li class="nav-item"><a class="nav-link" href="budget.html">Budget</a></li>
+    <li class="nav-item"><a class="nav-link" href="top-models.html">Top Modèles</a></li>
+  </ul>
+</nav>
+
+<!-- Stats bar -->
+<div id="stats-bar">
+  <div class="container-fluid d-flex gap-4 justify-content-center">
+    <span>📋 <strong id="nb-annonces">—</strong> annonces disponibles</span>
+    <span>🆚 Sélectionne 2 voitures à comparer</span>
+  </div>
+</div>
+
+<div class="container-fluid py-3 px-4">
+
+  <!-- Sélecteurs -->
+  <div class="row g-3 mb-4">
+    <div class="col-lg-6">
+      <div class="picker-card">
+        <h6>🚘 Voiture A</h6>
+        <select id="select-a" class="form-select">
+          <option value="">— Choisir une annonce —</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="picker-card">
+        <h6>🚙 Voiture B</h6>
+        <select id="select-b" class="form-select">
+          <option value="">— Choisir une annonce —</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Résultat comparaison -->
+  <div id="compare-result" style="display:none;">
+
+    <!-- Photos -->
+    <div class="row g-3 mb-3">
+      <div class="col-lg-6 text-center">
+        <div id="photo-a"></div>
+        <div id="titre-a" class="fw-bold fs-5"></div>
+        <div id="site-a" class="text-muted small"></div>
+      </div>
+      <div class="col-lg-6 text-center">
+        <div id="photo-b"></div>
+        <div id="titre-b" class="fw-bold fs-5"></div>
+        <div id="site-b" class="text-muted small"></div>
+      </div>
+    </div>
+
+    <!-- Tableau comparaison -->
+    <table class="compare-table table mb-4 w-100">
+      <thead>
+        <tr>
+          <th class="row-header">Critère</th>
+          <th id="head-a">Voiture A</th>
+          <th id="head-b">Voiture B</th>
+        </tr>
+      </thead>
+      <tbody id="compare-body"></tbody>
+    </table>
+
+    <!-- Verdict -->
+    <div class="row g-3">
+      <div class="col-12">
+        <div class="card border-0 shadow-sm p-3">
+          <h6 class="fw-bold mb-2">⚖️ Verdict</h6>
+          <div id="verdict-text" class="fs-6"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Message vide -->
+  <div id="empty-state" class="text-center py-5 text-muted">
+    <div style="font-size:4rem">🆚</div>
+    <h5 class="mt-3">Sélectionne deux voitures pour les comparer</h5>
+    <p class="small">Toutes les annonces actives sont disponibles dans les menus ci-dessus.</p>
+  </div>
+
+</div>
+
+<div id="version-bar">Génération : <span id="v-time">—</span></div>
+
+<!-- Données -->
+<script src="data/listings.js"></script>
+<script src="data/version.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.0/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+// ── Données ──────────────────────────────────────────────────────────────────
+const listings = (typeof LISTINGS !== 'undefined') ? LISTINGS : [];
+document.getElementById('nb-annonces').textContent = listings.length;
+
+function fmtEur(n)  { return n ? n.toLocaleString('fr-LU') + ' €' : '—'; }
+function fmtKm(n)   { return n ? n.toLocaleString('fr-LU') + ' km' : '—'; }
+function fmtAnnee(n){ return n || '—'; }
+
+// ── Remplir les selects ───────────────────────────────────────────────────────
+function fillSelect(selId) {
+  const sel = document.getElementById(selId);
+  // Trier par marque + modèle
+  const sorted = [...listings].sort((a,b) => {
+    const la = `${a.marque_norm||a.marque||''} ${a.modele_norm||a.modele||''} ${a.annee||''}`;
+    const lb = `${b.marque_norm||b.marque||''} ${b.modele_norm||b.modele||''} ${b.annee||''}`;
+    return la.localeCompare(lb);
+  });
+  sorted.forEach(l => {
+    const lbl = [
+      l.marque_norm || l.marque || '?',
+      l.modele_norm || l.modele || '',
+      l.annee || '',
+      l.km ? fmtKm(l.km) : '',
+      l.prix ? fmtEur(l.prix) : '',
+      `(${l.site || ''})`,
+    ].filter(Boolean).join(' · ');
+    const opt = document.createElement('option');
+    opt.value = l.id;
+    opt.textContent = lbl;
+    sel.appendChild(opt);
+  });
+}
+
+fillSelect('select-a');
+fillSelect('select-b');
+
+// Activer Select2 pour la recherche rapide
+$(document).ready(function() {
+  $('#select-a, #select-b').select2({ placeholder: '— Choisir une annonce —', allowClear: true });
+  $('#select-a, #select-b').on('change', renderCompare);
+});
+
+// ── Rendu comparaison ─────────────────────────────────────────────────────────
+function getListing(id) { return listings.find(l => l.id === id); }
+
+function scoreColor(score) {
+  if (!score) return '#adb5bd';
+  if (score >= 70) return '#198754';
+  if (score >= 40) return '#ffc107';
+  return '#dc3545';
+}
+
+function renderPhoto(container, l) {
+  const photo = l.photos_url && l.photos_url[0];
+  if (photo) {
+    container.innerHTML = `<img src="${photo}" class="car-photo" alt="${l.marque_norm||l.marque||''}" onerror="this.parentElement.innerHTML='<div class=car-photo-placeholder>🚗</div>'">`;
+  } else {
+    container.innerHTML = '<div class="car-photo-placeholder">🚗</div>';
+  }
+}
+
+function renderCompare() {
+  const idA = document.getElementById('select-a').value;
+  const idB = document.getElementById('select-b').value;
+
+  if (!idA || !idB) {
+    document.getElementById('compare-result').style.display = 'none';
+    document.getElementById('empty-state').style.display = 'block';
+    return;
+  }
+
+  const a = getListing(idA);
+  const b = getListing(idB);
+  if (!a || !b) return;
+
+  document.getElementById('compare-result').style.display = 'block';
+  document.getElementById('empty-state').style.display = 'none';
+
+  // Photos et titres
+  renderPhoto(document.getElementById('photo-a'), a);
+  renderPhoto(document.getElementById('photo-b'), b);
+  const titreA = `${a.marque_norm||a.marque||'?'} ${a.modele_norm||a.modele||''} ${a.annee||''}`.trim();
+  const titreB = `${b.marque_norm||b.marque||'?'} ${b.modele_norm||b.modele||''} ${b.annee||''}`.trim();
+  document.getElementById('titre-a').textContent = titreA;
+  document.getElementById('titre-b').textContent = titreB;
+  document.getElementById('site-a').textContent = a.site || '';
+  document.getElementById('site-b').textContent = b.site || '';
+  document.getElementById('head-a').textContent = titreA;
+  document.getElementById('head-b').textContent = titreB;
+
+  // Lignes de comparaison
+  // Format : [label, valueA, valueB, lowerIsBetter, unit]
+  const rows = [
+    { label: '💶 Prix',          a: a.prix,           b: b.prix,           lower: true,  fmt: fmtEur },
+    { label: '📏 Kilométrage',   a: a.km,             b: b.km,             lower: true,  fmt: fmtKm  },
+    { label: '📅 Année',         a: a.annee,          b: b.annee,          lower: false, fmt: v => v || '—' },
+    { label: '⛽ Carburant',     a: a.carburant,      b: b.carburant,      lower: null,  fmt: v => v || '—' },
+    { label: '⚙️ Boîte',        a: a.boite,          b: b.boite,          lower: null,  fmt: v => v || '—' },
+    { label: '🏙️ Ville',        a: a.ville,          b: b.ville,          lower: null,  fmt: v => v || '—' },
+    { label: '🏢 Vendeur',       a: a.vendeur_nom,    b: b.vendeur_nom,    lower: null,  fmt: v => v || '—' },
+    { label: '🎨 Couleur',       a: a.couleur,        b: b.couleur,        lower: null,  fmt: v => v || '—' },
+    { label: '💡 Deal Score',    a: a.deal_score,     b: b.deal_score,     lower: false, fmt: v => v ? v + '/100' : '—' },
+    { label: '⚠️ Risk Score',   a: a.risk_score,     b: b.risk_score,     lower: true,  fmt: v => v ? v + '/100' : '—' },
+    { label: '🔗 Annonce',       a: a.url,            b: b.url,            lower: null,
+      fmtA: () => `<a href="${a.url}" target="_blank" class="btn btn-sm btn-outline-dark">Voir</a>`,
+      fmtB: () => `<a href="${b.url}" target="_blank" class="btn btn-sm btn-outline-dark">Voir</a>` },
+  ];
+
+  let points_a = 0, points_b = 0;
+
+  const tbody = document.getElementById('compare-body');
+  tbody.innerHTML = '';
+
+  rows.forEach(row => {
+    const tr = document.createElement('tr');
+    let cellA, cellB;
+
+    if (row.fmtA) {
+      // Lien ou custom
+      cellA = row.fmtA();
+      cellB = row.fmtB();
+    } else {
+      const valA = row.fmt(row.a);
+      const valB = row.fmt(row.b);
+      let clsA = 'neutral', clsB = 'neutral';
+
+      if (row.lower !== null && row.a != null && row.b != null && row.a !== row.b) {
+        const aBetter = row.lower ? row.a < row.b : row.a > row.b;
+        if (aBetter) { clsA = 'win'; clsB = 'lose'; points_a++; }
+        else         { clsA = 'lose'; clsB = 'win'; points_b++; }
+      }
+
+      // Score bar pour deal/risk
+      let barA = '', barB = '';
+      if (row.label.includes('Score') && row.a != null) {
+        const colorA = scoreColor(row.a);
+        barA = `<div class="score-bar"><div class="score-bar-fill" style="width:${row.a||0}%;background:${colorA}"></div></div>`;
+        const colorB = scoreColor(row.b);
+        barB = `<div class="score-bar"><div class="score-bar-fill" style="width:${row.b||0}%;background:${colorB}"></div></div>`;
+      }
+
+      cellA = `<span class="${clsA}">${valA}</span>${barA}`;
+      cellB = `<span class="${clsB}">${valB}</span>${barB}`;
+    }
+
+    tr.innerHTML = `<td class="row-lbl">${row.label}</td><td>${cellA}</td><td>${cellB}</td>`;
+    tbody.appendChild(tr);
+  });
+
+  // ── Verdict ──────────────────────────────────────────────────────────────
+  let verdict = '';
+  if (points_a > points_b) {
+    verdict = `✅ <strong>${titreA}</strong> est objectivement meilleure sur ${points_a}/${points_a+points_b} critères comparables.`;
+  } else if (points_b > points_a) {
+    verdict = `✅ <strong>${titreB}</strong> est objectivement meilleure sur ${points_b}/${points_a+points_b} critères comparables.`;
+  } else {
+    verdict = `⚖️ Les deux véhicules sont <strong>équivalents</strong> sur les critères objectifs.`;
+  }
+
+  // Ajout note prix
+  if (a.prix && b.prix && a.prix !== b.prix) {
+    const diff = Math.abs(a.prix - b.prix);
+    const cheaperName = a.prix < b.prix ? titreA : titreB;
+    verdict += ` <span class="text-muted">— ${cheaperName} est moins chère de ${fmtEur(diff)}.</span>`;
+  }
+
+  document.getElementById('verdict-text').innerHTML = verdict;
+}
+
+// ── Version ───────────────────────────────────────────────────────────────────
+if (typeof VERSION !== 'undefined') {
+  document.getElementById('v-time').textContent = VERSION.generated_date + ' ' + VERSION.generated_time + ' · v' + VERSION.bot_version;
+}
+</script>
+
+<!-- PWA Service Worker -->
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+</script>
+
+</body>
+</html>

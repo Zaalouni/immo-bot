@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Auto-Bot LU — Analyse Marché</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#212529">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="AutoBot LU">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+  <meta name="description" content="Analyse du marché automobile au Luxembourg — Auto-Bot">
+  <meta name="robots" content="noindex,nofollow">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <style>
+    body { background: #f8f9fa; font-size: 14px; }
+    .navbar-brand { font-weight: 700; font-size: 1.1rem; }
+    .nav-pills .nav-link.active { background: #212529; }
+    .nav-pills .nav-link { color: #212529; }
+    #stats-bar { background: #212529; color: #fff; padding: 8px 0; font-size: 13px; }
+    .card { border: none; box-shadow: 0 1px 4px rgba(0,0,0,.1); margin-bottom: 20px; }
+    .card-title { font-size: 1rem; font-weight: 600; color: #444; border-bottom: 2px solid #212529; padding-bottom: 6px; margin-bottom: 14px; }
+    .kpi-box { background: #fff; border-radius: 8px; padding: 16px 20px; box-shadow: 0 1px 4px rgba(0,0,0,.1); text-align: center; }
+    .kpi-val { font-size: 2rem; font-weight: 700; color: #212529; }
+    .kpi-lbl { font-size: 12px; color: #888; margin-top: 2px; }
+    canvas { max-height: 300px; }
+    #version-bar { text-align:center; padding:6px; font-size:11px; color:#aaa; background:#fff; border-top:1px solid #eee; }
+  </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar navbar-dark bg-dark px-3">
+  <span class="navbar-brand">🚗 Auto-Bot Luxembourg</span>
+  <ul class="nav nav-pills">
+    <li class="nav-item"><a class="nav-link" href="index.html">Annonces</a></li>
+    <li class="nav-item"><a class="nav-link" href="deals.html">Deals</a></li>
+    <li class="nav-item"><a class="nav-link" href="rapport.html">Rapport</a></li>
+    <li class="nav-item"><a class="nav-link" href="watchlist.html">Watchlist</a></li>
+    <li class="nav-item"><a class="nav-link active" href="market.html">Marché</a></li>
+    <li class="nav-item"><a class="nav-link" href="compare.html">Comparer</a></li>
+    <li class="nav-item"><a class="nav-link" href="budget.html">Budget</a></li>
+    <li class="nav-item"><a class="nav-link" href="top-models.html">Top Modèles</a></li>
+  </ul>
+</nav>
+
+<!-- Stats bar -->
+<div id="stats-bar">
+  <div class="container-fluid d-flex gap-4 justify-content-center">
+    <span>📋 Annonces analysées : <strong id="nb-annonces">—</strong></span>
+    <span>💶 Prix moyen : <strong id="prix-moyen">—</strong></span>
+    <span>📏 Km moyen : <strong id="km-moyen">—</strong></span>
+    <span>🕐 Calculé le : <strong id="date-calcul">—</strong></span>
+  </div>
+</div>
+
+<div class="container-fluid py-3 px-4">
+
+  <!-- KPIs -->
+  <div class="row g-3 mb-3" id="kpi-row"></div>
+
+  <!-- Ligne 1 : Distribution prix + Distribution km -->
+  <div class="row g-3">
+    <div class="col-lg-6">
+      <div class="card p-3">
+        <div class="card-title">Distribution des prix</div>
+        <canvas id="chart-prix"></canvas>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card p-3">
+        <div class="card-title">Distribution du kilométrage</div>
+        <canvas id="chart-km"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ligne 2 : Prix moyen par marque + Carburant -->
+  <div class="row g-3">
+    <div class="col-lg-7">
+      <div class="card p-3">
+        <div class="card-title">Prix moyen par marque (min 2 annonces)</div>
+        <canvas id="chart-marques"></canvas>
+      </div>
+    </div>
+    <div class="col-lg-5">
+      <div class="card p-3">
+        <div class="card-title">Répartition carburant</div>
+        <canvas id="chart-carburant"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ligne 3 : Années + Boîte + Sites -->
+  <div class="row g-3">
+    <div class="col-lg-5">
+      <div class="card p-3">
+        <div class="card-title">Répartition par année</div>
+        <canvas id="chart-annees"></canvas>
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <div class="card p-3">
+        <div class="card-title">Boîte de vitesses</div>
+        <canvas id="chart-boite"></canvas>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="card p-3">
+        <div class="card-title">Annonces par site source</div>
+        <canvas id="chart-sites"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ligne 4 : Scatter prix vs km -->
+  <div class="row g-3">
+    <div class="col-12">
+      <div class="card p-3">
+        <div class="card-title">Prix vs Kilométrage — nuage de points</div>
+        <canvas id="chart-scatter" style="max-height:380px;"></canvas>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div id="version-bar">Génération : <span id="v-time">—</span></div>
+
+<!-- Données -->
+<script src="data/market.js"></script>
+<script src="data/version.js"></script>
+
+<script>
+// ── Palette de couleurs ──────────────────────────────────────────────────────
+const PALETTE = [
+  '#212529','#0d6efd','#198754','#ffc107','#dc3545','#6f42c1',
+  '#0dcaf0','#fd7e14','#20c997','#adb5bd','#d63384','#6610f2'
+];
+
+function fmtEur(n) { return n ? n.toLocaleString('fr-LU') + ' €' : '—'; }
+function fmtKm(n)  { return n ? n.toLocaleString('fr-LU') + ' km' : '—'; }
+
+// ── Stats bar ────────────────────────────────────────────────────────────────
+document.getElementById('nb-annonces').textContent = MARKET.nb_annonces;
+document.getElementById('prix-moyen').textContent  = fmtEur(MARKET.prix_moyen);
+document.getElementById('km-moyen').textContent    = fmtKm(MARKET.km_moyen);
+document.getElementById('date-calcul').textContent = (MARKET.date_calcul || '').substring(0,16).replace('T',' ');
+
+// ── KPIs ─────────────────────────────────────────────────────────────────────
+const kpis = [
+  { val: MARKET.nb_annonces,           lbl: 'Annonces actives',  icon: '📋' },
+  { val: fmtEur(MARKET.prix_moyen),    lbl: 'Prix moyen',        icon: '💶' },
+  { val: fmtKm(MARKET.km_moyen),       lbl: 'Km moyen',          icon: '📏' },
+  { val: Object.keys(MARKET.repartition_carburant||{}).length + ' types', lbl: 'Carburants', icon: '⛽' },
+  { val: Object.keys(MARKET.prix_par_marque||{}).length + ' marques',     lbl: 'Marques représentées', icon: '🏷️' },
+  { val: Object.keys(MARKET.repartition_sites||{}).length + ' sites',     lbl: 'Sources scrapées', icon: '🌐' },
+];
+const kpiRow = document.getElementById('kpi-row');
+kpis.forEach(k => {
+  kpiRow.innerHTML += `
+    <div class="col-6 col-md-4 col-lg-2">
+      <div class="kpi-box">
+        <div style="font-size:1.5rem">${k.icon}</div>
+        <div class="kpi-val">${k.val}</div>
+        <div class="kpi-lbl">${k.lbl}</div>
+      </div>
+    </div>`;
+});
+
+// ── Helper chart ─────────────────────────────────────────────────────────────
+function barChart(id, labels, data, label, color) {
+  new Chart(document.getElementById(id), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{ label, data, backgroundColor: color || PALETTE[0], borderRadius: 4 }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: true,
+      plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: true, grid: { color: '#f0f0f0' } } }
+    }
+  });
+}
+
+function pieChart(id, labels, data) {
+  new Chart(document.getElementById(id), {
+    type: 'doughnut',
+    data: {
+      labels,
+      datasets: [{ data, backgroundColor: PALETTE }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: true,
+      plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } }
+    }
+  });
+}
+
+// ── Distribution prix ────────────────────────────────────────────────────────
+(function() {
+  const d = MARKET.prix_tranches || {};
+  const keys = Object.keys(d).sort((a,b) => parseInt(a)-parseInt(b));
+  barChart('chart-prix', keys, keys.map(k=>d[k]), 'Annonces', '#0d6efd');
+})();
+
+// ── Distribution km ──────────────────────────────────────────────────────────
+(function() {
+  const d = MARKET.km_tranches || {};
+  const keys = Object.keys(d).sort((a,b) => parseInt(a)-parseInt(b));
+  barChart('chart-km', keys, keys.map(k=>d[k]), 'Annonces', '#198754');
+})();
+
+// ── Prix moyen par marque ────────────────────────────────────────────────────
+(function() {
+  const d = MARKET.prix_par_marque || {};
+  const sorted = Object.entries(d).sort((a,b)=>a[1]-b[1]);
+  new Chart(document.getElementById('chart-marques'), {
+    type: 'bar',
+    data: {
+      labels: sorted.map(x=>x[0]),
+      datasets: [{
+        label: 'Prix moyen (€)',
+        data: sorted.map(x=>x[1]),
+        backgroundColor: sorted.map((_,i) => PALETTE[i % PALETTE.length]),
+        borderRadius: 4
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true, maintainAspectRatio: true,
+      plugins: { legend: { display: false },
+        tooltip: { callbacks: { label: ctx => fmtEur(ctx.parsed.x) } }
+      },
+      scales: { x: { beginAtZero: true, grid: { color: '#f0f0f0' },
+        ticks: { callback: v => (v/1000).toFixed(0)+'k €' }
+      }}
+    }
+  });
+})();
+
+// ── Carburant ────────────────────────────────────────────────────────────────
+(function() {
+  const d = MARKET.repartition_carburant || {};
+  const sorted = Object.entries(d).sort((a,b)=>b[1]-a[1]);
+  pieChart('chart-carburant', sorted.map(x=>x[0]), sorted.map(x=>x[1]));
+})();
+
+// ── Années ───────────────────────────────────────────────────────────────────
+(function() {
+  const d = MARKET.repartition_annees || {};
+  const keys = Object.keys(d).sort();
+  barChart('chart-annees', keys, keys.map(k=>d[k]), 'Annonces', '#6f42c1');
+})();
+
+// ── Boite ─────────────────────────────────────────────────────────────────────
+(function() {
+  const d = MARKET.repartition_boite || {};
+  const sorted = Object.entries(d).sort((a,b)=>b[1]-a[1]);
+  pieChart('chart-boite', sorted.map(x=>x[0]), sorted.map(x=>x[1]));
+})();
+
+// ── Sites ─────────────────────────────────────────────────────────────────────
+(function() {
+  const d = MARKET.repartition_sites || {};
+  const sorted = Object.entries(d).sort((a,b)=>b[1]-a[1]);
+  pieChart('chart-sites', sorted.map(x=>x[0]), sorted.map(x=>x[1]));
+})();
+
+// ── Scatter prix vs km ────────────────────────────────────────────────────────
+(function() {
+  const pts = (MARKET.scatter_prix_km || []);
+  new Chart(document.getElementById('chart-scatter'), {
+    type: 'scatter',
+    data: {
+      datasets: [{
+        label: 'Annonces',
+        data: pts.map(p => ({ x: p.x, y: p.y })),
+        backgroundColor: 'rgba(13,110,253,0.45)',
+        pointRadius: 5,
+        pointHoverRadius: 7
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => {
+              const pt = pts[ctx.dataIndex];
+              return `${pt.label} — ${fmtKm(pt.x)} / ${fmtEur(pt.y)}`;
+            }
+          }
+        }
+      },
+      scales: {
+        x: { title: { display: true, text: 'Kilométrage (km)' }, grid: { color: '#f0f0f0' },
+             ticks: { callback: v => (v/1000).toFixed(0)+'k' } },
+        y: { title: { display: true, text: 'Prix (€)' }, grid: { color: '#f0f0f0' },
+             ticks: { callback: v => (v/1000).toFixed(0)+'k €' } }
+      }
+    }
+  });
+})();
+
+// ── Version ───────────────────────────────────────────────────────────────────
+if (typeof VERSION !== 'undefined') {
+  document.getElementById('v-time').textContent = VERSION.generated_date + ' ' + VERSION.generated_time + ' · v' + VERSION.bot_version;
+}
+</script>
+
+<!-- PWA Service Worker -->
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+</script>
+
+</body>
+</html>

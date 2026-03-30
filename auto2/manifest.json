@@ -1,0 +1,27 @@
+{
+  "name": "Auto-Bot Luxembourg",
+  "short_name": "AutoBot LU",
+  "description": "Surveillance des annonces voitures au Luxembourg",
+  "start_url": "/immo-bot/auto2/index.html",
+  "scope": "/immo-bot/auto2/",
+  "display": "standalone",
+  "background_color": "#f8f9fa",
+  "theme_color": "#212529",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["utilities", "finance"],
+  "lang": "fr"
+}

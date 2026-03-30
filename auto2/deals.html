@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Auto-Bot LU — Top Deals</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#212529">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="AutoBot LU">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <meta name="description" content="Meilleures affaires voitures Luxembourg — Auto-Bot">
+  <meta name="robots" content="noindex,nofollow">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { background: #f8f9fa; font-size: 14px; }
+    .navbar-brand { font-weight: 700; }
+    .nav-pills .nav-link { color: #212529; }
+    .nav-pills .nav-link.active { background: #212529; }
+    .deal-card { border-left: 4px solid #198754; transition: box-shadow .2s; }
+    .deal-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,.15); }
+    .deal-card.top1 { border-left-color: #ffd700; }
+    .deal-card.top2 { border-left-color: #c0c0c0; }
+    .deal-card.top3 { border-left-color: #cd7f32; }
+    .economie-badge { font-size: 1.1rem; font-weight: 700; }
+    .prix-median { text-decoration: line-through; color: #6c757d; font-size: .85rem; }
+    #stats-bar { background: #212529; color: #fff; padding: 8px 0; font-size: 13px; }
+    .rank-badge { width: 32px; height: 32px; border-radius: 50%; display: flex;
+                  align-items: center; justify-content: center; font-weight: 700; font-size: .9rem; }
+    .rank-1 { background: #ffd700; color: #000; }
+    .rank-2 { background: #c0c0c0; color: #000; }
+    .rank-3 { background: #cd7f32; color: #fff; }
+    .rank-n { background: #198754; color: #fff; }
+    .pct-bar { height: 6px; border-radius: 3px; background: #198754; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark bg-dark px-3">
+  <span class="navbar-brand">🚗 Auto-Bot Luxembourg</span>
+  <ul class="nav nav-pills">
+    <li class="nav-item"><a class="nav-link" href="index.html">Annonces</a></li>
+    <li class="nav-item"><a class="nav-link active" href="deals.html">Deals</a></li>
+    <li class="nav-item"><a class="nav-link" href="rapport.html">Rapport</a></li>
+    <li class="nav-item"><a class="nav-link" href="watchlist.html">Watchlist</a></li>
+    <li class="nav-item"><a class="nav-link" href="market.html">Marché</a></li>
+    <li class="nav-item"><a class="nav-link" href="compare.html">Comparer</a></li>
+    <li class="nav-item"><a class="nav-link" href="budget.html">Budget</a></li>
+    <li class="nav-item"><a class="nav-link" href="top-models.html">Top Modèles</a></li>
+  </ul>
+</nav>
+
+<div id="stats-bar">
+  <div class="container-fluid d-flex gap-4 justify-content-center">
+    <span>🏆 Meilleures affaires : <strong id="nb-deals">—</strong></span>
+    <span>💶 Économie max : <strong id="eco-max">—</strong></span>
+    <span>📉 Sous-marché moyen : <strong id="pct-moyen">—</strong></span>
+    <span>🕐 <strong id="last-update">—</strong></span>
+  </div>
+</div>
+
+<div class="container-fluid mt-3">
+
+  <!-- Filtre seuil -->
+  <div class="card shadow-sm mb-3">
+    <div class="card-body py-2 d-flex align-items-center gap-3">
+      <label class="mb-0 fw-semibold">Afficher uniquement les annonces à plus de :</label>
+      <select id="seuil-pct" class="form-select form-select-sm" style="width:120px" onchange="renderDeals()">
+        <option value="5">5% sous marché</option>
+        <option value="10" selected>10% sous marché</option>
+        <option value="15">15% sous marché</option>
+        <option value="20">20% sous marché</option>
+        <option value="25">25% sous marché</option>
+      </select>
+      <div class="form-check mb-0">
+        <input class="form-check-input" type="checkbox" id="hide-suspect" checked onchange="renderDeals()">
+        <label class="form-check-label">Masquer les suspects</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Grille des deals -->
+  <div id="deals-grid" class="row g-3"></div>
+  <div id="no-deals" class="text-center text-muted py-5 d-none">
+    <h4>Aucune bonne affaire détectée pour le moment</h4>
+    <p>Les données seront disponibles après le premier scraping.</p>
+  </div>
+</div>
+
+<script src="data/deals.js"></script>
+<script src="data/stats.js"></script>
+<script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});</script>
+<script>
+  /* ── Données ── */
+  const deals = typeof DEALS !== 'undefined' ? DEALS : [];
+  const stats  = typeof STATS !== 'undefined' ? STATS : {};
+
+  /* ── Init ── */
+  document.addEventListener('DOMContentLoaded', () => {
+    fillStats();
+    renderDeals();
+  });
+
+  /* ── Stats bar ── */
+  function fillStats() {
+    const visible = getFilteredDeals();
+    document.getElementById('nb-deals').textContent  = visible.length;
+    document.getElementById('last-update').textContent = stats.date_calcul ? stats.date_calcul.slice(0,16) : '—';
+
+    if (visible.length > 0) {
+      document.getElementById('eco-max').textContent =
+        visible[0].economie_eur ? formatPrix(visible[0].economie_eur) : '—';
+      const moy = visible.reduce((s, d) => s + (d.economie_pct||0), 0) / visible.length;
+      document.getElementById('pct-moyen').textContent = moy.toFixed(1) + '%';
+    }
+  }
+
+  /* ── Filtrage ── */
+  function getFilteredDeals() {
+    const seuil       = parseFloat(document.getElementById('seuil-pct').value);
+    const hideSuspect = document.getElementById('hide-suspect').checked;
+    return deals.filter(d => {
+      if (d.economie_pct < seuil) return false;
+      if (hideSuspect && d.risk_score && d.risk_score > 70) return false;
+      return true;
+    });
+  }
+
+  /* ── Rendu ── */
+  function renderDeals() {
+    fillStats();
+    const visible = getFilteredDeals();
+    const grid = document.getElementById('deals-grid');
+    const noDeals = document.getElementById('no-deals');
+
+    if (visible.length === 0) {
+      grid.innerHTML = '';
+      noDeals.classList.remove('d-none');
+      return;
+    }
+    noDeals.classList.add('d-none');
+
+    grid.innerHTML = '';
+    visible.forEach((d, i) => {
+      const rankClass = i === 0 ? 'top1' : i === 1 ? 'top2' : i === 2 ? 'top3' : '';
+      const rankBadgeClass = i === 0 ? 'rank-1' : i === 1 ? 'rank-2' : i === 2 ? 'rank-3' : 'rank-n';
+      const pctWidth = Math.min(100, (d.economie_pct / 40) * 100);
+      const today = new Date().toISOString().slice(0,10);
+      const isNew = (d.date_premiere_vue||'').slice(0,10) === today;
+
+      const col = document.createElement('div');
+      col.className = 'col-md-6 col-xl-4';
+      col.innerHTML = `
+        <div class="card deal-card ${rankClass} shadow-sm h-100">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <div class="rank-badge ${rankBadgeClass}">${i+1}</div>
+              <div class="text-end">
+                ${isNew ? '<span class="badge bg-success me-1">NOUVEAU</span>' : ''}
+                <span class="badge bg-dark">${d.site||'—'}</span>
+              </div>
+            </div>
+
+            <h6 class="fw-bold mb-1">
+              <a href="${d.url||'#'}" target="_blank" class="text-decoration-none text-dark">
+                ${d.marque_norm||d.marque||'—'} ${d.modele_norm||d.modele||''}
+              </a>
+            </h6>
+            <div class="text-muted small mb-2">${d.version_norm||d.version||''}</div>
+
+            <div class="row text-center mb-3">
+              <div class="col-4">
+                <div class="fw-bold">${d.annee||'—'}</div>
+                <div class="text-muted" style="font-size:.75rem">Année</div>
+              </div>
+              <div class="col-4">
+                <div class="fw-bold">${d.km ? d.km.toLocaleString('fr')+' km' : '—'}</div>
+                <div class="text-muted" style="font-size:.75rem">Kilométrage</div>
+              </div>
+              <div class="col-4">
+                <div class="fw-bold">${d.carburant||'—'}</div>
+                <div class="text-muted" style="font-size:.75rem">Carburant</div>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <span class="fs-5 fw-bold text-success">${formatPrix(d.prix)}</span>
+              <span class="prix-median">${d.prix_median_segment ? formatPrix(d.prix_median_segment) : ''}</span>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="economie-badge text-success">-${formatPrix(d.economie_eur)}</span>
+              <span class="badge bg-success fs-6">${d.economie_pct}% sous marché</span>
+            </div>
+
+            <!-- Barre visuelle de l'économie -->
+            <div class="mb-2">
+              <div class="d-flex justify-content-between" style="font-size:.75rem">
+                <span class="text-muted">0%</span>
+                <span class="text-muted">Économie vs segment</span>
+                <span class="text-muted">40%+</span>
+              </div>
+              <div class="bg-light rounded" style="height:6px">
+                <div class="pct-bar" style="width:${pctWidth}%"></div>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mt-2">
+              <small class="text-muted">${d.ville||'—'} • ${formatDate(d.date_premiere_vue)}</small>
+              <a href="${d.url||'#'}" target="_blank" class="btn btn-sm btn-outline-dark">Voir →</a>
+            </div>
+          </div>
+        </div>
+      `;
+      grid.appendChild(col);
+    });
+  }
+
+  /* ── Helpers ── */
+  function formatPrix(p) { return p ? p.toLocaleString('fr') + ' €' : '—'; }
+
+  function formatDate(d) {
+    if (!d) return '—';
+    const today = new Date().toISOString().slice(0,10);
+    const date  = d.slice(0,10);
+    if (date === today) return "Aujourd'hui";
+    const diff = Math.floor((new Date(today) - new Date(date)) / 86400000);
+    return diff === 1 ? 'Hier' : diff < 7 ? `Il y a ${diff}j` : date;
+  }
+</script>
+</body>
+</html>

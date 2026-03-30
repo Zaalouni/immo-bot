@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Auto-Bot LU — Toutes les annonces</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#212529">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="AutoBot LU">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+  <!-- SEO / OpenGraph -->
+  <meta name="description" content="Surveillance annonces voitures Luxembourg — Auto-Bot">
+  <meta name="robots" content="noindex,nofollow">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+  <style>
+    body { background: #f8f9fa; font-size: 14px; }
+    .navbar-brand { font-weight: 700; font-size: 1.1rem; }
+    .badge-nouveau   { background: #198754; }
+    .badge-baisse    { background: #0d6efd; }
+    .badge-negociable{ background: #ffc107; color: #000; }
+    .badge-suspect   { background: #dc3545; }
+    .badge-doublon   { background: #6f42c1; }
+    .score-high  { color: #198754; font-weight: 700; }
+    .score-mid   { color: #fd7e14; font-weight: 700; }
+    .score-low   { color: #dc3545; font-weight: 700; }
+    .nav-pills .nav-link.active { background: #212529; }
+    .nav-pills .nav-link { color: #212529; }
+    #stats-bar { background: #212529; color: #fff; padding: 8px 0; font-size: 13px; }
+    table.dataTable thead th { background: #212529; color: #fff; }
+    .table-hover tbody tr:hover { background: #e9f5ff; }
+  </style>
+</head>
+<body>
+
+<!-- Barre de navigation -->
+<nav class="navbar navbar-dark bg-dark px-3">
+  <span class="navbar-brand">🚗 Auto-Bot Luxembourg</span>
+  <ul class="nav nav-pills">
+    <li class="nav-item"><a class="nav-link active" href="index.html">Annonces</a></li>
+    <li class="nav-item"><a class="nav-link" href="deals.html">Deals</a></li>
+    <li class="nav-item"><a class="nav-link" href="rapport.html">Rapport</a></li>
+    <li class="nav-item"><a class="nav-link" href="watchlist.html">Watchlist</a></li>
+    <li class="nav-item"><a class="nav-link" href="market.html">Marché</a></li>
+    <li class="nav-item"><a class="nav-link" href="compare.html">Comparer</a></li>
+    <li class="nav-item"><a class="nav-link" href="budget.html">Budget</a></li>
+    <li class="nav-item"><a class="nav-link" href="top-models.html">Top Modèles</a></li>
+  </ul>
+</nav>
+
+<!-- Barre de stats rapides -->
+<div id="stats-bar">
+  <div class="container-fluid d-flex gap-4 justify-content-center">
+    <span>📋 Annonces actives : <strong id="nb-actives">—</strong></span>
+    <span>🆕 Nouvelles aujourd'hui : <strong id="nb-nouvelles">—</strong></span>
+    <span>💶 Prix moyen : <strong id="prix-moyen">—</strong></span>
+    <span>🕐 Mis à jour : <strong id="last-update">—</strong></span>
+  </div>
+</div>
+
+<!-- Filtres rapides -->
+<div class="container-fluid mt-3">
+  <div class="card shadow-sm mb-3">
+    <div class="card-body py-2">
+      <div class="row g-2 align-items-end">
+        <div class="col-md-2">
+          <label class="form-label mb-1">Marque</label>
+          <select id="filter-marque" class="form-select form-select-sm">
+            <option value="">Toutes</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label mb-1">Carburant</label>
+          <select id="filter-carburant" class="form-select form-select-sm">
+            <option value="">Tous</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label mb-1">Prix max (€)</label>
+          <input type="number" id="filter-prix-max" class="form-control form-control-sm" placeholder="ex: 20000">
+        </div>
+        <div class="col-md-2">
+          <label class="form-label mb-1">Km max</label>
+          <input type="number" id="filter-km-max" class="form-control form-control-sm" placeholder="ex: 80000">
+        </div>
+        <div class="col-md-2">
+          <label class="form-label mb-1">Année min</label>
+          <input type="number" id="filter-annee-min" class="form-control form-control-sm" placeholder="ex: 2018">
+        </div>
+        <div class="col-md-2">
+          <label class="form-label mb-1">Site</label>
+          <select id="filter-site" class="form-select form-select-sm">
+            <option value="">Tous</option>
+          </select>
+        </div>
+      </div>
+      <div class="row g-2 mt-1">
+        <div class="col-auto">
+          <button class="btn btn-sm btn-dark" onclick="applyFilters()">Filtrer</button>
+        </div>
+        <div class="col-auto">
+          <button class="btn btn-sm btn-outline-secondary" onclick="resetFilters()">Réinitialiser</button>
+        </div>
+        <div class="col-auto ms-2">
+          <div class="form-check form-check-inline mt-1">
+            <input class="form-check-input" type="checkbox" id="only-new">
+            <label class="form-check-label">Nouveaux seulement</label>
+          </div>
+          <div class="form-check form-check-inline mt-1">
+            <input class="form-check-input" type="checkbox" id="only-deals">
+            <label class="form-check-label">Bonnes affaires</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tableau principal -->
+  <div class="card shadow-sm">
+    <div class="card-body p-2">
+      <table id="table-listings" class="table table-hover table-sm w-100">
+        <thead>
+          <tr>
+            <th>Marque / Modèle</th>
+            <th>Année</th>
+            <th>Km</th>
+            <th>Prix</th>
+            <th>Carburant</th>
+            <th>Boîte</th>
+            <th>Ville</th>
+            <th>Site</th>
+            <th>Deal</th>
+            <th>Risque</th>
+            <th>Statut</th>
+            <th>Vu</th>
+          </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<script src="data/listings.js"></script>
+<script src="data/stats.js"></script>
+<script>
+  /* Enregistrement du Service Worker PWA */
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  }
+</script>
+<script>
+  /* ── Données ── */
+  const listings = typeof LISTINGS !== 'undefined' ? LISTINGS : [];
+  const stats    = typeof STATS    !== 'undefined' ? STATS    : {};
+
+  let filteredListings = [...listings];
+  let dtTable = null;
+
+  /* ── Init ── */
+  document.addEventListener('DOMContentLoaded', () => {
+    fillStats();
+    fillFilters();
+    renderTable(listings);
+  });
+
+  /* ── Stats bar ── */
+  function fillStats() {
+    document.getElementById('nb-actives').textContent   = stats.total_actives || listings.length;
+    document.getElementById('nb-nouvelles').textContent = stats.nouvelles_aujourd_hui || '—';
+    document.getElementById('prix-moyen').textContent   = stats.prix_moyen ? formatPrix(stats.prix_moyen) : '—';
+    document.getElementById('last-update').textContent  = stats.date_calcul ? stats.date_calcul.slice(0,16) : '—';
+  }
+
+  /* ── Remplir les selects de filtre ── */
+  function fillFilters() {
+    const marques   = [...new Set(listings.map(l => l.marque_norm).filter(Boolean))].sort();
+    const carburants= [...new Set(listings.map(l => l.carburant).filter(Boolean))].sort();
+    const sites     = [...new Set(listings.map(l => l.site).filter(Boolean))].sort();
+
+    fillSelect('filter-marque',    marques);
+    fillSelect('filter-carburant', carburants);
+    fillSelect('filter-site',      sites);
+  }
+
+  function fillSelect(id, values) {
+    const sel = document.getElementById(id);
+    values.forEach(v => {
+      const opt = document.createElement('option');
+      opt.value = v; opt.textContent = v;
+      sel.appendChild(opt);
+    });
+  }
+
+  /* ── Filtres ── */
+  function applyFilters() {
+    const marque    = document.getElementById('filter-marque').value.toLowerCase();
+    const carburant = document.getElementById('filter-carburant').value.toLowerCase();
+    const prixMax   = parseInt(document.getElementById('filter-prix-max').value) || Infinity;
+    const kmMax     = parseInt(document.getElementById('filter-km-max').value) || Infinity;
+    const anneeMin  = parseInt(document.getElementById('filter-annee-min').value) || 0;
+    const site      = document.getElementById('filter-site').value.toLowerCase();
+    const onlyNew   = document.getElementById('only-new').checked;
+    const onlyDeals = document.getElementById('only-deals').checked;
+    const today     = new Date().toISOString().slice(0, 10);
+
+    filteredListings = listings.filter(l => {
+      if (marque    && !(l.marque_norm||'').toLowerCase().includes(marque))    return false;
+      if (carburant && !(l.carburant||'').toLowerCase().includes(carburant))   return false;
+      if (l.prix    && l.prix > prixMax)  return false;
+      if (l.km      && l.km  > kmMax)     return false;
+      if (l.annee   && l.annee < anneeMin) return false;
+      if (site      && !(l.site||'').toLowerCase().includes(site))             return false;
+      if (onlyNew   && (l.date_premiere_vue||'').slice(0,10) !== today)        return false;
+      if (onlyDeals && (!l.deal_score || l.deal_score < 60))                   return false;
+      return true;
+    });
+
+    renderTable(filteredListings);
+  }
+
+  function resetFilters() {
+    ['filter-marque','filter-carburant','filter-site'].forEach(id => document.getElementById(id).value = '');
+    ['filter-prix-max','filter-km-max','filter-annee-min'].forEach(id => document.getElementById(id).value = '');
+    ['only-new','only-deals'].forEach(id => document.getElementById(id).checked = false);
+    renderTable(listings);
+  }
+
+  /* ── Tableau ── */
+  function renderTable(data) {
+    if (dtTable) { dtTable.destroy(); dtTable = null; }
+
+    const tbody = document.getElementById('table-body');
+    tbody.innerHTML = '';
+
+    data.forEach(l => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><a href="${l.url||'#'}" target="_blank" class="text-decoration-none fw-semibold">
+          ${l.marque_norm||l.marque||'—'} ${l.modele_norm||l.modele||''}
+        </a><br><small class="text-muted">${l.version_norm||l.version||''}</small></td>
+        <td>${l.annee||'—'}</td>
+        <td>${l.km ? l.km.toLocaleString('fr')+' km' : '—'}</td>
+        <td class="fw-bold">${l.prix ? formatPrix(l.prix) : '—'}</td>
+        <td>${l.carburant||'—'}</td>
+        <td>${l.boite||'—'}</td>
+        <td>${l.ville||'—'}</td>
+        <td><span class="badge bg-secondary">${l.site||'—'}</span></td>
+        <td>${scoreBadge(l.deal_score, 'deal')}</td>
+        <td>${scoreBadge(l.risk_score, 'risk')}</td>
+        <td>${badges(l)}</td>
+        <td><small class="text-muted">${formatDate(l.date_premiere_vue)}</small></td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    dtTable = $('#table-listings').DataTable({
+      pageLength: 25,
+      order: [[0, 'asc']],
+      language: {
+        search: 'Recherche :',
+        lengthMenu: 'Afficher _MENU_ lignes',
+        info: '_START_–_END_ sur _TOTAL_',
+        paginate: { previous: '‹', next: '›' },
+      },
+      columnDefs: [{ orderable: false, targets: [10, 11] }],
+    });
+  }
+
+  /* ── Helpers d'affichage ── */
+  function scoreBadge(score, type) {
+    if (!score && score !== 0) return '<span class="text-muted">—</span>';
+    const s = Math.round(score);
+    if (type === 'deal') {
+      const cls = s >= 70 ? 'score-high' : s >= 50 ? 'score-mid' : 'score-low';
+      return `<span class="${cls}">${s}</span>`;
+    }
+    // risk score : élevé = mauvais
+    const cls = s >= 70 ? 'score-low' : s >= 40 ? 'score-mid' : 'score-high';
+    return `<span class="${cls}">${s}</span>`;
+  }
+
+  function badges(l) {
+    const today = new Date().toISOString().slice(0, 10);
+    let out = '';
+    if ((l.date_premiere_vue||'').slice(0,10) === today)
+      out += '<span class="badge badge-nouveau me-1">NOUVEAU</span>';
+    if (l.nb_jours_visibles >= 30)
+      out += '<span class="badge badge-negociable me-1">NÉGOCIABLE</span>';
+    if (l.risk_score && l.risk_score > 70)
+      out += '<span class="badge badge-suspect me-1">⚠ SUSPECT</span>';
+    return out || '<span class="text-muted">—</span>';
+  }
+
+  function formatPrix(p) { return p.toLocaleString('fr') + ' €'; }
+
+  function formatDate(d) {
+    if (!d) return '—';
+    const today = new Date().toISOString().slice(0, 10);
+    const date  = d.slice(0, 10);
+    if (date === today) return "Aujourd'hui";
+    const diff = Math.floor((new Date(today) - new Date(date)) / 86400000);
+    if (diff === 1) return 'Hier';
+    if (diff < 7)   return `Il y a ${diff}j`;
+    return date;
+  }
+</script>
+</body>
+</html>
