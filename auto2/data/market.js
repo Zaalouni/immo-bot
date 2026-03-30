@@ -1,6 +1,6 @@
-// Généré automatiquement le 2026-03-30 23:02
+// Généré automatiquement le 2026-03-30 23:22
 const MARKET = {
-  "date_calcul": "2026-03-30T23:02:59.127757",
+  "date_calcul": "2026-03-30T23:22:16.057088",
   "nb_annonces": 1,
   "prix_moyen": 17900,
   "km_moyen": 62000,

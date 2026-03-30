@@ -1,4 +1,4 @@
-// Généré automatiquement le 2026-03-30 23:02
+// Généré automatiquement le 2026-03-30 23:22
 const RAPPORT = {
   "date": "2026-03-30",
   "nb_nouvelles": 0,
@@ -10,7 +10,29 @@ const RAPPORT = {
   "prix_moyen": 17900,
   "prix_moyen_hier": 0,
   "meilleure_affaire": null,
-  "scrapers_status": [],
+  "scrapers_status": [
+    {
+      "site": "luxauto",
+      "status": "success",
+      "nb_annonces": 0,
+      "nb_erreurs": 0,
+      "heure": "2026-03-30T23:13"
+    },
+    {
+      "site": "autoscout24",
+      "status": "success",
+      "nb_annonces": 0,
+      "nb_erreurs": 0,
+      "heure": "2026-03-30T23:12"
+    },
+    {
+      "site": "autopolis",
+      "status": "success",
+      "nb_annonces": 0,
+      "nb_erreurs": 0,
+      "heure": "2026-03-30T23:10"
+    }
+  ],
   "timeline_7j": [],
   "annonce_plus_ancienne": {
     "id": "test_abc123",

@@ -32,18 +32,25 @@
 </head>
 <body>
 
-<nav class="navbar navbar-dark bg-dark px-3">
-  <span class="navbar-brand">🚗 Auto-Bot Luxembourg</span>
-  <ul class="nav nav-pills">
-    <li class="nav-item"><a class="nav-link" href="index.html">Annonces</a></li>
-    <li class="nav-item"><a class="nav-link" href="deals.html">Deals</a></li>
-    <li class="nav-item"><a class="nav-link" href="rapport.html">Rapport</a></li>
-    <li class="nav-item"><a class="nav-link" href="watchlist.html">Watchlist</a></li>
-    <li class="nav-item"><a class="nav-link" href="market.html">Marché</a></li>
-    <li class="nav-item"><a class="nav-link" href="compare.html">Comparer</a></li>
-    <li class="nav-item"><a class="nav-link" href="budget.html">Budget</a></li>
-    <li class="nav-item"><a class="nav-link active" href="top-models.html">Top Modèles</a></li>
-  </ul>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+  <a class="navbar-brand fw-bold" href="index.html">🚗 Auto-Bot LU</a>
+  <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
+          data-bs-target="#navMenu" aria-controls="navMenu"
+          aria-expanded="false" aria-label="Menu navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navMenu">
+    <ul class="navbar-nav ms-auto flex-wrap">
+      <li class="nav-item"><a class="nav-link" href="index.html">📋 Annonces</a></li>
+      <li class="nav-item"><a class="nav-link" href="deals.html">🔥 Deals</a></li>
+      <li class="nav-item"><a class="nav-link" href="rapport.html">📊 Rapport</a></li>
+      <li class="nav-item"><a class="nav-link" href="watchlist.html">👁️ Watchlist</a></li>
+      <li class="nav-item"><a class="nav-link" href="market.html">📈 Marché</a></li>
+      <li class="nav-item"><a class="nav-link" href="compare.html">⚖️ Comparer</a></li>
+      <li class="nav-item"><a class="nav-link" href="budget.html">💶 Budget</a></li>
+      <li class="nav-item"><a class="nav-link active" href="top-models.html">🏆 Top Modèles</a></li>
+    </ul>
+  </div>
 </nav>
 
 <div id="stats-bar">
@@ -322,5 +329,6 @@
   renderAll();
 </script>
 <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

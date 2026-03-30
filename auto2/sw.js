@@ -3,7 +3,7 @@
    Stratégie : Cache First pour les assets, Network First pour les données JS.
    Scope : /immo-bot/auto2/
 */
-const CACHE_NAME = 'autobot-lu-v2';
+const CACHE_NAME = 'autobot-lu-v3';
 
 /* Assets statiques mis en cache au premier chargement (chemins relatifs au scope) */
 const STATIC_ASSETS = [
@@ -45,6 +45,12 @@ self.addEventListener('activate', event => {
 /* ── Fetch : stratégie selon le type de ressource ── */
 self.addEventListener('fetch', event => {
   const url = event.request.url;
+
+  /* Ignorer tout ce qui n'est pas HTTP/HTTPS (chrome-extension://, etc.) */
+  if (!url.startsWith('http')) return;
+
+  /* Ignorer les requêtes cross-origin qui ne sont pas des assets du site */
+  if (!url.includes('zaalouni.github.io') && !url.includes('cdn.jsdelivr.net') && !url.includes('cdn.datatables.net') && !url.includes('code.jquery.com')) return;
 
   /* Données dynamiques (listings.js, deals.js...) → Network First */
   if (DATA_PATTERNS.some(p => url.includes(p))) {
