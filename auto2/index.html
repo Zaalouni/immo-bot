@@ -181,11 +181,35 @@
         <label class="form-label">Année min</label>
         <input type="number" id="filter-annee-min" class="form-control form-control-sm" placeholder="2000">
       </div>
+      <div class="col-md-1 col-6">
+        <label class="form-label">Pays</label>
+        <select id="filter-pays" class="form-select form-select-sm">
+          <option value="">Tous</option>
+          <option value="Luxembourg">🇱🇺 LU</option>
+          <option value="Allemagne">🇩🇪 DE</option>
+          <option value="France">🇫🇷 FR</option>
+          <option value="Belgique">🇧🇪 BE</option>
+        </select>
+      </div>
+      <div class="col-md-1 col-6">
+        <label class="form-label">Vendeur</label>
+        <select id="filter-vendeur" class="form-select form-select-sm">
+          <option value="">Tous</option>
+          <option value="pro">Pro</option>
+          <option value="particulier">Particulier</option>
+        </select>
+      </div>
       <div class="col-md-2 col-6">
         <label class="form-label">Source</label>
         <select id="filter-site" class="form-select form-select-sm"><option value="">Tous</option></select>
       </div>
-      <div class="col-md-3 col-12 d-flex align-items-end gap-2 flex-wrap">
+      <div class="col-md-1 col-12 d-flex align-items-end">
+        <div class="form-check mb-0">
+          <input class="form-check-input" type="checkbox" id="only-ct">
+          <label class="form-check-label" for="only-ct" style="font-size:12px">CT renseigné</label>
+        </div>
+      </div>
+      <div class="col-md-2 col-12 d-flex align-items-end gap-2 flex-wrap">
         <button class="btn-filter btn" onclick="applyFilters()">Filtrer</button>
         <button class="btn-reset btn" onclick="resetFilters()">Réinitialiser</button>
         <div class="d-flex gap-3 ms-1">
@@ -214,10 +238,11 @@
             <th>Prix</th>
             <th>Carburant</th>
             <th>Boîte</th>
-            <th>Ville</th>
+            <th>CT</th>
+            <th>Pays</th>
+            <th>Vendeur</th>
             <th>Site</th>
             <th>Deal</th>
-            <th>Risque</th>
             <th>Statut</th>
             <th>Vu</th>
           </tr>
@@ -273,8 +298,11 @@
     const kmMax     = parseInt(document.getElementById('filter-km-max').value) || Infinity;
     const anneeMin  = parseInt(document.getElementById('filter-annee-min').value) || 0;
     const site      = document.getElementById('filter-site').value.toLowerCase();
+    const pays      = document.getElementById('filter-pays').value;
+    const vendeur   = document.getElementById('filter-vendeur').value;
     const onlyNew   = document.getElementById('only-new').checked;
     const onlyDeals = document.getElementById('only-deals').checked;
+    const onlyCt    = document.getElementById('only-ct').checked;
     const today     = new Date().toISOString().slice(0, 10);
     const filtered  = listings.filter(l => {
       if (marque    && !(l.marque_norm||'').toLowerCase().includes(marque))    return false;
@@ -283,17 +311,20 @@
       if (l.km      && l.km  > kmMax)     return false;
       if (l.annee   && l.annee < anneeMin) return false;
       if (site      && !(l.site||'').toLowerCase().includes(site))             return false;
+      if (pays      && (l.pays||'') !== pays)                                  return false;
+      if (vendeur   && (l.vendeur_type||'') !== vendeur)                       return false;
       if (onlyNew   && (l.date_premiere_vue||'').slice(0,10) !== today)        return false;
       if (onlyDeals && (!l.deal_score || l.deal_score < 60))                   return false;
+      if (onlyCt    && !l.controle_technique)                                  return false;
       return true;
     });
     renderTable(filtered);
   }
 
   function resetFilters() {
-    ['filter-marque','filter-carburant','filter-site'].forEach(id => document.getElementById(id).value = '');
+    ['filter-marque','filter-carburant','filter-site','filter-pays','filter-vendeur'].forEach(id => document.getElementById(id).value = '');
     ['filter-prix-max','filter-km-max','filter-annee-min'].forEach(id => document.getElementById(id).value = '');
-    ['only-new','only-deals'].forEach(id => document.getElementById(id).checked = false);
+    ['only-new','only-deals','only-ct'].forEach(id => document.getElementById(id).checked = false);
     renderTable(listings);
   }
 
@@ -303,6 +334,13 @@
     tbody.innerHTML = '';
     data.forEach(l => {
       const tr = document.createElement('tr');
+      const paysFlag = {Luxembourg:'🇱🇺',Allemagne:'🇩🇪',France:'🇫🇷',Belgique:'🇧🇪',Autriche:'🇦🇹',Suisse:'🇨🇭'}[l.pays] || '';
+      const ctBadge  = l.controle_technique
+        ? `<span style="color:var(--green);font-family:'DM Mono',monospace;font-size:12px">${l.controle_technique}</span>`
+        : `<span style="color:var(--border);font-size:11px">—</span>`;
+      const vBadge   = l.vendeur_type === 'particulier'
+        ? `<span style="color:var(--amber);font-size:11px">Part.</span>`
+        : `<span style="color:var(--muted);font-size:11px">Pro</span>`;
       tr.innerHTML = `
         <td>
           <a href="${l.url||'#'}" target="_blank" class="listing-link">${l.marque_norm||l.marque||'—'} ${l.modele_norm||l.modele||''}</a>
@@ -313,10 +351,11 @@
         <td class="prix-mono">${l.prix ? formatPrix(l.prix) : '—'}</td>
         <td>${l.carburant||'—'}</td>
         <td>${l.boite||'—'}</td>
-        <td>${l.ville||'—'}</td>
+        <td>${ctBadge}</td>
+        <td style="white-space:nowrap">${paysFlag} <span style="font-size:12px;color:var(--muted)">${l.pays||'—'}</span></td>
+        <td>${vBadge}</td>
         <td><span class="badge site-badge">${l.site||'—'}</span></td>
         <td>${scoreBadge(l.deal_score,'deal')}</td>
-        <td>${scoreBadge(l.risk_score,'risk')}</td>
         <td>${badges(l)}</td>
         <td style="white-space:nowrap"><span style="color:var(--muted);font-size:12px">${formatDate(l.date_premiere_vue)}</span></td>
       `;
@@ -326,7 +365,7 @@
       pageLength: 25,
       order: [[0,'asc']],
       language: { search:'', searchPlaceholder:'Rechercher…', lengthMenu:'_MENU_ lignes', info:'_START_–_END_ / _TOTAL_', paginate:{previous:'‹',next:'›'} },
-      columnDefs: [{ orderable: false, targets: [10,11] }],
+      columnDefs: [{ orderable: false, targets: [11,12] }],
     });
   }
 

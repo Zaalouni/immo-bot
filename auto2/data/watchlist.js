@@ -1,4 +1,4 @@
-// Généré automatiquement le 2026-03-31 07:08
+// Généré automatiquement le 2026-03-31 22:00
 const WATCHLIST_DATA = {
   "items": [
     {
@@ -11,56 +11,8 @@ const WATCHLIST_DATA = {
         "carburant": "Hybride",
         "priorite": "haute"
       },
-      "nb_matches": 1,
-      "matches": [
-        {
-          "id": "test_abc123",
-          "site": "autoscout24",
-          "url": "https://test.com/123",
-          "titre_brut": "",
-          "marque": "Toyota",
-          "modele": "Corolla",
-          "version": "2.0 Hybrid",
-          "annee": 2020,
-          "km": 62000,
-          "prix": 17900,
-          "prix_initial": 18500,
-          "carburant": "Hybride",
-          "boite": "Automatique",
-          "couleur": "",
-          "puissance_cv": null,
-          "nb_portes": null,
-          "vendeur_type": "",
-          "vendeur_nom": "",
-          "ville": "Luxembourg",
-          "pays": "Luxembourg",
-          "photos_url": "[]",
-          "nb_photos": 0,
-          "marque_norm": "Toyota",
-          "modele_norm": "Corolla",
-          "version_norm": "2.0 Hybrid",
-          "generation_norm": "",
-          "carrosserie": "",
-          "cylindree_cc": null,
-          "puissance_kw": null,
-          "puissance_ch": null,
-          "co2_g_km": null,
-          "norme_euro": "",
-          "mise_en_circulation": null,
-          "tranche_km": "60-90k",
-          "annonce_hash_metier": "7facf11f10b9f980",
-          "status": "missing_once",
-          "nb_jours_visibles": 1,
-          "nb_reapparitions": 0,
-          "date_disparition": null,
-          "source_last_run_id": "4f1a05bc-f4d",
-          "date_premiere_vue": "2026-03-29T21:40:16.187423",
-          "date_derniere_vue": "2026-03-29T21:40:16.197763",
-          "deal_score": 43.0,
-          "risk_score": 25.0,
-          "confidence_score": null
-        }
-      ],
+      "nb_matches": 0,
+      "matches": [],
       "nouvelle_depuis_hier": 0
     },
     {
@@ -90,6 +42,6 @@ const WATCHLIST_DATA = {
       "nouvelle_depuis_hier": 0
     }
   ],
-  "total_matches": 1,
+  "total_matches": 0,
   "date_calcul": "2026-03-31"
 };

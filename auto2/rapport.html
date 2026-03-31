@@ -139,28 +139,40 @@
 
   <!-- KPI cards -->
   <div class="row g-3 mb-4">
-    <div class="col-6 col-md-3">
+    <div class="col-6 col-md-2">
       <div class="kpi-card kpi-green">
         <div class="kpi-val" id="kpi-nouvelles">—</div>
         <div class="kpi-label">Nouvelles annonces</div>
       </div>
     </div>
-    <div class="col-6 col-md-3">
+    <div class="col-6 col-md-2">
       <div class="kpi-card kpi-amber">
         <div class="kpi-val" id="kpi-disparues">—</div>
         <div class="kpi-label">Disparues (vendues ?)</div>
       </div>
     </div>
-    <div class="col-6 col-md-3">
+    <div class="col-6 col-md-2">
       <div class="kpi-card kpi-accent">
         <div class="kpi-val" id="kpi-baisses">—</div>
         <div class="kpi-label">Baisses de prix</div>
       </div>
     </div>
-    <div class="col-6 col-md-3">
+    <div class="col-6 col-md-2">
       <div class="kpi-card kpi-surface">
         <div class="kpi-val" id="kpi-total">—</div>
-        <div class="kpi-label">Annonces actives</div>
+        <div class="kpi-label">Actives total</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-2">
+      <div class="kpi-card" style="border-top:2px solid #3fb950">
+        <div class="kpi-val" id="kpi-lu" style="color:#3fb950">—</div>
+        <div class="kpi-label">🇱🇺 Luxembourg</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-2">
+      <div class="kpi-card" style="border-top:2px solid #bc8cff">
+        <div class="kpi-val" id="kpi-de" style="color:#bc8cff">—</div>
+        <div class="kpi-label">🇩🇪 Allemagne</div>
       </div>
     </div>
   </div>
@@ -266,6 +278,9 @@
     document.getElementById('kpi-disparues').textContent = rapport.nb_disparues  || 0;
     document.getElementById('kpi-baisses').textContent   = rapport.nb_prix_baisse|| 0;
     document.getElementById('kpi-total').textContent     = stats.total_actives   || 0;
+    const pays = stats.repartition_pays || {};
+    document.getElementById('kpi-lu').textContent = pays['Luxembourg'] || 0;
+    document.getElementById('kpi-de').textContent = pays['Allemagne']  || 0;
 
     const tendance = rapport.tendance_marche || 'stable';
     const icons  = { hausse: '↑', baisse: '↓', stable: '→' };

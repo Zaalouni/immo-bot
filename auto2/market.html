@@ -156,6 +156,28 @@
     </div>
   </div>
 
+  <!-- Pays + Vendeur + Prix/Pays -->
+  <div class="row g-3">
+    <div class="col-lg-3">
+      <div class="chart-card">
+        <div class="chart-title">Répartition par pays</div>
+        <canvas id="chart-pays"></canvas>
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <div class="chart-card">
+        <div class="chart-title">Vendeur</div>
+        <canvas id="chart-vendeur"></canvas>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="chart-card">
+        <div class="chart-title">Prix moyen par pays</div>
+        <canvas id="chart-prix-pays"></canvas>
+      </div>
+    </div>
+  </div>
+
   <!-- Scatter -->
   <div class="row g-3">
     <div class="col-12">
@@ -307,6 +329,27 @@ function pieChart(id, labels, data) {
   const d = MARKET.repartition_sites || {};
   const sorted = Object.entries(d).sort((a,b)=>b[1]-a[1]);
   pieChart('chart-sites', sorted.map(x=>x[0]), sorted.map(x=>x[1]));
+})();
+
+// ── Pays + Vendeur ────────────────────────────────────────────────────────────
+(function() {
+  const d = MARKET.repartition_pays || {};
+  const sorted = Object.entries(d).sort((a,b)=>b[1]-a[1]);
+  pieChart('chart-pays', sorted.map(x=>x[0]), sorted.map(x=>x[1]));
+})();
+
+(function() {
+  const d = MARKET.repartition_vendeur || {};
+  const labels = Object.keys(d);
+  const vals   = Object.values(d);
+  pieChart('chart-vendeur', labels, vals);
+})();
+
+(function() {
+  const d = MARKET.prix_par_pays || {};
+  const sorted = Object.entries(d).sort((a,b)=>b[1]-a[1]);
+  if (!sorted.length) return;
+  barChart('chart-prix-pays', sorted.map(x=>x[0]), sorted.map(x=>x[1]), 'Prix moyen €', '#e3b341');
 })();
 
 // ── Scatter ───────────────────────────────────────────────────────────────────
