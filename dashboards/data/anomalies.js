@@ -1,6 +1,30 @@
-// Genere le 30/03/2026 21:55
-// 41 anomalies detectees
+// Genere le 31/03/2026 18:49
+// 43 anomalies detectees
 const ANOMALIES = [
+  {
+    "listing_id": "vivi_213793",
+    "title": "1",
+    "city": "Luxembourg",
+    "price": 1700,
+    "surface": 30,
+    "site": "VIVI.lu",
+    "url": "https://www.vivi.lu/fr/propriete/lieu/appartement/luxembourg/studio-1-chambre-a-louer/213793",
+    "reasons": [
+      "Prix/m² élevé: 56.7€/m²"
+    ]
+  },
+  {
+    "listing_id": "athome_8270247",
+    "title": "+352 691 222 295 bernard@mtinvest.lu +352 691 348 042 felix@mtinvest.l",
+    "city": "Centre",
+    "price": 1900,
+    "surface": 30,
+    "site": "Athome.lu",
+    "url": "https://www.athome.lu/location/studio/luxembourg-centre-ville/id-8270247.html",
+    "reasons": [
+      "Prix/m² élevé: 63.3€/m²"
+    ]
+  },
   {
     "listing_id": "immolu_1681427",
     "title": "Appartement 1 chambre a louer — Luxembourg-Rollingergrund",
