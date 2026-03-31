@@ -3,135 +3,209 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Auto-Bot LU — Toutes les annonces</title>
-
-  <!-- PWA -->
+  <title>Auto-Bot LU — Annonces</title>
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#212529">
+  <meta name="theme-color" content="#0d1117">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="AutoBot LU">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
-
-  <!-- SEO / OpenGraph -->
   <meta name="description" content="Surveillance annonces voitures Luxembourg — Auto-Bot">
   <meta name="robots" content="noindex,nofollow">
-
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
   <style>
-    body { background: #f8f9fa; font-size: 14px; }
-    .navbar-brand { font-weight: 700; font-size: 1.1rem; }
-    .badge-nouveau   { background: #198754; }
-    .badge-baisse    { background: #0d6efd; }
-    .badge-negociable{ background: #ffc107; color: #000; }
-    .badge-suspect   { background: #dc3545; }
-    .badge-doublon   { background: #6f42c1; }
-    .score-high  { color: #198754; font-weight: 700; }
-    .score-mid   { color: #fd7e14; font-weight: 700; }
-    .score-low   { color: #dc3545; font-weight: 700; }
-    .nav-pills .nav-link.active { background: #212529; }
-    .nav-pills .nav-link { color: #212529; }
-    #stats-bar { background: #212529; color: #fff; padding: 8px 0; font-size: 13px; }
-    table.dataTable thead th { background: #212529; color: #fff; }
-    .table-hover tbody tr:hover { background: #e9f5ff; }
+    :root {
+      --bg: #0d1117; --surface: #161b22; --surface2: #21262d;
+      --border: #30363d; --text: #c9d1d9; --text-hi: #f0f6fc; --muted: #8b949e;
+      --accent: #388bfd; --green: #3fb950; --amber: #d29922;
+      --red: #f85149; --gold: #e3b341; --purple: #bc8cff;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { background: var(--bg); color: var(--text); font-family: 'Barlow', sans-serif; font-size: 14px; }
+    a { color: var(--accent); }
+    a:hover { color: #58a6ff; }
+
+    /* ── Navbar ── */
+    .navbar { background: var(--surface) !important; border-bottom: 1px solid var(--border); padding: 0 1rem; }
+    .navbar-brand { font-family: 'Barlow Condensed', sans-serif; font-size: 1.2rem; font-weight: 800; letter-spacing: .5px; color: var(--text-hi) !important; }
+    .navbar-brand span { color: var(--accent); }
+    .nav-link { color: var(--muted) !important; font-size: 13px; font-weight: 500; padding: 1rem .7rem !important; transition: color .15s; border-bottom: 2px solid transparent; }
+    .nav-link:hover { color: var(--text-hi) !important; }
+    .nav-link.active { color: var(--accent) !important; border-bottom-color: var(--accent); }
+    .navbar-toggler { border-color: var(--border) !important; }
+    .navbar-toggler-icon { filter: invert(1); }
+
+    /* ── Stats bar ── */
+    #stats-bar { background: var(--surface2); border-bottom: 1px solid var(--border); padding: 8px 0; font-size: 12px; font-family: 'DM Mono', monospace; }
+    #stats-bar strong { color: var(--text-hi); font-weight: 500; }
+    .stat-sep { color: var(--border); margin: 0 4px; }
+
+    /* ── Cards ── */
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; }
+    .card-label { font-size: 11px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+
+    /* ── Filters ── */
+    .filter-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+    .form-label { color: var(--muted); font-size: 11px; font-weight: 600; letter-spacing: .5px; text-transform: uppercase; margin-bottom: 4px; }
+    .form-select, .form-control {
+      background: var(--surface2) !important; border: 1px solid var(--border) !important;
+      color: var(--text) !important; border-radius: 6px; font-size: 13px;
+    }
+    .form-select:focus, .form-control:focus { border-color: var(--accent) !important; box-shadow: 0 0 0 2px rgba(56,139,253,.2) !important; outline: none; }
+    .form-check-input { background-color: var(--surface2); border-color: var(--border); }
+    .form-check-input:checked { background-color: var(--accent); border-color: var(--accent); }
+    .form-check-label { color: var(--text); font-size: 13px; }
+
+    /* ── Buttons ── */
+    .btn-filter { background: var(--accent); color: #fff; border: none; border-radius: 6px; padding: 6px 16px; font-size: 13px; font-weight: 600; }
+    .btn-filter:hover { background: #58a6ff; color: #fff; }
+    .btn-reset { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); border-radius: 6px; padding: 6px 16px; font-size: 13px; }
+    .btn-reset:hover { border-color: var(--muted); color: var(--text); }
+
+    /* ── Table DataTables dark ── */
+    .dataTables_wrapper { color: var(--text); }
+    .dataTables_wrapper .dataTables_length,
+    .dataTables_wrapper .dataTables_filter,
+    .dataTables_wrapper .dataTables_info { color: var(--muted); font-size: 12px; }
+    .dataTables_wrapper .dataTables_filter input,
+    .dataTables_wrapper .dataTables_length select {
+      background: var(--surface2) !important; border: 1px solid var(--border) !important;
+      color: var(--text) !important; border-radius: 6px; padding: 4px 8px; margin-left: 4px;
+    }
+    .dataTables_wrapper .dataTables_paginate .paginate_button { color: var(--muted) !important; border-radius: 4px !important; border: 1px solid transparent !important; padding: 4px 10px !important; font-size: 13px; }
+    .dataTables_wrapper .dataTables_paginate .paginate_button:hover { background: var(--surface2) !important; border-color: var(--border) !important; color: var(--text) !important; }
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover { background: var(--accent) !important; border-color: var(--accent) !important; color: #fff !important; }
+    .dataTables_wrapper .dataTables_paginate .paginate_button.disabled { color: var(--border) !important; }
+    table.dataTable { border-collapse: collapse !important; }
+    table.dataTable thead th {
+      background: var(--surface2) !important; color: var(--muted) !important;
+      border-bottom: 2px solid var(--border) !important; border-right: none !important;
+      font-size: 11px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase;
+      padding: 10px 12px !important;
+    }
+    table.dataTable thead th:hover { color: var(--text-hi) !important; }
+    table.dataTable tbody tr { background: var(--surface) !important; }
+    table.dataTable tbody tr:hover td { background: rgba(56,139,253,.06) !important; }
+    table.dataTable tbody td { border-bottom: 1px solid var(--border) !important; color: var(--text) !important; padding: 9px 12px !important; vertical-align: middle; }
+    table.dataTable thead .sorting::after, table.dataTable thead .sorting_asc::after, table.dataTable thead .sorting_desc::after { opacity: .4; }
+
+    /* ── Badges ── */
+    .badge-nou  { background: rgba(63,185,80,.15); color: var(--green); border: 1px solid rgba(63,185,80,.3); font-size: 10px; }
+    .badge-neg  { background: rgba(210,153,34,.15); color: var(--amber); border: 1px solid rgba(210,153,34,.3); font-size: 10px; }
+    .badge-sus  { background: rgba(248,81,73,.15); color: var(--red); border: 1px solid rgba(248,81,73,.3); font-size: 10px; }
+    .site-badge { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); font-size: 10px; }
+
+    /* ── Score colors ── */
+    .s-hi  { color: var(--green);  font-family: 'DM Mono', monospace; font-weight: 500; }
+    .s-mid { color: var(--amber);  font-family: 'DM Mono', monospace; font-weight: 500; }
+    .s-low { color: var(--red);    font-family: 'DM Mono', monospace; font-weight: 500; }
+    .s-none{ color: var(--border); font-family: 'DM Mono', monospace; }
+
+    /* ── Link in table ── */
+    .listing-link { color: var(--text-hi) !important; font-weight: 600; text-decoration: none; }
+    .listing-link:hover { color: var(--accent) !important; }
+    .version-norm { color: var(--muted); font-size: 11px; }
+
+    /* ── Prix mono ── */
+    .prix-mono { font-family: 'DM Mono', monospace; font-weight: 500; color: var(--text-hi); font-size: 13px; }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--surface); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
   </style>
 </head>
 <body>
 
-<!-- Barre de navigation -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-  <a class="navbar-brand fw-bold" href="index.html">🚗 Auto-Bot LU</a>
-  <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
-          data-bs-target="#navMenu" aria-controls="navMenu"
-          aria-expanded="false" aria-label="Menu navigation">
+<!-- Nav -->
+<nav class="navbar navbar-expand-lg">
+  <a class="navbar-brand" href="index.html"><span>◈</span> AUTO-BOT LU</a>
+  <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navMenu">
-    <ul class="navbar-nav ms-auto flex-wrap">
-      <li class="nav-item"><a class="nav-link active" href="index.html">📋 Annonces</a></li>
-      <li class="nav-item"><a class="nav-link" href="deals.html">🔥 Deals</a></li>
-      <li class="nav-item"><a class="nav-link" href="rapport.html">📊 Rapport</a></li>
-      <li class="nav-item"><a class="nav-link" href="watchlist.html">👁️ Watchlist</a></li>
-      <li class="nav-item"><a class="nav-link" href="market.html">📈 Marché</a></li>
-      <li class="nav-item"><a class="nav-link" href="compare.html">⚖️ Comparer</a></li>
-      <li class="nav-item"><a class="nav-link" href="budget.html">💶 Budget</a></li>
-      <li class="nav-item"><a class="nav-link" href="top-models.html">🏆 Top Modèles</a></li>
+    <ul class="navbar-nav ms-auto">
+      <li class="nav-item"><a class="nav-link active" href="index.html">Annonces</a></li>
+      <li class="nav-item"><a class="nav-link" href="deals.html">Deals</a></li>
+      <li class="nav-item"><a class="nav-link" href="rapport.html">Rapport</a></li>
+      <li class="nav-item"><a class="nav-link" href="watchlist.html">Watchlist</a></li>
+      <li class="nav-item"><a class="nav-link" href="market.html">Marché</a></li>
+      <li class="nav-item"><a class="nav-link" href="compare.html">Comparer</a></li>
+      <li class="nav-item"><a class="nav-link" href="budget.html">Budget</a></li>
+      <li class="nav-item"><a class="nav-link" href="top-models.html">Top Modèles</a></li>
     </ul>
   </div>
 </nav>
 
-<!-- Barre de stats rapides -->
+<!-- Stats bar -->
 <div id="stats-bar">
-  <div class="container-fluid d-flex gap-4 justify-content-center">
-    <span>📋 Annonces actives : <strong id="nb-actives">—</strong></span>
-    <span>🆕 Nouvelles aujourd'hui : <strong id="nb-nouvelles">—</strong></span>
-    <span>💶 Prix moyen : <strong id="prix-moyen">—</strong></span>
-    <span>🕐 Mis à jour : <strong id="last-update">—</strong></span>
+  <div class="container-fluid d-flex gap-4 justify-content-center flex-wrap px-3">
+    <span>ACTIVES <strong id="nb-actives">—</strong></span>
+    <span class="stat-sep">|</span>
+    <span>NOUVELLES <strong id="nb-nouvelles">—</strong></span>
+    <span class="stat-sep">|</span>
+    <span>PRIX MOY <strong id="prix-moyen">—</strong></span>
+    <span class="stat-sep">|</span>
+    <span>MAJ <strong id="last-update">—</strong></span>
   </div>
 </div>
 
-<!-- Filtres rapides -->
-<div class="container-fluid mt-3">
-  <div class="card shadow-sm mb-3">
-    <div class="card-body py-2">
-      <div class="row g-2 align-items-end">
-        <div class="col-md-2">
-          <label class="form-label mb-1">Marque</label>
-          <select id="filter-marque" class="form-select form-select-sm">
-            <option value="">Toutes</option>
-          </select>
-        </div>
-        <div class="col-md-2">
-          <label class="form-label mb-1">Carburant</label>
-          <select id="filter-carburant" class="form-select form-select-sm">
-            <option value="">Tous</option>
-          </select>
-        </div>
-        <div class="col-md-2">
-          <label class="form-label mb-1">Prix max (€)</label>
-          <input type="number" id="filter-prix-max" class="form-control form-control-sm" placeholder="ex: 20000">
-        </div>
-        <div class="col-md-2">
-          <label class="form-label mb-1">Km max</label>
-          <input type="number" id="filter-km-max" class="form-control form-control-sm" placeholder="ex: 80000">
-        </div>
-        <div class="col-md-2">
-          <label class="form-label mb-1">Année min</label>
-          <input type="number" id="filter-annee-min" class="form-control form-control-sm" placeholder="ex: 2018">
-        </div>
-        <div class="col-md-2">
-          <label class="form-label mb-1">Site</label>
-          <select id="filter-site" class="form-select form-select-sm">
-            <option value="">Tous</option>
-          </select>
-        </div>
+<!-- Contenu principal -->
+<div class="container-fluid p-3">
+
+  <!-- Filtres -->
+  <div class="filter-panel mb-3">
+    <div class="row g-2 align-items-end">
+      <div class="col-md-2 col-6">
+        <label class="form-label">Marque</label>
+        <select id="filter-marque" class="form-select form-select-sm"><option value="">Toutes</option></select>
       </div>
-      <div class="row g-2 mt-1">
-        <div class="col-auto">
-          <button class="btn btn-sm btn-dark" onclick="applyFilters()">Filtrer</button>
-        </div>
-        <div class="col-auto">
-          <button class="btn btn-sm btn-outline-secondary" onclick="resetFilters()">Réinitialiser</button>
-        </div>
-        <div class="col-auto ms-2">
-          <div class="form-check form-check-inline mt-1">
+      <div class="col-md-2 col-6">
+        <label class="form-label">Carburant</label>
+        <select id="filter-carburant" class="form-select form-select-sm"><option value="">Tous</option></select>
+      </div>
+      <div class="col-md-1 col-6">
+        <label class="form-label">Prix max €</label>
+        <input type="number" id="filter-prix-max" class="form-control form-control-sm" placeholder="200000">
+      </div>
+      <div class="col-md-1 col-6">
+        <label class="form-label">Km max</label>
+        <input type="number" id="filter-km-max" class="form-control form-control-sm" placeholder="350000">
+      </div>
+      <div class="col-md-1 col-6">
+        <label class="form-label">Année min</label>
+        <input type="number" id="filter-annee-min" class="form-control form-control-sm" placeholder="2000">
+      </div>
+      <div class="col-md-2 col-6">
+        <label class="form-label">Source</label>
+        <select id="filter-site" class="form-select form-select-sm"><option value="">Tous</option></select>
+      </div>
+      <div class="col-md-3 col-12 d-flex align-items-end gap-2 flex-wrap">
+        <button class="btn-filter btn" onclick="applyFilters()">Filtrer</button>
+        <button class="btn-reset btn" onclick="resetFilters()">Réinitialiser</button>
+        <div class="d-flex gap-3 ms-1">
+          <div class="form-check mb-0">
             <input class="form-check-input" type="checkbox" id="only-new">
-            <label class="form-check-label">Nouveaux seulement</label>
+            <label class="form-check-label" for="only-new" style="font-size:12px">Nouveaux</label>
           </div>
-          <div class="form-check form-check-inline mt-1">
+          <div class="form-check mb-0">
             <input class="form-check-input" type="checkbox" id="only-deals">
-            <label class="form-check-label">Bonnes affaires</label>
+            <label class="form-check-label" for="only-deals" style="font-size:12px">Deals</label>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Tableau principal -->
-  <div class="card shadow-sm">
-    <div class="card-body p-2">
-      <table id="table-listings" class="table table-hover table-sm w-100">
+  <!-- Tableau -->
+  <div class="card">
+    <div class="card-body p-0" style="overflow-x:auto">
+      <table id="table-listings" class="table table-hover table-sm w-100" style="margin:0">
         <thead>
           <tr>
             <th>Marque / Modèle</th>
@@ -159,56 +233,39 @@
 <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 <script src="data/listings.js"></script>
 <script src="data/stats.js"></script>
+<script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});</script>
 <script>
-  /* Enregistrement du Service Worker PWA */
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js').catch(() => {});
-  }
-</script>
-<script>
-  /* ── Données ── */
   const listings = typeof LISTINGS !== 'undefined' ? LISTINGS : [];
   const stats    = typeof STATS    !== 'undefined' ? STATS    : {};
-
-  let filteredListings = [...listings];
   let dtTable = null;
 
-  /* ── Init ── */
   document.addEventListener('DOMContentLoaded', () => {
     fillStats();
     fillFilters();
     renderTable(listings);
   });
 
-  /* ── Stats bar ── */
   function fillStats() {
     document.getElementById('nb-actives').textContent   = stats.total_actives || listings.length;
-    document.getElementById('nb-nouvelles').textContent = stats.nouvelles_aujourd_hui || '—';
+    document.getElementById('nb-nouvelles').textContent = stats.nouvelles_aujourd_hui ?? '—';
     document.getElementById('prix-moyen').textContent   = stats.prix_moyen ? formatPrix(stats.prix_moyen) : '—';
-    document.getElementById('last-update').textContent  = stats.date_calcul ? stats.date_calcul.slice(0,16) : '—';
+    document.getElementById('last-update').textContent  = stats.date_calcul ? stats.date_calcul.slice(0,16).replace('T',' ') : '—';
   }
 
-  /* ── Remplir les selects de filtre ── */
   function fillFilters() {
-    const marques   = [...new Set(listings.map(l => l.marque_norm).filter(Boolean))].sort();
-    const carburants= [...new Set(listings.map(l => l.carburant).filter(Boolean))].sort();
-    const sites     = [...new Set(listings.map(l => l.site).filter(Boolean))].sort();
-
-    fillSelect('filter-marque',    marques);
+    const marques    = [...new Set(listings.map(l => l.marque_norm).filter(Boolean))].sort();
+    const carburants = [...new Set(listings.map(l => l.carburant).filter(Boolean))].sort();
+    const sites      = [...new Set(listings.map(l => l.site).filter(Boolean))].sort();
+    fillSelect('filter-marque', marques);
     fillSelect('filter-carburant', carburants);
-    fillSelect('filter-site',      sites);
+    fillSelect('filter-site', sites);
   }
 
   function fillSelect(id, values) {
     const sel = document.getElementById(id);
-    values.forEach(v => {
-      const opt = document.createElement('option');
-      opt.value = v; opt.textContent = v;
-      sel.appendChild(opt);
-    });
+    values.forEach(v => { const o = document.createElement('option'); o.value = v; o.textContent = v; sel.appendChild(o); });
   }
 
-  /* ── Filtres ── */
   function applyFilters() {
     const marque    = document.getElementById('filter-marque').value.toLowerCase();
     const carburant = document.getElementById('filter-carburant').value.toLowerCase();
@@ -219,8 +276,7 @@
     const onlyNew   = document.getElementById('only-new').checked;
     const onlyDeals = document.getElementById('only-deals').checked;
     const today     = new Date().toISOString().slice(0, 10);
-
-    filteredListings = listings.filter(l => {
+    const filtered  = listings.filter(l => {
       if (marque    && !(l.marque_norm||'').toLowerCase().includes(marque))    return false;
       if (carburant && !(l.carburant||'').toLowerCase().includes(carburant))   return false;
       if (l.prix    && l.prix > prixMax)  return false;
@@ -231,8 +287,7 @@
       if (onlyDeals && (!l.deal_score || l.deal_score < 60))                   return false;
       return true;
     });
-
-    renderTable(filteredListings);
+    renderTable(filtered);
   }
 
   function resetFilters() {
@@ -242,82 +297,66 @@
     renderTable(listings);
   }
 
-  /* ── Tableau ── */
   function renderTable(data) {
     if (dtTable) { dtTable.destroy(); dtTable = null; }
-
     const tbody = document.getElementById('table-body');
     tbody.innerHTML = '';
-
     data.forEach(l => {
       const tr = document.createElement('tr');
       tr.innerHTML = `
-        <td><a href="${l.url||'#'}" target="_blank" class="text-decoration-none fw-semibold">
-          ${l.marque_norm||l.marque||'—'} ${l.modele_norm||l.modele||''}
-        </a><br><small class="text-muted">${l.version_norm||l.version||''}</small></td>
-        <td>${l.annee||'—'}</td>
-        <td>${l.km ? l.km.toLocaleString('fr')+' km' : '—'}</td>
-        <td class="fw-bold">${l.prix ? formatPrix(l.prix) : '—'}</td>
+        <td>
+          <a href="${l.url||'#'}" target="_blank" class="listing-link">${l.marque_norm||l.marque||'—'} ${l.modele_norm||l.modele||''}</a>
+          <div class="version-norm">${l.version_norm||l.version||''}</div>
+        </td>
+        <td style="font-family:'DM Mono',monospace">${l.annee||'—'}</td>
+        <td style="font-family:'DM Mono',monospace;white-space:nowrap">${l.km ? l.km.toLocaleString('fr')+' km' : '—'}</td>
+        <td class="prix-mono">${l.prix ? formatPrix(l.prix) : '—'}</td>
         <td>${l.carburant||'—'}</td>
         <td>${l.boite||'—'}</td>
         <td>${l.ville||'—'}</td>
-        <td><span class="badge bg-secondary">${l.site||'—'}</span></td>
-        <td>${scoreBadge(l.deal_score, 'deal')}</td>
-        <td>${scoreBadge(l.risk_score, 'risk')}</td>
+        <td><span class="badge site-badge">${l.site||'—'}</span></td>
+        <td>${scoreBadge(l.deal_score,'deal')}</td>
+        <td>${scoreBadge(l.risk_score,'risk')}</td>
         <td>${badges(l)}</td>
-        <td><small class="text-muted">${formatDate(l.date_premiere_vue)}</small></td>
+        <td style="white-space:nowrap"><span style="color:var(--muted);font-size:12px">${formatDate(l.date_premiere_vue)}</span></td>
       `;
       tbody.appendChild(tr);
     });
-
     dtTable = $('#table-listings').DataTable({
       pageLength: 25,
-      order: [[0, 'asc']],
-      language: {
-        search: 'Recherche :',
-        lengthMenu: 'Afficher _MENU_ lignes',
-        info: '_START_–_END_ sur _TOTAL_',
-        paginate: { previous: '‹', next: '›' },
-      },
-      columnDefs: [{ orderable: false, targets: [10, 11] }],
+      order: [[0,'asc']],
+      language: { search:'', searchPlaceholder:'Rechercher…', lengthMenu:'_MENU_ lignes', info:'_START_–_END_ / _TOTAL_', paginate:{previous:'‹',next:'›'} },
+      columnDefs: [{ orderable: false, targets: [10,11] }],
     });
   }
 
-  /* ── Helpers d'affichage ── */
   function scoreBadge(score, type) {
-    if (!score && score !== 0) return '<span class="text-muted">—</span>';
+    if (!score && score !== 0) return '<span class="s-none">—</span>';
     const s = Math.round(score);
-    if (type === 'deal') {
-      const cls = s >= 70 ? 'score-high' : s >= 50 ? 'score-mid' : 'score-low';
-      return `<span class="${cls}">${s}</span>`;
-    }
-    // risk score : élevé = mauvais
-    const cls = s >= 70 ? 'score-low' : s >= 40 ? 'score-mid' : 'score-high';
+    const cls = type === 'deal'
+      ? (s >= 70 ? 's-hi' : s >= 50 ? 's-mid' : 's-low')
+      : (s >= 70 ? 's-low' : s >= 40 ? 's-mid' : 's-hi');
     return `<span class="${cls}">${s}</span>`;
   }
 
   function badges(l) {
-    const today = new Date().toISOString().slice(0, 10);
-    let out = '';
-    if ((l.date_premiere_vue||'').slice(0,10) === today)
-      out += '<span class="badge badge-nouveau me-1">NOUVEAU</span>';
-    if (l.nb_jours_visibles >= 30)
-      out += '<span class="badge badge-negociable me-1">NÉGOCIABLE</span>';
-    if (l.risk_score && l.risk_score > 70)
-      out += '<span class="badge badge-suspect me-1">⚠ SUSPECT</span>';
-    return out || '<span class="text-muted">—</span>';
+    const today = new Date().toISOString().slice(0,10);
+    let o = '';
+    if ((l.date_premiere_vue||'').slice(0,10) === today) o += '<span class="badge badge-nou me-1">NEW</span>';
+    if (l.nb_jours_visibles >= 30) o += '<span class="badge badge-neg me-1">NEG</span>';
+    if (l.risk_score && l.risk_score > 70) o += '<span class="badge badge-sus me-1">⚠</span>';
+    return o || '<span style="color:var(--border)">—</span>';
   }
 
   function formatPrix(p) { return p.toLocaleString('fr') + ' €'; }
-
   function formatDate(d) {
     if (!d) return '—';
-    const today = new Date().toISOString().slice(0, 10);
-    const date  = d.slice(0, 10);
-    if (date === today) return "Aujourd'hui";
-    const diff = Math.floor((new Date(today) - new Date(date)) / 86400000);
+    const today = new Date().toISOString().slice(0,10);
+    const date  = d.slice(0,10);
+    if (date === today) return "Auj.";
+    const diff = Math.floor((new Date(today)-new Date(date))/86400000);
     if (diff === 1) return 'Hier';
-    if (diff < 7)   return `Il y a ${diff}j`;
+    if (diff < 7)   return `J-${diff}`;
     return date;
   }
 </script>

@@ -4,90 +4,161 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Auto-Bot LU — Rapport quotidien</title>
-
-  <!-- PWA -->
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#212529">
+  <meta name="theme-color" content="#0d1117">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="AutoBot LU">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
   <meta name="description" content="Rapport quotidien annonces voitures Luxembourg — Auto-Bot">
   <meta name="robots" content="noindex,nofollow">
-
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
-    body { background: #f8f9fa; font-size: 14px; }
-    .navbar-brand { font-weight: 700; }
-    .nav-pills .nav-link { color: #212529; }
-    .nav-pills .nav-link.active { background: #212529; }
-    .kpi-card { border-radius: 10px; text-align: center; padding: 16px; }
-    .kpi-val  { font-size: 2rem; font-weight: 800; line-height: 1; }
-    .kpi-label{ font-size: .8rem; color: rgba(255,255,255,.8); margin-top: 4px; }
-    .status-success { color: #198754; }
-    .status-partial  { color: #fd7e14; }
-    .status-failed   { color: #dc3545; }
-    .timeline-item { border-left: 3px solid #dee2e6; padding-left: 12px; margin-bottom: 8px; }
-    .timeline-item.today { border-color: #0d6efd; }
-    .tendance-hausse { color: #dc3545; }
-    .tendance-baisse { color: #198754; }
-    .tendance-stable { color: #6c757d; }
-    .best-deal-card { border: 2px solid #ffd700; background: #fffdf0; }
+    :root {
+      --bg: #0d1117; --surface: #161b22; --surface2: #21262d;
+      --border: #30363d; --border2: #3d444e;
+      --txt: #e6edf3; --txt2: #8b949e; --txt3: #6e7681;
+      --accent: #388bfd; --accent-dim: rgba(56,139,253,.15);
+      --green: #3fb950; --green-dim: rgba(63,185,80,.15);
+      --amber: #d29922; --amber-dim: rgba(210,153,34,.15);
+      --red: #f85149; --red-dim: rgba(248,81,73,.15);
+      --gold: #e3b341; --purple: #bc8cff;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { background: var(--bg); color: var(--txt); font-family: 'Barlow', sans-serif; font-size: 14px; margin: 0; }
+    ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+    /* Navbar */
+    .navbar { background: var(--surface) !important; border-bottom: 1px solid var(--border); padding: 0 1rem; }
+    .navbar-brand { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 1.2rem; color: var(--txt) !important; }
+    .navbar-brand span { color: var(--accent); }
+    .navbar-toggler { border: 1px solid var(--border) !important; padding: 4px 8px; }
+    .navbar-toggler-icon { filter: invert(1); }
+    .navbar-collapse { background: var(--surface); }
+    .nav-link { color: var(--txt2) !important; font-size: 13px; font-weight: 500; padding: 12px 14px !important; transition: color .15s; }
+    .nav-link:hover { color: var(--txt) !important; }
+    .nav-link.active { color: var(--accent) !important; }
+
+    /* KPI cards */
+    .kpi-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; text-align: center; }
+    .kpi-card.kpi-green { border-top: 2px solid var(--green); }
+    .kpi-card.kpi-amber { border-top: 2px solid var(--amber); }
+    .kpi-card.kpi-accent { border-top: 2px solid var(--accent); }
+    .kpi-card.kpi-surface { border-top: 2px solid var(--border2); }
+    .kpi-val { font-family: 'DM Mono', monospace; font-size: 2.2rem; font-weight: 500; line-height: 1; }
+    .kpi-green .kpi-val { color: var(--green); }
+    .kpi-amber .kpi-val { color: var(--amber); }
+    .kpi-accent .kpi-val { color: var(--accent); }
+    .kpi-surface .kpi-val { color: var(--txt); }
+    .kpi-label { font-size: .75rem; color: var(--txt3); text-transform: uppercase; letter-spacing: .05em; margin-top: 6px; }
+
+    /* Cards */
+    .card-dark { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; }
+    .card-header-dark { background: var(--surface2); border-bottom: 1px solid var(--border); padding: 10px 16px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: .95rem; letter-spacing: .03em; color: var(--txt); border-radius: 8px 8px 0 0; }
+    .card-header-green { border-left: 3px solid var(--green); }
+    .card-header-accent { border-left: 3px solid var(--accent); }
+    .card-header-gold { border-left: 3px solid var(--gold); }
+    .card-body-dark { padding: 14px 16px; }
+
+    /* Tables */
+    .table-dark-custom { width: 100%; border-collapse: collapse; }
+    .table-dark-custom thead th { background: var(--surface2); color: var(--txt3); font-size: 11px; text-transform: uppercase; letter-spacing: .05em; padding: 8px 12px; border-bottom: 1px solid var(--border); font-weight: 600; }
+    .table-dark-custom tbody td { padding: 8px 12px; border-bottom: 1px solid var(--border); color: var(--txt); font-size: 13px; vertical-align: middle; }
+    .table-dark-custom tbody tr:last-child td { border-bottom: none; }
+    .table-dark-custom tbody tr:hover td { background: var(--accent-dim); }
+
+    /* Best deal */
+    .best-deal-wrap { background: var(--surface2); border: 1px solid rgba(227,179,65,.25); border-radius: 6px; padding: 14px; }
+    .best-deal-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1.1rem; color: var(--txt); text-decoration: none; }
+    .best-deal-title:hover { color: var(--gold); }
+
+    /* Timeline */
+    .timeline-item { border-left: 2px solid var(--border); padding: 8px 0 8px 14px; margin-bottom: 4px; transition: border-color .15s; }
+    .timeline-item.today { border-left-color: var(--accent); }
+    .timeline-item-date { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--txt2); font-weight: 500; }
+    .timeline-item.today .timeline-item-date { color: var(--accent); }
+    .timeline-stats { display: flex; gap: 12px; margin-top: 4px; font-size: 12px; }
+
+    /* Tendance */
+    .tendance-icon { font-size: 2.2rem; }
+    .tendance-label { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1.1rem; }
+    .tendance-hausse { color: var(--red); }
+    .tendance-baisse { color: var(--green); }
+    .tendance-stable { color: var(--txt2); }
+
+    /* Scraper status */
+    .status-success { color: var(--green); }
+    .status-partial  { color: var(--amber); }
+    .status-failed   { color: var(--red); }
+
+    /* Badges */
+    .badge-site { background: var(--surface2); color: var(--txt2); border: 1px solid var(--border); font-size: 10px; padding: 2px 6px; border-radius: 4px; }
+    .badge-eco { background: var(--green-dim); color: var(--green); border: 1px solid rgba(63,185,80,.3); font-size: 11px; padding: 2px 7px; border-radius: 4px; font-family: 'DM Mono', monospace; }
+    .prix-mono { font-family: 'DM Mono', monospace; }
+    .prix-barre { font-family: 'DM Mono', monospace; text-decoration: line-through; color: var(--txt3); }
+    .txt3 { color: var(--txt3); }
+    .txt2 { color: var(--txt2); }
+    .link-accent { color: var(--accent); text-decoration: none; }
+    .link-accent:hover { text-decoration: underline; }
+    .btn-voir { background: transparent; border: 1px solid var(--border); color: var(--txt2); font-size: 11px; padding: 2px 9px; border-radius: 4px; text-decoration: none; transition: all .15s; }
+    .btn-voir:hover { border-color: var(--accent); color: var(--accent); }
+    .page-header { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1.1rem; color: var(--txt); }
   </style>
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-  <a class="navbar-brand fw-bold" href="index.html">🚗 Auto-Bot LU</a>
-  <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
-          data-bs-target="#navMenu" aria-controls="navMenu"
-          aria-expanded="false" aria-label="Menu navigation">
+<nav class="navbar navbar-expand-lg px-3">
+  <a class="navbar-brand" href="index.html"><span>◈</span> AUTO-BOT LU</a>
+  <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Menu navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navMenu">
     <ul class="navbar-nav ms-auto flex-wrap">
-      <li class="nav-item"><a class="nav-link" href="index.html">📋 Annonces</a></li>
-      <li class="nav-item"><a class="nav-link" href="deals.html">🔥 Deals</a></li>
-      <li class="nav-item"><a class="nav-link active" href="rapport.html">📊 Rapport</a></li>
-      <li class="nav-item"><a class="nav-link" href="watchlist.html">👁️ Watchlist</a></li>
-      <li class="nav-item"><a class="nav-link" href="market.html">📈 Marché</a></li>
-      <li class="nav-item"><a class="nav-link" href="compare.html">⚖️ Comparer</a></li>
-      <li class="nav-item"><a class="nav-link" href="budget.html">💶 Budget</a></li>
-      <li class="nav-item"><a class="nav-link" href="top-models.html">🏆 Top Modèles</a></li>
+      <li class="nav-item"><a class="nav-link" href="index.html">Annonces</a></li>
+      <li class="nav-item"><a class="nav-link" href="deals.html">Deals</a></li>
+      <li class="nav-item"><a class="nav-link active" href="rapport.html">Rapport</a></li>
+      <li class="nav-item"><a class="nav-link" href="watchlist.html">Watchlist</a></li>
+      <li class="nav-item"><a class="nav-link" href="market.html">Marché</a></li>
+      <li class="nav-item"><a class="nav-link" href="compare.html">Comparer</a></li>
+      <li class="nav-item"><a class="nav-link" href="budget.html">Budget</a></li>
+      <li class="nav-item"><a class="nav-link" href="top-models.html">Top Modèles</a></li>
     </ul>
   </div>
 </nav>
 
-<div class="container-fluid mt-3">
+<div class="container-fluid mt-3 px-3 px-md-4">
 
-  <!-- En-tête rapport -->
+  <!-- En-tête -->
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="fw-bold mb-0">📊 Rapport du <span id="rapport-date">—</span></h5>
-    <small class="text-muted">Scraping quotidien 07h00 — Luxembourg</small>
+    <div class="page-header">Rapport du <span id="rapport-date" style="color:var(--accent)">—</span></div>
+    <small class="txt3">Scraping quotidien — Luxembourg</small>
   </div>
 
   <!-- KPI cards -->
   <div class="row g-3 mb-4">
     <div class="col-6 col-md-3">
-      <div class="kpi-card bg-success text-white">
+      <div class="kpi-card kpi-green">
         <div class="kpi-val" id="kpi-nouvelles">—</div>
         <div class="kpi-label">Nouvelles annonces</div>
       </div>
     </div>
     <div class="col-6 col-md-3">
-      <div class="kpi-card bg-secondary text-white">
+      <div class="kpi-card kpi-amber">
         <div class="kpi-val" id="kpi-disparues">—</div>
         <div class="kpi-label">Disparues (vendues ?)</div>
       </div>
     </div>
     <div class="col-6 col-md-3">
-      <div class="kpi-card bg-primary text-white">
+      <div class="kpi-card kpi-accent">
         <div class="kpi-val" id="kpi-baisses">—</div>
         <div class="kpi-label">Baisses de prix</div>
       </div>
     </div>
     <div class="col-6 col-md-3">
-      <div class="kpi-card bg-dark text-white">
+      <div class="kpi-card kpi-surface">
         <div class="kpi-val" id="kpi-total">—</div>
         <div class="kpi-label">Annonces actives</div>
       </div>
@@ -99,45 +170,37 @@
     <!-- Colonne gauche -->
     <div class="col-md-7">
 
-      <!-- Meilleure affaire du jour -->
-      <div class="card shadow-sm mb-3">
-        <div class="card-header bg-warning text-dark fw-bold">🏆 Meilleure affaire du jour</div>
-        <div class="card-body" id="best-deal-body">
-          <div class="text-muted text-center py-3">Pas encore de deal calculé</div>
+      <!-- Meilleure affaire -->
+      <div class="card-dark mb-3">
+        <div class="card-header-dark card-header-gold">🏆 Meilleure affaire du jour</div>
+        <div class="card-body-dark" id="best-deal-body">
+          <div class="txt3 text-center py-3">Pas encore de deal calculé</div>
         </div>
       </div>
 
       <!-- Nouvelles annonces -->
-      <div class="card shadow-sm mb-3">
-        <div class="card-header fw-bold bg-success text-white">🆕 Nouvelles annonces aujourd'hui</div>
-        <div class="card-body p-0">
-          <div class="table-responsive">
-            <table class="table table-sm table-hover mb-0">
-              <thead class="table-light">
-                <tr><th>Voiture</th><th>Année</th><th>Km</th><th>Prix</th><th>Site</th><th></th></tr>
-              </thead>
-              <tbody id="new-listings-body">
-                <tr><td colspan="6" class="text-muted text-center py-3">Données disponibles après le premier scraping</td></tr>
-              </tbody>
-            </table>
-          </div>
+      <div class="card-dark mb-3">
+        <div class="card-header-dark card-header-green">Nouvelles annonces aujourd'hui</div>
+        <div style="overflow-x:auto">
+          <table class="table-dark-custom">
+            <thead><tr><th>Voiture</th><th>Année</th><th>Km</th><th>Prix</th><th>Site</th><th></th></tr></thead>
+            <tbody id="new-listings-body">
+              <tr><td colspan="6" class="txt3 text-center py-3">Données disponibles après le premier scraping</td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
       <!-- Baisses de prix -->
-      <div class="card shadow-sm mb-3">
-        <div class="card-header fw-bold bg-primary text-white">📉 Baisses de prix récentes</div>
-        <div class="card-body p-0">
-          <div class="table-responsive">
-            <table class="table table-sm table-hover mb-0">
-              <thead class="table-light">
-                <tr><th>Voiture</th><th>Avant</th><th>Après</th><th>Économie</th><th></th></tr>
-              </thead>
-              <tbody id="price-drops-body">
-                <tr><td colspan="5" class="text-muted text-center py-3">Aucune baisse détectée</td></tr>
-              </tbody>
-            </table>
-          </div>
+      <div class="card-dark mb-3">
+        <div class="card-header-dark card-header-accent">Baisses de prix récentes</div>
+        <div style="overflow-x:auto">
+          <table class="table-dark-custom">
+            <thead><tr><th>Voiture</th><th>Avant</th><th>Après</th><th>Économie</th><th></th></tr></thead>
+            <tbody id="price-drops-body">
+              <tr><td colspan="5" class="txt3 text-center py-3">Aucune baisse détectée</td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
@@ -147,41 +210,39 @@
     <div class="col-md-5">
 
       <!-- Tendance marché -->
-      <div class="card shadow-sm mb-3">
-        <div class="card-header fw-bold">📈 Tendance marché</div>
-        <div class="card-body">
+      <div class="card-dark mb-3">
+        <div class="card-header-dark">Tendance marché</div>
+        <div class="card-body-dark">
           <div class="d-flex align-items-center gap-3">
-            <div id="tendance-icon" style="font-size:2.5rem"></div>
+            <div class="tendance-icon" id="tendance-icon"></div>
             <div>
-              <div class="fw-bold" id="tendance-text">—</div>
-              <div class="text-muted small">Prix moyen : <span id="prix-moyen-today">—</span></div>
-              <div class="text-muted small">Hier : <span id="prix-moyen-hier">—</span></div>
+              <div class="tendance-label" id="tendance-text">—</div>
+              <div class="txt3 small mt-1">Prix moyen : <span class="prix-mono" id="prix-moyen-today">—</span></div>
+              <div class="txt3 small">Hier : <span class="prix-mono" id="prix-moyen-hier">—</span></div>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Statut scrapers -->
-      <div class="card shadow-sm mb-3">
-        <div class="card-header fw-bold">🤖 Statut scrapers (dernier run)</div>
-        <div class="card-body p-0">
-          <table class="table table-sm mb-0">
-            <thead class="table-light">
-              <tr><th>Site</th><th>Statut</th><th>Annonces</th><th>Heure</th></tr>
-            </thead>
+      <div class="card-dark mb-3">
+        <div class="card-header-dark">Statut scrapers (dernier run)</div>
+        <div style="overflow-x:auto">
+          <table class="table-dark-custom">
+            <thead><tr><th>Site</th><th>Statut</th><th>Annonces</th><th>Heure</th></tr></thead>
             <tbody id="scrapers-body">
-              <tr><td colspan="4" class="text-muted text-center py-2">En attente du premier run</td></tr>
+              <tr><td colspan="4" class="txt3 text-center py-2">En attente du premier run</td></tr>
             </tbody>
           </table>
         </div>
       </div>
 
-      <!-- Timeline 7 jours -->
-      <div class="card shadow-sm mb-3">
-        <div class="card-header fw-bold">📅 Timeline 7 derniers jours</div>
-        <div class="card-body py-2">
+      <!-- Timeline 7j -->
+      <div class="card-dark mb-3">
+        <div class="card-header-dark">Timeline 7 derniers jours</div>
+        <div class="card-body-dark">
           <div id="timeline-body">
-            <div class="text-muted text-center py-2">Données disponibles après 7 jours</div>
+            <div class="txt3 text-center py-2">Données disponibles après 7 jours</div>
           </div>
         </div>
       </div>
@@ -194,71 +255,55 @@
 <script src="data/stats.js"></script>
 <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});</script>
 <script>
-  /* ── Données ── */
   const rapport = typeof RAPPORT !== 'undefined' ? RAPPORT : {};
   const stats   = typeof STATS   !== 'undefined' ? STATS   : {};
 
-  /* ── Init ── */
-  document.addEventListener('DOMContentLoaded', () => {
-    renderRapport();
-  });
+  document.addEventListener('DOMContentLoaded', () => { renderRapport(); });
 
   function renderRapport() {
     document.getElementById('rapport-date').textContent = rapport.date || new Date().toISOString().slice(0,10);
-
-    /* KPI */
     document.getElementById('kpi-nouvelles').textContent = rapport.nb_nouvelles || 0;
     document.getElementById('kpi-disparues').textContent = rapport.nb_disparues  || 0;
     document.getElementById('kpi-baisses').textContent   = rapport.nb_prix_baisse|| 0;
     document.getElementById('kpi-total').textContent     = stats.total_actives   || 0;
 
-    /* Tendance marché */
     const tendance = rapport.tendance_marche || 'stable';
-    const icons = { hausse: '📈', baisse: '📉', stable: '➡️' };
+    const icons  = { hausse: '↑', baisse: '↓', stable: '→' };
     const labels = { hausse: 'Marché en hausse', baisse: 'Marché en baisse', stable: 'Marché stable' };
-    document.getElementById('tendance-icon').textContent = icons[tendance] || '➡️';
+    document.getElementById('tendance-icon').textContent = icons[tendance] || '→';
     document.getElementById('tendance-text').textContent = labels[tendance] || '—';
-    document.getElementById('tendance-text').className   = 'fw-bold tendance-' + tendance;
+    document.getElementById('tendance-text').className = 'tendance-label tendance-' + tendance;
     document.getElementById('prix-moyen-today').textContent = rapport.prix_moyen ? formatPrix(rapport.prix_moyen) : '—';
     document.getElementById('prix-moyen-hier').textContent  = rapport.prix_moyen_hier ? formatPrix(rapport.prix_moyen_hier) : '—';
 
-    /* Meilleure affaire */
     renderBestDeal(rapport.meilleure_affaire);
-
-    /* Nouvelles annonces */
     renderNewListings(rapport.nouvelles || []);
-
-    /* Baisses de prix */
     renderPriceDrops(rapport.prix_baisses || []);
-
-    /* Scrapers */
     renderScrapers(rapport.scrapers_status || []);
-
-    /* Timeline */
     renderTimeline(rapport.timeline_7j || []);
   }
 
   function renderBestDeal(deal) {
     const body = document.getElementById('best-deal-body');
     if (!deal || !deal.prix) {
-      body.innerHTML = '<div class="text-muted text-center py-2">Pas encore de deal calculé</div>';
+      body.innerHTML = '<div class="txt3 text-center py-2">Pas encore de deal calculé</div>';
       return;
     }
     body.innerHTML = `
-      <div class="d-flex justify-content-between align-items-start">
-        <div>
-          <div class="fw-bold fs-6">
-            <a href="${deal.url||'#'}" target="_blank" class="text-decoration-none">
+      <div class="best-deal-wrap">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <a href="${deal.url||'#'}" target="_blank" class="best-deal-title">
               ${deal.marque_norm||deal.marque||'—'} ${deal.modele_norm||deal.modele||''}
             </a>
+            <div class="txt3 small mt-1">${deal.version_norm||deal.version||''} · ${deal.annee||'—'} · ${deal.km ? deal.km.toLocaleString('fr')+' km' : '—'}</div>
+            <div class="txt3 small">${deal.ville||'—'} — <span class="badge-site">${deal.site||'—'}</span></div>
           </div>
-          <div class="text-muted small">${deal.version_norm||deal.version||''} • ${deal.annee||'—'} • ${deal.km ? deal.km.toLocaleString('fr')+' km' : '—'}</div>
-          <div class="text-muted small">${deal.ville||'—'} — ${deal.site||'—'}</div>
-        </div>
-        <div class="text-end">
-          <div class="fw-bold fs-5 text-success">${formatPrix(deal.prix)}</div>
-          ${deal.economie_eur ? `<div class="badge bg-success">-${formatPrix(deal.economie_eur)}</div>` : ''}
-          ${deal.economie_pct ? `<div class="text-success small">${deal.economie_pct}% sous marché</div>` : ''}
+          <div class="text-end">
+            <div class="prix-mono fw-bold" style="font-size:1.1rem;color:var(--green)">${formatPrix(deal.prix)}</div>
+            ${deal.economie_eur ? `<span class="badge-eco mt-1 d-inline-block">−${formatPrix(deal.economie_eur)}</span>` : ''}
+            ${deal.economie_pct ? `<div class="txt2 small mt-1">${deal.economie_pct}% sous marché</div>` : ''}
+          </div>
         </div>
       </div>
     `;
@@ -267,19 +312,17 @@
   function renderNewListings(listings) {
     const tbody = document.getElementById('new-listings-body');
     if (!listings.length) {
-      tbody.innerHTML = '<tr><td colspan="6" class="text-muted text-center py-2">Aucune nouvelle annonce</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="6" class="txt3 text-center py-2">Aucune nouvelle annonce</td></tr>';
       return;
     }
     tbody.innerHTML = listings.map(l => `
       <tr>
-        <td><a href="${l.url||'#'}" target="_blank" class="text-decoration-none fw-semibold">
-          ${l.marque_norm||l.marque||'—'} ${l.modele_norm||l.modele||''}
-        </a></td>
+        <td><a href="${l.url||'#'}" target="_blank" class="link-accent">${l.marque_norm||l.marque||'—'} ${l.modele_norm||l.modele||''}</a></td>
         <td>${l.annee||'—'}</td>
-        <td>${l.km ? l.km.toLocaleString('fr')+' km' : '—'}</td>
-        <td class="fw-bold">${l.prix ? formatPrix(l.prix) : '—'}</td>
-        <td><span class="badge bg-secondary">${l.site||'—'}</span></td>
-        <td><a href="${l.url||'#'}" target="_blank" class="btn btn-xs btn-outline-dark" style="font-size:.75rem;padding:2px 6px">→</a></td>
+        <td class="prix-mono">${l.km ? Math.round(l.km/1000)+'k' : '—'}</td>
+        <td class="prix-mono" style="color:var(--green)">${l.prix ? formatPrix(l.prix) : '—'}</td>
+        <td><span class="badge-site">${l.site||'—'}</span></td>
+        <td><a href="${l.url||'#'}" target="_blank" class="btn-voir">→</a></td>
       </tr>
     `).join('');
   }
@@ -287,20 +330,18 @@
   function renderPriceDrops(drops) {
     const tbody = document.getElementById('price-drops-body');
     if (!drops.length) {
-      tbody.innerHTML = '<tr><td colspan="5" class="text-muted text-center py-2">Aucune baisse détectée</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="5" class="txt3 text-center py-2">Aucune baisse détectée</td></tr>';
       return;
     }
     tbody.innerHTML = drops.map(d => {
       const eco = (d.ancien_prix||0) - (d.prix||0);
       return `
         <tr>
-          <td><a href="${d.url||'#'}" target="_blank" class="text-decoration-none">
-            ${d.marque_norm||d.marque||'—'} ${d.modele_norm||d.modele||''}
-          </a></td>
-          <td><span class="text-decoration-line-through text-muted">${d.ancien_prix ? formatPrix(d.ancien_prix) : '—'}</span></td>
-          <td class="fw-bold text-success">${d.prix ? formatPrix(d.prix) : '—'}</td>
-          <td><span class="badge bg-primary">${eco > 0 ? '-'+formatPrix(eco) : '—'}</span></td>
-          <td><a href="${d.url||'#'}" target="_blank" class="btn btn-outline-dark" style="font-size:.75rem;padding:2px 6px">→</a></td>
+          <td><a href="${d.url||'#'}" target="_blank" class="link-accent">${d.marque_norm||d.marque||'—'} ${d.modele_norm||d.modele||''}</a></td>
+          <td><span class="prix-barre">${d.ancien_prix ? formatPrix(d.ancien_prix) : '—'}</span></td>
+          <td class="prix-mono" style="color:var(--green)">${d.prix ? formatPrix(d.prix) : '—'}</td>
+          <td><span class="badge-eco">${eco > 0 ? '−'+formatPrix(eco) : '—'}</span></td>
+          <td><a href="${d.url||'#'}" target="_blank" class="btn-voir">→</a></td>
         </tr>
       `;
     }).join('');
@@ -309,16 +350,16 @@
   function renderScrapers(scrapers) {
     const tbody = document.getElementById('scrapers-body');
     if (!scrapers.length) {
-      tbody.innerHTML = '<tr><td colspan="4" class="text-muted text-center py-2">En attente du premier run</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="4" class="txt3 text-center py-2">En attente du premier run</td></tr>';
       return;
     }
-    const statusIcon = { success: '✅', partial: '⚠️', failed: '❌', running: '🔄' };
+    const statusIcon = { success: '✓', partial: '~', failed: '✗', running: '↻' };
     tbody.innerHTML = scrapers.map(s => `
       <tr>
-        <td class="fw-semibold">${s.site||'—'}</td>
-        <td>${statusIcon[s.status]||'?'} <span class="status-${s.status}">${s.status}</span></td>
-        <td>${s.nb_annonces||0}</td>
-        <td><small class="text-muted">${s.heure ? s.heure.slice(11,16) : '—'}</small></td>
+        <td style="font-weight:600">${s.site||'—'}</td>
+        <td class="status-${s.status}">${statusIcon[s.status]||'?'} ${s.status}</td>
+        <td class="prix-mono">${s.nb_annonces||0}</td>
+        <td class="txt3 prix-mono">${s.heure ? s.heure.slice(11,16) : '—'}</td>
       </tr>
     `).join('');
   }
@@ -326,27 +367,26 @@
   function renderTimeline(timeline) {
     const body = document.getElementById('timeline-body');
     if (!timeline.length) {
-      body.innerHTML = '<div class="text-muted text-center py-2">Données disponibles après 7 jours</div>';
+      body.innerHTML = '<div class="txt3 text-center py-2">Données disponibles après 7 jours</div>';
       return;
     }
     const today = new Date().toISOString().slice(0,10);
     body.innerHTML = timeline.map(snap => `
       <div class="timeline-item ${snap.date === today ? 'today' : ''}">
         <div class="d-flex justify-content-between">
-          <span class="fw-semibold">${snap.date === today ? "Aujourd'hui" : snap.date}</span>
-          <span class="text-muted small">${snap.nb_annonces_total||0} annonces</span>
+          <span class="timeline-item-date">${snap.date === today ? "Aujourd'hui" : snap.date}</span>
+          <span class="txt3 prix-mono" style="font-size:11px">${snap.nb_annonces_total||0} ann.</span>
         </div>
-        <div class="d-flex gap-3 mt-1" style="font-size:.8rem">
-          <span class="text-success">+${snap.nb_nouvelles||0} nouvelles</span>
-          <span class="text-secondary">${snap.nb_disparues||0} disparues</span>
-          <span class="text-primary">${snap.nb_prix_baisse||0} baisses</span>
+        <div class="timeline-stats">
+          <span style="color:var(--green)">+${snap.nb_nouvelles||0}</span>
+          <span class="txt3">${snap.nb_disparues||0} disp.</span>
+          <span style="color:var(--accent)">${snap.nb_prix_baisse||0} baisses</span>
         </div>
       </div>
     `).join('');
   }
 
-  /* ── Helpers ── */
-  function formatPrix(p) { return p ? p.toLocaleString('fr') + ' €' : '—'; }
+  function formatPrix(p) { return p ? p.toLocaleString('fr') + '\u202f€' : '—'; }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
