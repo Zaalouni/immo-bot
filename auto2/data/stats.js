@@ -1,6 +1,7 @@
-// Généré automatiquement le 2026-03-30 23:35
+// Généré automatiquement le 2026-03-31 07:08
 const STATS = {
   "total_actives": 651,
+  "nouvelles_aujourd_hui": 0,
   "prix_moyen": 44751,
   "prix_min": 7800,
   "prix_max": 413556,
@@ -39,5 +40,5 @@ const STATS = {
       "meilleur_deal_id": "test_abc123"
     }
   ],
-  "date_calcul": "2026-03-30T23:35:36.796217"
+  "date_calcul": "2026-03-31T07:08:32.227195"
 };
