@@ -1,4 +1,4 @@
-// Généré automatiquement le 2026-03-30 23:22
+// Généré automatiquement le 2026-03-30 23:35
 const WATCHLIST_DATA = {
   "items": [
     {
@@ -49,11 +49,11 @@ const WATCHLIST_DATA = {
           "mise_en_circulation": null,
           "tranche_km": "60-90k",
           "annonce_hash_metier": "7facf11f10b9f980",
-          "status": "active",
+          "status": "missing_once",
           "nb_jours_visibles": 1,
           "nb_reapparitions": 0,
           "date_disparition": null,
-          "source_last_run_id": null,
+          "source_last_run_id": "4f1a05bc-f4d",
           "date_premiere_vue": "2026-03-29T21:40:16.187423",
           "date_derniere_vue": "2026-03-29T21:40:16.197763",
           "deal_score": 43.0,
