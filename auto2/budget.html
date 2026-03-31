@@ -5,248 +5,298 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Auto-Bot LU — Planificateur Budget</title>
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#212529">
+  <meta name="theme-color" content="#0d1117">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
-    body { background: #f8f9fa; font-size: 14px; }
-    .navbar-brand { font-weight: 700; font-size: 1.1rem; }
-    .nav-pills .nav-link.active { background: #212529; }
-    .nav-pills .nav-link { color: #212529; }
-    #stats-bar { background: #212529; color: #fff; padding: 8px 0; font-size: 13px; }
-    .kpi-card { border-radius: 8px; border: none; box-shadow: 0 1px 4px rgba(0,0,0,.1); }
-    .kpi-value { font-size: 1.6rem; font-weight: 700; }
-    .budget-slider { accent-color: #0d6efd; }
-    .listing-card { transition: transform .15s; cursor: pointer; border-radius: 8px; }
-    .listing-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.15); }
-    .deal-badge { font-size: 11px; }
-    .score-pill { font-size: 11px; padding: 2px 7px; border-radius: 12px; font-weight: 600; }
-    .score-high { background: #d1e7dd; color: #0a3622; }
-    .score-mid  { background: #fff3cd; color: #664d03; }
-    .score-low  { background: #f8d7da; color: #58151c; }
-    .chart-wrap { position: relative; height: 250px; }
-    .progress-budget { height: 6px; border-radius: 3px; }
-    #range-display { font-size: 1.1rem; font-weight: 700; color: #0d6efd; }
+    :root {
+      --bg: #0d1117; --surface: #161b22; --surface2: #21262d;
+      --border: #30363d; --border2: #3d444e;
+      --txt: #e6edf3; --txt2: #8b949e; --txt3: #6e7681;
+      --accent: #388bfd; --accent-dim: rgba(56,139,253,.15);
+      --green: #3fb950; --green-dim: rgba(63,185,80,.15);
+      --amber: #d29922; --amber-dim: rgba(210,153,34,.15);
+      --red: #f85149; --red-dim: rgba(248,81,73,.15);
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { background: var(--bg); color: var(--txt); font-family: 'Barlow', sans-serif; font-size: 14px; margin: 0; }
+    ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+    /* Navbar */
+    .navbar { background: var(--surface) !important; border-bottom: 1px solid var(--border); padding: 0 1rem; }
+    .navbar-brand { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 1.2rem; color: var(--txt) !important; }
+    .navbar-brand span { color: var(--accent); }
+    .navbar-toggler { border: 1px solid var(--border) !important; padding: 4px 8px; }
+    .navbar-toggler-icon { filter: invert(1); }
+    .navbar-collapse { background: var(--surface); }
+    .nav-link { color: var(--txt2) !important; font-size: 13px; font-weight: 500; padding: 12px 14px !important; transition: color .15s; }
+    .nav-link:hover { color: var(--txt) !important; }
+    .nav-link.active { color: var(--accent) !important; }
+
+    /* Stats bar */
+    #stats-bar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 8px 0; font-family: 'DM Mono', monospace; font-size: 12px; color: var(--txt2); }
+    #stats-bar strong { color: var(--txt); }
+    .pipe { color: var(--border2); margin: 0 8px; }
+
+    /* Cards */
+    .card-dark { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; }
+
+    /* Budget panel */
+    .budget-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 20px; }
+    .panel-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1rem; color: var(--txt); margin-bottom: 16px; letter-spacing: .02em; }
+    #range-display { font-family: 'DM Mono', monospace; font-size: 1.6rem; font-weight: 500; color: var(--accent); }
+    .budget-slider { -webkit-appearance: none; appearance: none; width: 100%; height: 4px; border-radius: 2px; background: var(--surface2); outline: none; border: none; }
+    .budget-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--accent); cursor: pointer; border: 2px solid var(--bg); }
+    .budget-slider::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: var(--accent); cursor: pointer; border: 2px solid var(--bg); }
+    .slider-labels { display: flex; justify-content: space-between; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--txt3); margin-top: 6px; }
+
+    /* Form controls */
+    .form-select, .form-label { color: var(--txt2); }
+    .form-select { background-color: var(--surface2) !important; border: 1px solid var(--border) !important; color: var(--txt) !important; font-size: 13px; border-radius: 6px; }
+    .form-select:focus { box-shadow: 0 0 0 3px var(--accent-dim) !important; border-color: var(--accent) !important; }
+    .form-select option { background: var(--surface2); }
+    .form-label { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+
+    /* KPI cards */
+    .kpi-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; text-align: center; }
+    .kpi-value { font-family: 'DM Mono', monospace; font-size: 1.5rem; font-weight: 500; line-height: 1.2; }
+    .kpi-primary .kpi-value { color: var(--accent); }
+    .kpi-green .kpi-value { color: var(--green); }
+    .kpi-amber .kpi-value { color: var(--amber); }
+    .kpi-txt .kpi-value { color: var(--txt); }
+    .kpi-lbl { font-size: 11px; color: var(--txt3); text-transform: uppercase; letter-spacing: .04em; margin-top: 4px; }
+
+    /* Chart cards */
+    .chart-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+    .chart-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: .9rem; color: var(--txt2); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 12px; }
+    .chart-wrap { position: relative; height: 220px; }
+
+    /* Listing cards */
+    .listing-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px; transition: transform .15s, border-color .15s, box-shadow .15s; cursor: pointer; }
+    .listing-card:hover { transform: translateY(-2px); border-color: var(--accent); box-shadow: 0 6px 20px rgba(0,0,0,.35); }
+    .listing-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1rem; color: var(--txt); }
+    .listing-prix { font-family: 'DM Mono', monospace; font-size: 1rem; font-weight: 500; color: var(--accent); }
+    .listing-meta { font-size: 12px; color: var(--txt3); margin-top: 3px; }
+    .listing-site { font-size: 10px; background: var(--surface2); color: var(--txt3); border: 1px solid var(--border); padding: 1px 5px; border-radius: 3px; font-family: 'DM Mono', monospace; }
+    .score-pill { font-size: 11px; padding: 2px 7px; border-radius: 10px; font-weight: 600; font-family: 'DM Mono', monospace; }
+    .score-high { background: var(--green-dim); color: var(--green); border: 1px solid rgba(63,185,80,.3); }
+    .score-mid  { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(210,153,34,.3); }
+    .score-low  { background: var(--red-dim); color: var(--red); border: 1px solid rgba(248,81,73,.3); }
+    .deal-tag   { font-size: 11px; color: var(--txt3); margin-top: 6px; }
+    .diff-pos   { color: var(--amber); font-family: 'DM Mono', monospace; font-size: 11px; }
+    .diff-neg   { color: var(--green); font-family: 'DM Mono', monospace; font-size: 11px; }
+
+    /* Section title */
+    .section-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1.05rem; color: var(--txt); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+    .count-badge { background: var(--surface2); color: var(--txt2); border: 1px solid var(--border); font-size: 11px; padding: 2px 8px; border-radius: 4px; font-family: 'DM Mono', monospace; }
+
+    /* Empty state */
+    .no-results { text-align: center; padding: 50px 20px; color: var(--txt3); }
+
+    /* Footer */
+    .footer-bar { text-align: center; padding: 10px; font-size: 11px; color: var(--txt3); font-family: 'DM Mono', monospace; border-top: 1px solid var(--border); background: var(--surface); }
   </style>
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-  <a class="navbar-brand fw-bold" href="index.html">🚗 Auto-Bot LU</a>
-  <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
-          data-bs-target="#navMenu" aria-controls="navMenu"
-          aria-expanded="false" aria-label="Menu navigation">
+<nav class="navbar navbar-expand-lg px-3">
+  <a class="navbar-brand" href="index.html"><span>◈</span> AUTO-BOT LU</a>
+  <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Menu navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navMenu">
     <ul class="navbar-nav ms-auto flex-wrap">
-      <li class="nav-item"><a class="nav-link" href="index.html">📋 Annonces</a></li>
-      <li class="nav-item"><a class="nav-link" href="deals.html">🔥 Deals</a></li>
-      <li class="nav-item"><a class="nav-link" href="rapport.html">📊 Rapport</a></li>
-      <li class="nav-item"><a class="nav-link" href="watchlist.html">👁️ Watchlist</a></li>
-      <li class="nav-item"><a class="nav-link" href="market.html">📈 Marché</a></li>
-      <li class="nav-item"><a class="nav-link" href="compare.html">⚖️ Comparer</a></li>
-      <li class="nav-item"><a class="nav-link active" href="budget.html">💶 Budget</a></li>
-      <li class="nav-item"><a class="nav-link" href="top-models.html">🏆 Top Modèles</a></li>
+      <li class="nav-item"><a class="nav-link" href="index.html">Annonces</a></li>
+      <li class="nav-item"><a class="nav-link" href="deals.html">Deals</a></li>
+      <li class="nav-item"><a class="nav-link" href="rapport.html">Rapport</a></li>
+      <li class="nav-item"><a class="nav-link" href="watchlist.html">Watchlist</a></li>
+      <li class="nav-item"><a class="nav-link" href="market.html">Marché</a></li>
+      <li class="nav-item"><a class="nav-link" href="compare.html">Comparer</a></li>
+      <li class="nav-item"><a class="nav-link active" href="budget.html">Budget</a></li>
+      <li class="nav-item"><a class="nav-link" href="top-models.html">Top Modèles</a></li>
     </ul>
   </div>
 </nav>
 
 <div id="stats-bar">
-  <div class="container-fluid d-flex gap-4 justify-content-center">
-    <span>💶 Budget sélectionné : <strong id="sb-budget">—</strong></span>
-    <span>📋 Annonces dans la tranche : <strong id="sb-count">—</strong></span>
-    <span>💰 Prix moyen : <strong id="sb-prix-moyen">—</strong></span>
-    <span>🏁 Km moyen : <strong id="sb-km-moyen">—</strong></span>
+  <div class="container-fluid d-flex flex-wrap gap-0 justify-content-center align-items-center">
+    <span>BUDGET <strong id="sb-budget">—</strong></span>
+    <span class="pipe">|</span>
+    <span>ANNONCES <strong id="sb-count">—</strong></span>
+    <span class="pipe">|</span>
+    <span>PRIX MOY. <strong id="sb-prix-moyen">—</strong></span>
+    <span class="pipe">|</span>
+    <span>KM MOY. <strong id="sb-km-moyen">—</strong></span>
   </div>
 </div>
 
-<div class="container-fluid py-4">
+<div class="container-fluid py-4 px-3 px-md-4">
 
-  <!-- Slider Budget -->
-  <div class="card kpi-card mb-4">
-    <div class="card-body">
-      <h5 class="card-title mb-3">🎯 Mon budget</h5>
-      <div class="row align-items-center g-3">
-        <div class="col-md-2">
-          <label class="form-label fw-semibold">Budget max</label>
-          <div id="range-display">50 000 €</div>
-        </div>
-        <div class="col-md-8">
-          <input type="range" class="form-range budget-slider" id="budget-slider"
-                 min="3000" max="200000" step="1000" value="50000">
-          <div class="d-flex justify-content-between text-muted" style="font-size:11px">
-            <span>3 000 €</span><span>50 000 €</span><span>100 000 €</span><span>150 000 €</span><span>200 000 €</span>
-          </div>
-        </div>
-        <div class="col-md-2">
-          <label class="form-label fw-semibold">Tolérance</label>
-          <select class="form-select form-select-sm" id="tolerance-select">
-            <option value="0">Budget exact</option>
-            <option value="10" selected>±10%</option>
-            <option value="20">±20%</option>
-          </select>
+  <!-- Slider budget -->
+  <div class="budget-panel">
+    <div class="panel-title">Mon budget</div>
+    <div class="row align-items-center g-3">
+      <div class="col-md-2">
+        <div style="font-size:11px;color:var(--txt3);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px">Budget max</div>
+        <div id="range-display">50 000 €</div>
+      </div>
+      <div class="col-md-8">
+        <input type="range" class="budget-slider" id="budget-slider" min="3000" max="200000" step="1000" value="50000">
+        <div class="slider-labels">
+          <span>3k</span><span>50k</span><span>100k</span><span>150k</span><span>200k €</span>
         </div>
       </div>
+      <div class="col-md-2">
+        <label class="form-label mb-1">Tolérance</label>
+        <select class="form-select form-select-sm" id="tolerance-select">
+          <option value="0">Budget exact</option>
+          <option value="10" selected>±10%</option>
+          <option value="20">±20%</option>
+        </select>
+      </div>
+    </div>
 
-      <!-- Filtres rapides -->
-      <div class="row g-2 mt-2">
-        <div class="col-auto">
-          <label class="form-label small mb-1">Carburant</label>
-          <select class="form-select form-select-sm" id="filter-carbu" style="min-width:130px">
-            <option value="">Tous</option>
-            <option value="Essence">Essence</option>
-            <option value="Diesel">Diesel</option>
-            <option value="Hybride">Hybride</option>
-            <option value="Électrique">Électrique</option>
-          </select>
-        </div>
-        <div class="col-auto">
-          <label class="form-label small mb-1">Km max</label>
-          <select class="form-select form-select-sm" id="filter-km">
-            <option value="">Tous</option>
-            <option value="50000">≤ 50 000</option>
-            <option value="100000">≤ 100 000</option>
-            <option value="150000">≤ 150 000</option>
-          </select>
-        </div>
-        <div class="col-auto">
-          <label class="form-label small mb-1">Année min</label>
-          <select class="form-select form-select-sm" id="filter-annee">
-            <option value="">Toutes</option>
-            <option value="2018">≥ 2018</option>
-            <option value="2020">≥ 2020</option>
-            <option value="2022">≥ 2022</option>
-          </select>
-        </div>
-        <div class="col-auto">
-          <label class="form-label small mb-1">Tri</label>
-          <select class="form-select form-select-sm" id="sort-select">
-            <option value="deal">Meilleur deal</option>
-            <option value="prix_asc">Prix croissant</option>
-            <option value="km_asc">Km croissant</option>
-            <option value="annee_desc">Plus récent</option>
-          </select>
-        </div>
+    <!-- Filtres rapides -->
+    <div class="row g-2 mt-3">
+      <div class="col-auto">
+        <label class="form-label mb-1">Carburant</label>
+        <select class="form-select form-select-sm" id="filter-carbu" style="min-width:120px">
+          <option value="">Tous</option>
+          <option value="Essence">Essence</option>
+          <option value="Diesel">Diesel</option>
+          <option value="Hybride">Hybride</option>
+          <option value="Électrique">Électrique</option>
+        </select>
+      </div>
+      <div class="col-auto">
+        <label class="form-label mb-1">Km max</label>
+        <select class="form-select form-select-sm" id="filter-km">
+          <option value="">Tous</option>
+          <option value="50000">≤ 50k</option>
+          <option value="100000">≤ 100k</option>
+          <option value="150000">≤ 150k</option>
+        </select>
+      </div>
+      <div class="col-auto">
+        <label class="form-label mb-1">Année min</label>
+        <select class="form-select form-select-sm" id="filter-annee">
+          <option value="">Toutes</option>
+          <option value="2018">≥ 2018</option>
+          <option value="2020">≥ 2020</option>
+          <option value="2022">≥ 2022</option>
+        </select>
+      </div>
+      <div class="col-auto">
+        <label class="form-label mb-1">Tri</label>
+        <select class="form-select form-select-sm" id="sort-select">
+          <option value="deal">Meilleur deal</option>
+          <option value="prix_asc">Prix croissant</option>
+          <option value="km_asc">Km croissant</option>
+          <option value="annee_desc">Plus récent</option>
+        </select>
       </div>
     </div>
   </div>
 
-  <!-- KPI Cards -->
-  <div class="row g-3 mb-4" id="kpi-row">
+  <!-- KPI row -->
+  <div class="row g-3 mb-4">
     <div class="col-6 col-md-3">
-      <div class="card kpi-card h-100">
-        <div class="card-body text-center">
-          <div class="kpi-value text-primary" id="kpi-count">—</div>
-          <div class="text-muted small">Annonces disponibles</div>
-        </div>
+      <div class="kpi-card kpi-primary">
+        <div class="kpi-value" id="kpi-count">—</div>
+        <div class="kpi-lbl">Annonces disponibles</div>
       </div>
     </div>
     <div class="col-6 col-md-3">
-      <div class="card kpi-card h-100">
-        <div class="card-body text-center">
-          <div class="kpi-value text-success" id="kpi-best-deal">—</div>
-          <div class="text-muted small">Meilleur deal score</div>
-        </div>
+      <div class="kpi-card kpi-green">
+        <div class="kpi-value" id="kpi-best-deal">—</div>
+        <div class="kpi-lbl">Meilleur deal score</div>
       </div>
     </div>
     <div class="col-6 col-md-3">
-      <div class="card kpi-card h-100">
-        <div class="card-body text-center">
-          <div class="kpi-value text-warning" id="kpi-km">—</div>
-          <div class="text-muted small">Km moyen</div>
-        </div>
+      <div class="kpi-card kpi-amber">
+        <div class="kpi-value" id="kpi-km">—</div>
+        <div class="kpi-lbl">Km moyen</div>
       </div>
     </div>
     <div class="col-6 col-md-3">
-      <div class="card kpi-card h-100">
-        <div class="card-body text-center">
-          <div class="kpi-value text-info" id="kpi-annee">—</div>
-          <div class="text-muted small">Année moyenne</div>
-        </div>
+      <div class="kpi-card kpi-txt">
+        <div class="kpi-value" id="kpi-annee">—</div>
+        <div class="kpi-lbl">Année moyenne</div>
       </div>
     </div>
   </div>
 
-  <!-- Graphes + Résultats -->
-  <div class="row g-4">
-
-    <!-- Répartition dans le budget -->
+  <!-- Graphes -->
+  <div class="row g-3 mb-4">
     <div class="col-md-4">
-      <div class="card kpi-card h-100">
-        <div class="card-body">
-          <h6 class="card-title">Carburants disponibles</h6>
-          <div class="chart-wrap"><canvas id="chart-carbu"></canvas></div>
-        </div>
+      <div class="chart-card h-100">
+        <div class="chart-title">Carburants</div>
+        <div class="chart-wrap"><canvas id="chart-carbu"></canvas></div>
       </div>
     </div>
-
     <div class="col-md-4">
-      <div class="card kpi-card h-100">
-        <div class="card-body">
-          <h6 class="card-title">Top marques dans la tranche</h6>
-          <div class="chart-wrap"><canvas id="chart-marques"></canvas></div>
-        </div>
+      <div class="chart-card h-100">
+        <div class="chart-title">Top marques</div>
+        <div class="chart-wrap"><canvas id="chart-marques"></canvas></div>
       </div>
     </div>
-
     <div class="col-md-4">
-      <div class="card kpi-card h-100">
-        <div class="card-body">
-          <h6 class="card-title">Années disponibles</h6>
-          <div class="chart-wrap"><canvas id="chart-annees"></canvas></div>
-        </div>
+      <div class="chart-card h-100">
+        <div class="chart-title">Années</div>
+        <div class="chart-wrap"><canvas id="chart-annees"></canvas></div>
       </div>
     </div>
-
   </div>
 
-  <!-- Liste des annonces dans le budget -->
-  <div class="mt-4">
-    <h5>Annonces dans votre budget <span class="badge bg-secondary" id="count-badge">0</span></h5>
-    <div class="row g-3" id="listings-grid"></div>
-    <div id="no-results" class="text-center text-muted py-5" style="display:none">
-      <div style="font-size:3rem">🔍</div>
-      <p>Aucune annonce ne correspond à ce budget et ces filtres.</p>
-    </div>
+  <!-- Annonces -->
+  <div class="section-title">
+    Annonces dans votre budget
+    <span class="count-badge" id="count-badge">0</span>
+  </div>
+  <div class="row g-3" id="listings-grid"></div>
+  <div id="no-results" class="no-results" style="display:none">
+    <div style="font-size:3rem;opacity:.2">◈</div>
+    <p>Aucune annonce ne correspond à ce budget et ces filtres.</p>
   </div>
 
 </div>
 
-<div class="text-center text-muted py-2" style="font-size:11px">
-  Auto-Bot LU — <span id="footer-date">—</span>
-</div>
+<div class="footer-bar">Auto-Bot LU — <span id="footer-date">—</span></div>
 
 <script src="data/listings.js"></script>
 <script src="data/version.js"></script>
 <script>
-  // ── Charts ──────────────────────────────────────────────────────────────────
+  Chart.defaults.color = '#8b949e';
+  Chart.defaults.borderColor = 'rgba(48,54,61,.8)';
+
   const CTX_CARBU   = document.getElementById('chart-carbu').getContext('2d');
   const CTX_MARQUES = document.getElementById('chart-marques').getContext('2d');
   const CTX_ANNEES  = document.getElementById('chart-annees').getContext('2d');
+  const COLORS = ['#388bfd','#3fb950','#d29922','#f85149','#bc8cff','#e3b341','#0dcaf0','#fd7e14'];
 
-  const COLORS = ['#0d6efd','#198754','#ffc107','#dc3545','#6f42c1','#0dcaf0','#fd7e14','#20c997'];
+  const darkScaleY = { grid: { color: 'rgba(48,54,61,.6)' }, ticks: { color: '#8b949e' }, beginAtZero: true };
+  const darkScaleX = { grid: { color: 'rgba(48,54,61,.6)' }, ticks: { color: '#8b949e' } };
 
-  let chartCarbu   = new Chart(CTX_CARBU, { type:'doughnut', data:{labels:[],datasets:[{data:[],backgroundColor:COLORS}]}, options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right'}}} });
-  let chartMarques = new Chart(CTX_MARQUES, { type:'bar', data:{labels:[],datasets:[{data:[],backgroundColor:'#0d6efd'}]}, options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}}} });
-  let chartAnnees  = new Chart(CTX_ANNEES, { type:'bar', data:{labels:[],datasets:[{data:[],backgroundColor:'#198754'}]}, options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}} });
+  let chartCarbu   = new Chart(CTX_CARBU,   { type:'doughnut', data:{labels:[],datasets:[{data:[],backgroundColor:COLORS,borderColor:'#161b22',borderWidth:2}]}, options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{font:{size:11},color:'#8b949e'}}}} });
+  let chartMarques = new Chart(CTX_MARQUES, { type:'bar', data:{labels:[],datasets:[{data:[],backgroundColor:'#388bfd',borderRadius:4}]}, options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{...darkScaleY},y:{...darkScaleX}}} });
+  let chartAnnees  = new Chart(CTX_ANNEES,  { type:'bar', data:{labels:[],datasets:[{data:[],backgroundColor:'#3fb950',borderRadius:4}]}, options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{...darkScaleX},y:{...darkScaleY}}} });
 
-  // ── Données ─────────────────────────────────────────────────────────────────
   const allListings = typeof LISTINGS !== 'undefined' ? LISTINGS : [];
 
-  function fmtPrix(p) { return p ? p.toLocaleString('fr-LU') + ' €' : 'N/A'; }
+  function fmtPrix(p) { return p ? p.toLocaleString('fr-LU') + '\u202f€' : 'N/A'; }
   function fmtKm(k)   { return k ? k.toLocaleString('fr-LU') + ' km' : 'N/A'; }
 
-  // ── Filtrage ─────────────────────────────────────────────────────────────────
   function getFiltered() {
-    const budget = parseInt(document.getElementById('budget-slider').value);
-    const tol    = parseInt(document.getElementById('tolerance-select').value) / 100;
-    const carbu  = document.getElementById('filter-carbu').value.toLowerCase();
-    const kmMax  = parseInt(document.getElementById('filter-km').value) || Infinity;
+    const budget   = parseInt(document.getElementById('budget-slider').value);
+    const tol      = parseInt(document.getElementById('tolerance-select').value) / 100;
+    const carbu    = document.getElementById('filter-carbu').value.toLowerCase();
+    const kmMax    = parseInt(document.getElementById('filter-km').value) || Infinity;
     const anneeMin = parseInt(document.getElementById('filter-annee').value) || 0;
-    const sort   = document.getElementById('sort-select').value;
-
+    const sort     = document.getElementById('sort-select').value;
     const pMin = budget * (1 - tol);
     const pMax = budget * (1 + tol);
 
@@ -257,114 +307,105 @@
       if (l.annee && l.annee < anneeMin) return false;
       return true;
     });
-
-    if (sort === 'deal')       results.sort((a,b) => (b.deal_score||0) - (a.deal_score||0));
-    else if (sort === 'prix_asc') results.sort((a,b) => (a.prix||0) - (b.prix||0));
-    else if (sort === 'km_asc')   results.sort((a,b) => (a.km||0) - (b.km||0));
+    if (sort === 'deal')        results.sort((a,b) => (b.deal_score||0) - (a.deal_score||0));
+    else if (sort === 'prix_asc')  results.sort((a,b) => (a.prix||0) - (b.prix||0));
+    else if (sort === 'km_asc')    results.sort((a,b) => (a.km||0) - (b.km||0));
     else if (sort === 'annee_desc') results.sort((a,b) => (b.annee||0) - (a.annee||0));
-
     return results;
   }
 
-  // ── Rendu ────────────────────────────────────────────────────────────────────
   function renderAll() {
     const budget  = parseInt(document.getElementById('budget-slider').value);
     const results = getFiltered();
 
-    // Stats bar
-    document.getElementById('sb-budget').textContent = fmtPrix(budget);
-    document.getElementById('sb-count').textContent  = results.length;
+    document.getElementById('sb-budget').textContent    = fmtPrix(budget);
+    document.getElementById('sb-count').textContent     = results.length;
     const avgPrix = results.length ? Math.round(results.reduce((s,l)=>s+(l.prix||0),0)/results.length) : 0;
-    const avgKm   = results.filter(l=>l.km).length ? Math.round(results.filter(l=>l.km).reduce((s,l)=>s+(l.km||0),0)/results.filter(l=>l.km).length) : 0;
+    const withKm  = results.filter(l=>l.km);
+    const avgKm   = withKm.length ? Math.round(withKm.reduce((s,l)=>s+(l.km||0),0)/withKm.length) : 0;
     document.getElementById('sb-prix-moyen').textContent = fmtPrix(avgPrix);
     document.getElementById('sb-km-moyen').textContent   = fmtKm(avgKm);
 
-    // KPIs
-    document.getElementById('kpi-count').textContent     = results.length;
+    document.getElementById('kpi-count').textContent = results.length;
     const bestDeal = results.reduce((best,l) => Math.max(best, l.deal_score||0), 0);
-    document.getElementById('kpi-best-deal').textContent = bestDeal ? bestDeal + '/100' : '—';
+    document.getElementById('kpi-best-deal').textContent = bestDeal ? bestDeal+'/100' : '—';
     document.getElementById('kpi-km').textContent        = avgKm ? fmtKm(avgKm) : '—';
-    const avgAnnee = results.filter(l=>l.annee).length ? Math.round(results.filter(l=>l.annee).reduce((s,l)=>s+(l.annee||0),0)/results.filter(l=>l.annee).length) : null;
-    document.getElementById('kpi-annee').textContent     = avgAnnee || '—';
+    const withAnnee = results.filter(l=>l.annee);
+    const avgAnnee  = withAnnee.length ? Math.round(withAnnee.reduce((s,l)=>s+(l.annee||0),0)/withAnnee.length) : null;
+    document.getElementById('kpi-annee').textContent = avgAnnee || '—';
 
-    // Graphe carburant
+    // Charts
     const carbus = {};
     results.forEach(l => { const c = l.carburant||'Inconnu'; carbus[c]=(carbus[c]||0)+1; });
-    chartCarbu.data.labels   = Object.keys(carbus);
+    chartCarbu.data.labels = Object.keys(carbus);
     chartCarbu.data.datasets[0].data = Object.values(carbus);
     chartCarbu.update();
 
-    // Graphe marques (top 8)
     const marques = {};
     results.forEach(l => { const m = l.marque_norm||l.marque||'?'; marques[m]=(marques[m]||0)+1; });
     const topMarques = Object.entries(marques).sort((a,b)=>b[1]-a[1]).slice(0,8);
-    chartMarques.data.labels   = topMarques.map(x=>x[0]);
+    chartMarques.data.labels = topMarques.map(x=>x[0]);
     chartMarques.data.datasets[0].data = topMarques.map(x=>x[1]);
     chartMarques.update();
 
-    // Graphe années
     const annees = {};
     results.forEach(l => { if(l.annee) { const a=String(l.annee); annees[a]=(annees[a]||0)+1; } });
     const sortedAnnees = Object.entries(annees).sort((a,b)=>a[0].localeCompare(b[0]));
-    chartAnnees.data.labels   = sortedAnnees.map(x=>x[0]);
+    chartAnnees.data.labels = sortedAnnees.map(x=>x[0]);
     chartAnnees.data.datasets[0].data = sortedAnnees.map(x=>x[1]);
     chartAnnees.update();
 
-    // Badge
     document.getElementById('count-badge').textContent = results.length;
 
-    // Cards listing
-    const grid = document.getElementById('listings-grid');
-    const noRes = document.getElementById('no-results');
+    const grid   = document.getElementById('listings-grid');
+    const noRes  = document.getElementById('no-results');
     grid.innerHTML = '';
 
-    if (!results.length) {
-      noRes.style.display = '';
-      return;
-    }
+    if (!results.length) { noRes.style.display = ''; return; }
     noRes.style.display = 'none';
 
     results.slice(0, 48).forEach(l => {
       const deal = l.deal_score;
       const scoreClass = deal >= 70 ? 'score-high' : deal >= 45 ? 'score-mid' : 'score-low';
-      const dealLabel = deal >= 75 ? '🔥 Excellent' : deal >= 60 ? '✅ Bon deal' : deal >= 45 ? '🟡 Correct' : deal ? '🔵 Passable' : '';
-      const prixDiff = l.prix && budget ? ((l.prix - budget) / budget * 100).toFixed(0) : null;
-      const diffLabel = prixDiff !== null ? (prixDiff > 0 ? `+${prixDiff}%` : `${prixDiff}%`) : '';
-      const diffColor = prixDiff !== null && prixDiff <= 0 ? 'text-success' : 'text-muted';
+      const dealLabel  = deal >= 75 ? 'Excellent deal' : deal >= 60 ? 'Bon deal' : deal >= 45 ? 'Correct' : deal ? 'Passable' : '';
+      const prixDiff   = l.prix && budget ? ((l.prix - budget) / budget * 100).toFixed(0) : null;
+      const diffHtml   = prixDiff !== null
+        ? `<span class="${prixDiff > 0 ? 'diff-pos' : 'diff-neg'}">${prixDiff > 0 ? '+' : ''}${prixDiff}%</span>`
+        : '';
 
       grid.innerHTML += `
         <div class="col-6 col-md-4 col-lg-3">
-          <div class="card listing-card h-100" onclick="window.open('${l.url||'#'}','_blank')">
-            <div class="card-body p-3">
-              <div class="d-flex justify-content-between align-items-start mb-1">
-                <strong style="font-size:13px">${l.marque_norm||l.marque||'?'} ${l.modele_norm||l.modele||''}</strong>
-                ${deal ? `<span class="score-pill ${scoreClass}">${deal}</span>` : ''}
-              </div>
-              <div class="text-primary fw-bold">${fmtPrix(l.prix)} <small class="${diffColor}">${diffLabel}</small></div>
-              <div class="text-muted small">${l.annee||'?'} · ${fmtKm(l.km)} · ${l.carburant||'?'}</div>
-              <div class="text-muted small">${l.ville||''} · ${l.site||''}</div>
-              ${dealLabel ? `<span class="badge bg-light text-dark deal-badge mt-1">${dealLabel}</span>` : ''}
+          <div class="listing-card h-100" onclick="window.open('${l.url||'#'}','_blank')">
+            <div class="d-flex justify-content-between align-items-start mb-1">
+              <div class="listing-title">${l.marque_norm||l.marque||'?'} ${l.modele_norm||l.modele||''}</div>
+              ${deal ? `<span class="score-pill ${scoreClass}">${deal}</span>` : ''}
+            </div>
+            <div class="d-flex align-items-baseline gap-2 mb-1">
+              <span class="listing-prix">${fmtPrix(l.prix)}</span>
+              ${diffHtml}
+            </div>
+            <div class="listing-meta">${l.annee||'?'} · ${fmtKm(l.km)} · ${l.carburant||'?'}</div>
+            <div class="listing-meta">${l.ville||''}</div>
+            <div class="d-flex justify-content-between align-items-center mt-2">
+              <span class="listing-site">${l.site||''}</span>
+              ${dealLabel ? `<span class="deal-tag">${dealLabel}</span>` : ''}
             </div>
           </div>
         </div>`;
     });
   }
 
-  // ── Slider affichage en temps réel ───────────────────────────────────────────
   document.getElementById('budget-slider').addEventListener('input', function() {
-    document.getElementById('range-display').textContent = parseInt(this.value).toLocaleString('fr-LU') + ' €';
+    document.getElementById('range-display').textContent = parseInt(this.value).toLocaleString('fr-LU') + '\u202f€';
     renderAll();
   });
   ['tolerance-select','filter-carbu','filter-km','filter-annee','sort-select'].forEach(id => {
     document.getElementById(id).addEventListener('change', renderAll);
   });
 
-  // ── Footer ───────────────────────────────────────────────────────────────────
   if (typeof VERSION !== 'undefined') {
     document.getElementById('footer-date').textContent = 'Données du ' + VERSION.generated_date + ' à ' + VERSION.generated_time;
   }
-
-  // ── Init ─────────────────────────────────────────────────────────────────────
   renderAll();
 </script>
 <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});</script>

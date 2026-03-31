@@ -4,105 +4,145 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Auto-Bot LU — Comparateur</title>
-
-  <!-- PWA -->
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#212529">
+  <meta name="theme-color" content="#0d1117">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="AutoBot LU">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
-
   <meta name="description" content="Comparateur de voitures au Luxembourg — Auto-Bot">
   <meta name="robots" content="noindex,nofollow">
-
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
-
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
-    body { background: #f8f9fa; font-size: 14px; }
-    .navbar-brand { font-weight: 700; font-size: 1.1rem; }
-    .nav-pills .nav-link.active { background: #212529; }
-    .nav-pills .nav-link { color: #212529; }
-    #stats-bar { background: #212529; color: #fff; padding: 8px 0; font-size: 13px; }
+    :root {
+      --bg: #0d1117; --surface: #161b22; --surface2: #21262d;
+      --border: #30363d; --border2: #3d444e;
+      --txt: #e6edf3; --txt2: #8b949e; --txt3: #6e7681;
+      --accent: #388bfd; --accent-dim: rgba(56,139,253,.15);
+      --green: #3fb950; --green-dim: rgba(63,185,80,.15);
+      --amber: #d29922; --amber-dim: rgba(210,153,34,.15);
+      --red: #f85149; --red-dim: rgba(248,81,73,.15);
+      --gold: #e3b341;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { background: var(--bg); color: var(--txt); font-family: 'Barlow', sans-serif; font-size: 14px; margin: 0; }
+    ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
 
-    /* Sélecteurs */
-    .picker-card { background: #fff; border-radius: 8px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,.1); }
-    .picker-card h6 { font-weight: 700; color: #212529; margin-bottom: 12px; }
+    /* Navbar */
+    .navbar { background: var(--surface) !important; border-bottom: 1px solid var(--border); padding: 0 1rem; }
+    .navbar-brand { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 1.2rem; color: var(--txt) !important; }
+    .navbar-brand span { color: var(--accent); }
+    .navbar-toggler { border: 1px solid var(--border) !important; padding: 4px 8px; }
+    .navbar-toggler-icon { filter: invert(1); }
+    .navbar-collapse { background: var(--surface); }
+    .nav-link { color: var(--txt2) !important; font-size: 13px; font-weight: 500; padding: 12px 14px !important; transition: color .15s; }
+    .nav-link:hover { color: var(--txt) !important; }
+    .nav-link.active { color: var(--accent) !important; }
 
-    /* Table comparaison */
-    .compare-table { border-radius: 8px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,.1); background: #fff; }
-    .compare-table th { background: #212529; color: #fff; text-align: center; width: 33%; padding: 12px; }
-    .compare-table th.row-header { background: #495057; text-align: left; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .5px; }
-    .compare-table td { text-align: center; padding: 10px 14px; border-bottom: 1px solid #f0f0f0; font-size: 14px; }
-    .compare-table td.row-lbl { text-align: left; color: #555; font-weight: 500; background: #f8f9fa; }
-    .compare-table tr:last-child td { border-bottom: none; }
-    .win { color: #198754; font-weight: 700; }
-    .lose { color: #dc3545; }
-    .neutral { color: #555; }
+    /* Stats bar */
+    #stats-bar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 8px 0; font-family: 'DM Mono', monospace; font-size: 12px; color: var(--txt2); }
+    #stats-bar strong { color: var(--txt); }
+    .pipe { color: var(--border2); margin: 0 8px; }
 
-    /* Photo */
-    .car-photo { width: 100%; height: 160px; object-fit: cover; border-radius: 6px; margin-bottom: 10px; background: #eee; }
-    .car-photo-placeholder { width: 100%; height: 160px; background: linear-gradient(135deg,#e9ecef,#dee2e6); border-radius: 6px; display:flex; align-items:center; justify-content:center; font-size:3rem; margin-bottom:10px; }
+    /* Picker cards */
+    .picker-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; }
+    .picker-label { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: .95rem; color: var(--txt2); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 10px; }
 
-    /* Select2 */
+    /* Select2 dark override */
     .select2-container { width: 100% !important; }
-    .select2-container--default .select2-selection--single { height: 38px; border: 1px solid #ced4da; border-radius: 6px; padding: 4px 8px; }
-    .select2-container--default .select2-selection--single .select2-selection__arrow { height: 36px; }
+    .select2-container--default .select2-selection--single {
+      background: var(--surface2) !important; border: 1px solid var(--border) !important;
+      color: var(--txt) !important; height: 36px; border-radius: 6px !important; padding: 4px 8px;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__rendered { color: var(--txt) !important; line-height: 26px; }
+    .select2-container--default .select2-selection--single .select2-selection__arrow { height: 34px; }
+    .select2-container--default .select2-results__option { background: var(--surface2); color: var(--txt); font-size: 13px; }
+    .select2-container--default .select2-results__option--highlighted { background: var(--accent-dim) !important; color: var(--accent) !important; }
+    .select2-dropdown { background: var(--surface2) !important; border: 1px solid var(--border) !important; }
+    .select2-search--dropdown .select2-search__field { background: var(--bg) !important; border: 1px solid var(--border) !important; color: var(--txt) !important; border-radius: 4px; }
 
-    /* Badge annonce -->
-    .badge-site { font-size: 10px; padding: 2px 6px; }
-    #version-bar { text-align:center; padding:6px; font-size:11px; color:#aaa; background:#fff; border-top:1px solid #eee; }
+    /* Car photo placeholder */
+    .car-photo { width: 100%; height: 160px; object-fit: cover; border-radius: 6px; margin-bottom: 10px; }
+    .car-photo-placeholder { width: 100%; height: 160px; background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin-bottom: 10px; opacity: .4; }
 
-    /* Score bars */
-    .score-bar { height: 8px; border-radius: 4px; background: #dee2e6; overflow: hidden; margin-top: 4px; }
-    .score-bar-fill { height: 100%; border-radius: 4px; }
+    /* Compare table */
+    .compare-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+    .compare-table { width: 100%; border-collapse: collapse; }
+    .compare-table thead th { background: var(--surface2); color: var(--txt); text-align: center; width: 33%; padding: 12px 14px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: .95rem; border-bottom: 1px solid var(--border); }
+    .compare-table thead th.row-header { text-align: left; color: var(--txt3); font-size: 11px; text-transform: uppercase; letter-spacing: .05em; }
+    .compare-table tbody td { text-align: center; padding: 10px 14px; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--txt); }
+    .compare-table tbody tr:last-child td { border-bottom: none; }
+    .compare-table tbody td.row-lbl { text-align: left; color: var(--txt2); font-weight: 500; background: var(--surface2); }
+    .compare-table tbody tr:hover td { background: rgba(56,139,253,.04); }
+    .win  { color: var(--green); font-weight: 700; }
+    .lose { color: var(--red); }
+    .neutral { color: var(--txt); }
 
-    /* Responsive */
-    @media (max-width:768px) {
-      .compare-table th, .compare-table td { font-size: 12px; padding: 8px; }
+    /* Score bar */
+    .score-bar { height: 6px; border-radius: 3px; background: var(--surface2); overflow: hidden; margin-top: 5px; }
+    .score-bar-fill { height: 100%; border-radius: 3px; }
+
+    /* Verdict */
+    .verdict-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; }
+    .verdict-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: .95rem; color: var(--txt2); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 10px; }
+
+    /* Empty state */
+    .empty-state { text-align: center; padding: 60px 20px; color: var(--txt3); }
+    .empty-state h5 { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; color: var(--txt); }
+
+    /* Version */
+    #version-bar { text-align: center; padding: 8px; font-size: 11px; color: var(--txt3); font-family: 'DM Mono', monospace; border-top: 1px solid var(--border); background: var(--surface); }
+
+    .prix-mono { font-family: 'DM Mono', monospace; }
+    .badge-site { background: var(--surface2); color: var(--txt2); border: 1px solid var(--border); font-size: 10px; padding: 2px 6px; border-radius: 4px; }
+    .btn-voir { background: transparent; border: 1px solid var(--border); color: var(--txt2); font-size: 12px; padding: 4px 12px; border-radius: 4px; text-decoration: none; transition: all .15s; }
+    .btn-voir:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+
+    @media (max-width: 768px) {
+      .compare-table thead th, .compare-table tbody td { font-size: 12px; padding: 8px 8px; }
     }
   </style>
 </head>
 <body>
 
-<!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-  <a class="navbar-brand fw-bold" href="index.html">🚗 Auto-Bot LU</a>
-  <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
-          data-bs-target="#navMenu" aria-controls="navMenu"
-          aria-expanded="false" aria-label="Menu navigation">
+<nav class="navbar navbar-expand-lg px-3">
+  <a class="navbar-brand" href="index.html"><span>◈</span> AUTO-BOT LU</a>
+  <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Menu navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navMenu">
     <ul class="navbar-nav ms-auto flex-wrap">
-      <li class="nav-item"><a class="nav-link" href="index.html">📋 Annonces</a></li>
-      <li class="nav-item"><a class="nav-link" href="deals.html">🔥 Deals</a></li>
-      <li class="nav-item"><a class="nav-link" href="rapport.html">📊 Rapport</a></li>
-      <li class="nav-item"><a class="nav-link" href="watchlist.html">👁️ Watchlist</a></li>
-      <li class="nav-item"><a class="nav-link" href="market.html">📈 Marché</a></li>
-      <li class="nav-item"><a class="nav-link active" href="compare.html">⚖️ Comparer</a></li>
-      <li class="nav-item"><a class="nav-link" href="budget.html">💶 Budget</a></li>
-      <li class="nav-item"><a class="nav-link" href="top-models.html">🏆 Top Modèles</a></li>
+      <li class="nav-item"><a class="nav-link" href="index.html">Annonces</a></li>
+      <li class="nav-item"><a class="nav-link" href="deals.html">Deals</a></li>
+      <li class="nav-item"><a class="nav-link" href="rapport.html">Rapport</a></li>
+      <li class="nav-item"><a class="nav-link" href="watchlist.html">Watchlist</a></li>
+      <li class="nav-item"><a class="nav-link" href="market.html">Marché</a></li>
+      <li class="nav-item"><a class="nav-link active" href="compare.html">Comparer</a></li>
+      <li class="nav-item"><a class="nav-link" href="budget.html">Budget</a></li>
+      <li class="nav-item"><a class="nav-link" href="top-models.html">Top Modèles</a></li>
     </ul>
   </div>
 </nav>
 
-<!-- Stats bar -->
 <div id="stats-bar">
-  <div class="container-fluid d-flex gap-4 justify-content-center">
-    <span>📋 <strong id="nb-annonces">—</strong> annonces disponibles</span>
-    <span>🆚 Sélectionne 2 voitures à comparer</span>
+  <div class="container-fluid d-flex flex-wrap gap-0 justify-content-center align-items-center">
+    <span><strong id="nb-annonces">—</strong> annonces disponibles</span>
+    <span class="pipe">|</span>
+    <span>Sélectionne 2 voitures à comparer</span>
   </div>
 </div>
 
-<div class="container-fluid py-3 px-4">
+<div class="container-fluid py-3 px-3 px-md-4">
 
   <!-- Sélecteurs -->
   <div class="row g-3 mb-4">
     <div class="col-lg-6">
       <div class="picker-card">
-        <h6>🚘 Voiture A</h6>
+        <div class="picker-label">Voiture A</div>
         <select id="select-a" class="form-select">
           <option value="">— Choisir une annonce —</option>
         </select>
@@ -110,7 +150,7 @@
     </div>
     <div class="col-lg-6">
       <div class="picker-card">
-        <h6>🚙 Voiture B</h6>
+        <div class="picker-label">Voiture B</div>
         <select id="select-b" class="form-select">
           <option value="">— Choisir une annonce —</option>
         </select>
@@ -118,77 +158,70 @@
     </div>
   </div>
 
-  <!-- Résultat comparaison -->
-  <div id="compare-result" style="display:none;">
+  <!-- Résultat -->
+  <div id="compare-result" style="display:none">
 
-    <!-- Photos -->
+    <!-- Photos + titres -->
     <div class="row g-3 mb-3">
       <div class="col-lg-6 text-center">
         <div id="photo-a"></div>
-        <div id="titre-a" class="fw-bold fs-5"></div>
-        <div id="site-a" class="text-muted small"></div>
+        <div id="titre-a" class="fw-bold" style="font-family:'Barlow Condensed',sans-serif;font-size:1.1rem"></div>
+        <div id="site-a" class="mt-1"><span class="badge-site"></span></div>
       </div>
       <div class="col-lg-6 text-center">
         <div id="photo-b"></div>
-        <div id="titre-b" class="fw-bold fs-5"></div>
-        <div id="site-b" class="text-muted small"></div>
+        <div id="titre-b" class="fw-bold" style="font-family:'Barlow Condensed',sans-serif;font-size:1.1rem"></div>
+        <div id="site-b" class="mt-1"><span class="badge-site"></span></div>
       </div>
     </div>
 
-    <!-- Tableau comparaison -->
-    <table class="compare-table table mb-4 w-100">
-      <thead>
-        <tr>
-          <th class="row-header">Critère</th>
-          <th id="head-a">Voiture A</th>
-          <th id="head-b">Voiture B</th>
-        </tr>
-      </thead>
-      <tbody id="compare-body"></tbody>
-    </table>
+    <!-- Tableau -->
+    <div class="compare-wrap mb-4" style="overflow-x:auto">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th class="row-header">Critère</th>
+            <th id="head-a">Voiture A</th>
+            <th id="head-b">Voiture B</th>
+          </tr>
+        </thead>
+        <tbody id="compare-body"></tbody>
+      </table>
+    </div>
 
     <!-- Verdict -->
-    <div class="row g-3">
-      <div class="col-12">
-        <div class="card border-0 shadow-sm p-3">
-          <h6 class="fw-bold mb-2">⚖️ Verdict</h6>
-          <div id="verdict-text" class="fs-6"></div>
-        </div>
-      </div>
+    <div class="verdict-card">
+      <div class="verdict-title">Verdict</div>
+      <div id="verdict-text" style="font-size:14px;line-height:1.6"></div>
     </div>
 
   </div>
 
-  <!-- Message vide -->
-  <div id="empty-state" class="text-center py-5 text-muted">
-    <div style="font-size:4rem">🆚</div>
+  <!-- Empty state -->
+  <div id="empty-state" class="empty-state">
+    <div style="font-size:4rem;opacity:.15">⇌</div>
     <h5 class="mt-3">Sélectionne deux voitures pour les comparer</h5>
-    <p class="small">Toutes les annonces actives sont disponibles dans les menus ci-dessus.</p>
+    <p style="font-size:13px;color:var(--txt3)">Toutes les annonces actives sont disponibles dans les menus ci-dessus.</p>
   </div>
 
 </div>
 
 <div id="version-bar">Génération : <span id="v-time">—</span></div>
 
-<!-- Données -->
 <script src="data/listings.js"></script>
 <script src="data/version.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.0/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>
-// ── Données ──────────────────────────────────────────────────────────────────
 const listings = (typeof LISTINGS !== 'undefined') ? LISTINGS : [];
 document.getElementById('nb-annonces').textContent = listings.length;
 
-function fmtEur(n)  { return n ? n.toLocaleString('fr-LU') + ' €' : '—'; }
+function fmtEur(n)  { return n ? n.toLocaleString('fr-LU') + '\u202f€' : '—'; }
 function fmtKm(n)   { return n ? n.toLocaleString('fr-LU') + ' km' : '—'; }
-function fmtAnnee(n){ return n || '—'; }
 
-// ── Remplir les selects ───────────────────────────────────────────────────────
 function fillSelect(selId) {
   const sel = document.getElementById(selId);
-  // Trier par marque + modèle
   const sorted = [...listings].sort((a,b) => {
     const la = `${a.marque_norm||a.marque||''} ${a.modele_norm||a.modele||''} ${a.annee||''}`;
     const lb = `${b.marque_norm||b.marque||''} ${b.modele_norm||b.modele||''} ${b.annee||''}`;
@@ -213,28 +246,26 @@ function fillSelect(selId) {
 fillSelect('select-a');
 fillSelect('select-b');
 
-// Activer Select2 pour la recherche rapide
 $(document).ready(function() {
   $('#select-a, #select-b').select2({ placeholder: '— Choisir une annonce —', allowClear: true });
   $('#select-a, #select-b').on('change', renderCompare);
 });
 
-// ── Rendu comparaison ─────────────────────────────────────────────────────────
 function getListing(id) { return listings.find(l => l.id === id); }
 
 function scoreColor(score) {
-  if (!score) return '#adb5bd';
-  if (score >= 70) return '#198754';
-  if (score >= 40) return '#ffc107';
-  return '#dc3545';
+  if (!score) return 'var(--txt3)';
+  if (score >= 70) return 'var(--green)';
+  if (score >= 40) return 'var(--amber)';
+  return 'var(--red)';
 }
 
 function renderPhoto(container, l) {
   const photo = l.photos_url && l.photos_url[0];
   if (photo) {
-    container.innerHTML = `<img src="${photo}" class="car-photo" alt="${l.marque_norm||l.marque||''}" onerror="this.parentElement.innerHTML='<div class=car-photo-placeholder>🚗</div>'">`;
+    container.innerHTML = `<img src="${photo}" class="car-photo" alt="${l.marque_norm||l.marque||''}" onerror="this.parentElement.innerHTML='<div class=car-photo-placeholder>◈</div>'">`;
   } else {
-    container.innerHTML = '<div class="car-photo-placeholder">🚗</div>';
+    container.innerHTML = '<div class="car-photo-placeholder">◈</div>';
   }
 }
 
@@ -247,7 +278,6 @@ function renderCompare() {
     document.getElementById('empty-state').style.display = 'block';
     return;
   }
-
   const a = getListing(idA);
   const b = getListing(idB);
   if (!a || !b) return;
@@ -255,38 +285,34 @@ function renderCompare() {
   document.getElementById('compare-result').style.display = 'block';
   document.getElementById('empty-state').style.display = 'none';
 
-  // Photos et titres
   renderPhoto(document.getElementById('photo-a'), a);
   renderPhoto(document.getElementById('photo-b'), b);
   const titreA = `${a.marque_norm||a.marque||'?'} ${a.modele_norm||a.modele||''} ${a.annee||''}`.trim();
   const titreB = `${b.marque_norm||b.marque||'?'} ${b.modele_norm||b.modele||''} ${b.annee||''}`.trim();
   document.getElementById('titre-a').textContent = titreA;
   document.getElementById('titre-b').textContent = titreB;
-  document.getElementById('site-a').textContent = a.site || '';
-  document.getElementById('site-b').textContent = b.site || '';
+  document.getElementById('site-a').innerHTML = `<span class="badge-site">${a.site||''}</span>`;
+  document.getElementById('site-b').innerHTML = `<span class="badge-site">${b.site||''}</span>`;
   document.getElementById('head-a').textContent = titreA;
   document.getElementById('head-b').textContent = titreB;
 
-  // Lignes de comparaison
-  // Format : [label, valueA, valueB, lowerIsBetter, unit]
   const rows = [
-    { label: '💶 Prix',          a: a.prix,           b: b.prix,           lower: true,  fmt: fmtEur },
-    { label: '📏 Kilométrage',   a: a.km,             b: b.km,             lower: true,  fmt: fmtKm  },
-    { label: '📅 Année',         a: a.annee,          b: b.annee,          lower: false, fmt: v => v || '—' },
-    { label: '⛽ Carburant',     a: a.carburant,      b: b.carburant,      lower: null,  fmt: v => v || '—' },
-    { label: '⚙️ Boîte',        a: a.boite,          b: b.boite,          lower: null,  fmt: v => v || '—' },
-    { label: '🏙️ Ville',        a: a.ville,          b: b.ville,          lower: null,  fmt: v => v || '—' },
-    { label: '🏢 Vendeur',       a: a.vendeur_nom,    b: b.vendeur_nom,    lower: null,  fmt: v => v || '—' },
-    { label: '🎨 Couleur',       a: a.couleur,        b: b.couleur,        lower: null,  fmt: v => v || '—' },
-    { label: '💡 Deal Score',    a: a.deal_score,     b: b.deal_score,     lower: false, fmt: v => v ? v + '/100' : '—' },
-    { label: '⚠️ Risk Score',   a: a.risk_score,     b: b.risk_score,     lower: true,  fmt: v => v ? v + '/100' : '—' },
-    { label: '🔗 Annonce',       a: a.url,            b: b.url,            lower: null,
-      fmtA: () => `<a href="${a.url}" target="_blank" class="btn btn-sm btn-outline-dark">Voir</a>`,
-      fmtB: () => `<a href="${b.url}" target="_blank" class="btn btn-sm btn-outline-dark">Voir</a>` },
+    { label: 'Prix',        a: a.prix,        b: b.prix,        lower: true,  fmt: fmtEur },
+    { label: 'Kilométrage', a: a.km,          b: b.km,          lower: true,  fmt: fmtKm  },
+    { label: 'Année',       a: a.annee,       b: b.annee,       lower: false, fmt: v => v || '—' },
+    { label: 'Carburant',   a: a.carburant,   b: b.carburant,   lower: null,  fmt: v => v || '—' },
+    { label: 'Boîte',       a: a.boite,       b: b.boite,       lower: null,  fmt: v => v || '—' },
+    { label: 'Ville',       a: a.ville,       b: b.ville,       lower: null,  fmt: v => v || '—' },
+    { label: 'Vendeur',     a: a.vendeur_nom, b: b.vendeur_nom, lower: null,  fmt: v => v || '—' },
+    { label: 'Couleur',     a: a.couleur,     b: b.couleur,     lower: null,  fmt: v => v || '—' },
+    { label: 'Deal Score',  a: a.deal_score,  b: b.deal_score,  lower: false, fmt: v => v ? v+'/100' : '—' },
+    { label: 'Risk Score',  a: a.risk_score,  b: b.risk_score,  lower: true,  fmt: v => v ? v+'/100' : '—' },
+    { label: 'Annonce',     a: a.url,         b: b.url,         lower: null,
+      fmtA: () => `<a href="${a.url}" target="_blank" class="btn-voir">Voir →</a>`,
+      fmtB: () => `<a href="${b.url}" target="_blank" class="btn-voir">Voir →</a>` },
   ];
 
-  let points_a = 0, points_b = 0;
-
+  let pts_a = 0, pts_b = 0;
   const tbody = document.getElementById('compare-body');
   tbody.innerHTML = '';
 
@@ -295,7 +321,6 @@ function renderCompare() {
     let cellA, cellB;
 
     if (row.fmtA) {
-      // Lien ou custom
       cellA = row.fmtA();
       cellB = row.fmtB();
     } else {
@@ -305,60 +330,45 @@ function renderCompare() {
 
       if (row.lower !== null && row.a != null && row.b != null && row.a !== row.b) {
         const aBetter = row.lower ? row.a < row.b : row.a > row.b;
-        if (aBetter) { clsA = 'win'; clsB = 'lose'; points_a++; }
-        else         { clsA = 'lose'; clsB = 'win'; points_b++; }
+        if (aBetter) { clsA = 'win'; clsB = 'lose'; pts_a++; }
+        else         { clsA = 'lose'; clsB = 'win'; pts_b++; }
       }
 
-      // Score bar pour deal/risk
       let barA = '', barB = '';
       if (row.label.includes('Score') && row.a != null) {
-        const colorA = scoreColor(row.a);
-        barA = `<div class="score-bar"><div class="score-bar-fill" style="width:${row.a||0}%;background:${colorA}"></div></div>`;
-        const colorB = scoreColor(row.b);
-        barB = `<div class="score-bar"><div class="score-bar-fill" style="width:${row.b||0}%;background:${colorB}"></div></div>`;
+        const cA = scoreColor(row.a), cB = scoreColor(row.b);
+        barA = `<div class="score-bar"><div class="score-bar-fill" style="width:${row.a||0}%;background:${cA}"></div></div>`;
+        barB = `<div class="score-bar"><div class="score-bar-fill" style="width:${row.b||0}%;background:${cB}"></div></div>`;
       }
-
       cellA = `<span class="${clsA}">${valA}</span>${barA}`;
       cellB = `<span class="${clsB}">${valB}</span>${barB}`;
     }
-
     tr.innerHTML = `<td class="row-lbl">${row.label}</td><td>${cellA}</td><td>${cellB}</td>`;
     tbody.appendChild(tr);
   });
 
-  // ── Verdict ──────────────────────────────────────────────────────────────
   let verdict = '';
-  if (points_a > points_b) {
-    verdict = `✅ <strong>${titreA}</strong> est objectivement meilleure sur ${points_a}/${points_a+points_b} critères comparables.`;
-  } else if (points_b > points_a) {
-    verdict = `✅ <strong>${titreB}</strong> est objectivement meilleure sur ${points_b}/${points_a+points_b} critères comparables.`;
+  if (pts_a > pts_b) {
+    verdict = `<span style="color:var(--green)">✓</span> <strong>${titreA}</strong> est objectivement meilleure sur ${pts_a}/${pts_a+pts_b} critères comparables.`;
+  } else if (pts_b > pts_a) {
+    verdict = `<span style="color:var(--green)">✓</span> <strong>${titreB}</strong> est objectivement meilleure sur ${pts_b}/${pts_a+pts_b} critères comparables.`;
   } else {
-    verdict = `⚖️ Les deux véhicules sont <strong>équivalents</strong> sur les critères objectifs.`;
+    verdict = `<span style="color:var(--amber)">⇌</span> Les deux véhicules sont <strong>équivalents</strong> sur les critères objectifs.`;
   }
-
-  // Ajout note prix
   if (a.prix && b.prix && a.prix !== b.prix) {
     const diff = Math.abs(a.prix - b.prix);
     const cheaperName = a.prix < b.prix ? titreA : titreB;
-    verdict += ` <span class="text-muted">— ${cheaperName} est moins chère de ${fmtEur(diff)}.</span>`;
+    verdict += ` <span style="color:var(--txt3)">— ${cheaperName} est moins chère de ${fmtEur(diff)}.</span>`;
   }
-
   document.getElementById('verdict-text').innerHTML = verdict;
 }
 
-// ── Version ───────────────────────────────────────────────────────────────────
 if (typeof VERSION !== 'undefined') {
   document.getElementById('v-time').textContent = VERSION.generated_date + ' ' + VERSION.generated_time + ' · v' + VERSION.bot_version;
 }
 </script>
 
-<!-- PWA Service Worker -->
-<script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js').catch(() => {});
-}
-</script>
-
+<script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
