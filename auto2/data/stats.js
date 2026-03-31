@@ -1,54 +1,53 @@
-// Généré automatiquement le 2026-03-31 22:00
+// Généré automatiquement le 2026-03-31 22:32
 const STATS = {
-  "total_actives": 1246,
-  "nouvelles_aujourd_hui": 659,
-  "prix_moyen": 38385,
-  "prix_min": 899,
+  "total_actives": 1269,
+  "nouvelles_aujourd_hui": 663,
+  "prix_moyen": 38292,
+  "prix_min": 1200,
   "prix_max": 413556,
-  "km_moyen": 48610,
+  "km_moyen": 47576,
   "repartition_carburant": {
-    "Diesel": 283,
-    "Essence": 704,
-    "Electrique": 120,
-    "GNV": 3,
-    "Hybride": 126,
-    "GPL": 3,
-    "Wasserstoff": 2,
+    "Essence": 706,
+    "Diesel": 294,
+    "Electrique": 130,
+    "GPL": 5,
+    "Hybride": 127,
+    "GNV": 2,
     "Autres": 1,
     "Inconnu": 4
   },
   "repartition_marques": {
-    "Volkswagen": 166,
-    "Audi": 156,
-    "Mercedes": 154,
-    "Ford": 78,
-    "Hyundai": 76,
-    "BMW": 75,
-    "Skoda": 73,
-    "Opel": 50,
+    "Volkswagen": 175,
+    "Audi": 160,
+    "Mercedes": 144,
+    "BMW": 91,
+    "Hyundai": 74,
+    "Ford": 72,
+    "Skoda": 68,
+    "Opel": 60,
     "Kia": 48,
-    "MG": 40
+    "MG": 39
   },
   "repartition_pays": {
-    "Allemagne": 519,
-    "Luxembourg": 727
+    "Luxembourg": 744,
+    "Allemagne": 525
   },
   "repartition_vendeur": {
-    "pro": 1246
+    "pro": 1269
   },
-  "nb_avec_ct": 16,
+  "nb_avec_ct": 19,
   "snapshots_30j": [
     {
-      "id": 3,
+      "id": 4,
       "date": "2026-03-31",
-      "run_id": "51d7ed79-f1d",
-      "nb_annonces_total": 1246,
-      "nb_nouvelles": 659,
+      "run_id": "c77f5350-7db",
+      "nb_annonces_total": 1269,
+      "nb_nouvelles": 663,
       "nb_disparues": 0,
       "nb_prix_baisse": 0,
       "nb_suspects": 0,
-      "prix_moyen_marche": 38385,
-      "meilleur_deal_id": "49bd9d574de8147e"
+      "prix_moyen_marche": 38292,
+      "meilleur_deal_id": "7b2893191c392a43"
     },
     {
       "id": 1,
@@ -63,5 +62,5 @@ const STATS = {
       "meilleur_deal_id": "test_abc123"
     }
   ],
-  "date_calcul": "2026-03-31T22:00:12.596674"
+  "date_calcul": "2026-03-31T22:32:33.295863"
 };

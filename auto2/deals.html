@@ -167,18 +167,55 @@
 <div class="container-fluid mt-3 px-3 px-md-4">
 
   <!-- Filtre -->
-  <div class="filter-panel d-flex flex-wrap align-items-center gap-3">
-    <span style="font-size:13px;color:var(--txt2);font-weight:500;">Seuil minimum :</span>
-    <select id="seuil-pct" class="form-select form-select-sm" style="width:160px" onchange="renderDeals()">
-      <option value="5">5% sous marché</option>
-      <option value="10" selected>10% sous marché</option>
-      <option value="15">15% sous marché</option>
-      <option value="20">20% sous marché</option>
-      <option value="25">25% sous marché</option>
-    </select>
-    <div class="form-check mb-0 ms-2">
-      <input class="form-check-input" type="checkbox" id="hide-suspect" checked onchange="renderDeals()">
-      <label class="form-check-label" for="hide-suspect">Masquer les suspects</label>
+  <div class="filter-panel mb-3">
+    <div class="row g-2 align-items-end mb-2">
+      <div class="col-md-2 col-6">
+        <label class="form-label" style="font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--txt3);margin-bottom:4px">Marque</label>
+        <select id="f-marque" class="form-select form-select-sm" onchange="renderDeals()"><option value="">Toutes</option></select>
+      </div>
+      <div class="col-md-2 col-6">
+        <label class="form-label" style="font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--txt3);margin-bottom:4px">Modèle</label>
+        <select id="f-modele" class="form-select form-select-sm" onchange="renderDeals()"><option value="">Tous</option></select>
+      </div>
+      <div class="col-md-1 col-6">
+        <label class="form-label" style="font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--txt3);margin-bottom:4px">Prix max €</label>
+        <input type="number" id="f-prix-max" class="form-control form-control-sm" placeholder="100 000" style="background:var(--surface2);border:1px solid var(--border);color:var(--txt)" oninput="renderDeals()">
+      </div>
+      <div class="col-md-1 col-6">
+        <label class="form-label" style="font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--txt3);margin-bottom:4px">Km max</label>
+        <input type="number" id="f-km-max" class="form-control form-control-sm" placeholder="200 000" style="background:var(--surface2);border:1px solid var(--border);color:var(--txt)" oninput="renderDeals()">
+      </div>
+      <div class="col-md-1 col-6">
+        <label class="form-label" style="font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--txt3);margin-bottom:4px">Année min</label>
+        <input type="number" id="f-annee-min" class="form-control form-control-sm" placeholder="2015" style="background:var(--surface2);border:1px solid var(--border);color:var(--txt)" oninput="renderDeals()">
+      </div>
+      <div class="col-md-1 col-6">
+        <label class="form-label" style="font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--txt3);margin-bottom:4px">Pays</label>
+        <select id="f-pays" class="form-select form-select-sm" onchange="renderDeals()">
+          <option value="">Tous</option>
+          <option value="Luxembourg">🇱🇺 LU</option>
+          <option value="Allemagne">🇩🇪 DE</option>
+          <option value="France">🇫🇷 FR</option>
+          <option value="Belgique">🇧🇪 BE</option>
+        </select>
+      </div>
+      <div class="col-md-2 col-6">
+        <label class="form-label" style="font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--txt3);margin-bottom:4px">Seuil économie</label>
+        <select id="seuil-pct" class="form-select form-select-sm" onchange="renderDeals()">
+          <option value="5">≥ 5% sous marché</option>
+          <option value="10" selected>≥ 10% sous marché</option>
+          <option value="15">≥ 15% sous marché</option>
+          <option value="20">≥ 20% sous marché</option>
+          <option value="25">≥ 25% sous marché</option>
+        </select>
+      </div>
+      <div class="col-md-2 col-12 d-flex align-items-end gap-3 flex-wrap">
+        <div class="form-check mb-0">
+          <input class="form-check-input" type="checkbox" id="hide-suspect" checked onchange="renderDeals()">
+          <label class="form-check-label" for="hide-suspect" style="font-size:12px">Masquer suspects</label>
+        </div>
+        <button class="btn-voir" onclick="resetDealFilters()" style="padding:4px 10px;font-size:11px">↺ Reset</button>
+      </div>
     </div>
   </div>
 
@@ -201,9 +238,32 @@
   const stats  = typeof STATS !== 'undefined' ? STATS : {};
 
   document.addEventListener('DOMContentLoaded', () => {
+    fillSelectFilters();
     fillStats();
     renderDeals();
   });
+
+  function fillSelectFilters() {
+    const marques = [...new Set(deals.map(d => d.marque_norm || d.marque).filter(Boolean))].sort();
+    const sel = document.getElementById('f-marque');
+    marques.forEach(m => { const o = document.createElement('option'); o.value = m; o.textContent = m; sel.appendChild(o); });
+    sel.addEventListener('change', () => {
+      const modSel = document.getElementById('f-modele');
+      modSel.innerHTML = '<option value="">Tous</option>';
+      const m = sel.value;
+      if (m) {
+        const modeles = [...new Set(deals.filter(d => (d.marque_norm||d.marque) === m).map(d => d.modele_norm||d.modele).filter(Boolean))].sort();
+        modeles.forEach(mod => { const o = document.createElement('option'); o.value = mod; o.textContent = mod; modSel.appendChild(o); });
+      } else {
+        const allMods = [...new Set(deals.map(d => d.modele_norm||d.modele).filter(Boolean))].sort();
+        allMods.forEach(mod => { const o = document.createElement('option'); o.value = mod; o.textContent = mod; modSel.appendChild(o); });
+      }
+    });
+    // Fill modeles initially
+    const allMods = [...new Set(deals.map(d => d.modele_norm||d.modele).filter(Boolean))].sort();
+    const modSel = document.getElementById('f-modele');
+    allMods.forEach(mod => { const o = document.createElement('option'); o.value = mod; o.textContent = mod; modSel.appendChild(o); });
+  }
 
   function fillStats() {
     const visible = getFilteredDeals();
@@ -214,17 +274,44 @@
         visible[0].economie_eur ? formatPrix(visible[0].economie_eur) : '—';
       const moy = visible.reduce((s, d) => s + (d.economie_pct||0), 0) / visible.length;
       document.getElementById('pct-moyen').textContent = moy.toFixed(1) + '%';
+    } else {
+      document.getElementById('eco-max').textContent = '—';
+      document.getElementById('pct-moyen').textContent = '—';
     }
   }
 
   function getFilteredDeals() {
     const seuil       = parseFloat(document.getElementById('seuil-pct').value);
     const hideSuspect = document.getElementById('hide-suspect').checked;
+    const marque      = document.getElementById('f-marque').value;
+    const modele      = document.getElementById('f-modele').value;
+    const prixMax     = parseInt(document.getElementById('f-prix-max').value) || Infinity;
+    const kmMax       = parseInt(document.getElementById('f-km-max').value) || Infinity;
+    const anneeMin    = parseInt(document.getElementById('f-annee-min').value) || 0;
+    const pays        = document.getElementById('f-pays').value;
     return deals.filter(d => {
       if (d.economie_pct < seuil) return false;
       if (hideSuspect && d.risk_score && d.risk_score > 70) return false;
+      if (marque && (d.marque_norm||d.marque) !== marque) return false;
+      if (modele && (d.modele_norm||d.modele) !== modele) return false;
+      if (d.prix && d.prix > prixMax) return false;
+      if (d.km  && d.km  > kmMax)    return false;
+      if (d.annee && d.annee < anneeMin) return false;
+      if (pays && (d.pays||'') !== pays) return false;
       return true;
     });
+  }
+
+  function resetDealFilters() {
+    document.getElementById('f-marque').value = '';
+    document.getElementById('f-modele').value = '';
+    document.getElementById('f-prix-max').value = '';
+    document.getElementById('f-km-max').value = '';
+    document.getElementById('f-annee-min').value = '';
+    document.getElementById('f-pays').value = '';
+    document.getElementById('seuil-pct').value = '10';
+    document.getElementById('hide-suspect').checked = true;
+    renderDeals();
   }
 
   function renderDeals() {

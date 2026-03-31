@@ -197,7 +197,7 @@
     const container = document.getElementById('watchlist-container');
     const emptyState = document.getElementById('empty-state');
     const items = watchlistData.items || [];
-    if (!items.length || items.every(i => i.nb_matches === 0)) {
+    if (!items.length) {
       container.innerHTML = '';
       emptyState.classList.remove('d-none');
       return;

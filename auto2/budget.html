@@ -163,6 +163,28 @@
     <!-- Filtres rapides -->
     <div class="row g-2 mt-3">
       <div class="col-auto">
+        <label class="form-label mb-1">Marque</label>
+        <select class="form-select form-select-sm" id="filter-marque" style="min-width:130px">
+          <option value="">Toutes</option>
+        </select>
+      </div>
+      <div class="col-auto">
+        <label class="form-label mb-1">Modèle</label>
+        <select class="form-select form-select-sm" id="filter-modele" style="min-width:130px">
+          <option value="">Tous</option>
+        </select>
+      </div>
+      <div class="col-auto">
+        <label class="form-label mb-1">Pays</label>
+        <select class="form-select form-select-sm" id="filter-pays" style="min-width:100px">
+          <option value="">Tous</option>
+          <option value="Luxembourg">🇱🇺 LU</option>
+          <option value="Allemagne">🇩🇪 DE</option>
+          <option value="France">🇫🇷 FR</option>
+          <option value="Belgique">🇧🇪 BE</option>
+        </select>
+      </div>
+      <div class="col-auto">
         <label class="form-label mb-1">Carburant</label>
         <select class="form-select form-select-sm" id="filter-carbu" style="min-width:120px">
           <option value="">Tous</option>
@@ -290,6 +312,25 @@
   function fmtPrix(p) { return p ? p.toLocaleString('fr-LU') + '\u202f€' : 'N/A'; }
   function fmtKm(k)   { return k ? k.toLocaleString('fr-LU') + ' km' : 'N/A'; }
 
+  // Populate marque/modele selects
+  (function initSelects() {
+    const marques = [...new Set(allListings.map(l => l.marque_norm || l.marque).filter(Boolean))].sort();
+    const mSel = document.getElementById('filter-marque');
+    marques.forEach(m => { const o = document.createElement('option'); o.value = m; o.textContent = m; mSel.appendChild(o); });
+    mSel.addEventListener('change', () => {
+      const m = mSel.value;
+      const modSel = document.getElementById('filter-modele');
+      modSel.innerHTML = '<option value="">Tous</option>';
+      const src = m ? allListings.filter(l => (l.marque_norm||l.marque) === m) : allListings;
+      const mods = [...new Set(src.map(l => l.modele_norm||l.modele).filter(Boolean))].sort();
+      mods.forEach(mod => { const o = document.createElement('option'); o.value = mod; o.textContent = mod; modSel.appendChild(o); });
+      renderAll();
+    });
+    const allMods = [...new Set(allListings.map(l => l.modele_norm||l.modele).filter(Boolean))].sort();
+    const modSel = document.getElementById('filter-modele');
+    allMods.forEach(mod => { const o = document.createElement('option'); o.value = mod; o.textContent = mod; modSel.appendChild(o); });
+  })();
+
   function getFiltered() {
     const budget   = parseInt(document.getElementById('budget-slider').value);
     const tol      = parseInt(document.getElementById('tolerance-select').value) / 100;
@@ -297,6 +338,9 @@
     const kmMax    = parseInt(document.getElementById('filter-km').value) || Infinity;
     const anneeMin = parseInt(document.getElementById('filter-annee').value) || 0;
     const sort     = document.getElementById('sort-select').value;
+    const marque   = document.getElementById('filter-marque').value;
+    const modele   = document.getElementById('filter-modele').value;
+    const pays     = document.getElementById('filter-pays').value;
     const pMin = budget * (1 - tol);
     const pMax = budget * (1 + tol);
 
@@ -305,6 +349,9 @@
       if (carbu && !(l.carburant || '').toLowerCase().includes(carbu)) return false;
       if (l.km && l.km > kmMax) return false;
       if (l.annee && l.annee < anneeMin) return false;
+      if (marque && (l.marque_norm||l.marque) !== marque) return false;
+      if (modele && (l.modele_norm||l.modele) !== modele) return false;
+      if (pays && (l.pays||'') !== pays) return false;
       return true;
     });
     if (sort === 'deal')        results.sort((a,b) => (b.deal_score||0) - (a.deal_score||0));
@@ -399,7 +446,7 @@
     document.getElementById('range-display').textContent = parseInt(this.value).toLocaleString('fr-LU') + '\u202f€';
     renderAll();
   });
-  ['tolerance-select','filter-carbu','filter-km','filter-annee','sort-select'].forEach(id => {
+  ['tolerance-select','filter-carbu','filter-km','filter-annee','sort-select','filter-modele','filter-pays'].forEach(id => {
     document.getElementById(id).addEventListener('change', renderAll);
   });
 
