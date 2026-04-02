@@ -1,53 +1,53 @@
-// Généré automatiquement le 2026-04-02 16:01
+// Généré automatiquement le 2026-04-02 19:20
 const STATS = {
-  "total_actives": 1268,
-  "nouvelles_aujourd_hui": 395,
-  "prix_moyen": 38612,
-  "prix_min": 1299,
+  "total_actives": 1129,
+  "nouvelles_aujourd_hui": 295,
+  "prix_moyen": 38493,
+  "prix_min": 1599,
   "prix_max": 413556,
-  "km_moyen": 47258,
+  "km_moyen": 46654,
   "repartition_carburant": {
-    "Diesel": 291,
-    "Electrique": 124,
-    "Essence": 717,
-    "Hybride": 127,
+    "Diesel": 253,
+    "Electrique": 107,
+    "Essence": 631,
+    "Hybride": 128,
     "Inconnu": 5,
     "GPL": 2,
-    "GNV": 1,
+    "GNV": 2,
     "Autres": 1
   },
   "repartition_marques": {
-    "Volkswagen": 161,
-    "Mercedes": 161,
-    "Audi": 135,
-    "BMW": 79,
-    "Hyundai": 78,
-    "Ford": 77,
-    "Skoda": 70,
-    "Kia": 49,
+    "Mercedes": 139,
+    "Volkswagen": 135,
+    "Audi": 117,
+    "Ford": 74,
+    "Hyundai": 74,
+    "BMW": 72,
+    "Skoda": 64,
+    "Kia": 47,
     "Opel": 46,
-    "Volvo": 41
+    "MG": 36
   },
   "repartition_pays": {
-    "Allemagne": 520,
-    "Luxembourg": 748
+    "Allemagne": 411,
+    "Luxembourg": 718
   },
   "repartition_vendeur": {
-    "pro": 1268
+    "pro": 1129
   },
-  "nb_avec_ct": 19,
+  "nb_avec_ct": 17,
   "snapshots_30j": [
     {
-      "id": 6,
+      "id": 7,
       "date": "2026-04-02",
-      "run_id": "27343c96-25f",
-      "nb_annonces_total": 1268,
-      "nb_nouvelles": 395,
+      "run_id": "9a37b878-8b8",
+      "nb_annonces_total": 1129,
+      "nb_nouvelles": 295,
       "nb_disparues": 0,
       "nb_prix_baisse": 0,
       "nb_suspects": 0,
-      "prix_moyen_marche": 38612,
-      "meilleur_deal_id": "0865edcd3787c320"
+      "prix_moyen_marche": 38493,
+      "meilleur_deal_id": "d1ec826cd153b8b2"
     },
     {
       "id": 4,
@@ -74,5 +74,5 @@ const STATS = {
       "meilleur_deal_id": "test_abc123"
     }
   ],
-  "date_calcul": "2026-04-02T16:01:12.506437"
+  "date_calcul": "2026-04-02T19:20:23.008758"
 };

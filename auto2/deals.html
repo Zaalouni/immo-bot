@@ -401,7 +401,16 @@
 
             <hr class="my-2">
 
-            <!-- Footer -->
+            <!-- Scores + Footer -->
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <div class="d-flex gap-2 align-items-center">
+                <span style="font-size:11px;color:var(--txt3)">Deal</span>
+                ${d.deal_score != null ? `<span style="font-family:'DM Mono',monospace;font-size:13px;font-weight:600;color:${d.deal_score>=70?'var(--green)':d.deal_score>=50?'var(--amber)':'var(--txt3)'}">${Math.round(d.deal_score)}</span>` : ''}
+                <span style="font-size:11px;color:var(--txt3);margin-left:6px">Négo</span>
+                ${d.nego_score != null ? `<span style="font-family:'DM Mono',monospace;font-size:13px;font-weight:600;color:${d.nego_score>=70?'var(--green)':d.nego_score>=40?'var(--amber)':'var(--txt3)'}">${Math.round(d.nego_score)}%</span>` : '<span style="color:var(--txt3);font-size:12px">—</span>'}
+              </div>
+              <span class="meta-txt">${d.nb_jours_visibles ? d.nb_jours_visibles+'j en ligne' : ''}</span>
+            </div>
             <div class="d-flex justify-content-between align-items-center">
               <span class="meta-txt">${d.ville||'—'} · ${formatDate(d.date_premiere_vue)}</span>
               <a href="${d.url||'#'}" target="_blank" class="btn-voir">Voir →</a>

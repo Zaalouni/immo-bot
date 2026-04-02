@@ -1,9 +1,9 @@
-// Généré automatiquement le 2026-04-02 16:01
+// Généré automatiquement le 2026-04-02 19:20
 const MAP_DATA = {
   "date_calcul": "2026-04-02",
   "nb_geolocalisees": 500,
-  "nb_sans_coords": 421,
-  "nb_total": 1268,
+  "nb_sans_coords": 331,
+  "nb_total": 1129,
   "points": [
     {
       "lat": 50.8042,
@@ -15,7 +15,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 19690,
       "km": 25080,
-      "deal_score": 67.0,
+      "deal_score": 60.0,
       "color": "amber",
       "url": "https://www.autoscout24.de/angebote/opel-mokka-1-2t-aut-ultimate-led-kamera-carplay-pdc-benzin-weiss-77e3ddb2-07a2-459f-99f5-5fe0bf886ab4",
       "id": "885bbbc3b1b59dd3"
@@ -30,7 +30,7 @@ const MAP_DATA = {
       "annee": 2022,
       "prix": 24900,
       "km": 51275,
-      "deal_score": 61.0,
+      "deal_score": 46.0,
       "color": "amber",
       "url": "https://www.autoscout24.de/angebote/bmw-x1-sdrive-18-i-advantage-steptronic-benzin-grau-0aceac5c-c0d8-4602-96d4-175ba7848299",
       "id": "4260f25b871ed4d6"
@@ -45,7 +45,7 @@ const MAP_DATA = {
       "annee": 2022,
       "prix": 21580,
       "km": 117827,
-      "deal_score": 35.0,
+      "deal_score": 23.0,
       "color": "default",
       "url": "https://www.autoscout24.de/angebote/audi-a3-sportback-35-tdi-s-tronic-navi-virtual-kamera-diesel-schwarz-ee58dd84-ff8a-4764-b879-ee96f7de830a",
       "id": "35201bbd9c880b4f"
@@ -60,8 +60,8 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 78400,
       "km": 4021,
-      "deal_score": 70.0,
-      "color": "green",
+      "deal_score": 59.0,
+      "color": "amber",
       "url": "https://www.autoscout24.de/angebote/porsche-macan-surround-view-luftfederung-21-zoll-led-elektro-weiss-5ada7ed5-fe29-4d60-84a5-300c513826c4",
       "id": "179aa7d08e70785b"
     },
@@ -75,7 +75,7 @@ const MAP_DATA = {
       "annee": 2021,
       "prix": 16740,
       "km": 33590,
-      "deal_score": 63.0,
+      "deal_score": 55.0,
       "color": "amber",
       "url": "https://www.autoscout24.de/angebote/citroen-c5-aircross-pt-130-business-shine-automatik-benzin-weiss-a1bd97b8-68f8-4e0d-90f1-f2b160bd1f8c",
       "id": "ed7b27de112a3d3e"
@@ -90,7 +90,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 38979,
       "km": 5,
-      "deal_score": 67.0,
+      "deal_score": 57.0,
       "color": "amber",
       "url": "https://www.autoscout24.de/angebote/nissan-x-trail-tekna-e-power-e-4orce-bose-panodach-ahk-benzin-grau-7d9f1c10-5d85-41f0-a788-0824022a0b0d",
       "id": "f7b36ce5aaca4902"
@@ -105,7 +105,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 37999,
       "km": 5,
-      "deal_score": 67.0,
+      "deal_score": 57.0,
       "color": "amber",
       "url": "https://www.autoscout24.de/angebote/nissan-x-trail-tekna-e-power-e-4orce-bose-panodach-benzin-grau-90e6d81f-c1e9-4005-a047-c482bbe62d3a",
       "id": "b8327d2dd1f432a1"
@@ -120,7 +120,7 @@ const MAP_DATA = {
       "annee": 2017,
       "prix": 23840,
       "km": 41519,
-      "deal_score": 55.0,
+      "deal_score": 42.0,
       "color": "amber",
       "url": "https://www.autoscout24.de/angebote/mercedes-benz-c-250-avantgarde-aut-led-acc-cam-pdc-shz-klima-garantie-benzin-schwarz-2b5b6ff5-c4ff-4992-86d7-acd0d30a04ef",
       "id": "d930c268b501a596"
@@ -135,7 +135,7 @@ const MAP_DATA = {
       "annee": 2026,
       "prix": 49950,
       "km": 10,
-      "deal_score": 64.0,
+      "deal_score": 55.0,
       "color": "amber",
       "url": "https://www.autoscout24.de/angebote/mazda-cx-60-phev-homura-2-5i-pano-20zoll-matrix-elektro-benzin-567f9c58-cd74-4289-bc94-14094ef1f93a",
       "id": "c82b68dcadbfc012"
@@ -150,8 +150,8 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 32443,
       "km": 2509,
-      "deal_score": 70.0,
-      "color": "green",
+      "deal_score": 59.0,
+      "color": "amber",
       "url": "https://www.autoscout24.de/angebote/mini-aceman-favoured-trim-elektro-blau-c77a83d7-8f0b-420d-90e6-46c6f09e4f0b",
       "id": "5e320db9eca1da9b"
     },
@@ -165,8 +165,8 @@ const MAP_DATA = {
       "annee": 2021,
       "prix": 27900,
       "km": 32757,
-      "deal_score": 70.0,
-      "color": "green",
+      "deal_score": 55.0,
+      "color": "amber",
       "url": "https://www.autoscout24.de/angebote/hyundai-tucson-1-6-prime-plug-in-hybrid-4wd-elektro-benzin-grau-a9aeb44c-7f4b-43c2-a3ff-b210baf3f4be",
       "id": "8695b3f13e5c5616"
     },
@@ -180,8 +180,8 @@ const MAP_DATA = {
       "annee": 2026,
       "prix": 28990,
       "km": 7,
-      "deal_score": 70.0,
-      "color": "green",
+      "deal_score": 59.0,
+      "color": "amber",
       "url": "https://www.autoscout24.de/angebote/kia-ceed-2f-ceed-gt-line-1-5-t-gdi-leder-technik-glasdach-benzin-weiss-4e614c09-4178-4d28-9c91-f4308952fa49",
       "id": "9bd6a8228800e756"
     },
@@ -195,8 +195,8 @@ const MAP_DATA = {
       "annee": 2019,
       "prix": 19970,
       "km": 82001,
-      "deal_score": 49.0,
-      "color": "amber",
+      "deal_score": 36.0,
+      "color": "default",
       "url": "https://www.autoscout24.de/angebote/toyota-corolla-2-0-club-technikpaket-navi-carplay-shz-elektro-benzin-schwarz-d3c5b1f6-776b-4b74-a771-92608f0c768c",
       "id": "b8c60298ebb5d792"
     },
@@ -210,7 +210,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 28640,
       "km": 29106,
-      "deal_score": 78.0,
+      "deal_score": 72.0,
       "color": "green",
       "url": "https://www.autoscout24.de/angebote/mercedes-benz-cla-250-shooting-brake-aut-led-navi-tempo-shz-klima-elektro-benzin-schwarz-8672385c-d9fe-40fe-99cb-a3ad871c11c6",
       "id": "649df10154c82fa6"
@@ -225,7 +225,7 @@ const MAP_DATA = {
       "annee": 2005,
       "prix": 4590,
       "km": 169705,
-      "deal_score": 52.0,
+      "deal_score": 44.0,
       "color": "amber",
       "url": "https://www.autoscout24.de/angebote/volkswagen-golf-variant-pacific-tuev-neu-allwetterreifen-benzin-schwarz-39a6a946-8e06-40b6-9cde-069c5f2f78c6",
       "id": "b306b57c5a81c643"
@@ -240,8 +240,8 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 29990,
       "km": 52212,
-      "deal_score": 73.0,
-      "color": "green",
+      "deal_score": 67.0,
+      "color": "amber",
       "url": "https://www.autoscout24.de/angebote/volvo-xc60-momentum-pro-2wd-ahk-digitales-cockpit-soundsystem-benzin-schwarz-3259f37a-c995-4e11-9f43-09874f86ad97",
       "id": "787af5dc7aa5ae09"
     },
@@ -255,7 +255,7 @@ const MAP_DATA = {
       "annee": 2013,
       "prix": 10999,
       "km": 84397,
-      "deal_score": 65.0,
+      "deal_score": 59.0,
       "color": "amber",
       "url": "https://www.autoscout24.de/angebote/hyundai-i30-cw-1-6-automatik-trend-navigation-benzin-silber-36c581aa-21c4-443e-813e-d79b600e2c4e",
       "id": "8f01379f4d7348b3"
@@ -270,7 +270,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 34880,
       "km": 7780,
-      "deal_score": 57.0,
+      "deal_score": 43.0,
       "color": "amber",
       "url": "https://www.autoscout24.de/angebote/volkswagen-t-roc-cabriolet-1-5-tsi-dsg-r-line-ahk-rfk-iq-light-benzin-schwarz-2f5e4142-b6f5-4e41-94dc-41250e707f12",
       "id": "16fa07523ac28f44"
@@ -285,7 +285,7 @@ const MAP_DATA = {
       "annee": 2026,
       "prix": 34870,
       "km": 5,
-      "deal_score": 67.0,
+      "deal_score": 49.0,
       "color": "amber",
       "url": "https://www.autoscout24.de/angebote/cupra-ateca-dsg-19zoll-leder-memory-el-heckklappe-ahk-benzin-gruen-de9d227a-365b-4c82-8c20-ebad2a8bce97",
       "id": "348ed68488f40dcf"
@@ -300,7 +300,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 25950,
       "km": 37826,
-      "deal_score": 60.0,
+      "deal_score": 50.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volvo-s60-48-b4-mhev-197cv-bva-gps-cam-led-clim-options-essence-rouge-0ced2834-220b-466b-a3f3-1cec4b630fa5",
       "id": "dffb89d9cb137bae"
@@ -315,7 +315,7 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 38990,
       "km": 14958,
-      "deal_score": 66.0,
+      "deal_score": 53.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/bmw-135-35-m-135i-306cv-bva8-4x4-gps-cam-full-led-opts-essence-beige-91b8f516-5a5e-4cf9-8b98-d0f4f0415dd6",
       "id": "b40119fede819ea4"
@@ -330,7 +330,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 39990,
       "km": 31494,
-      "deal_score": 60.0,
+      "deal_score": 49.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volvo-xc60-43-t6-phev-350cv-bva8-4x4-t-pano-gps-options-electrique-essence-argent-7ba5a554-ceff-401d-9f00-d994036f7332",
       "id": "b0607329439de297"
@@ -345,7 +345,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 41990,
       "km": 30019,
-      "deal_score": 49.0,
+      "deal_score": 40.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/skoda-kodiaq-selection-dsg-suite-ahk-diesel-gris-77a58f05-a782-4244-b94c-bdaf80d4dbb2",
       "id": "026625bc84ca5fad"
@@ -360,7 +360,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 19300,
       "km": 7500,
-      "deal_score": 79.0,
+      "deal_score": 72.0,
       "color": "green",
       "url": "https://www.autoscout24.lu/offres/skoda-fabia-essence-essence-blanc-c559b2d3-fce6-456b-8655-108dcd7418d4",
       "id": "15979e484932be07"
@@ -375,7 +375,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 29990,
       "km": 16792,
-      "deal_score": 53.0,
+      "deal_score": 47.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/mini-cooper-c-cooper-c-john-cooper-works-trim-essence-rouge-fc91644f-aab5-4fb4-b77b-a102f1f704fb",
       "id": "43dc52f99e9c50cd"
@@ -390,7 +390,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 33990,
       "km": 19251,
-      "deal_score": 56.0,
+      "deal_score": 45.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/audi-a3-sb-s-line-35tdi-s-tronic-led-diesel-gris-c40f04fe-4cb4-497d-8fa6-b8ae59c0596d",
       "id": "0dba9820ee06e81f"
@@ -405,7 +405,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 46990,
       "km": 22679,
-      "deal_score": 55.0,
+      "deal_score": 44.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/skoda-kodiaq-rs-dsg-4x4-360-navi-essence-gris-099da929-a778-4282-80bd-cec63dd039a2",
       "id": "beb7e694f1881c98"
@@ -418,10 +418,10 @@ const MAP_DATA = {
       "marque": "Audi",
       "modele": "Q5",
       "annee": 2021,
-      "prix": 39900,
+      "prix": 38900,
       "km": 42900,
-      "deal_score": 50.0,
-      "color": "amber",
+      "deal_score": 37.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/audi-q5-sportback-50-e-hybrid-quattro-s-line-cuir-navi-electrique-essence-noir-8ca81d7f-b46d-4bc5-a5a4-bb4aca8b0de6",
       "id": "bdfff8899632f072"
     },
@@ -435,7 +435,7 @@ const MAP_DATA = {
       "annee": 2022,
       "prix": 29490,
       "km": 54038,
-      "deal_score": 67.0,
+      "deal_score": 60.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/audi-q3-sb-s-line-phev-45tfsi-s-tronic-electrique-essence-bleu-cfc3f805-1947-43e0-8846-d8076c787399",
       "id": "45ca0660333e3a97"
@@ -450,7 +450,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 42990,
       "km": 14485,
-      "deal_score": 67.0,
+      "deal_score": 55.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/mercedes-benz-glb-200-glb-200-d-progressive-multi-kamera-night-navi-led-diesel-blanc-4410d100-6fd3-459d-a98b-7a4c6f797c9c",
       "id": "b58ace2f1629b969"
@@ -465,7 +465,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 77990,
       "km": 15000,
-      "deal_score": 54.0,
+      "deal_score": 44.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/land-rover-defender-90-d250-x-dynamic-se-awd-auto-diesel-gris-bc912e0b-b3c0-463d-8a9f-c2d1a84f3481",
       "id": "96376af7dba682e8"
@@ -480,7 +480,7 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 23990,
       "km": 20014,
-      "deal_score": 50.0,
+      "deal_score": 43.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volkswagen-t-cross-style-1-0-tsi-110-dsg7-essence-blanc-1618e73c-7e59-44fc-b782-8fe8e3fe3d36",
       "id": "46250c6d38506949"
@@ -495,8 +495,8 @@ const MAP_DATA = {
       "annee": 2021,
       "prix": 21490,
       "km": 74168,
-      "deal_score": 47.0,
-      "color": "amber",
+      "deal_score": 37.0,
+      "color": "default",
       "url": "https://www.luxauto.lu/fr/car/vw-t-roc-essence-2021-1806060",
       "id": "248d03861db680c8"
     },
@@ -510,7 +510,7 @@ const MAP_DATA = {
       "annee": 2021,
       "prix": 62490,
       "km": 52890,
-      "deal_score": 48.0,
+      "deal_score": 43.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/porsche-cayenne-essence-2021-1806098",
       "id": "f2f5de14ea474bff"
@@ -525,7 +525,7 @@ const MAP_DATA = {
       "annee": 2022,
       "prix": 20490,
       "km": 21223,
-      "deal_score": 63.0,
+      "deal_score": 50.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/vw-t-cross-essence-2022-1806482",
       "id": "b3a0246995d75d23"
@@ -540,7 +540,7 @@ const MAP_DATA = {
       "annee": 2022,
       "prix": 35490,
       "km": 59986,
-      "deal_score": 32.0,
+      "deal_score": 26.0,
       "color": "default",
       "url": "https://www.luxauto.lu/fr/car/vw-golf-essence-2022-1806062",
       "id": "a6d0d28e7d8132bc"
@@ -555,7 +555,7 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 36990,
       "km": 36544,
-      "deal_score": 56.0,
+      "deal_score": 50.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/volvo-xc60-diesel-2023-1806099",
       "id": "b4dbdc12f3cd2797"
@@ -570,7 +570,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 36990,
       "km": 7895,
-      "deal_score": 55.0,
+      "deal_score": 48.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/hyundai-i30-essence-2024-1806059",
       "id": "ca3e2ca17d6df107"
@@ -585,8 +585,8 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 25990,
       "km": 24379,
-      "deal_score": 46.0,
-      "color": "amber",
+      "deal_score": 38.0,
+      "color": "default",
       "url": "https://www.luxauto.lu/fr/car/audi-a1-essence-2025-1806061",
       "id": "c90bed4449714e15"
     },
@@ -600,7 +600,7 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 29990,
       "km": 25,
-      "deal_score": 56.0,
+      "deal_score": 47.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/smart-1-electrique-2023-1806460",
       "id": "8e0464c67483980b"
@@ -615,8 +615,8 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 38990,
       "km": 10,
-      "deal_score": 44.0,
-      "color": "amber",
+      "deal_score": 39.0,
+      "color": "default",
       "url": "https://www.luxauto.lu/fr/car/vw-polo-essence-2025-1806100",
       "id": "39777d5050b9e588"
     },
@@ -630,7 +630,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 49990,
       "km": 23,
-      "deal_score": 59.0,
+      "deal_score": 51.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/smart-5-electrique-2025-1806461",
       "id": "01b4964f98333c6d"
@@ -645,7 +645,7 @@ const MAP_DATA = {
       "annee": 2022,
       "prix": 29490,
       "km": 54038,
-      "deal_score": 58.0,
+      "deal_score": 54.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/audi-q3-hybride-2022-1806475",
       "id": "1326c6c3366e1384"
@@ -660,7 +660,7 @@ const MAP_DATA = {
       "annee": 2021,
       "prix": 28990,
       "km": 55921,
-      "deal_score": 46.0,
+      "deal_score": 45.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/vw-golf-essence-2021-1806487",
       "id": "4e25b06e704f37a7"
@@ -690,7 +690,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 32990,
       "km": 26522,
-      "deal_score": 58.0,
+      "deal_score": 54.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/cupra-leon-diesel-2025-1806476",
       "id": "3935219c8ffc4433"
@@ -705,7 +705,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 30990,
       "km": 16914,
-      "deal_score": 61.0,
+      "deal_score": 49.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/audi-a3-essence-2025-1806478",
       "id": "a341cd8ff6b85f20"
@@ -720,7 +720,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 30990,
       "km": 21273,
-      "deal_score": 59.0,
+      "deal_score": 46.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/audi-q2-essence-2025-1806484",
       "id": "4e6b3814c6f1c6e9"
@@ -735,7 +735,7 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 28490,
       "km": 44025,
-      "deal_score": 50.0,
+      "deal_score": 49.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/vw-golf-essence-2023-1806498",
       "id": "c5757a76f6f1de35"
@@ -750,7 +750,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 38490,
       "km": 11275,
-      "deal_score": 69.0,
+      "deal_score": 66.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/skoda-kodiaq-diesel-2025-1806483",
       "id": "d6e853ec55e0ac74"
@@ -765,7 +765,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 62990,
       "km": 9578,
-      "deal_score": 60.0,
+      "deal_score": 52.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/vw-multivan-diesel-2025-1806488",
       "id": "df12f22deab10a41"
@@ -780,7 +780,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 43990,
       "km": 23242,
-      "deal_score": 60.0,
+      "deal_score": 56.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/audi-a5-diesel-2025-1806485",
       "id": "3cbb2ff9aa120022"
@@ -795,7 +795,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 31990,
       "km": 17811,
-      "deal_score": 56.0,
+      "deal_score": 49.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/audi-a3-essence-2025-1806490",
       "id": "954f13c0ed82c236"
@@ -810,7 +810,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 38990,
       "km": 12273,
-      "deal_score": 57.0,
+      "deal_score": 50.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/audi-q3-diesel-2025-1806486",
       "id": "d68ff8ea9374a083"
@@ -825,7 +825,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 42490,
       "km": 25703,
-      "deal_score": 53.0,
+      "deal_score": 46.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/vw-tiguan-diesel-2024-1806492",
       "id": "d343066d0f470254"
@@ -840,8 +840,8 @@ const MAP_DATA = {
       "annee": 2021,
       "prix": 21490,
       "km": 82348,
-      "deal_score": 40.0,
-      "color": "amber",
+      "deal_score": 30.0,
+      "color": "default",
       "url": "https://www.luxauto.lu/fr/car/seat-ateca-essence-2021-1806493",
       "id": "935f6a8e353d8e9a"
     },
@@ -855,7 +855,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 19990,
       "km": 19812,
-      "deal_score": 54.0,
+      "deal_score": 47.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/seat-ibiza-essence-2025-1806497",
       "id": "7fefaa0c634e2614"
@@ -870,8 +870,8 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 32990,
       "km": 20032,
-      "deal_score": 47.0,
-      "color": "amber",
+      "deal_score": 39.0,
+      "color": "default",
       "url": "https://www.luxauto.lu/fr/car/audi-q2-essence-2025-1806491",
       "id": "e28b5812a9afc33c"
     },
@@ -885,7 +885,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 46990,
       "km": 11639,
-      "deal_score": 55.0,
+      "deal_score": 48.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/audi-a5-diesel-2024-1806495",
       "id": "ed71b3c9ae30564e"
@@ -900,8 +900,8 @@ const MAP_DATA = {
       "annee": 2022,
       "prix": 21490,
       "km": 70436,
-      "deal_score": 44.0,
-      "color": "amber",
+      "deal_score": 37.0,
+      "color": "default",
       "url": "https://www.luxauto.lu/fr/car/skoda-scala-essence-2022-1806489",
       "id": "a912b89dc48a8449"
     },
@@ -915,7 +915,7 @@ const MAP_DATA = {
       "annee": 2020,
       "prix": 29990,
       "km": 79149,
-      "deal_score": 33.0,
+      "deal_score": 23.0,
       "color": "default",
       "url": "https://www.luxauto.lu/fr/car/audi-q3-diesel-2020-1806499",
       "id": "101a10c47803508b"
@@ -930,8 +930,8 @@ const MAP_DATA = {
       "annee": 2026,
       "prix": 98990,
       "km": null,
-      "deal_score": 47.0,
-      "color": "amber",
+      "deal_score": 38.0,
+      "color": "default",
       "url": "https://www.luxauto.lu/fr/car/mercedes-autres-diesel-2026-1806555",
       "id": "e26f8ba9a6dbbadb"
     },
@@ -945,8 +945,8 @@ const MAP_DATA = {
       "annee": 2022,
       "prix": 33990,
       "km": 89736,
-      "deal_score": 45.0,
-      "color": "amber",
+      "deal_score": 34.0,
+      "color": "default",
       "url": "https://www.luxauto.lu/fr/car/bmw-220-diesel-2022-1806551",
       "id": "b31b5becb22c013c"
     },
@@ -960,8 +960,8 @@ const MAP_DATA = {
       "annee": 2022,
       "prix": 29990,
       "km": 33049,
-      "deal_score": 42.0,
-      "color": "amber",
+      "deal_score": 33.0,
+      "color": "default",
       "url": "https://www.luxauto.lu/fr/car/vw-t-roc-essence-2022-1806500",
       "id": "16eeab7b32ce8832"
     },
@@ -975,8 +975,8 @@ const MAP_DATA = {
       "annee": 2021,
       "prix": 55990,
       "km": 60206,
-      "deal_score": 48.0,
-      "color": "amber",
+      "deal_score": 39.0,
+      "color": "default",
       "url": "https://www.luxauto.lu/fr/car/mercedes-glc-43-amg-essence-2021-1806566",
       "id": "d2b115d5a93170c2"
     },
@@ -990,7 +990,7 @@ const MAP_DATA = {
       "annee": 2026,
       "prix": 90490,
       "km": null,
-      "deal_score": 52.0,
+      "deal_score": 46.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/mercedes-autres-diesel-2026-1806559",
       "id": "7f315cedbccc2d97"
@@ -1005,8 +1005,8 @@ const MAP_DATA = {
       "annee": 2022,
       "prix": 25490,
       "km": 73283,
-      "deal_score": 47.0,
-      "color": "amber",
+      "deal_score": 37.0,
+      "color": "default",
       "url": "https://www.luxauto.lu/fr/car/bmw-120-essence-2022-1806560",
       "id": "e28bbd096b38f6f8"
     },
@@ -1020,7 +1020,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 41490,
       "km": 13082,
-      "deal_score": 50.0,
+      "deal_score": 42.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/mercedes-cla-200-essence-2025-1806573",
       "id": "e64e7a0507b2b508"
@@ -1035,7 +1035,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 27990,
       "km": 15396,
-      "deal_score": 54.0,
+      "deal_score": 47.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/mercedes-a-180-diesel-2024-1806558",
       "id": "2c29bbb96da75d25"
@@ -1050,8 +1050,8 @@ const MAP_DATA = {
       "annee": 2026,
       "prix": 98990,
       "km": null,
-      "deal_score": 47.0,
-      "color": "amber",
+      "deal_score": 38.0,
+      "color": "default",
       "url": "https://www.luxauto.lu/fr/car/mercedes-autres-diesel-2026-1806556",
       "id": "dd67552b06ff3426"
     },
@@ -1065,8 +1065,8 @@ const MAP_DATA = {
       "annee": 2026,
       "prix": 105990,
       "km": null,
-      "deal_score": 40.0,
-      "color": "amber",
+      "deal_score": 30.0,
+      "color": "default",
       "url": "https://www.luxauto.lu/fr/car/mercedes-autres-diesel-2026-1806557",
       "id": "d6fb187cabb8c905"
     },
@@ -1080,7 +1080,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 33990,
       "km": 8838,
-      "deal_score": 57.0,
+      "deal_score": 50.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/vw-golf-essence-2025-1806563",
       "id": "5e1a67d01c4680fd"
@@ -1095,8 +1095,8 @@ const MAP_DATA = {
       "annee": 2018,
       "prix": 22990,
       "km": 56651,
-      "deal_score": 44.0,
-      "color": "amber",
+      "deal_score": 34.0,
+      "color": "default",
       "url": "https://www.luxauto.lu/fr/car/mercedes-c-200-diesel-2018-1806568",
       "id": "b625da22ec1d6b03"
     },
@@ -1110,8 +1110,8 @@ const MAP_DATA = {
       "annee": null,
       "prix": 17990,
       "km": 59159,
-      "deal_score": 41.0,
-      "color": "amber",
+      "deal_score": 30.0,
+      "color": "default",
       "url": "https://www.luxauto.lu/fr/car/abarth-500-essence-1970-1806564",
       "id": "b00cc35f59b3bbc9"
     },
@@ -1125,7 +1125,7 @@ const MAP_DATA = {
       "annee": 2026,
       "prix": 91990,
       "km": null,
-      "deal_score": 52.0,
+      "deal_score": 46.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/mercedes-v-diesel-2026-1806567",
       "id": "614ee0ff5ff1cdf0"
@@ -1140,8 +1140,8 @@ const MAP_DATA = {
       "annee": 2026,
       "prix": 98990,
       "km": null,
-      "deal_score": 47.0,
-      "color": "amber",
+      "deal_score": 38.0,
+      "color": "default",
       "url": "https://www.luxauto.lu/fr/car/mercedes-autres-diesel-2026-1806569",
       "id": "fcc9d78b8640fc89"
     },
@@ -1155,7 +1155,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 41490,
       "km": 7356,
-      "deal_score": 49.0,
+      "deal_score": 40.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/mercedes-cla-200-diesel-2025-1806571",
       "id": "9edbeaef3e15d353"
@@ -1170,7 +1170,7 @@ const MAP_DATA = {
       "annee": 2021,
       "prix": 30990,
       "km": 39786,
-      "deal_score": 48.0,
+      "deal_score": 40.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/mercedes-gla-200-essence-2021-1806580",
       "id": "79993c0790005255"
@@ -1185,8 +1185,8 @@ const MAP_DATA = {
       "annee": 2026,
       "prix": 98990,
       "km": null,
-      "deal_score": 47.0,
-      "color": "amber",
+      "deal_score": 38.0,
+      "color": "default",
       "url": "https://www.luxauto.lu/fr/car/mercedes-v-diesel-2026-1806572",
       "id": "e2b19bd37a829d28"
     },
@@ -1200,8 +1200,8 @@ const MAP_DATA = {
       "annee": 2026,
       "prix": 106990,
       "km": null,
-      "deal_score": 40.0,
-      "color": "amber",
+      "deal_score": 30.0,
+      "color": "default",
       "url": "https://www.luxauto.lu/fr/car/mercedes-v-diesel-2026-1806579",
       "id": "3afcb7e9a6a403e3"
     },
@@ -1215,8 +1215,8 @@ const MAP_DATA = {
       "annee": null,
       "prix": 20990,
       "km": 46915,
-      "deal_score": 42.0,
-      "color": "amber",
+      "deal_score": 32.0,
+      "color": "default",
       "url": "https://www.luxauto.lu/fr/car/renault-arkana-essence-1970-1806582",
       "id": "50a5eba26a353621"
     },
@@ -1230,8 +1230,8 @@ const MAP_DATA = {
       "annee": null,
       "prix": 64900,
       "km": 27208,
-      "deal_score": 45.0,
-      "color": "amber",
+      "deal_score": 35.0,
+      "color": "default",
       "url": "https://www.luxauto.lu/fr/car/mercedes-marco-polo-diesel-1970-1806576",
       "id": "62708d000501e52c"
     },
@@ -1245,8 +1245,8 @@ const MAP_DATA = {
       "annee": 2019,
       "prix": 22990,
       "km": 40131,
-      "deal_score": 48.0,
-      "color": "amber",
+      "deal_score": 39.0,
+      "color": "default",
       "url": "https://www.luxauto.lu/fr/car/mercedes-c-180-diesel-2019-1806583",
       "id": "96844b549efcb030"
     },
@@ -1260,7 +1260,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 36990,
       "km": 10970,
-      "deal_score": 57.0,
+      "deal_score": 50.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/mercedes-a-200-essence-2025-1806578",
       "id": "c04b6d6a199645a6"
@@ -1275,7 +1275,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 33990,
       "km": 20596,
-      "deal_score": 59.0,
+      "deal_score": 50.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/mercedes-cla-180-diesel-2025-1806584",
       "id": "9b6e96d41ee1acd1"
@@ -1290,8 +1290,8 @@ const MAP_DATA = {
       "annee": 2019,
       "prix": 19990,
       "km": 81976,
-      "deal_score": 40.0,
-      "color": "amber",
+      "deal_score": 30.0,
+      "color": "default",
       "url": "https://www.luxauto.lu/fr/car/mercedes-a-180-essence-2019-1806585",
       "id": "c219d1cb70338cac"
     },
@@ -1305,7 +1305,7 @@ const MAP_DATA = {
       "annee": 2021,
       "prix": 33990,
       "km": 34764,
-      "deal_score": 49.0,
+      "deal_score": 42.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/mercedes-e-300-hybrid-2021-1806586",
       "id": "118a65ba9942a90f"
@@ -1320,7 +1320,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 36990,
       "km": 9605,
-      "deal_score": 57.0,
+      "deal_score": 50.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/mercedes-a-200-essence-2025-1806589",
       "id": "09b9ed7724c0a879"
@@ -1335,7 +1335,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 27990,
       "km": 14243,
-      "deal_score": 60.0,
+      "deal_score": 51.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/mercedes-b-180-diesel-2025-1806587",
       "id": "67448c60314e3112"
@@ -1350,8 +1350,8 @@ const MAP_DATA = {
       "annee": 2026,
       "prix": 98990,
       "km": null,
-      "deal_score": 47.0,
-      "color": "amber",
+      "deal_score": 38.0,
+      "color": "default",
       "url": "https://www.luxauto.lu/fr/car/mercedes-v-diesel-2026-1806592",
       "id": "250fd76df4e82d87"
     },
@@ -1365,7 +1365,7 @@ const MAP_DATA = {
       "annee": 2020,
       "prix": 33490,
       "km": 70548,
-      "deal_score": 29.0,
+      "deal_score": 21.0,
       "color": "default",
       "url": "https://www.luxauto.lu/fr/car/mercedes-cla-250-essence-2020-1806601",
       "id": "02037f699f2f898e"
@@ -1380,8 +1380,8 @@ const MAP_DATA = {
       "annee": null,
       "prix": 25900,
       "km": 53827,
-      "deal_score": 41.0,
-      "color": "amber",
+      "deal_score": 31.0,
+      "color": "default",
       "url": "https://www.luxauto.lu/fr/car/mercedes-t-diesel-1970-1806598",
       "id": "db1572be92e8c912"
     },
@@ -1393,10 +1393,10 @@ const MAP_DATA = {
       "marque": "Volkswagen",
       "modele": "T Cross",
       "annee": 2025,
-      "prix": 26980,
+      "prix": 25980,
       "km": 15600,
-      "deal_score": 42.0,
-      "color": "amber",
+      "deal_score": 39.0,
+      "color": "default",
       "url": "https://www.luxauto.lu/fr/car/vw-t-cross-essence-2025-1806609",
       "id": "c6412076e6af0d68"
     },
@@ -1410,7 +1410,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 59990,
       "km": 26674,
-      "deal_score": 58.0,
+      "deal_score": 54.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/mercedes-glc-300-diesel-2024-1806604",
       "id": "4d92ec513f1ea4a3"
@@ -1423,9 +1423,9 @@ const MAP_DATA = {
       "marque": "Skoda",
       "modele": "Kamiq",
       "annee": 2025,
-      "prix": 29980,
+      "prix": 29480,
       "km": 4900,
-      "deal_score": 46.0,
+      "deal_score": 43.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/skoda-kamiq-essence-2025-1806616",
       "id": "528f2ed349cd2f8c"
@@ -1440,7 +1440,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 23480,
       "km": 2300,
-      "deal_score": 51.0,
+      "deal_score": 43.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/skoda-fabia-essence-2025-1806610",
       "id": "0b260da4b018f173"
@@ -1455,7 +1455,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 39980,
       "km": 3600,
-      "deal_score": 51.0,
+      "deal_score": 40.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/volvo-xc40-essence-2025-1806621",
       "id": "aafe7af3105d72fa"
@@ -1470,7 +1470,7 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 34500,
       "km": 41300,
-      "deal_score": 53.0,
+      "deal_score": 43.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/bmw-230-hybride-2023-1806623",
       "id": "601e4d95fc285eb4"
@@ -1485,7 +1485,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 20480,
       "km": 3800,
-      "deal_score": 51.0,
+      "deal_score": 53.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/suzuki-swift-essence-2025-1806622",
       "id": "63d9779d5af90302"
@@ -1500,7 +1500,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 33980,
       "km": 4700,
-      "deal_score": 51.0,
+      "deal_score": 43.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/audi-q2-essence-2025-1806618",
       "id": "767e86ccbcfa2a6f"
@@ -1515,7 +1515,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 37990,
       "km": 36798,
-      "deal_score": 57.0,
+      "deal_score": 44.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/volvo-xc60-essence-2025-1806857",
       "id": "17bb35851a7a69ef"
@@ -1530,25 +1530,10 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 59490,
       "km": 7250,
-      "deal_score": 61.0,
+      "deal_score": 52.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/mercedes-glc-220-hybride-2025-1806859",
       "id": "6ee39d44db9100de"
-    },
-    {
-      "lat": 50.1109,
-      "lng": 8.6821,
-      "ville": "Frankfurt-Rödelheim",
-      "region": "Allemagne",
-      "marque": "Cupra",
-      "modele": "Ateca",
-      "annee": 2024,
-      "prix": 34980,
-      "km": 27450,
-      "deal_score": 61.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.de/angebote/cupra-ateca-2-0-tsi-7-gang-dsg-4drive-beats-navi-benzin-grau-0fed4e7a-5f88-4b59-b710-d1bf2fd5b4b6",
-      "id": "8dbd23141e819e45"
     },
     {
       "lat": 50.1109,
@@ -1560,7 +1545,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 53880,
       "km": 730,
-      "deal_score": 77.0,
+      "deal_score": 71.0,
       "color": "green",
       "url": "https://www.autoscout24.de/angebote/mercedes-benz-e-300-de-t-exclusiv-amg-hud-dis-20-ahk-bur-elektro-diesel-schwarz-501bbcfa-1a90-4532-8777-7ea45e81cf6d",
       "id": "8501a907f7df4599"
@@ -1575,145 +1560,10 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 41180,
       "km": 3934,
-      "deal_score": 70.0,
-      "color": "green",
+      "deal_score": 59.0,
+      "color": "amber",
       "url": "https://www.autoscout24.de/angebote/mini-countryman-d-favoured-trim-diesel-grau-9e536665-b305-4dfe-8ca5-989d1df846ed",
       "id": "ef585f47bff3cde0"
-    },
-    {
-      "lat": 53.5511,
-      "lng": 9.9937,
-      "ville": "Hamburg",
-      "region": "Allemagne",
-      "marque": "Mazda",
-      "modele": "6E",
-      "annee": 2026,
-      "prix": 39950,
-      "km": 22,
-      "deal_score": 64.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.de/angebote/mazda-6e-takumi-sony-voll-led-pano-leder-elektro-58c746ad-1b28-41a9-8f2e-3dfc25aea558",
-      "id": "2228f73aed3b9b95"
-    },
-    {
-      "lat": 49.9929,
-      "lng": 8.2473,
-      "ville": "Mainz-Kastel",
-      "region": "Allemagne",
-      "marque": "Volvo",
-      "modele": "Xc60",
-      "annee": 2025,
-      "prix": 51750,
-      "km": 24810,
-      "deal_score": 57.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.de/angebote/volvo-xc60-t8-plus-dark-plug-in-hybrid-awd-voll-led-standhzg-elektro-benzin-schwarz-bdf00470-f83a-4c1d-b890-24c7538d6056",
-      "id": "f7e82edb5b607941"
-    },
-    {
-      "lat": 49.5994,
-      "lng": 6.1381,
-      "ville": "Bonn",
-      "region": "Centre",
-      "marque": "Volkswagen",
-      "modele": "Golf Gti",
-      "annee": 2024,
-      "prix": 32647,
-      "km": 27270,
-      "deal_score": 61.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.de/angebote/volkswagen-golf-gti-2-0-tsi-opf-dsg-pano-matrix-led-navi-harman-kardon-benzin-rot-368bd083-411e-4508-88b2-506f9164c109",
-      "id": "9cd29e40ea8b2f52"
-    },
-    {
-      "lat": 52.52,
-      "lng": 13.405,
-      "ville": "Berlin",
-      "region": "Allemagne",
-      "marque": "BMW",
-      "modele": "116",
-      "annee": 2016,
-      "prix": 11890,
-      "km": 150609,
-      "deal_score": 41.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.de/angebote/bmw-116-d-steptronic-advantage-navi-leder-shz-acc-pdc-diesel-grau-c35b3d16-7a9c-478d-96e7-e0c9039c3ce7",
-      "id": "aedc0d125f5c35be"
-    },
-    {
-      "lat": 53.5511,
-      "lng": 9.9937,
-      "ville": "Hamburg",
-      "region": "Allemagne",
-      "marque": "Mazda",
-      "modele": "Cx-30",
-      "annee": 2021,
-      "prix": 18950,
-      "km": 35326,
-      "deal_score": 52.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.de/angebote/mazda-cx-30-selection-2-0i-voll-led-head-up-keyless-elektro-benzin-blau-6ceefd6e-1074-4e2d-936c-f3063c5661ab",
-      "id": "42c1f258e2fa3455"
-    },
-    {
-      "lat": 49.5994,
-      "lng": 6.1381,
-      "ville": "Bonn",
-      "region": "Centre",
-      "marque": "Skoda",
-      "modele": "Enyaq",
-      "annee": 2022,
-      "prix": 31980,
-      "km": 40745,
-      "deal_score": 43.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.de/angebote/skoda-enyaq-80-loft-navi-led-ahk-pano-360-waermepumpe-acc-app-elektro-blau-ff0f142d-44e1-40f2-9351-b347ff4c26a2",
-      "id": "337bdf8649c6a5fa"
-    },
-    {
-      "lat": 48.1351,
-      "lng": 11.582,
-      "ville": "München",
-      "region": "Allemagne",
-      "marque": "Kia",
-      "modele": "Sorento",
-      "annee": 2020,
-      "prix": 29990,
-      "km": 98926,
-      "deal_score": 49.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.de/angebote/kia-sorento-sorento-2-2d-awd-automatik-spirit-assistenz-ahk-diesel-grau-84087ef0-6835-4c98-9370-0b6d9f1f5c37",
-      "id": "2fa39e35a653b6d6"
-    },
-    {
-      "lat": 49.4878,
-      "lng": 8.466,
-      "ville": "Mannheim",
-      "region": "Allemagne",
-      "marque": "Kia",
-      "modele": "Sportage",
-      "annee": 2012,
-      "prix": 11990,
-      "km": 142874,
-      "deal_score": 39.0,
-      "color": "default",
-      "url": "https://www.autoscout24.de/angebote/kia-sportage-spirit-4wd-navi-kamera-szh-tempo-pano-diesel-grau-fa90c000-e0c6-42e0-81f9-9e25b51232a1",
-      "id": "6140bc031e2d300e"
-    },
-    {
-      "lat": 51.2217,
-      "lng": 6.7762,
-      "ville": "Düsseldorf",
-      "region": "Allemagne",
-      "marque": "BYD",
-      "modele": "Dolphin Surf",
-      "annee": 2025,
-      "prix": 20350,
-      "km": 2219,
-      "deal_score": 70.0,
-      "color": "green",
-      "url": "https://www.autoscout24.de/angebote/byd-dolphin-surf-boost-navi-kamera-leder-elektro-weiss-d5b5edec-3f18-4809-858b-18c267ba7a59",
-      "id": "030ba2e71ae2a8a0"
     },
     {
       "lat": 52.52,
@@ -1725,8 +1575,8 @@ const MAP_DATA = {
       "annee": 2016,
       "prix": 17800,
       "km": 128048,
-      "deal_score": 41.0,
-      "color": "amber",
+      "deal_score": 13.0,
+      "color": "default",
       "url": "https://www.autoscout24.de/angebote/volkswagen-caddy-2-0-tdi-highline-dsg-7sitze-xenon-navi-shz-diesel-braun-9d76eecb-89a3-4f2d-9432-bfcff9bceb0b",
       "id": "5be148b8dde3e3ea"
     },
@@ -1740,25 +1590,10 @@ const MAP_DATA = {
       "annee": 2022,
       "prix": 64900,
       "km": 50821,
-      "deal_score": 56.0,
+      "deal_score": 44.0,
       "color": "amber",
       "url": "https://www.autoscout24.de/angebote/porsche-cayenne-e-hybrid-ahk-chrono-360-elektro-benzin-schwarz-d3380c02-8252-4c1f-8d24-9ec87f3f447a",
       "id": "79b2f3a2a32c6e59"
-    },
-    {
-      "lat": 53.5511,
-      "lng": 9.9937,
-      "ville": "Hamburg",
-      "region": "Allemagne",
-      "marque": "Mercedes",
-      "modele": "Gle 350",
-      "annee": 2026,
-      "prix": 99998,
-      "km": 8050,
-      "deal_score": 69.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.de/angebote/mercedes-benz-gle-350-de-4m-amg-edition-ahk-pano-22-zo-airmat-elektro-diesel-schwarz-216bfd9c-cd1b-43a4-9792-a76738a685e7",
-      "id": "51733457783b59e7"
     },
     {
       "lat": 53.5511,
@@ -1770,40 +1605,10 @@ const MAP_DATA = {
       "annee": 2015,
       "prix": 16900,
       "km": 100500,
-      "deal_score": 54.0,
-      "color": "amber",
+      "deal_score": 37.0,
+      "color": "default",
       "url": "https://www.autoscout24.de/angebote/audi-a3-cabrio-dsg-ultra-akustik-verdeck-xenon-plus-benzin-schwarz-b86b67b3-cee3-49bf-8132-1780c24573ab",
       "id": "9d11fbb056e773b4"
-    },
-    {
-      "lat": 48.1351,
-      "lng": 11.582,
-      "ville": "München",
-      "region": "Allemagne",
-      "marque": "Mini",
-      "modele": "Cooper S Cabrio",
-      "annee": 2025,
-      "prix": 42796,
-      "km": 5397,
-      "deal_score": 70.0,
-      "color": "green",
-      "url": "https://www.autoscout24.de/angebote/mini-cooper-s-cabrio-john-cooper-works-trim-benzin-schwarz-7ced97c9-bbaa-464e-8fb1-d06a2d019031",
-      "id": "9654b9ea800cdf3b"
-    },
-    {
-      "lat": 49.5994,
-      "lng": 6.1381,
-      "ville": "Bonn",
-      "region": "Centre",
-      "marque": "Volvo",
-      "modele": "Xc40",
-      "annee": 2023,
-      "prix": 37980,
-      "km": 16105,
-      "deal_score": 53.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.de/angebote/volvo-xc40-ultimate-recharge-pure-electric-awd-panoramadac-elektro-gold-12ac3ea9-c1e4-47f6-9321-7c20fd952e75",
-      "id": "5a8031c8bd1b301c"
     },
     {
       "lat": 51.5136,
@@ -1815,25 +1620,10 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 23855,
       "km": 28270,
-      "deal_score": 76.0,
+      "deal_score": 70.0,
       "color": "green",
       "url": "https://www.autoscout24.de/angebote/audi-a3-30-advanced-ahk-lm18-navi-carplay-sitzheiz-benzin-schwarz-59607746-274e-4a1d-9c3f-a8c8168a42fa",
       "id": "9a7d2a8381cee48a"
-    },
-    {
-      "lat": 50.8042,
-      "lng": 6.49,
-      "ville": "Düren",
-      "region": "Allemagne",
-      "marque": "Volkswagen",
-      "modele": "Golf Variant",
-      "annee": 2023,
-      "prix": 20850,
-      "km": 83915,
-      "deal_score": 54.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.de/angebote/volkswagen-golf-variant-2-0tdi-dsg-life-led-navi-kamera-diesel-schwarz-b31eec41-27dd-44bf-a4d3-20d66764e8a6",
-      "id": "aefa6b6520885052"
     },
     {
       "lat": 53.5511,
@@ -1845,8 +1635,8 @@ const MAP_DATA = {
       "annee": 2017,
       "prix": 34900,
       "km": 110000,
-      "deal_score": 46.0,
-      "color": "amber",
+      "deal_score": 32.0,
+      "color": "default",
       "url": "https://www.autoscout24.de/angebote/audi-a8-50-tdi-quattro-hud-allradlenkung-b-o-standhzg-diesel-schwarz-9634f493-e704-4776-8837-184c84b2dc18",
       "id": "f54bad93c06a480f"
     },
@@ -1860,115 +1650,10 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 28990,
       "km": 28604,
-      "deal_score": 73.0,
-      "color": "green",
+      "deal_score": 65.0,
+      "color": "amber",
       "url": "https://www.autoscout24.de/angebote/volkswagen-golf-gti-viii-2-0-l-tsi-dsg-navi-digitales-cockpit-led-sper-benzin-weiss-5168ef1c-c4c3-4c67-936d-e26ee99b25f6",
       "id": "270332377dce545f"
-    },
-    {
-      "lat": 49.6356,
-      "lng": 6.1194,
-      "ville": "Olpe",
-      "region": "Centre",
-      "marque": "Volkswagen",
-      "modele": "T-Roc",
-      "annee": 2026,
-      "prix": 39980,
-      "km": 5,
-      "deal_score": 55.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.de/angebote/volkswagen-t-roc-style-1-5-l-etsi-150-ps-7-gang-dsg-pano-benzin-grau-7b9b7289-03dc-4681-ab51-6e20ce235b1a",
-      "id": "ba1b4f5a8e9e3dcd"
-    },
-    {
-      "lat": 50.7764,
-      "lng": 6.0836,
-      "ville": "Aachen",
-      "region": "Allemagne",
-      "marque": "Dacia",
-      "modele": "Spring",
-      "annee": 2023,
-      "prix": 9650,
-      "km": 24790,
-      "deal_score": 71.0,
-      "color": "green",
-      "url": "https://www.autoscout24.de/angebote/dacia-spring-electric-essential-navi-kamera-bluetooth-elektro-gruen-8a484723-5daf-4930-adb0-9e14921de7d0",
-      "id": "fc80f3908efd03dc"
-    },
-    {
-      "lat": 50.9333,
-      "lng": 6.95,
-      "ville": "Köln",
-      "region": "Allemagne",
-      "marque": "Citroen",
-      "modele": "C3",
-      "annee": 2024,
-      "prix": 15999,
-      "km": 16693,
-      "deal_score": 56.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.de/angebote/citroen-c3-max-navi-led-kamera-keyless-carplay-android-auto-benzin-beige-e225e06a-10df-4d30-ba7e-83cad0ebaba7",
-      "id": "8101e7fa6b61249f"
-    },
-    {
-      "lat": 52.52,
-      "lng": 13.405,
-      "ville": "Berlin",
-      "region": "Allemagne",
-      "marque": "Alfa Romeo",
-      "modele": "Tonale",
-      "annee": 2024,
-      "prix": 29870,
-      "km": 12807,
-      "deal_score": 67.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.de/angebote/alfa-romeo-tonale-1-5-vgt-hybrid-veloce-pano-20z-sitzklima-benzin-schwarz-e361d201-9158-42a0-bfed-c5cad38b1fc5",
-      "id": "d618356567816728"
-    },
-    {
-      "lat": 51.2217,
-      "lng": 6.7762,
-      "ville": "Düsseldorf",
-      "region": "Allemagne",
-      "marque": "Skoda",
-      "modele": "Karoq",
-      "annee": 2022,
-      "prix": 24690,
-      "km": 40637,
-      "deal_score": 57.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.de/angebote/skoda-karoq-1-5-tsi-dsg-ambition-clever-benzin-schwarz-006c9ff0-1b82-4492-ac6d-27aa1745d0cb",
-      "id": "350d43d935d71334"
-    },
-    {
-      "lat": 51.2217,
-      "lng": 6.7762,
-      "ville": "Neuss bei Düsseldorf",
-      "region": "Allemagne",
-      "marque": "Mercedes",
-      "modele": "Cla 250",
-      "annee": 2021,
-      "prix": 28475,
-      "km": 76254,
-      "deal_score": 52.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.de/angebote/mercedes-benz-cla-250-shooting-b-amg-businessnightahkhud-benzin-grau-b84e6326-1365-4773-b8c7-21f5ef23ec98",
-      "id": "8fcb28a917e476e6"
-    },
-    {
-      "lat": 50.1109,
-      "lng": 8.6821,
-      "ville": "Frankfurt am Main",
-      "region": "Allemagne",
-      "marque": "BMW",
-      "modele": "X3",
-      "annee": 2023,
-      "prix": 39190,
-      "km": 115803,
-      "deal_score": 45.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.de/angebote/bmw-x3-xdrive-30d-mild-hybrid-m-sport-aut-navi-laser-cam-diesel-grau-35e0af66-2258-4be8-bd04-41f775e86617",
-      "id": "504b9c6d9a07584a"
     },
     {
       "lat": 52.52,
@@ -1980,25 +1665,10 @@ const MAP_DATA = {
       "annee": 2021,
       "prix": 15900,
       "km": 27324,
-      "deal_score": 62.0,
+      "deal_score": 49.0,
       "color": "amber",
       "url": "https://www.autoscout24.de/angebote/citroen-c3-aircross-1-2-pure-tech-130-feel-pack-auitomatik-benzin-schwarz-f85a92e7-f8da-4f5a-8f4c-1f2896c79ad3",
       "id": "8744c61dc2f99869"
-    },
-    {
-      "lat": 52.52,
-      "lng": 13.405,
-      "ville": "Berlin",
-      "region": "Allemagne",
-      "marque": "Peugeot",
-      "modele": "Partner",
-      "annee": 2016,
-      "prix": 10950,
-      "km": 114829,
-      "deal_score": 43.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.de/angebote/peugeot-partner-1-6-hdi-allure-applecarplay-kamera-diesel-schwarz-d65bf1f3-a214-456f-aa35-46feae3a357e",
-      "id": "f41d734a8985e3a9"
     },
     {
       "lat": 50.9333,
@@ -2010,7 +1680,7 @@ const MAP_DATA = {
       "annee": 2022,
       "prix": 18240,
       "km": 27076,
-      "deal_score": 62.0,
+      "deal_score": 50.0,
       "color": "amber",
       "url": "https://www.autoscout24.de/angebote/renault-megane-e-tech-equilibre-ev40-130hp-ccs-elektro-schwarz-d86ec127-c20b-482c-8a59-9a5c1c4c4a62",
       "id": "4b64b56ce2feaa92"
@@ -2025,7 +1695,7 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 26980,
       "km": 35686,
-      "deal_score": 63.0,
+      "deal_score": 46.0,
       "color": "amber",
       "url": "https://www.autoscout24.de/angebote/volkswagen-tiguan-life-1-5-tsi-navi-led-ahk-kamera-18-massage-benzin-schwarz-31b5f5f8-2f42-4911-a92b-9f3ca4d13835",
       "id": "89dd85b505823812"
@@ -2040,7 +1710,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 40690,
       "km": 4995,
-      "deal_score": 53.0,
+      "deal_score": 49.0,
       "color": "amber",
       "url": "https://www.autoscout24.de/angebote/cupra-formentor-vz-2-0-245-kw-4d-sennheiser-aktion-benzin-schwarz-ec892992-c4ca-43d2-8078-7ce147d2de99",
       "id": "b97a530d773f742f"
@@ -2053,117 +1723,12 @@ const MAP_DATA = {
       "marque": "Volvo",
       "modele": "S60",
       "annee": 2024,
-      "prix": 25950,
-      "km": 44944,
-      "deal_score": 60.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.lu/offres/volvo-s60-46-b4-mhev-197cv-bva-gps-cam-led-clim-options-essence-gris-3f8193ec-2d17-4b29-9d35-c2e45dfd37da",
-      "id": "8d5635641e788a9f"
-    },
-    {
-      "lat": 49.5039,
-      "lng": 6.0156,
-      "ville": "Schifflange - Foetz",
-      "region": "Sud",
-      "marque": "Volvo",
-      "modele": "S60",
-      "annee": 2024,
-      "prix": 25950,
-      "km": 37842,
-      "deal_score": 60.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.lu/offres/volvo-s60-48-b4-mhev-197cv-bva-gps-cam-led-clim-options-essence-argent-3f1e777a-acdc-48ca-8737-248e46b388a1",
-      "id": "1d70f309849b2256"
-    },
-    {
-      "lat": 49.5039,
-      "lng": 6.0156,
-      "ville": "Schifflange - Foetz",
-      "region": "Sud",
-      "marque": "Fiat",
-      "modele": "Tipo",
-      "annee": 2024,
-      "prix": 19490,
-      "km": 31438,
-      "deal_score": 73.0,
-      "color": "green",
-      "url": "https://www.autoscout24.lu/offres/fiat-tipo-break-29-1-6-d-130cv-mirrorlink-radar-options-diesel-beige-cd36a4a2-e857-4e00-a899-d44d18f5c9b1",
-      "id": "210bf99c38503ca7"
-    },
-    {
-      "lat": 49.5039,
-      "lng": 6.0156,
-      "ville": "Schifflange - Foetz",
-      "region": "Sud",
-      "marque": "Seat",
-      "modele": "Arona",
-      "annee": 2025,
-      "prix": 20950,
-      "km": 22081,
-      "deal_score": 63.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.lu/offres/seat-arona-30-1-0-tsi-115cv-fr-gps-cam-park-assist-opts-essence-bleu-f7ddcbd0-18cf-44d7-a1ac-87722260d20e",
-      "id": "1c7b53832209338e"
-    },
-    {
-      "lat": 49.5039,
-      "lng": 6.0156,
-      "ville": "Schifflange - Foetz",
-      "region": "Sud",
-      "marque": "Seat",
-      "modele": "Ibiza",
-      "annee": 2025,
-      "prix": 19690,
-      "km": 16242,
-      "deal_score": 63.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.lu/offres/seat-ibiza-24-1-0-tsi-115cv-fr-gps-cam-full-led-options-essence-rouge-58236201-84ee-49ec-ba10-0149866b8edb",
-      "id": "6c4364a332a31669"
-    },
-    {
-      "lat": 49.5039,
-      "lng": 6.0156,
-      "ville": "Schifflange - Foetz",
-      "region": "Sud",
-      "marque": "Volvo",
-      "modele": "S60",
-      "annee": 2024,
       "prix": 26990,
       "km": 17735,
-      "deal_score": 63.0,
+      "deal_score": 53.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volvo-s60-46-b4-mhev-197cv-bva-gps-cam-led-clim-options-essence-blanc-8877114f-1632-40b3-a79b-35716c4c40ca",
       "id": "63036cdbb98aa0a5"
-    },
-    {
-      "lat": 49.5039,
-      "lng": 6.0156,
-      "ville": "Schifflange - Foetz",
-      "region": "Sud",
-      "marque": "Volvo",
-      "modele": "Xc40",
-      "annee": 2024,
-      "prix": 26950,
-      "km": 35790,
-      "deal_score": 73.0,
-      "color": "green",
-      "url": "https://www.autoscout24.lu/offres/volvo-xc40-39-t2-129cv-bva-gps-cam-led-hayon-elec-opts-essence-rouge-35049f82-8600-48c6-b767-2f1481bd3821",
-      "id": "5b223f5bab819e62"
-    },
-    {
-      "lat": 49.5039,
-      "lng": 6.0156,
-      "ville": "Schifflange - Foetz",
-      "region": "Sud",
-      "marque": "Seat",
-      "modele": "Ibiza",
-      "annee": 2025,
-      "prix": 18990,
-      "km": 16471,
-      "deal_score": 68.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.lu/offres/seat-ibiza-20-1-0-tsi-115cv-mirrorlink-cam-led-options-essence-gris-8094f454-6396-4508-a1b1-c7cfe65487c1",
-      "id": "2a88fecc1c9cc5a8"
     },
     {
       "lat": 49.5836,
@@ -2175,7 +1740,7 @@ const MAP_DATA = {
       "annee": 2020,
       "prix": 21900,
       "km": 53900,
-      "deal_score": 55.0,
+      "deal_score": 43.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/bmw-118-i-auto-led-navi-essence-blanc-a1882b8e-8420-4372-b2e4-9a61de5a75d8",
       "id": "0055cdbbc0154334"
@@ -2190,7 +1755,7 @@ const MAP_DATA = {
       "annee": 2021,
       "prix": 39490,
       "km": 68541,
-      "deal_score": 56.0,
+      "deal_score": 43.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/bmw-420-d-cabrio-42-190cv-bva8-m-sport-gps-cuir-options-diesel-vert-ca873044-8920-46d0-891d-296efa903774",
       "id": "c271195a71fde945"
@@ -2205,7 +1770,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 23990,
       "km": 20269,
-      "deal_score": 62.0,
+      "deal_score": 51.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/seat-leon-34-1-5-etsi-150cv-bva7-mirrorlink-cam-options-essence-argent-9e8b5d9a-bf95-4e8b-9c9a-be96e4a10a72",
       "id": "eb11f2e0ee226b21"
@@ -2218,10 +1783,10 @@ const MAP_DATA = {
       "marque": "Volkswagen",
       "modele": "Tiguan",
       "annee": 2022,
-      "prix": 29900,
+      "prix": 28900,
       "km": 56900,
-      "deal_score": 55.0,
-      "color": "amber",
+      "deal_score": 35.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/volkswagen-tiguan-1-5-tsi-150-urban-sport-virtual-head-up-harman-kar-essence-blanc-ccd5f9fa-ce69-4ad9-a997-b1e03822f3a4",
       "id": "027dc82b95677387"
     },
@@ -2235,7 +1800,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 25950,
       "km": 37378,
-      "deal_score": 61.0,
+      "deal_score": 50.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volvo-s60-48-b4-mhev-197cv-bva-gps-cam-led-clim-options-essence-argent-5e876bfd-640c-4f23-bce9-33d01e09ed62",
       "id": "c7f34b7c94cc7329"
@@ -2250,7 +1815,7 @@ const MAP_DATA = {
       "annee": 2021,
       "prix": 53950,
       "km": 67228,
-      "deal_score": 54.0,
+      "deal_score": 42.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/bmw-745-e-56-hyb-394cv-bva8-m-sport-t-pano-gps-options-electrique-essence-bleu-021d7fad-a724-44bd-9cae-0ad6d0155462",
       "id": "1b0dc3f37e49f735"
@@ -2265,8 +1830,8 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 18990,
       "km": 21372,
-      "deal_score": 70.0,
-      "color": "green",
+      "deal_score": 54.0,
+      "color": "amber",
       "url": "https://www.autoscout24.lu/offres/seat-ibiza-20-1-0-tsi-115cv-mirrorlink-cam-led-options-essence-bleu-c73ce5ea-88b4-4726-8f29-10a845aec64b",
       "id": "b8e5b8637b5a98d6"
     },
@@ -2280,7 +1845,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 19690,
       "km": 12096,
-      "deal_score": 64.0,
+      "deal_score": 54.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/seat-ibiza-24-1-0-tsi-115cv-fr-gps-cam-full-led-options-essence-beige-21508311-c826-445a-a437-fc60c3553d9e",
       "id": "9c6bf07641583e4a"
@@ -2295,8 +1860,8 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 17950,
       "km": 22874,
-      "deal_score": 73.0,
-      "color": "green",
+      "deal_score": 66.0,
+      "color": "amber",
       "url": "https://www.autoscout24.lu/offres/nissan-juke-34-1-0-digt-114cv-gps-cam-full-led-options-essence-beige-9cf8855a-5b26-439c-949f-05eb0b41a23a",
       "id": "a10509f47d3e6bb2"
     },
@@ -2310,8 +1875,8 @@ const MAP_DATA = {
       "annee": 2022,
       "prix": 49900,
       "km": 109900,
-      "deal_score": 45.0,
-      "color": "amber",
+      "deal_score": 33.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/porsche-macan-new-model-porsche-approved-3-2027-265-bose-pano-cu-essence-gris-cc36cb26-73e6-4e02-952d-a5f8e6f75d56",
       "id": "a11331313a7b0beb"
     },
@@ -2325,7 +1890,7 @@ const MAP_DATA = {
       "annee": 2022,
       "prix": 20490,
       "km": 21223,
-      "deal_score": 60.0,
+      "deal_score": 56.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volkswagen-t-cross-life-dsg-rearview-led-essence-orange-cd4860db-21b2-45c7-892e-e99be091b340",
       "id": "0e2fe0e3de91538a"
@@ -2340,7 +1905,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 26790,
       "km": 31578,
-      "deal_score": 61.0,
+      "deal_score": 51.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/mercedes-benz-a-180-a-180-d-progressive-led-kamera-apple-shz-navi-diesel-gris-6a0ec393-31d9-4f59-a18a-a7d8ce1676bf",
       "id": "4f06ec50f679b473"
@@ -2355,25 +1920,10 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 38990,
       "km": 51462,
-      "deal_score": 42.0,
-      "color": "amber",
+      "deal_score": 32.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/volkswagen-golf-r-perfomance-4m-dsg-lm19-essence-bleu-72c6436e-7738-4663-92ea-9851cadb3b97",
       "id": "47b119be751875a0"
-    },
-    {
-      "lat": 49.5572,
-      "lng": 5.8797,
-      "ville": "Pétange",
-      "region": "Sud",
-      "marque": "Audi",
-      "modele": "A3",
-      "annee": 2024,
-      "prix": 29990,
-      "km": 55406,
-      "deal_score": 51.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.lu/offres/audi-a3-sportback-30tfsi-110-s-line-s-tronic-essence-noir-1c4254e2-ac4c-4a03-a0bf-85e18db23eb9",
-      "id": "e5396e708ab60260"
     },
     {
       "lat": 49.4958,
@@ -2385,7 +1935,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 36990,
       "km": 22000,
-      "deal_score": 56.0,
+      "deal_score": 52.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/skoda-karoq-sportline-dsg-4x4-navi-stand-h-diesel-rouge-0e49918f-ebca-4010-9175-aa2c817d9784",
       "id": "bc31a9f79f679496"
@@ -2400,8 +1950,8 @@ const MAP_DATA = {
       "annee": 2016,
       "prix": 13900,
       "km": 43000,
-      "deal_score": 55.0,
-      "color": "amber",
+      "deal_score": 29.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/fiat-500l-1-6-jtd-120-navi-cuir-panorama-1-hand-diesel-noir-0f06ee68-cea9-4c7b-8474-3b450019dc5d",
       "id": "5154479b738620eb"
     },
@@ -2415,8 +1965,8 @@ const MAP_DATA = {
       "annee": 2021,
       "prix": 26900,
       "km": 88900,
-      "deal_score": 51.0,
-      "color": "amber",
+      "deal_score": 37.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/mercedes-benz-c-200-d-t-kombi-avantgarde-led-cuir-navi-diesel-bleu-70e96264-6cf1-4442-bbc8-ce9cf1a3e04b",
       "id": "9f348dfd5615b152"
     },
@@ -2430,8 +1980,8 @@ const MAP_DATA = {
       "annee": 2016,
       "prix": 11900,
       "km": 49993,
-      "deal_score": 52.0,
-      "color": "amber",
+      "deal_score": 38.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/hyundai-i20-i20-automatique-12-mois-de-garantie-essence-blanc-1bf33010-040e-416d-85e7-747c4bacf2ff",
       "id": "5e60b6ff29a5d339"
     },
@@ -2445,7 +1995,7 @@ const MAP_DATA = {
       "annee": 2021,
       "prix": 21490,
       "km": 74168,
-      "deal_score": 58.0,
+      "deal_score": 49.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volkswagen-t-roc-style-sport-dsg-rearview-navi-essence-gris-f55e0100-3a74-474e-adab-adf2381a4b02",
       "id": "90bdfcc7a22fe885"
@@ -2460,8 +2010,8 @@ const MAP_DATA = {
       "annee": 2010,
       "prix": 10900,
       "km": 92000,
-      "deal_score": 45.0,
-      "color": "amber",
+      "deal_score": 31.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/volkswagen-polo-1-6-tdi-105-comfortline-garantie-12-mois-diesel-rouge-6ef25409-f348-4948-a2b1-46dab04b7c18",
       "id": "4b5137996fe6a4f5"
     },
@@ -2475,7 +2025,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 43990,
       "km": 46583,
-      "deal_score": 62.0,
+      "deal_score": 51.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/mercedes-benz-gla-220-gla-220-d-4matic-amg-line-navi-keyless-go-styling-diesel-gris-74f9f51b-a94d-4779-a7a0-a0c3ec75b8b1",
       "id": "c0b38de78c07178a"
@@ -2490,7 +2040,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 36990,
       "km": 7895,
-      "deal_score": 64.0,
+      "deal_score": 54.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/hyundai-i30-n-perf-aut-led-navi-digi-essence-gris-a3b54176-c4fa-4af0-a650-c592cbdae138",
       "id": "cf9783bfe2f50ab5"
@@ -2505,8 +2055,8 @@ const MAP_DATA = {
       "annee": 2021,
       "prix": 21490,
       "km": 82348,
-      "deal_score": 49.0,
-      "color": "amber",
+      "deal_score": 36.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/seat-ateca-fr-dsg-pano-fulllink-essence-gris-7fd4dfc9-7bcc-4a2e-baea-9a82c75051c2",
       "id": "391215da88d2c820"
     },
@@ -2520,8 +2070,8 @@ const MAP_DATA = {
       "annee": 2017,
       "prix": 16900,
       "km": 79291,
-      "deal_score": 50.0,
-      "color": "amber",
+      "deal_score": 37.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/bmw-316-2-0-diesel-automatique-12-mois-de-garantie-diesel-argent-2acca6e9-00c7-45dd-bcf7-25293edf798c",
       "id": "0af3224bef4ad162"
     },
@@ -2535,40 +2085,10 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 26490,
       "km": 18286,
-      "deal_score": 58.0,
+      "deal_score": 55.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/skoda-scala-monte-carlo-dsg-pano-rearview-essence-noir-29643e79-751e-4ef1-ba44-9b1e33ee1323",
       "id": "f980585d9b539c0c"
-    },
-    {
-      "lat": 49.5097,
-      "lng": 5.9681,
-      "ville": "Soleuvre",
-      "region": "Sud",
-      "marque": "Volkswagen",
-      "modele": "T-Roc",
-      "annee": 2022,
-      "prix": 26900,
-      "km": 58500,
-      "deal_score": 55.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.lu/offres/volkswagen-t-roc-1-5-tsi-150-dsg-style-virtual-kamera-navi-carplay-essence-blanc-6ac833e7-7dc8-452f-98a3-da5c4d1198ab",
-      "id": "0c69ec6137b8149c"
-    },
-    {
-      "lat": 49.4958,
-      "lng": 5.9807,
-      "ville": "Esch-sur-Alzette",
-      "region": "Sud",
-      "marque": "Skoda",
-      "modele": "Scala",
-      "annee": 2022,
-      "prix": 21490,
-      "km": 70436,
-      "deal_score": 53.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.lu/offres/skoda-scala-monte-carlo-dsg-led-navi-essence-rouge-1a1c1365-9eba-437d-bce9-49ed5006ba26",
-      "id": "e4c15216e12f4530"
     },
     {
       "lat": 49.5836,
@@ -2580,25 +2100,10 @@ const MAP_DATA = {
       "annee": 2015,
       "prix": 32900,
       "km": 164900,
-      "deal_score": 39.0,
+      "deal_score": 24.0,
       "color": "default",
       "url": "https://www.autoscout24.lu/offres/porsche-macan-3-0d-v6-s-pano-cuir-navi-diesel-rouge-498d7fdd-ccde-4ded-8cf0-464a67a8139c",
       "id": "e79aef2526c0e211"
-    },
-    {
-      "lat": 49.6116,
-      "lng": 6.1319,
-      "ville": "Luxembourg",
-      "region": "Centre",
-      "marque": "Aston Martin",
-      "modele": "Dbx",
-      "annee": 2024,
-      "prix": 169990,
-      "km": 24990,
-      "deal_score": 64.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.lu/offres/aston-martin-dbx-707-4-0-v8-bi-turbo-ultramarine-black-essence-bleu-db213512-9655-4f59-b401-3d7e0a7279a3",
-      "id": "129e403472878e15"
     },
     {
       "lat": 52.52,
@@ -2610,10 +2115,25 @@ const MAP_DATA = {
       "annee": 2019,
       "prix": 34880,
       "km": 107600,
-      "deal_score": 38.0,
+      "deal_score": 35.0,
       "color": "default",
       "url": "https://www.autoscout24.de/angebote/mercedes-benz-glc-250-glc-250-d-4m-coupe-3x-amg-burmester-360grad-ahk-diesel-grau-c95b8666-1982-4440-b6b3-c56e512d6a07",
       "id": "6ccc0df624c1122b"
+    },
+    {
+      "lat": 49.7542,
+      "lng": 6.6414,
+      "ville": "Trier",
+      "region": "Allemagne",
+      "marque": "Volkswagen",
+      "modele": "T7 Multivan",
+      "annee": 2026,
+      "prix": 76990,
+      "km": 10000,
+      "deal_score": 44.0,
+      "color": "amber",
+      "url": "https://www.autoscout24.de/angebote/volkswagen-t7-multivan-2-0-tdi-dsg-style-lang-ahk-iq-light-diesel-rot-17346ea0-74c1-42e2-98a0-86333aceaa7f",
+      "id": "a0fb163f82e1d221"
     },
     {
       "lat": 53.5511,
@@ -2625,8 +2145,8 @@ const MAP_DATA = {
       "annee": 2019,
       "prix": 24990,
       "km": 88780,
-      "deal_score": 63.0,
-      "color": "amber",
+      "deal_score": 35.0,
+      "color": "default",
       "url": "https://www.autoscout24.de/angebote/mercedes-benz-c-220-d-9g-tronic-avantgarde-led-navi-tempo-pdc-diesel-schwarz-946c9a40-1bcc-4910-899b-cdcbb4a9ebfe",
       "id": "4c28adbe1d3a779f"
     },
@@ -2640,25 +2160,25 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 27770,
       "km": 5,
-      "deal_score": 72.0,
-      "color": "green",
+      "deal_score": 59.0,
+      "color": "amber",
       "url": "https://www.autoscout24.de/angebote/nissan-qashqai-n-connecta-158ps-xtro-winterpaket-sofort-benzin-grau-91aa9bca-5da9-4143-80b9-4132c03dc680",
       "id": "056b1ee427599ba8"
     },
     {
-      "lat": 51.2217,
-      "lng": 6.7762,
-      "ville": "Düsseldorf",
+      "lat": 53.5511,
+      "lng": 9.9937,
+      "ville": "Hamburg",
       "region": "Allemagne",
-      "marque": "Volvo",
-      "modele": "Xc90",
-      "annee": 2024,
-      "prix": 51850,
-      "km": 40675,
-      "deal_score": 64.0,
+      "marque": "Kia",
+      "modele": "Ceed Sw / Cee'D Sw",
+      "annee": 2023,
+      "prix": 23845,
+      "km": 50769,
+      "deal_score": 46.0,
       "color": "amber",
-      "url": "https://www.autoscout24.de/angebote/volvo-xc90-b5-awd-plus-brigh-plus-bright-awd-diesel-blau-1fd176ff-9718-4b0a-8c8e-eaa97853990b",
-      "id": "9bfcc03332f88489"
+      "url": "https://www.autoscout24.de/angebote/kia-ceed-sw-cee-d-sw-1-6-phev-platinum-glasdach-8-fach-reifen-elektro-benzin-schwarz-a6641edc-7f1c-48ac-b148-0993c8b0b482",
+      "id": "af4d2ab2e9509957"
     },
     {
       "lat": 48.1351,
@@ -2670,7 +2190,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 25660,
       "km": 7629,
-      "deal_score": 69.0,
+      "deal_score": 62.0,
       "color": "amber",
       "url": "https://www.autoscout24.de/angebote/mini-cooper-c-classic-trim-benzin-grau-31393cbe-7d3d-459e-9beb-bbdc7604200d",
       "id": "ce3022b0d6be8340"
@@ -2685,7 +2205,7 @@ const MAP_DATA = {
       "annee": 2022,
       "prix": 27950,
       "km": 32321,
-      "deal_score": 61.0,
+      "deal_score": 49.0,
       "color": "amber",
       "url": "https://www.autoscout24.de/angebote/opel-insignia-b-gsi-4x4-sports-tourer-hud-ahk-klappbar-el-fonds-benzin-schwarz-19d97c5d-f97d-4c03-8951-fc4996f9c54c",
       "id": "324821cb564de13a"
@@ -2700,7 +2220,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 35656,
       "km": 10437,
-      "deal_score": 54.0,
+      "deal_score": 45.0,
       "color": "amber",
       "url": "https://www.autoscout24.de/angebote/mini-cooper-s-john-cooper-works-trim-benzin-schwarz-dc5611e1-873d-458f-950b-41044b2685ad",
       "id": "231ab8f52502dd2c"
@@ -2715,8 +2235,8 @@ const MAP_DATA = {
       "annee": 2019,
       "prix": 34900,
       "km": 83000,
-      "deal_score": 49.0,
-      "color": "amber",
+      "deal_score": 36.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/bmw-x4-25d-m-sport-paket-new-model-harman-kardon-cuir-nav-diesel-bleu-1a61ae38-3393-41fa-8f0e-facd8186a396",
       "id": "355ff807c237a4a7"
     },
@@ -2730,7 +2250,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 39900,
       "km": 26000,
-      "deal_score": 65.0,
+      "deal_score": 54.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/mini-john-cooper-works-countryman-full-schiebedach-ahk-4x4-harmann-kardon-essence-noir-74dea8ab-aea6-4a65-add3-11bff6676f81",
       "id": "347c769e4de1433d"
@@ -2745,7 +2265,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 35990,
       "km": 15,
-      "deal_score": 63.0,
+      "deal_score": 54.0,
       "color": "amber",
       "url": "https://www.autopolis.lu/stock/212345664-1-volkswagen-golf-golf-viii-r-line",
       "id": "a51bfaa36294d07a"
@@ -2760,8 +2280,8 @@ const MAP_DATA = {
       "annee": 2020,
       "prix": 23949,
       "km": 79159,
-      "deal_score": 52.0,
-      "color": "amber",
+      "deal_score": 39.0,
+      "color": "default",
       "url": "https://www.autoscout24.de/angebote/volvo-xc40-momentum-pro-winter-paketshzstandheizung-benzin-schwarz-7daf779b-a85d-43eb-9090-6ef78b31f2e0",
       "id": "1128219389d9fd5e"
     },
@@ -2775,8 +2295,8 @@ const MAP_DATA = {
       "annee": 2016,
       "prix": 17800,
       "km": 148300,
-      "deal_score": 41.0,
-      "color": "amber",
+      "deal_score": 27.0,
+      "color": "default",
       "url": "https://www.autoscout24.de/angebote/volkswagen-t6-transporter-kasten-kombi-kasten-sitzheizung-diesel-silber-ee55ff90-65eb-436c-bcf8-d3e28bdc1d27",
       "id": "2cd887ccb0c1bfd8"
     },
@@ -2790,7 +2310,7 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 20880,
       "km": 17756,
-      "deal_score": 58.0,
+      "deal_score": 51.0,
       "color": "amber",
       "url": "https://www.autoscout24.de/angebote/skoda-enyaq-50-loft-navi-kamera-19-virtualcockpit-elektro-blau-2e95e7de-2b05-4a62-b917-cfe6a4f1b8e4",
       "id": "f677addc935642ac"
@@ -2805,7 +2325,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 28754,
       "km": 7834,
-      "deal_score": 57.0,
+      "deal_score": 54.0,
       "color": "amber",
       "url": "https://www.autoscout24.de/angebote/mini-cooper-c-classic-trim-benzin-grau-35b3757a-31b1-414a-bcf7-daa8029328d0",
       "id": "0dffa3093a0457b2"
@@ -2820,8 +2340,8 @@ const MAP_DATA = {
       "annee": 2020,
       "prix": 23880,
       "km": 84563,
-      "deal_score": 51.0,
-      "color": "amber",
+      "deal_score": 38.0,
+      "color": "default",
       "url": "https://www.autoscout24.de/angebote/audi-a5-a5-sb-40-g-tron-3x-s-line-keylessgo-ahk-massage-erdgas-cng-grau-b984f534-ea7a-4be3-892d-6f3c78669009",
       "id": "6fcfe1395a396c7e"
     },
@@ -2835,8 +2355,8 @@ const MAP_DATA = {
       "annee": 2015,
       "prix": 8980,
       "km": 137100,
-      "deal_score": 40.0,
-      "color": "amber",
+      "deal_score": 25.0,
+      "color": "default",
       "url": "https://www.autoscout24.de/angebote/kia-venga-dream-team-klima-navi-kamera-allwetter-tuev-diesel-schwarz-c788fc24-74d6-438c-bde1-4e7fd3f4ea4e",
       "id": "2d19089b86870258"
     },
@@ -2850,7 +2370,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 16400,
       "km": 61069,
-      "deal_score": 59.0,
+      "deal_score": 47.0,
       "color": "amber",
       "url": "https://www.autoscout24.de/angebote/nissan-juke-1-0-dig-t-acenta-komfortpack-sitzhzg-allw-benzin-silber-48bdb15f-0029-4699-9aff-8bc821c124be",
       "id": "d36e078ee7beb957"
@@ -2865,7 +2385,7 @@ const MAP_DATA = {
       "annee": 2005,
       "prix": 3899,
       "km": 192000,
-      "deal_score": 38.0,
+      "deal_score": 23.0,
       "color": "default",
       "url": "https://www.autoscout24.de/angebote/bmw-523-5-limousine-benzin-silber-17798406-0f95-4b9c-93a6-85fee24b5dc2",
       "id": "1dbb7a5ed1759f45"
@@ -2880,7 +2400,7 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 20504,
       "km": 22610,
-      "deal_score": 57.0,
+      "deal_score": 50.0,
       "color": "amber",
       "url": "https://www.autoscout24.de/angebote/skoda-enyaq-50-loft-navi-kamera-19-virtualcockpit-elektro-blau-63e293df-4165-40f6-b560-67eea3b30dd6",
       "id": "e367eb76ce4782d4"
@@ -2895,8 +2415,8 @@ const MAP_DATA = {
       "annee": 2026,
       "prix": 38450,
       "km": 5,
-      "deal_score": 72.0,
-      "color": "green",
+      "deal_score": 65.0,
+      "color": "amber",
       "url": "https://www.autoscout24.de/angebote/hyundai-tucson-n-line-x-hybrid-239ps-2wd-assistenzp-ahk-elektro-benzin-rot-75e8a805-7b04-4673-878e-666791818407",
       "id": "66fb123c483fd2d1"
     },
@@ -2910,8 +2430,8 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 37980,
       "km": 5,
-      "deal_score": 72.0,
-      "color": "green",
+      "deal_score": 65.0,
+      "color": "amber",
       "url": "https://www.autoscout24.de/angebote/hyundai-tucson-n-line-x-hybrid-239ps-vollausstattung-ahk-elektro-benzin-silber-ff7905b8-fc55-4dac-9ebe-bbfdb492714b",
       "id": "b520270636510d84"
     },
@@ -2925,10 +2445,25 @@ const MAP_DATA = {
       "annee": 2020,
       "prix": 19890,
       "km": 86612,
-      "deal_score": 48.0,
-      "color": "amber",
+      "deal_score": 36.0,
+      "color": "default",
       "url": "https://www.autoscout24.de/angebote/toyota-corolla-touring-sports-1-8-team-d-pdc-carplay-elektro-benzin-silber-6981e91f-e66c-47ba-9c2e-47ac6bab1cf5",
       "id": "5e86d63f7ac92673"
+    },
+    {
+      "lat": 52.52,
+      "lng": 13.405,
+      "ville": "Berlin",
+      "region": "Allemagne",
+      "marque": "Mercedes",
+      "modele": "Sprinter",
+      "annee": 2024,
+      "prix": 43911,
+      "km": 4600,
+      "deal_score": 78.0,
+      "color": "green",
+      "url": "https://www.autoscout24.de/angebote/mercedes-benz-sprinter-317-cdi-pro-4kmmopf9gledtopzust-diesel-weiss-603f25a1-de60-45c4-9a3a-d9c002c32775",
+      "id": "cd4a38cfe92d47f6"
     },
     {
       "lat": 51.2217,
@@ -2940,10 +2475,40 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 22980,
       "km": 125,
-      "deal_score": 67.0,
+      "deal_score": 57.0,
       "color": "amber",
       "url": "https://www.autoscout24.de/angebote/volkswagen-taigo-1-0-tsi-dsg-life-led-app-kam-lm-pdc-benzin-schwarz-3c3efac8-8b99-44b2-b0a9-f45d137fbf2a",
       "id": "6f0f9ec1e3b50d27"
+    },
+    {
+      "lat": 50.9333,
+      "lng": 6.95,
+      "ville": "Köln",
+      "region": "Allemagne",
+      "marque": "Mercedes",
+      "modele": "Glc 300",
+      "annee": 2018,
+      "prix": 28490,
+      "km": 96200,
+      "deal_score": 48.0,
+      "color": "amber",
+      "url": "https://www.autoscout24.de/angebote/mercedes-benz-glc-300-glc-300-4matic-exclusive-aut-navi-hud-led-benzin-schwarz-c005e7b5-9ece-48de-84b7-ce05171b7b41",
+      "id": "1cd485932b81da8f"
+    },
+    {
+      "lat": 52.52,
+      "lng": 13.405,
+      "ville": "Berlin",
+      "region": "Allemagne",
+      "marque": "Smart",
+      "modele": "Fortwo",
+      "annee": 2018,
+      "prix": 27999,
+      "km": 51000,
+      "deal_score": 41.0,
+      "color": "amber",
+      "url": "https://www.autoscout24.de/angebote/smart-fortwo-fortwo-brabus-xcl-leder-pano-shz-navi-jbl-kam-benzin-silber-e0f942f1-db61-4d68-b5c9-d0369a18eb48",
+      "id": "2284d341e3acd31f"
     },
     {
       "lat": 52.52,
@@ -2955,7 +2520,7 @@ const MAP_DATA = {
       "annee": 2022,
       "prix": 16990,
       "km": 95253,
-      "deal_score": 53.0,
+      "deal_score": 40.0,
       "color": "amber",
       "url": "https://www.autoscout24.de/angebote/volkswagen-taigo-1-0-tsi-style-dsgacciq-lightpano-benzin-weiss-3af78b68-5c2f-4f47-9d97-49b2740b8921",
       "id": "7429187aa2bb8425"
@@ -2970,25 +2535,10 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 12290,
       "km": 9900,
-      "deal_score": 52.0,
+      "deal_score": 46.0,
       "color": "amber",
       "url": "https://www.autoscout24.de/angebote/fiat-panda-mild-hybrid-city-paket-cinema-schwarz-benzin-schwarz-e6d8d117-443e-42c2-9fc6-2c27a0bbee9e",
       "id": "534e9f687dbb298a"
-    },
-    {
-      "lat": 48.1351,
-      "lng": 11.582,
-      "ville": "München",
-      "region": "Allemagne",
-      "marque": "Mini",
-      "modele": "Cooper C",
-      "annee": 2025,
-      "prix": 26493,
-      "km": 8643,
-      "deal_score": 64.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.de/angebote/mini-cooper-c-classic-trim-benzin-grau-2363588e-eedf-41ea-871e-a5caf48b2c2f",
-      "id": "7b1148aa6bf0cffe"
     },
     {
       "lat": 52.52,
@@ -3000,7 +2550,7 @@ const MAP_DATA = {
       "annee": 2022,
       "prix": 25500,
       "km": 85390,
-      "deal_score": 63.0,
+      "deal_score": 55.0,
       "color": "amber",
       "url": "https://www.autoscout24.de/angebote/mercedes-benz-cla-250-cla-250-e-edition-2022-amg-line-plugin-elektro-benzin-grau-73ebdcef-d624-4dab-8270-11604ba9a80f",
       "id": "0343c9db56c2ced2"
@@ -3015,7 +2565,7 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 26890,
       "km": 91049,
-      "deal_score": 69.0,
+      "deal_score": 63.0,
       "color": "amber",
       "url": "https://www.autoscout24.de/angebote/skoda-kodiaq-ambition-4x4-r-kamera-7-sitzer-acc-spur-diesel-schwarz-63a156f4-c430-4404-9393-5e7c847bc944",
       "id": "16ffc6e4e1b32f25"
@@ -3030,7 +2580,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 25950,
       "km": 36658,
-      "deal_score": 61.0,
+      "deal_score": 50.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volvo-s60-48-b4-mhev-197cv-bva-gps-cam-led-clim-options-essence-rouge-c80098a2-cc2d-4778-9cd7-e557a183f3ad",
       "id": "f1cc2616a33763e4"
@@ -3045,7 +2595,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 29950,
       "km": 19687,
-      "deal_score": 62.0,
+      "deal_score": 51.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/ds-automobiles-ds-7-47-1-6-hyb-225cv-bva-sport-gps-radars-electrique-essence-gris-e9b275b9-a7f9-4919-a0e5-1e2f74c6a614",
       "id": "0dad565ccf04ff32"
@@ -3060,7 +2610,7 @@ const MAP_DATA = {
       "annee": 2021,
       "prix": 25490,
       "km": 61396,
-      "deal_score": 54.0,
+      "deal_score": 42.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/bmw-x2-56-25e-hyb-220cv-bva-4x4-m-sport-gps-cam-options-electrique-essence-bleu-c1475af0-2499-49d6-af26-d4a35141fd96",
       "id": "6398626693d32427"
@@ -3075,10 +2625,25 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 42990,
       "km": 26675,
-      "deal_score": 66.0,
+      "deal_score": 50.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volvo-xc60-38-t6-phev-350cv-bva8-4x4-t-pano-gps-options-electrique-essence-argent-2e837bc2-7735-4413-8bad-e5855a857cd4",
       "id": "28ede8b00fad45ca"
+    },
+    {
+      "lat": 49.5836,
+      "lng": 5.9864,
+      "ville": "Schouweiler",
+      "region": "Sud",
+      "marque": "BMW",
+      "modele": "240",
+      "annee": 2018,
+      "prix": 31900,
+      "km": 95900,
+      "deal_score": 34.0,
+      "color": "default",
+      "url": "https://www.autoscout24.lu/offres/bmw-240-m-i-cabrio-xdrive-facelift-harman-kardon-cuir-navi-essence-gris-10578238-b138-4bf1-8896-48e57a7736aa",
+      "id": "2fffffb51f9509cd"
     },
     {
       "lat": 49.5836,
@@ -3090,7 +2655,7 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 249900,
       "km": 73900,
-      "deal_score": 58.0,
+      "deal_score": 45.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/lamborghini-urus-urus-s-3d-b-o-pano-360cam-ceramique-essence-gris-04a4ee00-c6f2-43c9-95f7-aa36c6ce7c70",
       "id": "5698ecc1ff5a1019"
@@ -3103,9 +2668,9 @@ const MAP_DATA = {
       "marque": "Volkswagen",
       "modele": "Polo Gti",
       "annee": 2011,
-      "prix": 17900,
+      "prix": 16900,
       "km": 17900,
-      "deal_score": 69.0,
+      "deal_score": 65.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volkswagen-polo-gti-1-4-tsi-180-dsg-navi-original-17900km-essence-blanc-a287058f-bef5-4dee-a9fc-21c57e08c7ba",
       "id": "15d3235b488a67ca"
@@ -3120,25 +2685,10 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 60990,
       "km": 73218,
-      "deal_score": 58.0,
+      "deal_score": 45.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/audi-q7-s-line-quattro-tiptronic-p-premium-diesel-blanc-26866c36-24cc-454e-bd8e-c635d351660a",
       "id": "c913ab90d97b0e0b"
-    },
-    {
-      "lat": 49.6116,
-      "lng": 6.1319,
-      "ville": "Luxembourg",
-      "region": "Centre",
-      "marque": "Audi",
-      "modele": "Q3",
-      "annee": 2020,
-      "prix": 27490,
-      "km": 80680,
-      "deal_score": 49.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.lu/offres/audi-q3-q3-40-2-0-tfsi-quattro-advanced-euro-6d-temp-bc-essence-noir-b9e60f6e-8386-47d6-bc9c-b624f2077a7c",
-      "id": "f8609d32df703638"
     },
     {
       "lat": 49.4958,
@@ -3150,8 +2700,8 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 25990,
       "km": 15129,
-      "deal_score": 70.0,
-      "color": "green",
+      "deal_score": 55.0,
+      "color": "amber",
       "url": "https://www.autoscout24.lu/offres/skoda-kamiq-monte-carlo-bvm-pano-rearview-essence-gris-62c0345c-164b-4fa2-be55-452435eef3e4",
       "id": "4c2294fb1d1d8316"
     },
@@ -3165,25 +2715,10 @@ const MAP_DATA = {
       "annee": 2021,
       "prix": 28490,
       "km": 44849,
-      "deal_score": 57.0,
+      "deal_score": 53.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volkswagen-golf-r-line-dsg-essence-gris-aa4b94f9-8b90-4dea-a4aa-60964a4a6407",
       "id": "23ab6eca2c93ab88"
-    },
-    {
-      "lat": 49.6761,
-      "lng": 6.3253,
-      "ville": "Roost",
-      "region": "Est",
-      "marque": "Audi",
-      "modele": "Q8",
-      "annee": 2023,
-      "prix": 60990,
-      "km": 72026,
-      "deal_score": 56.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.lu/offres/audi-q8-50tdi-quattro-tiptronic-s-line-diesel-blanc-632dcf47-908b-4a60-b40b-653e73000aa6",
-      "id": "712e8e1dbaaa8516"
     },
     {
       "lat": 49.5461,
@@ -3195,7 +2730,7 @@ const MAP_DATA = {
       "annee": 2020,
       "prix": 15900,
       "km": 52515,
-      "deal_score": 57.0,
+      "deal_score": 43.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volkswagen-t-cross-t-cross-1-0-tsi-life-eu6ap-garantie-12-mois-essence-noir-e589b617-6723-4974-9d08-b680008414d6",
       "id": "9935549c84f030d7"
@@ -3208,12 +2743,27 @@ const MAP_DATA = {
       "marque": "Hyundai",
       "modele": "I10",
       "annee": 2019,
-      "prix": 12900,
+      "prix": 11900,
       "km": 89900,
-      "deal_score": 53.0,
+      "deal_score": 51.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/hyundai-i10-1-0-auto-clim-navi-essence-blanc-631a82e4-df40-4ba1-8e65-5f40847329f1",
       "id": "50a0f48fb5d9e89c"
+    },
+    {
+      "lat": 49.6761,
+      "lng": 6.3253,
+      "ville": "Roost",
+      "region": "Est",
+      "marque": "Volkswagen",
+      "modele": "Taigo",
+      "annee": 2023,
+      "prix": 23490,
+      "km": 76786,
+      "deal_score": 44.0,
+      "color": "amber",
+      "url": "https://www.autoscout24.lu/offres/volkswagen-taigo-r-line-dsg-p-tech-blackstyle-pano-essence-blanc-4b6b698f-3271-47c8-b8fa-8bc96fcad35b",
+      "id": "4cfc75e9afa2f433"
     },
     {
       "lat": 49.6116,
@@ -3225,7 +2775,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 71690,
       "km": 17440,
-      "deal_score": 58.0,
+      "deal_score": 47.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/mercedes-benz-glc-300-glc-300-de-4matic-mit-eq-hybrid-technologie-electrique-diesel-noir-958f704f-ecce-479e-9617-d068e7c2f676",
       "id": "dc676f995b2d01b3"
@@ -3240,7 +2790,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 27980,
       "km": 11600,
-      "deal_score": 49.0,
+      "deal_score": 41.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/skoda-kamiq-essence-2025-1805767",
       "id": "5f86417502e7fc3c"
@@ -3255,7 +2805,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 31980,
       "km": 15600,
-      "deal_score": 55.0,
+      "deal_score": 48.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/audi-q2-essence-2025-1805768",
       "id": "8c5f3235b481286f"
@@ -3270,7 +2820,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 39480,
       "km": 17350,
-      "deal_score": 55.0,
+      "deal_score": 48.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/audi-q3-essence-2025-1805769",
       "id": "6f89ff54389ba225"
@@ -3285,7 +2835,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 39480,
       "km": 19700,
-      "deal_score": 55.0,
+      "deal_score": 48.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/audi-q3-essence-2025-1805770",
       "id": "b0d0e55bf7273ae0"
@@ -3300,8 +2850,8 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 28980,
       "km": 7900,
-      "deal_score": 42.0,
-      "color": "amber",
+      "deal_score": 38.0,
+      "color": "default",
       "url": "https://www.luxauto.lu/fr/car/audi-a1-essence-2025-1805771",
       "id": "3a2d70f47b351fbf"
     },
@@ -3315,7 +2865,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 33480,
       "km": 13300,
-      "deal_score": 49.0,
+      "deal_score": 41.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/audi-a3-essence-2025-1805772",
       "id": "3ae1a14a3e14348b"
@@ -3330,8 +2880,8 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 58990,
       "km": null,
-      "deal_score": 49.0,
-      "color": "amber",
+      "deal_score": 39.0,
+      "color": "default",
       "url": "https://www.luxauto.lu/fr/car/mercedes-c-220-diesel-2025-1805830",
       "id": "4406e9fe845bc6fb"
     },
@@ -3345,8 +2895,8 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 29990,
       "km": 55406,
-      "deal_score": 42.0,
-      "color": "amber",
+      "deal_score": 30.0,
+      "color": "default",
       "url": "https://www.luxauto.lu/fr/car/audi-a3-essence-2024-1805898",
       "id": "cbe73edb8dd01f74"
     },
@@ -3360,7 +2910,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 33480,
       "km": 11600,
-      "deal_score": 49.0,
+      "deal_score": 41.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/audi-a3-essence-2025-1805908",
       "id": "805c39cb7e490a3c"
@@ -3375,8 +2925,8 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 46990,
       "km": null,
-      "deal_score": 49.0,
-      "color": "amber",
+      "deal_score": 39.0,
+      "color": "default",
       "url": "https://www.luxauto.lu/fr/car/mercedes-c-200-diesel-2025-1805912",
       "id": "907a7754432ee3db"
     },
@@ -3390,7 +2940,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 23980,
       "km": 10800,
-      "deal_score": 49.0,
+      "deal_score": 41.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/skoda-fabia-essence-2025-1805913",
       "id": "910aab216447c61a"
@@ -3405,55 +2955,40 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 39980,
       "km": 17800,
-      "deal_score": 55.0,
+      "deal_score": 48.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/audi-q3-essence-2025-1805917",
       "id": "4e5fcfbfafc2bee6"
     },
     {
-      "lat": 50.1109,
-      "lng": 8.6821,
-      "ville": "Frankfurt / Main",
+      "lat": 48.1351,
+      "lng": 11.582,
+      "ville": "München",
       "region": "Allemagne",
-      "marque": "Dacia",
-      "modele": "Spring",
-      "annee": 2024,
-      "prix": 12880,
-      "km": 22713,
-      "deal_score": 49.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.de/angebote/dacia-spring-extreme-electric-65-ccs-inkl-batterie-elektro-grau-2eca5614-a6fa-44ad-889c-3d5b770757af",
-      "id": "78d09578e11a4112"
-    },
-    {
-      "lat": 52.52,
-      "lng": 13.405,
-      "ville": "Berlin",
-      "region": "Allemagne",
-      "marque": "Ford",
-      "modele": "Tourneo",
+      "marque": "Mini",
+      "modele": "Cooper C",
       "annee": 2025,
-      "prix": 24990,
-      "km": 10418,
-      "deal_score": 69.0,
+      "prix": 32324,
+      "km": 20690,
+      "deal_score": 43.0,
       "color": "amber",
-      "url": "https://www.autoscout24.de/angebote/ford-tourneo-courier-1-0-ecoboost-active-benzin-rot-761616bc-3867-4072-97ea-02c301096d16",
-      "id": "8c623aa8694cfef4"
+      "url": "https://www.autoscout24.de/angebote/mini-cooper-c-john-cooper-works-trim-benzin-schwarz-32c1d4bc-e6d2-4cf5-909c-48c083a25d0d",
+      "id": "2f1684f53d2dfd9e"
     },
     {
       "lat": 51.2217,
       "lng": 6.7762,
       "ville": "Neuss bei Düsseldorf",
       "region": "Allemagne",
-      "marque": "BMW",
-      "modele": "X1",
-      "annee": 2021,
-      "prix": 26445,
-      "km": 42865,
-      "deal_score": 50.0,
+      "marque": "Volkswagen",
+      "modele": "Tiguan",
+      "annee": 2024,
+      "prix": 27429,
+      "km": 46856,
+      "deal_score": 49.0,
       "color": "amber",
-      "url": "https://www.autoscout24.de/angebote/bmw-x1-xdrive18d-sport-line-accpark-assistnaviled-diesel-blau-b680d8b1-ad3a-4bf9-b487-6ef7edca7fe7",
-      "id": "ef329e49af54bd83"
+      "url": "https://www.autoscout24.de/angebote/volkswagen-tiguan-elegance-fernlichassistnaviacckamera-benzin-weiss-0cfce5a4-e697-4e3d-ac71-8e5ff94d930d",
+      "id": "360f9e584b65a4c5"
     },
     {
       "lat": 51.5136,
@@ -3465,25 +3000,10 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 19980,
       "km": 30170,
-      "deal_score": 61.0,
+      "deal_score": 49.0,
       "color": "amber",
       "url": "https://www.autoscout24.de/angebote/mazda-3-2-0-m-hybrid-selection-a18-benzin-weiss-95a96148-e01d-46de-b2ea-ed485890411f",
       "id": "2fe2ae939dbc9919"
-    },
-    {
-      "lat": 52.52,
-      "lng": 13.405,
-      "ville": "Berlin",
-      "region": "Allemagne",
-      "marque": "Mercedes",
-      "modele": "Citan",
-      "annee": 2017,
-      "prix": 14520,
-      "km": 80681,
-      "deal_score": 50.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.de/angebote/mercedes-benz-citan-112-lang-tourer-edition-aut-nav-tempo-pdc-shz-benzin-schwarz-02340537-f764-4207-b1ae-e74d75bf8d22",
-      "id": "7f762db41d032372"
     },
     {
       "lat": 50.9333,
@@ -3495,10 +3015,40 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 34790,
       "km": 18851,
-      "deal_score": 56.0,
+      "deal_score": 61.0,
       "color": "amber",
       "url": "https://www.autoscout24.de/angebote/cupra-formentor-1-5-e-hybrid-vz-aut-navi-led-acc-elektro-benzin-schwarz-f718be27-5f2e-4f63-b85b-24ca1d33c11b",
       "id": "33b49244364ef55d"
+    },
+    {
+      "lat": 52.52,
+      "lng": 13.405,
+      "ville": "Berlin",
+      "region": "Allemagne",
+      "marque": "Fiat",
+      "modele": "500L",
+      "annee": 2018,
+      "prix": 9800,
+      "km": 53500,
+      "deal_score": 55.0,
+      "color": "amber",
+      "url": "https://www.autoscout24.de/angebote/fiat-500l-500-1-2l-pop-star-automatik-klima-tempomat-benzin-grau-af9ec50b-8ee6-47b2-b43a-0741af8a6bbc",
+      "id": "55647289ba5b7021"
+    },
+    {
+      "lat": 52.52,
+      "lng": 13.405,
+      "ville": "Berlin",
+      "region": "Allemagne",
+      "marque": "Audi",
+      "modele": "A5",
+      "annee": 2019,
+      "prix": 26880,
+      "km": 135000,
+      "deal_score": 17.0,
+      "color": "default",
+      "url": "https://www.autoscout24.de/angebote/audi-a5-a5-sb-50-tdi-qu-s-line-bang-o-keylessgo-virtual-diesel-schwarz-bf3303d0-3cfe-458d-be51-663719fdbcdc",
+      "id": "f9c490ed8603c143"
     },
     {
       "lat": 52.52,
@@ -3510,7 +3060,7 @@ const MAP_DATA = {
       "annee": 2021,
       "prix": 35900,
       "km": 74109,
-      "deal_score": 56.0,
+      "deal_score": 43.0,
       "color": "amber",
       "url": "https://www.autoscout24.de/angebote/kia-sorento-2-2-crdi-platinum-4wd-pano-ahk-diesel-blau-2ac27346-6ad7-4fed-ba57-abeefef0521e",
       "id": "d7bf1588c9653ac0"
@@ -3525,8 +3075,8 @@ const MAP_DATA = {
       "annee": 2014,
       "prix": 25450,
       "km": 135000,
-      "deal_score": 40.0,
-      "color": "amber",
+      "deal_score": 26.0,
+      "color": "default",
       "url": "https://www.autoscout24.de/angebote/jeep-wrangler-wrangler-unlimited-sport-allrad-ahk-1hd-diesel-weiss-c7a18553-cb35-4ead-ba6b-029c5d19e4ec",
       "id": "5e6903be4e23cd53"
     },
@@ -3540,7 +3090,7 @@ const MAP_DATA = {
       "annee": 2010,
       "prix": 12999,
       "km": 250000,
-      "deal_score": 38.0,
+      "deal_score": 23.0,
       "color": "default",
       "url": "https://www.autoscout24.de/angebote/chevrolet-camaro-coupe-sport-automatik-carplay-tuev-benzin-blau-6b090393-93b0-4590-b0a6-2cbf4a6d758e",
       "id": "3e15891fae89aebd"
@@ -3555,10 +3105,25 @@ const MAP_DATA = {
       "annee": 2022,
       "prix": 21380,
       "km": 51812,
-      "deal_score": 73.0,
-      "color": "green",
+      "deal_score": 60.0,
+      "color": "amber",
       "url": "https://www.autoscout24.de/angebote/audi-a3-sportback-35-tfsi-led-ahk-benzin-weiss-d8df9f7d-a684-478e-8cd2-78154c63a8ff",
       "id": "77c133f3e25e0d10"
+    },
+    {
+      "lat": 49.9929,
+      "lng": 8.2473,
+      "ville": "Mainz",
+      "region": "Allemagne",
+      "marque": "Audi",
+      "modele": "Q8",
+      "annee": 2022,
+      "prix": 53980,
+      "km": 82636,
+      "deal_score": 41.0,
+      "color": "amber",
+      "url": "https://www.autoscout24.de/angebote/audi-q8-55-tfsi-e-quattro-tiptronic-s-line-soh97-elektro-benzin-grau-14768cc0-2c3d-4488-b6c9-17eef0fda7a4",
+      "id": "4dccde5e0e2bb6e2"
     },
     {
       "lat": 51.5136,
@@ -3570,7 +3135,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 34850,
       "km": 4282,
-      "deal_score": 68.0,
+      "deal_score": 57.0,
       "color": "amber",
       "url": "https://www.autoscout24.de/angebote/mazda-cx-5-2-5-newground-klimaautomatik-navi-360-benzin-blau-7862d7de-d64a-4d9b-a6b0-c5eade10595b",
       "id": "dc2e43797dac9452"
@@ -3585,8 +3150,8 @@ const MAP_DATA = {
       "annee": 2021,
       "prix": 20900,
       "km": 33091,
-      "deal_score": 70.0,
-      "color": "green",
+      "deal_score": 63.0,
+      "color": "amber",
       "url": "https://www.autoscout24.de/angebote/kia-xceed-1-6-platinium-plug-in-hybrid-ahk-elektro-benzin-grau-503db49c-52ac-4868-a60a-0c86be9e22c6",
       "id": "f81dda5281fd93ec"
     },
@@ -3600,25 +3165,40 @@ const MAP_DATA = {
       "annee": 2022,
       "prix": 67900,
       "km": 55222,
-      "deal_score": 55.0,
+      "deal_score": 43.0,
       "color": "amber",
       "url": "https://www.autoscout24.de/angebote/porsche-cayenne-e-hybrid-pasm-kamera-elektro-benzin-grau-63b96022-6d07-4f74-852e-d10af6843904",
       "id": "75abe2c319a60872"
+    },
+    {
+      "lat": 49.9929,
+      "lng": 8.2473,
+      "ville": "Mainz",
+      "region": "Allemagne",
+      "marque": "Volkswagen",
+      "modele": "T-Roc",
+      "annee": 2023,
+      "prix": 26440,
+      "km": 24887,
+      "deal_score": 64.0,
+      "color": "amber",
+      "url": "https://www.autoscout24.de/angebote/volkswagen-t-roc-1-5-tsi-dsg-r-line-kamera-navi-benzin-grau-bbc8fe00-b14b-44cf-9edc-76f43cccfa6d",
+      "id": "15a4b990470d3ec2"
     },
     {
       "lat": 51.5136,
       "lng": 7.4653,
       "ville": "Dortmund",
       "region": "Allemagne",
-      "marque": "Mazda",
-      "modele": "Mx-30",
+      "marque": "Skoda",
+      "modele": "Enyaq",
       "annee": 2023,
-      "prix": 15980,
-      "km": 15395,
-      "deal_score": 67.0,
+      "prix": 20880,
+      "km": 19468,
+      "deal_score": 51.0,
       "color": "amber",
-      "url": "https://www.autoscout24.de/angebote/mazda-mx-30-ev-advantage-industrial-vintage-3-phasig-elektro-weiss-817bb88c-3dfc-428a-91dd-9414ea58bb75",
-      "id": "651c8b7b17152166"
+      "url": "https://www.autoscout24.de/angebote/skoda-enyaq-50-loft-navi-kamera-19-virtualcockpit-elektro-blau-c195c1a8-8199-4e38-bb21-65eba8acf412",
+      "id": "96a77bc48a961d99"
     },
     {
       "lat": 48.7758,
@@ -3630,7 +3210,7 @@ const MAP_DATA = {
       "annee": 2026,
       "prix": 35728,
       "km": 10,
-      "deal_score": 67.0,
+      "deal_score": 57.0,
       "color": "amber",
       "url": "https://www.autoscout24.de/angebote/opel-vivaro-doka-xl-2-2-kam-carpl-sichtp-nsw-pdc-132-kw-17-diesel-grau-cb1683d5-ff12-41ea-98db-a458ab16f917",
       "id": "0297765e6f785cd1"
@@ -3645,25 +3225,10 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 31500,
       "km": 31407,
-      "deal_score": 63.0,
+      "deal_score": 54.0,
       "color": "amber",
       "url": "https://www.autoscout24.de/angebote/hyundai-tucson-1-6-prime-hybrid-4wd-100-hybrid-elektro-benzin-grau-353949f4-9013-422b-8f03-a8a83a69bcc3",
       "id": "35d5479f359599e9"
-    },
-    {
-      "lat": 52.52,
-      "lng": 13.405,
-      "ville": "Berlin",
-      "region": "Allemagne",
-      "marque": "Audi",
-      "modele": "Q5",
-      "annee": 2022,
-      "prix": 47400,
-      "km": 47850,
-      "deal_score": 42.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.de/angebote/audi-q5-s-line-edition-one-40-tdi-qu-s-tr-diesel-schwarz-721e87fa-e960-40dc-951c-0023e171e59f",
-      "id": "eb4d1c752754ae37"
     },
     {
       "lat": 52.52,
@@ -3675,8 +3240,8 @@ const MAP_DATA = {
       "annee": 2015,
       "prix": 7980,
       "km": 82247,
-      "deal_score": 48.0,
-      "color": "amber",
+      "deal_score": 33.0,
+      "color": "default",
       "url": "https://www.autoscout24.de/angebote/toyota-aygo-x-play-touch-automatik-rueckfahrkamera-led-klima-benzin-rot-d3b08548-f92b-4389-a865-e928dd747944",
       "id": "235fd51ad4e4b953"
     },
@@ -3690,8 +3255,8 @@ const MAP_DATA = {
       "annee": 2022,
       "prix": 33390,
       "km": 99985,
-      "deal_score": 54.0,
-      "color": "amber",
+      "deal_score": 39.0,
+      "color": "default",
       "url": "https://www.autoscout24.de/angebote/bmw-x3-xdrive-20-d-mild-hybrid-2-0-140kw-navi-led-temp-sh-diesel-schwarz-0b398acb-f085-4a0e-b4ba-da3509af5f12",
       "id": "6b15238d36e96a60"
     },
@@ -3705,25 +3270,10 @@ const MAP_DATA = {
       "annee": 2021,
       "prix": 38880,
       "km": 22489,
-      "deal_score": 63.0,
+      "deal_score": 50.0,
       "color": "amber",
       "url": "https://www.autoscout24.de/angebote/bmw-z4-sdrive20i-m-sport-aut-nav-hud-led-h-k-komfzg-rfk-benzin-schwarz-342dbee4-cc43-4fa8-8c72-5e2b402eccb5",
       "id": "96bda60875dd90f7"
-    },
-    {
-      "lat": 48.7758,
-      "lng": 9.1829,
-      "ville": "Stuttgart",
-      "region": "Allemagne",
-      "marque": "Mercedes",
-      "modele": "C 220",
-      "annee": 2017,
-      "prix": 18990,
-      "km": 166000,
-      "deal_score": 24.0,
-      "color": "default",
-      "url": "https://www.autoscout24.de/angebote/mercedes-benz-c-220-d-amg-bluetec-led-kamera-navi-shz-ahk-diesel-grau-13fccc35-eb14-4c02-bb5b-aed1c966f952",
-      "id": "3194e457d077df8e"
     },
     {
       "lat": 50.1109,
@@ -3735,8 +3285,8 @@ const MAP_DATA = {
       "annee": 2015,
       "prix": 12950,
       "km": 115309,
-      "deal_score": 43.0,
-      "color": "amber",
+      "deal_score": 29.0,
+      "color": "default",
       "url": "https://www.autoscout24.de/angebote/mazda-6-2-0-sports-line-nav-xenon-tempo-cam-pdc-shz-bt-benzin-schwarz-bb11684d-9066-4e95-88e2-8f2ae28b35dd",
       "id": "d4e930ea306b2706"
     },
@@ -3750,8 +3300,8 @@ const MAP_DATA = {
       "annee": 2015,
       "prix": 32970,
       "km": 133900,
-      "deal_score": 41.0,
-      "color": "amber",
+      "deal_score": 26.0,
+      "color": "default",
       "url": "https://www.autoscout24.de/angebote/audi-q7-3-0-tdi-quattro-7-sitzer-acc-pano-bose-ahk-360-me-diesel-schwarz-d7a9882f-54d0-4e81-b524-1d7bb9b26633",
       "id": "114a839d1a2db80f"
     },
@@ -3765,7 +3315,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 26990,
       "km": 33551,
-      "deal_score": 54.0,
+      "deal_score": 51.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volvo-s60-46-b4-mhev-197cv-bva-gps-cam-led-clim-options-essence-rouge-6da1878a-0715-4176-a78e-bbaa626c3f1d",
       "id": "a52e9f69458e8a79"
@@ -3780,7 +3330,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 20950,
       "km": 22081,
-      "deal_score": 63.0,
+      "deal_score": 44.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/seat-arona-30-1-0-tsi-115cv-fr-gps-cam-park-assist-opts-essence-bleu-f06a01bb-1b89-406e-9774-76ceba0e64bb",
       "id": "1ad659e8913702ab"
@@ -3795,7 +3345,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 19950,
       "km": 20907,
-      "deal_score": 66.0,
+      "deal_score": 54.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/citroen-c4-x-32-1-5-hdi-130cv-bva-gps-cam-led-options-diesel-gris-d2f7f410-207a-4365-86d1-9598cd05c662",
       "id": "c5e8c702d19f3f50"
@@ -3810,7 +3360,7 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 94950,
       "km": 17256,
-      "deal_score": 65.0,
+      "deal_score": 53.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/bmw-x7-29-m60i-530cv-bva8-4x4-pack-m-7pl-t-pano-gps-opts-essence-noir-7cc34fa9-7b76-4ebd-b683-47b106a7c6c2",
       "id": "54a65e6b8572500d"
@@ -3825,7 +3375,7 @@ const MAP_DATA = {
       "annee": 2021,
       "prix": 25490,
       "km": 65284,
-      "deal_score": 54.0,
+      "deal_score": 42.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/bmw-x2-56-25e-hyb-220cv-bva-4x4-m-sport-gps-cam-options-electrique-essence-bleu-d17552b8-c4d7-47d1-966e-5fbb6b60bb31",
       "id": "c33b864948590a6d"
@@ -3838,9 +3388,9 @@ const MAP_DATA = {
       "marque": "Volvo",
       "modele": "V60",
       "annee": 2015,
-      "prix": 18900,
+      "prix": 16900,
       "km": 78900,
-      "deal_score": 57.0,
+      "deal_score": 48.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volvo-v60-t3-auto-navi-essence-gris-73a5435c-28db-4750-9607-8a9e10315229",
       "id": "f1d38ad3eb77858b"
@@ -3853,27 +3403,12 @@ const MAP_DATA = {
       "marque": "Bentley",
       "modele": "Bentayga",
       "annee": 2023,
-      "prix": 159900,
+      "prix": 157900,
       "km": 109900,
-      "deal_score": 51.0,
-      "color": "amber",
+      "deal_score": 37.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/bentley-bentayga-bentayga-4-0-v8-4wd-pano-cuir-coc-softclose-essence-noir-1434a0da-b602-4fae-886c-498afc348a51",
       "id": "6708be87e91dc3be"
-    },
-    {
-      "lat": 49.5039,
-      "lng": 6.0156,
-      "ville": "Schifflange - Foetz",
-      "region": "Sud",
-      "marque": "Seat",
-      "modele": "Arona",
-      "annee": 2025,
-      "prix": 20950,
-      "km": 14820,
-      "deal_score": 64.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.lu/offres/seat-arona-30-1-0-tsi-115cv-fr-gps-cam-park-assist-opts-essence-rouge-85a4ad5f-6a6c-4942-b449-56daef054426",
-      "id": "ca82cd84210e255d"
     },
     {
       "lat": 49.5039,
@@ -3885,7 +3420,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 25490,
       "km": 27846,
-      "deal_score": 78.0,
+      "deal_score": 72.0,
       "color": "green",
       "url": "https://www.autoscout24.lu/offres/audi-q2-31-30-tfsi-110cv-s-line-gps-cam-full-led-options-essence-beige-2927acf4-252f-4b6f-ac47-a1ca29b08d9d",
       "id": "d53e1f681d33482e"
@@ -3900,8 +3435,8 @@ const MAP_DATA = {
       "annee": 2017,
       "prix": 9900,
       "km": 116900,
-      "deal_score": 45.0,
-      "color": "amber",
+      "deal_score": 31.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/citroen-c4-picasso-1-6-bluehdi-120-pano-led-navi-diesel-bleu-0659ff20-1b7e-46f8-ad47-956b5944e69a",
       "id": "ac141cc15c8cc3da"
     },
@@ -3915,7 +3450,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 64600,
       "km": 16000,
-      "deal_score": 65.0,
+      "deal_score": 55.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/audi-rs3-tfsi-limousine-quattro-s-troni-essence-bleu-ed624eee-e7ef-46a2-96d0-413bf74c6fb5",
       "id": "e2d90a184f262480"
@@ -3930,8 +3465,8 @@ const MAP_DATA = {
       "annee": 2020,
       "prix": 39490,
       "km": 93898,
-      "deal_score": 47.0,
-      "color": "amber",
+      "deal_score": 35.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/volkswagen-t6-1-multivan-highline-court-dsg-navi-7sitze-diesel-bronze-e3f18895-7f54-4399-90c3-444e08eda381",
       "id": "c49706836b6690b5"
     },
@@ -3943,9 +3478,9 @@ const MAP_DATA = {
       "marque": "Volkswagen",
       "modele": "Golf Gti",
       "annee": 2021,
-      "prix": 36900,
+      "prix": 34900,
       "km": 43900,
-      "deal_score": 58.0,
+      "deal_score": 46.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volkswagen-golf-gti-2-0-tsi-300-clubsport-dcc-iq-light-head-up-harman-essence-blanc-92eadcf1-5af9-4dce-82d3-05506f41c31a",
       "id": "293183857dde6ed3"
@@ -3960,7 +3495,7 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 29490,
       "km": 77249,
-      "deal_score": 57.0,
+      "deal_score": 44.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volkswagen-id-5-gtx-4x4-led-navi-digi-electrique-blanc-278bceaa-6894-4b89-b451-b9cb9fc0fcec",
       "id": "47cff619b4eceb04"
@@ -3975,7 +3510,7 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 66990,
       "km": 38352,
-      "deal_score": 59.0,
+      "deal_score": 48.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/audi-q8-s-line-50tdi-quattro-tiptronic-ahk-luft-diesel-bleu-77126bac-43db-4ffc-9178-5e9af7df96d0",
       "id": "fd0fee6fa0b0b056"
@@ -3990,8 +3525,8 @@ const MAP_DATA = {
       "annee": 2020,
       "prix": 14900,
       "km": 95456,
-      "deal_score": 50.0,
-      "color": "amber",
+      "deal_score": 36.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/seat-arona-arona-1-0-tsi-move-dsg-eu6-2-garantie-12-mois-essence-gris-b4940418-22ab-45de-acb9-95084062840b",
       "id": "374d8c56d42e692a"
     },
@@ -4005,7 +3540,7 @@ const MAP_DATA = {
       "annee": 2021,
       "prix": 15900,
       "km": 51146,
-      "deal_score": 61.0,
+      "deal_score": 44.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/ford-fiesta-vignale-1-0-titanium-automatique-garantie--essence-rouge-c5559277-e8fd-4162-b840-8979129f438a",
       "id": "d28e14dd0d329a6b"
@@ -4020,7 +3555,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 23990,
       "km": 21312,
-      "deal_score": 79.0,
+      "deal_score": 73.0,
       "color": "green",
       "url": "https://www.autoscout24.lu/offres/cupra-born-58kwh-p-cupra-p-tech-p-below-electrique-blanc-9790f597-bfcb-4548-9411-d134de171039",
       "id": "fec9f6033fe0a034"
@@ -4035,7 +3570,7 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 69990,
       "km": 79690,
-      "deal_score": 55.0,
+      "deal_score": 42.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/bmw-m3-g80-competition-x-drive-black-sapphire-metallic-essence-noir-93cca987-3639-48a0-8e1b-fe1d0eb158a1",
       "id": "2b66d08e4b5c3d48"
@@ -4065,8 +3600,8 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 55990,
       "km": 8381,
-      "deal_score": 71.0,
-      "color": "green",
+      "deal_score": 56.0,
+      "color": "amber",
       "url": "https://www.autoscout24.lu/offres/audi-a6-avant-s-tronic-tdi-p-business-diesel-argent-2a56cbcb-e1c7-4a6d-b0fd-700229cc0bca",
       "id": "12fced41c5259d4c"
     },
@@ -4080,7 +3615,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 51310,
       "km": 14000,
-      "deal_score": 66.0,
+      "deal_score": 55.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volkswagen-t7-multivan-life-diesel-noir-7ae5e596-afa5-4c3d-a1cb-e9eacf1faf8d",
       "id": "b92c7c8c4624667b"
@@ -4095,8 +3630,8 @@ const MAP_DATA = {
       "annee": 2017,
       "prix": 61990,
       "km": 96671,
-      "deal_score": 48.0,
-      "color": "amber",
+      "deal_score": 34.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/porsche-panamera-panamera-s4-essence-blanc-38f8224f-b262-4409-9307-4590dbf6fd39",
       "id": "a6a96fc6c0f952c7"
     },
@@ -4110,7 +3645,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 50490,
       "km": 43610,
-      "deal_score": 64.0,
+      "deal_score": 55.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volkswagen-t7-multivan-life-aut-rearview-matrix-led-electrique-essence-argent-f2caef8e-f134-4017-961b-bc7abb702958",
       "id": "71cd96f2f82f95f6"
@@ -4125,7 +3660,7 @@ const MAP_DATA = {
       "annee": 2021,
       "prix": 39990,
       "km": 59021,
-      "deal_score": 55.0,
+      "deal_score": 42.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/mercedes-benz-glc-220-glc-220-d-4matic-amg-line-amg-line-navi-styling-diesel-gris-dfa3a04c-f83a-4405-9f76-cc4c9577fd42",
       "id": "937694ffbbe7561e"
@@ -4138,10 +3673,10 @@ const MAP_DATA = {
       "marque": "BMW",
       "modele": "116",
       "annee": 2020,
-      "prix": 19900,
+      "prix": 18900,
       "km": 94900,
-      "deal_score": 50.0,
-      "color": "amber",
+      "deal_score": 37.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/bmw-116-d-sportline-cuir-led-navi-1-hand-diesel-noir-ec3bb2cf-5765-43cb-a510-de91abe57b1c",
       "id": "b6b757a41e9b2e92"
     },
@@ -4155,7 +3690,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 53490,
       "km": 19367,
-      "deal_score": 63.0,
+      "deal_score": 45.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/mercedes-benz-glc-200-glc-200-4m-avantgarde-kamera-led-totw-memo-20-essence-noir-58e5e917-9e01-4a49-86eb-57169e524c71",
       "id": "d93ad3b4f5ee64d8"
@@ -4170,7 +3705,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 29990,
       "km": 18000,
-      "deal_score": 63.0,
+      "deal_score": 53.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/cupra-born-zertifikat-77kwh-eboost-lm20-p-sennheiser-electrique-gris-ff1ebac3-ebfe-4500-9fea-621580c18ff8",
       "id": "d992d6f170fb34e4"
@@ -4185,8 +3720,8 @@ const MAP_DATA = {
       "annee": 2026,
       "prix": 79990,
       "km": 0,
-      "deal_score": 71.0,
-      "color": "green",
+      "deal_score": 60.0,
+      "color": "amber",
       "url": "https://www.autoscout24.lu/offres/mercedes-benz-gle-300-gle-300-d-4m-verfuegbar-ab-01-05-2026-ca-9-000km-diesel-argent-d253ccb6-c2d3-45d0-a78f-51e8072d3752",
       "id": "582b7e50006f9f3e"
     },
@@ -4200,7 +3735,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 20990,
       "km": 17143,
-      "deal_score": 65.0,
+      "deal_score": 55.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volkswagen-polo-life-bvm-iq-drive-led-essence-noir-cefbd36c-be77-48d4-8aea-6f852f1c72fb",
       "id": "011d9822391a0d7c"
@@ -4215,8 +3750,8 @@ const MAP_DATA = {
       "annee": 2019,
       "prix": 15900,
       "km": 82838,
-      "deal_score": 47.0,
-      "color": "amber",
+      "deal_score": 35.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/bmw-118-1er-118i-advantage-euro-6d-temp-pano-dach-bc-essence-argent-61be555d-5f8e-4fd7-ae75-a4369c9639f6",
       "id": "2518255178051d90"
     },
@@ -4230,7 +3765,7 @@ const MAP_DATA = {
       "annee": 2021,
       "prix": 10900,
       "km": 101021,
-      "deal_score": 42.0,
+      "deal_score": 53.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/peugeot-308-308-sw-1-5-bluehdi-business-s-garantie-12-mois-diesel-noir-9b6b3170-efcd-460d-97d9-49d68f1e8906",
       "id": "72c108b4bcead48f"
@@ -4243,12 +3778,27 @@ const MAP_DATA = {
       "marque": "BMW",
       "modele": "M8",
       "annee": 2021,
-      "prix": 122900,
+      "prix": 119900,
       "km": 17000,
-      "deal_score": 60.0,
+      "deal_score": 48.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/bmw-m8-competition-cabrio-keramik-bremsen-europa-essence-gris-907b2311-14a2-42a2-afbe-14fcb92cbd21",
       "id": "53a76f790238eb56"
+    },
+    {
+      "lat": 49.6761,
+      "lng": 6.3253,
+      "ville": "Roost",
+      "region": "Est",
+      "marque": "Volkswagen",
+      "modele": "Polo",
+      "annee": 2024,
+      "prix": 18490,
+      "km": 62926,
+      "deal_score": 46.0,
+      "color": "amber",
+      "url": "https://www.autoscout24.lu/offres/volkswagen-polo-style-dsg-iq-drive-led-essence-beige-f19362a8-9ecc-42be-8142-53dafdcb2078",
+      "id": "9ee22524d111c6b3"
     },
     {
       "lat": 49.5572,
@@ -4260,8 +3810,8 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 59990,
       "km": 16334,
-      "deal_score": 74.0,
-      "color": "green",
+      "deal_score": 67.0,
+      "color": "amber",
       "url": "https://www.autoscout24.lu/offres/land-rover-defender-90-d200-s-auto-diesel-noir-77ac9a69-781c-4601-bbb6-81a2d821dcb7",
       "id": "224ab8c93fa2d4bc"
     },
@@ -4275,8 +3825,8 @@ const MAP_DATA = {
       "annee": 2008,
       "prix": 32900,
       "km": 99900,
-      "deal_score": 44.0,
-      "color": "amber",
+      "deal_score": 30.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/mercedes-benz-sl-350-roadster-facelift-airscraf-cuir-xenon-europa-1-han-essence-noir-fcb12f44-f663-4abc-8a5c-2fc99090aa0f",
       "id": "c3ad3b427a00fed9"
     },
@@ -4290,7 +3840,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 49990,
       "km": 9412,
-      "deal_score": 59.0,
+      "deal_score": 48.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/audi-a5-avant-s-line-tdi-quattro-s-tronic-diesel-noir-d8180290-92af-4c96-b9ac-4330ca202694",
       "id": "6716512ddef14b9c"
@@ -4305,10 +3855,25 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 67990,
       "km": 13774,
-      "deal_score": 67.0,
+      "deal_score": 55.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/mercedes-benz-a-45-amg-a-45-amg-s-4matic-premium-plus-navi-pano-dach-essence-noir-5ee6c1f4-28e7-4f75-b427-fc7350cb6136",
       "id": "517b4c3fc114b26c"
+    },
+    {
+      "lat": 49.5836,
+      "lng": 5.9864,
+      "ville": "Schouweiler",
+      "region": "Sud",
+      "marque": "BMW",
+      "modele": "118",
+      "annee": 2011,
+      "prix": 11900,
+      "km": 147900,
+      "deal_score": 23.0,
+      "color": "default",
+      "url": "https://www.autoscout24.lu/offres/bmw-118-i-cabrio-m-sport-paket-auto-navi-xenon-essence-noir-54c0c371-6236-4215-9ce8-83ab9005d1fc",
+      "id": "3dfe765278404653"
     },
     {
       "lat": 49.4958,
@@ -4320,7 +3885,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 64990,
       "km": 35660,
-      "deal_score": 61.0,
+      "deal_score": 50.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volkswagen-touareg-r-line-4m-aut-ahk-luft-diesel-blanc-a134ac3f-3b01-497f-ae60-85f8b63aacfe",
       "id": "67fd9cfad6d6d3a6"
@@ -4335,8 +3900,8 @@ const MAP_DATA = {
       "annee": 2009,
       "prix": 42500,
       "km": 58900,
-      "deal_score": 50.0,
-      "color": "amber",
+      "deal_score": 36.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/porsche-cayman-cayman-s-987-2-pack-sport-chrono-plus-essence-noir-21c9f676-5baf-464f-bd80-a2a4c31f05be",
       "id": "f312b24063e6fa4b"
     },
@@ -4350,10 +3915,25 @@ const MAP_DATA = {
       "annee": 2021,
       "prix": 18900,
       "km": 80022,
-      "deal_score": 52.0,
+      "deal_score": 40.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/mercedes-benz-a-180-automatique-garantie-12-mois-essence-gris-ef83b930-27ec-4405-85af-12772ebbb5e2",
       "id": "57d35899ab87e3c1"
+    },
+    {
+      "lat": 49.6444,
+      "lng": 6.0117,
+      "ville": "Ell",
+      "region": "Ouest",
+      "marque": "Peugeot",
+      "modele": "308",
+      "annee": 2018,
+      "prix": 14900,
+      "km": 106681,
+      "deal_score": 19.0,
+      "color": "default",
+      "url": "https://www.autoscout24.lu/offres/peugeot-308-gt-line-diesel-bleu-fc29a583-7144-495a-91d7-a4d8252bbf38",
+      "id": "d636e385beb167a8"
     },
     {
       "lat": 49.6116,
@@ -4363,9 +3943,9 @@ const MAP_DATA = {
       "marque": "Volvo",
       "modele": "Xc60",
       "annee": 2023,
-      "prix": 39990,
+      "prix": 39390,
       "km": 54334,
-      "deal_score": 57.0,
+      "deal_score": 46.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volvo-xc60-xc60-b4-awd-plus-dark-diesel-blanc-05c153b4-5a66-46a4-92b4-3e89ba293b76",
       "id": "f1e2c66c3e281caa"
@@ -4380,7 +3960,7 @@ const MAP_DATA = {
       "annee": 2016,
       "prix": 14900,
       "km": 211900,
-      "deal_score": 37.0,
+      "deal_score": 23.0,
       "color": "default",
       "url": "https://www.autoscout24.lu/offres/mercedes-benz-c-250-d-t-4matic-amg-line-head-up-pano-cuir-navi-diesel-gris-3374c72a-30db-466e-a4f6-3f0d5a9bf548",
       "id": "469959879b7ce144"
@@ -4395,7 +3975,7 @@ const MAP_DATA = {
       "annee": 2016,
       "prix": 69990,
       "km": 56790,
-      "deal_score": 51.0,
+      "deal_score": 40.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/bmw-m5-f10-competition-1-200-essence-blanc-a5bf8cf7-cf3f-44ff-a01e-32ab2bf60896",
       "id": "bbb0464eefc083d7"
@@ -4410,10 +3990,40 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 23490,
       "km": 14758,
-      "deal_score": 64.0,
+      "deal_score": 53.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/audi-a1-sb-advanced-25tfsi-s-tronic-essence-gris-db0b8735-a69f-412c-a775-5d7d78deda32",
       "id": "8b26443cabeb47df"
+    },
+    {
+      "lat": 49.4958,
+      "lng": 5.9807,
+      "ville": "Esch-sur-Alzette",
+      "region": "Sud",
+      "marque": "Audi",
+      "modele": "Q7",
+      "annee": 2026,
+      "prix": 90430,
+      "km": 5000,
+      "deal_score": 59.0,
+      "color": "amber",
+      "url": "https://www.autoscout24.lu/offres/audi-q7-s-line-diesel-blanc-4b7a89d3-15d9-4c0b-bc5f-d0a2652d6b66",
+      "id": "c57808ec2438ea5b"
+    },
+    {
+      "lat": 49.4958,
+      "lng": 5.9807,
+      "ville": "Esch-sur-Alzette",
+      "region": "Sud",
+      "marque": "Skoda",
+      "modele": "Kamiq",
+      "annee": 2025,
+      "prix": 24910,
+      "km": 7500,
+      "deal_score": 64.0,
+      "color": "amber",
+      "url": "https://www.autoscout24.lu/offres/skoda-kamiq-essence-essence-blanc-d95bce88-0f81-42db-a600-d2dba9e14fe3",
+      "id": "549a5d4c2b8171ec"
     },
     {
       "lat": 49.6761,
@@ -4425,7 +4035,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 42990,
       "km": 14573,
-      "deal_score": 69.0,
+      "deal_score": 57.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volkswagen-amarok-dc-life-aut-4x4-p-info-ahk-diesel-blanc-b1c52b85-3f68-4f20-9677-cc0998dc812d",
       "id": "f2853376c3e914a9"
@@ -4438,10 +4048,10 @@ const MAP_DATA = {
       "marque": "Audi",
       "modele": "Q3",
       "annee": 2015,
-      "prix": 19900,
+      "prix": 18900,
       "km": 99999,
-      "deal_score": 59.0,
-      "color": "amber",
+      "deal_score": 31.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/audi-q3-2-0-tdi-150-bi-xenon-navi-diesel-blanc-d567063c-6d2b-499c-84f3-2aa692f14fdd",
       "id": "7c9010d6d079c572"
     },
@@ -4455,7 +4065,7 @@ const MAP_DATA = {
       "annee": 2026,
       "prix": 34772,
       "km": 5000,
-      "deal_score": 60.0,
+      "deal_score": 49.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/audi-q2-s-line-essence-gris-286cca45-4c50-4a85-a7f3-5fa0776e9851",
       "id": "cd57e476da168a5b"
@@ -4470,8 +4080,8 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 34490,
       "km": 4984,
-      "deal_score": 70.0,
-      "color": "green",
+      "deal_score": 57.0,
+      "color": "amber",
       "url": "https://www.autoscout24.lu/offres/toyota-corolla-cross-corolla-cross-2-0-hybrid-lounge-fwd-electrique-essence-rouge-48f5b01c-b94b-41b3-be3e-2cb983c73bbc",
       "id": "c1d1dd86225b84ab"
     },
@@ -4485,7 +4095,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 46990,
       "km": 20060,
-      "deal_score": 56.0,
+      "deal_score": 45.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/skoda-kodiaq-sportline-dsg-4x4-7sitze-diesel-bleu-4a2c6c1e-1bcd-4699-8b17-6d6f1593be97",
       "id": "336783d826b5dd96"
@@ -4500,8 +4110,8 @@ const MAP_DATA = {
       "annee": 2021,
       "prix": 19900,
       "km": 97892,
-      "deal_score": 52.0,
-      "color": "amber",
+      "deal_score": 39.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/mercedes-benz-a-180-moteur-2-0-diesel-12-mois-de-gatantie--diesel-argent-04c660f1-9426-46ec-a5c0-2114b42848f1",
       "id": "d216742bae0c7e9c"
     },
@@ -4515,7 +4125,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 63990,
       "km": 32443,
-      "deal_score": 61.0,
+      "deal_score": 51.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volkswagen-touareg-r-line-v6-aut-black-style-4m-pano-diesel-blanc-ea0c13df-4b10-46b5-8d88-8f9f47482f98",
       "id": "ff163258ebbf9139"
@@ -4530,7 +4140,7 @@ const MAP_DATA = {
       "annee": 2022,
       "prix": 13990,
       "km": 30431,
-      "deal_score": 58.0,
+      "deal_score": 47.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/opel-corsa-corsa-f-1-2-edition-navi-klima-sitzhzg-bc-efh-essence-7c7912c2-2fb8-4964-9528-1d04869cacbe",
       "id": "b0ca7af938b409de"
@@ -4545,7 +4155,7 @@ const MAP_DATA = {
       "annee": 2016,
       "prix": 14900,
       "km": 58000,
-      "deal_score": 43.0,
+      "deal_score": 40.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/skoda-fabia-1-2-tsi-110-dsg-style-klimaauto-58000km-garantie-essence-gris-9294beab-d60a-4ea9-b80d-0e6e5bbda032",
       "id": "2397cd3336ddedb9"
@@ -4560,25 +4170,10 @@ const MAP_DATA = {
       "annee": 2017,
       "prix": 17900,
       "km": 130000,
-      "deal_score": 43.0,
-      "color": "amber",
+      "deal_score": 29.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/ford-s-max-titanium-cuir-led-navi-diesel-gris-7055547a-1fc3-4b09-b89c-8e7a9afc8d2a",
       "id": "9470f08b2ff07452"
-    },
-    {
-      "lat": 49.6761,
-      "lng": 6.3253,
-      "ville": "Roost",
-      "region": "Est",
-      "marque": "Audi",
-      "modele": "E-Tron Gt",
-      "annee": 2024,
-      "prix": 86990,
-      "km": 10339,
-      "deal_score": 67.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.lu/offres/audi-e-tron-gt-rs-ice-race-edition-limitiert-electrique-argent-3f46f101-04f3-4c4d-82d0-9b68f91da6fd",
-      "id": "ca6c5bc0ec83851c"
     },
     {
       "lat": 49.5836,
@@ -4588,9 +4183,9 @@ const MAP_DATA = {
       "marque": "Mercedes",
       "modele": "Cla 35 Amg",
       "annee": 2022,
-      "prix": 39900,
+      "prix": 38900,
       "km": 29900,
-      "deal_score": 62.0,
+      "deal_score": 49.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/mercedes-benz-cla-35-amg-shooting-brake-4matic-turbo-cuir-navi-essence-gris-22693ac3-733c-488c-a678-13a15e97b552",
       "id": "79564f112aef3e9a"
@@ -4605,7 +4200,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 34990,
       "km": 12250,
-      "deal_score": 59.0,
+      "deal_score": 51.0,
       "color": "amber",
       "url": "https://www.autopolis.lu/stock/374774227-1-mercedes-benz-classe-a-a200-13-hatchback-amg-night-edition",
       "id": "ac51eab26163ace9"
@@ -4620,7 +4215,7 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 19990,
       "km": 19350,
-      "deal_score": 56.0,
+      "deal_score": 48.0,
       "color": "amber",
       "url": "https://www.autopolis.lu/stock/519410867-1-ford-focus-clipper-10i-ecoboost-mhev-92kw-st-line-x",
       "id": "4eb06a52230886b0"
@@ -4635,7 +4230,7 @@ const MAP_DATA = {
       "annee": 2021,
       "prix": 27990,
       "km": 30250,
-      "deal_score": 57.0,
+      "deal_score": 44.0,
       "color": "amber",
       "url": "https://www.autopolis.lu/stock/40060167-1-volkswagen-t-roc-cabrio-10-tsi-r-line",
       "id": "ee045860289a4d0b"
@@ -4650,8 +4245,8 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 28490,
       "km": null,
-      "deal_score": 50.0,
-      "color": "amber",
+      "deal_score": 39.0,
+      "color": "default",
       "url": "https://www.autopolis.lu/stock/94021063-1-ford-kuga-25i-phev-aut-165kw-st-line",
       "id": "4e185d46c9de1a0b"
     },
@@ -4665,8 +4260,8 @@ const MAP_DATA = {
       "annee": 2021,
       "prix": 19990,
       "km": 100100,
-      "deal_score": 46.0,
-      "color": "amber",
+      "deal_score": 36.0,
+      "color": "default",
       "url": "https://www.autopolis.lu/stock/138961135-1-hyundai-kona-16-gdi-hybrid-techno",
       "id": "88191c358729bd30"
     },
@@ -4680,7 +4275,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 14990,
       "km": 28200,
-      "deal_score": 61.0,
+      "deal_score": 55.0,
       "color": "amber",
       "url": "https://www.autopolis.lu/stock/278726801-1-toyota-aygo-x-10-vvt-i-play",
       "id": "db798a7253f7b8c7"
@@ -4695,7 +4290,7 @@ const MAP_DATA = {
       "annee": 2022,
       "prix": 33990,
       "km": 54100,
-      "deal_score": 38.0,
+      "deal_score": 34.0,
       "color": "default",
       "url": "https://www.autopolis.lu/stock/104899420-1-volkswagen-golf-20-tsi-gti",
       "id": "2ed1e422b7afe7c5"
@@ -4710,8 +4305,8 @@ const MAP_DATA = {
       "annee": 2019,
       "prix": 35990,
       "km": 55400,
-      "deal_score": 51.0,
-      "color": "amber",
+      "deal_score": 38.0,
+      "color": "default",
       "url": "https://www.autopolis.lu/stock/332687697-1-mercedes-benz-classe-a-mercedes-amg-a-35-4matic",
       "id": "dafdf3716aba37ef"
     },
@@ -4725,7 +4320,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 25990,
       "km": 31300,
-      "deal_score": 55.0,
+      "deal_score": 47.0,
       "color": "amber",
       "url": "https://www.autopolis.lu/stock/194463915-1-kia-xceed-15-t-gdi-140-dct-pulse",
       "id": "f666e347db0869c6"
@@ -4740,7 +4335,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 22990,
       "km": 23200,
-      "deal_score": 56.0,
+      "deal_score": 48.0,
       "color": "amber",
       "url": "https://www.autopolis.lu/stock/334229581-1-kia-ceed-10-t-gdi-pulse",
       "id": "941a4d267a644619"
@@ -4755,7 +4350,7 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 22990,
       "km": 12900,
-      "deal_score": 57.0,
+      "deal_score": 49.0,
       "color": "amber",
       "url": "https://www.autopolis.lu/stock/160402200-1-mg-mg4-64-kwh-luxury",
       "id": "15b016a1b5ddcf21"
@@ -4770,7 +4365,7 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 16490,
       "km": 33200,
-      "deal_score": 57.0,
+      "deal_score": 48.0,
       "color": "amber",
       "url": "https://www.autopolis.lu/stock/399068834-1-dacia-sandero-tce-90-cvt-expression",
       "id": "378c5e4286eb696b"
@@ -4785,8 +4380,8 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 33990,
       "km": 33500,
-      "deal_score": 41.0,
-      "color": "amber",
+      "deal_score": 35.0,
+      "color": "default",
       "url": "https://www.autopolis.lu/stock/343566054-1-hyundai-kona-10-t-gdi-techno-48v-7-dct",
       "id": "b9baf190fea39816"
     },
@@ -4800,7 +4395,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 41990,
       "km": 27450,
-      "deal_score": 56.0,
+      "deal_score": 47.0,
       "color": "amber",
       "url": "https://www.autopolis.lu/stock/214598983-1-hyundai-tucson-16-shine",
       "id": "d6875f9fb6d861dc"
@@ -4815,7 +4410,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 33990,
       "km": 17100,
-      "deal_score": 58.0,
+      "deal_score": 50.0,
       "color": "amber",
       "url": "https://www.autopolis.lu/stock/266020728-1-mercedes-benz-classe-a-a200-13-hatchback-amg-edition",
       "id": "4395a021eb5b2d15"
@@ -4830,7 +4425,7 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 32490,
       "km": 34050,
-      "deal_score": 66.0,
+      "deal_score": 62.0,
       "color": "amber",
       "url": "https://www.autopolis.lu/stock/379645201-1-alfa-romeo-tonale-16-ti",
       "id": "915a2f0afcba1145"
@@ -4845,7 +4440,7 @@ const MAP_DATA = {
       "annee": 2022,
       "prix": 38990,
       "km": 39000,
-      "deal_score": 55.0,
+      "deal_score": 46.0,
       "color": "amber",
       "url": "https://www.autopolis.lu/stock/508532510-1-ford-mustang-mach-e-awd",
       "id": "dded788b5c43e664"
@@ -4860,7 +4455,7 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 20990,
       "km": 3700,
-      "deal_score": 61.0,
+      "deal_score": 52.0,
       "color": "amber",
       "url": "https://www.autopolis.lu/stock/38518283-1-mg-zs-comfort",
       "id": "4da6c08ba51adda5"
@@ -4875,7 +4470,7 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 22990,
       "km": 29650,
-      "deal_score": 55.0,
+      "deal_score": 46.0,
       "color": "amber",
       "url": "https://www.autopolis.lu/stock/484982300-1-ford-puma-1-0-ecoboost-hybrid-114kw-st-line-auto",
       "id": "e4a04b17af975dc8"
@@ -4890,7 +4485,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 259900,
       "km": 7000,
-      "deal_score": 57.0,
+      "deal_score": 49.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/bentley-bentayga-essence-2025-1513181",
       "id": "1fd5d484aab1dfa8"
@@ -4905,7 +4500,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 274900,
       "km": 50,
-      "deal_score": 69.0,
+      "deal_score": 58.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/bentley-flying-spur-essence-2025-1513186",
       "id": "c6b86781607d3905"
@@ -4920,7 +4515,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 297900,
       "km": 6000,
-      "deal_score": 69.0,
+      "deal_score": 66.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/bentley-continental-gt-essence-2025-1636177",
       "id": "475d531be8724b8b"
@@ -4935,7 +4530,7 @@ const MAP_DATA = {
       "annee": 2026,
       "prix": 347536,
       "km": 50,
-      "deal_score": 46.0,
+      "deal_score": 43.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/bentley-flying-spur-essence-2026-1636179",
       "id": "0cacac937594c7cf"
@@ -4950,7 +4545,7 @@ const MAP_DATA = {
       "annee": 2026,
       "prix": 361046,
       "km": null,
-      "deal_score": 52.0,
+      "deal_score": 46.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/bentley-continental-gtc-hybride-2026-1703401",
       "id": "33911f233effceab"
@@ -4965,7 +4560,7 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 269000,
       "km": 8989,
-      "deal_score": 59.0,
+      "deal_score": 47.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/lamborghini-huracan-essence-2023-1706327",
       "id": "bf9ae4408ba4fd65"
@@ -4980,7 +4575,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 319000,
       "km": 8500,
-      "deal_score": 56.0,
+      "deal_score": 49.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/lamborghini-urus-essence-2025-1771695",
       "id": "0dfaecb074d4cb66"
@@ -4995,8 +4590,8 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 394332,
       "km": 5000,
-      "deal_score": 45.0,
-      "color": "amber",
+      "deal_score": 39.0,
+      "color": "default",
       "url": "https://www.luxauto.lu/fr/car/bentley-continental-gt-hybride-2025-1778985",
       "id": "7302e5b8b3179cd2"
     },
@@ -5010,7 +4605,7 @@ const MAP_DATA = {
       "annee": 2026,
       "prix": 282766,
       "km": 50,
-      "deal_score": 51.0,
+      "deal_score": 43.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/bentley-bentayga-essence-2026-1778987",
       "id": "240d50bc9890b084"
@@ -5025,7 +4620,7 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 239900,
       "km": 24300,
-      "deal_score": 57.0,
+      "deal_score": 53.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/bentley-bentayga-essence-2023-1779258",
       "id": "7f1587aca722180c"
@@ -5040,8 +4635,8 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 380270,
       "km": 5000,
-      "deal_score": 43.0,
-      "color": "amber",
+      "deal_score": 38.0,
+      "color": "default",
       "url": "https://www.luxauto.lu/fr/car/bentley-bentayga-essence-2025-1779259",
       "id": "fa8d6258a38e2e11"
     },
@@ -5055,8 +4650,8 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 289000,
       "km": 8000,
-      "deal_score": 47.0,
-      "color": "amber",
+      "deal_score": 39.0,
+      "color": "default",
       "url": "https://www.luxauto.lu/fr/car/lamborghini-huracan-essence-2023-1781416",
       "id": "44e307c4511b5341"
     },
@@ -5070,7 +4665,7 @@ const MAP_DATA = {
       "annee": 2019,
       "prix": 179900,
       "km": 13500,
-      "deal_score": 72.0,
+      "deal_score": 71.0,
       "color": "green",
       "url": "https://www.luxauto.lu/fr/car/bentley-bentayga-essence-2019-1781921",
       "id": "077a22cb8a4a05bc"
@@ -5085,7 +4680,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 298000,
       "km": 8650,
-      "deal_score": 48.0,
+      "deal_score": 40.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/lamborghini-huracan-essence-2024-1794523",
       "id": "a8cc2c47a9bb19d4"
@@ -5100,7 +4695,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 300760,
       "km": 26,
-      "deal_score": 56.0,
+      "deal_score": 49.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/lamborghini-urus-essence-2024-1794525",
       "id": "4948e259fbabeb08"
@@ -5115,7 +4710,7 @@ const MAP_DATA = {
       "annee": 2018,
       "prix": 259000,
       "km": 24750,
-      "deal_score": 53.0,
+      "deal_score": 48.0,
       "color": "amber",
       "url": "https://www.luxauto.lu/fr/car/lamborghini-huracan-essence-2018-1796263",
       "id": "0fcc5c4408030f50"
@@ -5130,8 +4725,8 @@ const MAP_DATA = {
       "annee": 2026,
       "prix": 413556,
       "km": null,
-      "deal_score": 40.0,
-      "color": "amber",
+      "deal_score": 30.0,
+      "color": "default",
       "url": "https://www.luxauto.lu/fr/car/bentley-continental-gtc-hybride-2026-1797852",
       "id": "2bd20d6c2ac91b67"
     },
@@ -5145,7 +4740,7 @@ const MAP_DATA = {
       "annee": 2021,
       "prix": 49950,
       "km": 72274,
-      "deal_score": 58.0,
+      "deal_score": 50.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/bmw-745-e-59-hyb-394cv-bva8-m-sport-t-pano-gps-options-electrique-essence-noir-6232b0ee-7927-42d9-ba91-acb99e9e3b4b",
       "id": "40cbeef23f4ab9bc"
@@ -5160,7 +4755,7 @@ const MAP_DATA = {
       "annee": 2021,
       "prix": 62590,
       "km": 59955,
-      "deal_score": 58.0,
+      "deal_score": 46.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/bmw-m850-i-cabrio-57-530cv-bva8-4x4-gps-cuir-cam360-opts-essence-noir-7d83bb3d-df92-4624-b47c-998bb8d5eb1f",
       "id": "881cb3bbeaffafee"
@@ -5175,8 +4770,8 @@ const MAP_DATA = {
       "annee": 2016,
       "prix": 23900,
       "km": 116900,
-      "deal_score": 46.0,
-      "color": "amber",
+      "deal_score": 32.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/hyundai-grand-santa-fe-2-2crdi-200-awd-pano-cuir-navi-7-sitze-diesel-bleu-fffd2de1-5733-47e3-b265-07e114349a65",
       "id": "def91aab38d36060"
     },
@@ -5188,27 +4783,12 @@ const MAP_DATA = {
       "marque": "Aston Martin",
       "modele": "V8",
       "annee": 2013,
-      "prix": 69900,
+      "prix": 67900,
       "km": 29900,
-      "deal_score": 56.0,
+      "deal_score": 42.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/aston-martin-v8-vantage-europa-carbon-cuir-navi-essence-blanc-481d7ea2-ff8f-466e-be5a-fc9fbc1fa2ee",
       "id": "e4c9365350319c00"
-    },
-    {
-      "lat": 49.5039,
-      "lng": 6.0156,
-      "ville": "Schifflange - Foetz",
-      "region": "Sud",
-      "marque": "Volvo",
-      "modele": "Xc40",
-      "annee": 2024,
-      "prix": 26950,
-      "km": 29585,
-      "deal_score": 79.0,
-      "color": "green",
-      "url": "https://www.autoscout24.lu/offres/volvo-xc40-39-t2-129cv-bva-gps-cam-led-hayon-elec-opts-essence-rouge-38e045bb-7045-4f45-bc06-3ca7bff4ffff",
-      "id": "2b0a933034123c02"
     },
     {
       "lat": 49.5836,
@@ -5218,9 +4798,9 @@ const MAP_DATA = {
       "marque": "Opel",
       "modele": "Grandland X",
       "annee": 2021,
-      "prix": 21900,
+      "prix": 20900,
       "km": 62900,
-      "deal_score": 39.0,
+      "deal_score": 33.0,
       "color": "default",
       "url": "https://www.autoscout24.lu/offres/opel-grandland-x-ultimate-phev-navi-360cam-cuir-1-hand-electrique-essence-gris-63883351-4020-4c0e-ba7d-0f863daa2046",
       "id": "2c4ef54f85d0d12f"
@@ -5235,7 +4815,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 23950,
       "km": 27190,
-      "deal_score": 63.0,
+      "deal_score": 53.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/seat-leon-26-2-0-tdi-115cv-mirrorlink-cam-led-options-diesel-gris-03e22f13-1543-4fb4-91fd-0fb5d80c58d2",
       "id": "b19b88982cee1869"
@@ -5250,25 +4830,10 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 26990,
       "km": 32038,
-      "deal_score": 54.0,
+      "deal_score": 51.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volvo-s60-46-b4-mhev-197cv-bva-gps-cam-led-clim-options-essence-argent-40a484d4-da4b-450e-b57f-8e7c46b3465a",
       "id": "a5fed89c06c9b96f"
-    },
-    {
-      "lat": 49.5836,
-      "lng": 5.9864,
-      "ville": "Schouweiler",
-      "region": "Sud",
-      "marque": "Peugeot",
-      "modele": "2008",
-      "annee": 2023,
-      "prix": 22900,
-      "km": 67900,
-      "deal_score": 43.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.lu/offres/peugeot-2008-1-5-bluehdi-130-allure-cuir-navi-diesel-noir-45019565-9207-43c8-a7ec-bc2462caea84",
-      "id": "b5de62b3e2bba573"
     },
     {
       "lat": 49.5039,
@@ -5280,8 +4845,8 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 41950,
       "km": 24747,
-      "deal_score": 74.0,
-      "color": "green",
+      "deal_score": 52.0,
+      "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volvo-xc60-40-t6-phev-350cv-bva8-4x4-t-pano-gps-options-essence-rouge-12eff71c-c68b-428c-be87-ea1cd02d252c",
       "id": "6324757634e4f3b3"
     },
@@ -5295,7 +4860,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 59950,
       "km": 46393,
-      "deal_score": 52.0,
+      "deal_score": 51.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volvo-xc90-35-t8-phev-455cv-bva8-4x4-7pl-gps-cuir-opts-electrique-essence-bleu-09ebf72b-fcc2-4567-b4ad-df0455a2d13d",
       "id": "9ac0b8c27cb6867e"
@@ -5310,7 +4875,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 29950,
       "km": 23344,
-      "deal_score": 62.0,
+      "deal_score": 52.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/ds-automobiles-ds-7-47-1-6-hyb-225cv-bva-sport-gps-radars-electrique-essence-gris-f79066b3-8fff-4c0b-a392-51a2f8ffd6d0",
       "id": "e57a6af20baf2c91"
@@ -5325,7 +4890,7 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 119980,
       "km": 38400,
-      "deal_score": 62.0,
+      "deal_score": 51.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/lotus-eletre-r-31-918cv-675kw-t-pano-gps-cuir-cam360-opts-electrique-gris-c078e76f-3f89-4658-9c51-3f76a943e07d",
       "id": "876f9fa011d600d7"
@@ -5340,7 +4905,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 24950,
       "km": 25672,
-      "deal_score": 79.0,
+      "deal_score": 75.0,
       "color": "green",
       "url": "https://www.autoscout24.lu/offres/audi-q2-33-30-tfsi-110cv-s-line-gps-cam-full-led-options-essence-rouge-d59a9708-9bcb-4184-9a7d-fdd704dd3ade",
       "id": "1eff16829ed62505"
@@ -5355,7 +4920,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 23950,
       "km": 19101,
-      "deal_score": 63.0,
+      "deal_score": 53.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/seat-leon-39-1-5-etsi-150-bva-fr-gps-cam-full-led-opts-essence-beige-4b7b97b9-93cf-4501-a732-8cb9cd691d1c",
       "id": "1ca349d7f9b29d5f"
@@ -5370,7 +4935,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 26990,
       "km": 29622,
-      "deal_score": 62.0,
+      "deal_score": 51.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volvo-s60-46-b4-mhev-197cv-bva-gps-cam-led-clim-options-essence-gris-fab8464a-652d-43f0-9e82-4a69ec1bf091",
       "id": "40a5a50e1184255d"
@@ -5385,7 +4950,7 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 41950,
       "km": 30333,
-      "deal_score": 63.0,
+      "deal_score": 52.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/bmw-235-gc-29-m235i-306cv-bva8-4x4-gps-cam-led-options-essence-beige-4093a10e-b2e0-43bb-806e-9cfb072f4ba1",
       "id": "dba5739b85f34af5"
@@ -5400,8 +4965,8 @@ const MAP_DATA = {
       "annee": 2020,
       "prix": 11850,
       "km": 114135,
-      "deal_score": 52.0,
-      "color": "amber",
+      "deal_score": 37.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/ford-ecosport-51-1-0-ecoboost-125cv-gps-radar-options-essence-noir-9ad64235-088a-4b0f-b789-d714f49455e6",
       "id": "d8f1a90a3f9a4547"
     },
@@ -5415,7 +4980,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 39990,
       "km": 30318,
-      "deal_score": 61.0,
+      "deal_score": 51.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volvo-xc60-43-t6-phev-350cv-bva8-4x4-t-pano-gps-options-electrique-essence-beige-095f8ce7-6473-4f68-a856-90e33125f682",
       "id": "c737568506af5834"
@@ -5428,9 +4993,9 @@ const MAP_DATA = {
       "marque": "Mercedes",
       "modele": "V 250",
       "annee": 2019,
-      "prix": 45900,
+      "prix": 44900,
       "km": 79900,
-      "deal_score": 54.0,
+      "deal_score": 41.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/mercedes-benz-v-250-d-amg-line-7-sitze-cuir-navi-1-hand-diesel-gris-39ba97c4-a973-4a07-9c1a-91c05a1e95c6",
       "id": "64fc1869d60ee4b6"
@@ -5443,27 +5008,12 @@ const MAP_DATA = {
       "marque": "Ford",
       "modele": "Bronco",
       "annee": 2023,
-      "prix": 52900,
+      "prix": 51900,
       "km": 18900,
-      "deal_score": 62.0,
+      "deal_score": 52.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/ford-bronco-2-7i-v6-outer-banks-bang-olufsen-cuir-navi-essence-gris-f9608604-cce8-4562-b0f4-af3660a75bcc",
       "id": "6af16d345332775a"
-    },
-    {
-      "lat": 49.5836,
-      "lng": 5.9864,
-      "ville": "Schouweiler",
-      "region": "Sud",
-      "marque": "Renault",
-      "modele": "Austral",
-      "annee": 2026,
-      "prix": 42900,
-      "km": 190,
-      "deal_score": 70.0,
-      "color": "green",
-      "url": "https://www.autoscout24.lu/offres/renault-austral-hybrid-e-tech-esprit-alpine-full-pano-navi-electrique-essence-gris-90b64dd2-bb5d-4706-840e-aa3ef3a4c36f",
-      "id": "19170ba251171b38"
     },
     {
       "lat": 49.5039,
@@ -5475,7 +5025,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 26990,
       "km": 39465,
-      "deal_score": 53.0,
+      "deal_score": 50.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volvo-s60-46-b4-mhev-197cv-bva-gps-cam-led-clim-options-essence-beige-4f2cd034-5d87-4a8d-9702-afdd5ff4762e",
       "id": "f641e2682fccfb66"
@@ -5490,7 +5040,7 @@ const MAP_DATA = {
       "annee": 2021,
       "prix": 53950,
       "km": 61165,
-      "deal_score": 54.0,
+      "deal_score": 44.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/bmw-745-e-56-hyb-394cv-bva8-m-sport-t-pano-gps-options-electrique-essence-noir-724f0c7d-eb9f-4033-b90e-165da38d86b9",
       "id": "6025f07abad0dc9e"
@@ -5505,25 +5055,10 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 29950,
       "km": 21782,
-      "deal_score": 63.0,
+      "deal_score": 52.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/ds-automobiles-ds-7-47-1-6-hyb-225cv-bva-sport-gps-radars-electrique-essence-gris-e0e414d8-949e-40fa-a688-2c984d4b88d2",
       "id": "5a2c2fc648f52aaa"
-    },
-    {
-      "lat": 49.5039,
-      "lng": 6.0156,
-      "ville": "Schifflange - Foetz",
-      "region": "Sud",
-      "marque": "Volvo",
-      "modele": "Xc60",
-      "annee": 2024,
-      "prix": 39990,
-      "km": 36132,
-      "deal_score": 61.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.lu/offres/volvo-xc60-43-t6-phev-350cv-bva8-4x4-t-pano-gps-options-electrique-essence-beige-1aff2ca3-5e6f-4e73-9043-49763be2c11d",
-      "id": "f26630924088ff3e"
     },
     {
       "lat": 49.5039,
@@ -5535,8 +5070,8 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 26490,
       "km": 25294,
-      "deal_score": 74.0,
-      "color": "green",
+      "deal_score": 68.0,
+      "color": "amber",
       "url": "https://www.autoscout24.lu/offres/audi-a3-berline-32-30-tfsi-116-bva-mirrorlink-radars-opts-essence-beige-06d1f7ec-af70-4a45-a8b9-5ade4b1543b0",
       "id": "d13c5d4a4c593b7d"
     },
@@ -5550,7 +5085,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 29990,
       "km": 28691,
-      "deal_score": 68.0,
+      "deal_score": 60.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/audi-q2-29-30-tdi-116cv-s-line-gps-cam-full-led-options-diesel-gris-0c4a6aa2-370a-4528-836c-043800cafe60",
       "id": "77b0ae0284ce49b1"
@@ -5565,7 +5100,7 @@ const MAP_DATA = {
       "annee": 2021,
       "prix": 35990,
       "km": 89203,
-      "deal_score": 37.0,
+      "deal_score": 27.0,
       "color": "default",
       "url": "https://www.autoscout24.lu/offres/volkswagen-golf-r-dsg-4m-p-leder-akra-pano-essence-noir-c8bdce86-06e5-438c-969b-8c40645ff046",
       "id": "00c437b08f3b520e"
@@ -5580,8 +5115,8 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 26890,
       "km": 13802,
-      "deal_score": 76.0,
-      "color": "green",
+      "deal_score": 69.0,
+      "color": "amber",
       "url": "https://www.autoscout24.lu/offres/audi-a3-sportback-25-30-tfsi-116cv-bva-mirrorlink-radars-essence-beige-8247d4cc-dbde-44c2-a598-022a18fe4370",
       "id": "6cbd68a6de05fecf"
     },
@@ -5595,8 +5130,8 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 22490,
       "km": 23217,
-      "deal_score": 74.0,
-      "color": "green",
+      "deal_score": 68.0,
+      "color": "amber",
       "url": "https://www.autoscout24.lu/offres/skoda-kamiq-27-1-0-tsi-110cv-bva-mirrorlink-cam-led-opts-essence-rouge-f29b6b0b-3bef-46fc-80a3-edae5dad7470",
       "id": "2a73d04c93cdc1ab"
     },
@@ -5610,7 +5145,7 @@ const MAP_DATA = {
       "annee": 2021,
       "prix": 25490,
       "km": 69157,
-      "deal_score": 53.0,
+      "deal_score": 42.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/bmw-x2-56-25e-hyb-220cv-bva-4x4-m-sport-gps-cam-options-electrique-essence-rouge-8ee97518-220b-4fa4-a3c4-baa106e78f2f",
       "id": "9d44f80f7ddb5ddd"
@@ -5625,7 +5160,7 @@ const MAP_DATA = {
       "annee": 2021,
       "prix": 37950,
       "km": 55429,
-      "deal_score": 58.0,
+      "deal_score": 46.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/bmw-x3-46-30e-hyb-292cv-bva8-4x4-m-sport-gps-cuir-cam-electrique-essence-noir-e5f47f58-de72-4a33-b328-176129441172",
       "id": "06ebc57a01826fca"
@@ -5640,40 +5175,10 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 29950,
       "km": 17247,
-      "deal_score": 63.0,
+      "deal_score": 53.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/ds-automobiles-ds-7-47-1-6-hyb-225cv-bva-sport-gps-radars-essence-gris-4d5bb8a7-83ee-4c8f-8a6a-c0b292e2937d",
       "id": "6bdff39f1b6a1f01"
-    },
-    {
-      "lat": 49.5039,
-      "lng": 6.0156,
-      "ville": "Schifflange - Foetz",
-      "region": "Sud",
-      "marque": "Audi",
-      "modele": "E-Tron",
-      "annee": 2021,
-      "prix": 39490,
-      "km": 38619,
-      "deal_score": 45.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.lu/offres/audi-e-tron-59-55-elec-408cv-bva-4x4-gps-cuir-cam360-opts-electrique-gris-597b2acd-f6d2-43e4-a6bf-2d8216cf4a92",
-      "id": "085a50b333be395d"
-    },
-    {
-      "lat": 49.8672,
-      "lng": 6.1597,
-      "ville": "Diekirch",
-      "region": "Nord",
-      "marque": "Volkswagen",
-      "modele": "Polo",
-      "annee": 2017,
-      "prix": 10950,
-      "km": 55000,
-      "deal_score": 70.0,
-      "color": "green",
-      "url": "https://www.autoscout24.lu/offres/volkswagen-polo-tsi-bluemotion-essence-noir-eafa755a-84b1-4867-bf27-3c9c756e5eb0",
-      "id": "a61def70f604f21c"
     },
     {
       "lat": 49.5461,
@@ -5685,7 +5190,7 @@ const MAP_DATA = {
       "annee": 2020,
       "prix": 16900,
       "km": 70880,
-      "deal_score": 65.0,
+      "deal_score": 43.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/peugeot-2008-2008-1-5-bluehdi-allure-s-auto-garantie-12mois-diesel-rouge-e71501bb-1c79-4de9-99bd-018443d95821",
       "id": "bae363abbb5d3a5a"
@@ -5700,8 +5205,8 @@ const MAP_DATA = {
       "annee": 2018,
       "prix": 39990,
       "km": 156390,
-      "deal_score": 44.0,
-      "color": "amber",
+      "deal_score": 30.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/audi-rs4-avant-2-9-v6-quattro-essence-noir-ebc8d6d4-54aa-4c78-a767-489e350b5885",
       "id": "d85203d3f0db481b"
     },
@@ -5715,10 +5220,25 @@ const MAP_DATA = {
       "annee": 2019,
       "prix": 79900,
       "km": 10379,
-      "deal_score": 63.0,
+      "deal_score": 51.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/alfa-romeo-4c-carbon-10-379km-classic-rims-service-history-essence-noir-124f1b12-1070-4dd7-9fd3-140742df9cb9",
       "id": "628f37602f874f48"
+    },
+    {
+      "lat": 49.5461,
+      "lng": 6.0181,
+      "ville": "Foetz",
+      "region": "Sud",
+      "marque": "Peugeot",
+      "modele": "5008",
+      "annee": 2020,
+      "prix": 15900,
+      "km": 100493,
+      "deal_score": 45.0,
+      "color": "amber",
+      "url": "https://www.autoscout24.lu/offres/peugeot-5008-active-7-places-12mois-de-garantie-diesel-bleu-2c6225b7-8aff-4bd0-92dc-8abe65d396eb",
+      "id": "7c4a420775d28369"
     },
     {
       "lat": 49.6116,
@@ -5728,9 +5248,9 @@ const MAP_DATA = {
       "marque": "Mercedes",
       "modele": "Cla 45 Amg",
       "annee": 2020,
-      "prix": 46990,
+      "prix": 45990,
       "km": 61845,
-      "deal_score": 57.0,
+      "deal_score": 44.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/mercedes-benz-cla-45-amg-cla-45-amg-shooting-brake-s-4matic-multi-burmest-essence-blanc-1ce179a8-01b7-474d-a9d1-78bdd3657839",
       "id": "936c1c91aa3c8791"
@@ -5745,7 +5265,7 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 17990,
       "km": 72360,
-      "deal_score": 55.0,
+      "deal_score": 44.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volkswagen-polo-life-dsg-led-digi-rearview-essence-gris-8c86e77d-86bd-44f0-b6e7-799193ee8de1",
       "id": "2929d12a9d189e1e"
@@ -5760,7 +5280,7 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 42490,
       "km": 21002,
-      "deal_score": 48.0,
+      "deal_score": 40.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/cupra-formentor-vz5-dsg-4x4-p-beats-p-leder-essence-gris-2a306b1e-3e02-4eaf-b3eb-d798972c1a22",
       "id": "81b5aa1aeee7f7e9"
@@ -5775,7 +5295,7 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 31990,
       "km": 59028,
-      "deal_score": 57.0,
+      "deal_score": 46.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/audi-a4-avant-s-line-40tfsi-quattro-s-tronic-essence-gris-b1be50de-4dbd-442a-870c-10b28ee89e5f",
       "id": "1cc573b27e41c04c"
@@ -5790,8 +5310,8 @@ const MAP_DATA = {
       "annee": 2018,
       "prix": 11900,
       "km": 77837,
-      "deal_score": 43.0,
-      "color": "amber",
+      "deal_score": 30.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/fiat-500-0-9-twinair-automatique-garantie-12-mois-essence-blanc-dd957956-85d2-4ea6-ae11-8468b6f6c001",
       "id": "25fb0e2b0f57d3af"
     },
@@ -5805,7 +5325,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 31990,
       "km": 24190,
-      "deal_score": 67.0,
+      "deal_score": 52.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/cupra-ateca-cupra-dsg-led-rearview-essence-noir-e9831830-2fb4-47de-88c5-283906c220cc",
       "id": "3a02eacb2b121ad2"
@@ -5820,7 +5340,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 31990,
       "km": 19269,
-      "deal_score": 68.0,
+      "deal_score": 45.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volkswagen-t-roc-r-line-dsg-pano-rearview-diesel-blanc-e1a972ba-2fd3-46eb-9923-6a0896adf0a0",
       "id": "da11721278fbb1c4"
@@ -5835,8 +5355,8 @@ const MAP_DATA = {
       "annee": 2020,
       "prix": 12900,
       "km": 115973,
-      "deal_score": 50.0,
-      "color": "amber",
+      "deal_score": 36.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/citroen-grand-c4-spacetourer-business-lounge-7-places-12-mois-de-garantie-diesel-bleu-5a020075-dd06-4e1a-a3e7-752ce15db6c6",
       "id": "6a45949dbcdbb7b0"
     },
@@ -5850,25 +5370,10 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 30490,
       "km": 51759,
-      "deal_score": 58.0,
-      "color": "amber",
+      "deal_score": 39.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/volkswagen-tiguan-elegance-phev-dsg-led-ahk-electrique-essence-bleu-2c6adf8b-65a4-44e8-80a6-bbf7f98f500f",
       "id": "aca1d02b7d94544e"
-    },
-    {
-      "lat": 49.5836,
-      "lng": 5.9864,
-      "ville": "Schouweiler",
-      "region": "Sud",
-      "marque": "BMW",
-      "modele": "Xm",
-      "annee": 2023,
-      "prix": 85900,
-      "km": 74900,
-      "deal_score": 56.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.lu/offres/bmw-xm-4-4i-xdrive-plug-in-softclose-head-up-harman-kardo-electrique-essence-noir-103d25c2-858e-4474-a3f1-e734eeb0aa9a",
-      "id": "dc2086d506128250"
     },
     {
       "lat": 49.5461,
@@ -5880,8 +5385,8 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 20900,
       "km": 93760,
-      "deal_score": 40.0,
-      "color": "amber",
+      "deal_score": 33.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/audi-a3-sportback-30-tfsi-s-tronic-12-mois-de-garantie--essence-noir-9011637e-4cba-4b7a-86b8-63a871c7af77",
       "id": "4ee502e293dad943"
     },
@@ -5890,15 +5395,15 @@ const MAP_DATA = {
       "lng": 6.3253,
       "ville": "Roost",
       "region": "Est",
-      "marque": "Audi",
-      "modele": "Q3",
-      "annee": 2024,
-      "prix": 41990,
-      "km": 24355,
-      "deal_score": 55.0,
+      "marque": "Volkswagen",
+      "modele": "Tiguan",
+      "annee": 2025,
+      "prix": 39490,
+      "km": 11292,
+      "deal_score": 63.0,
       "color": "amber",
-      "url": "https://www.autoscout24.lu/offres/audi-q3-sb-s-line-45tfsi-phev-s-tronic-electrique-essence-gris-b38716ed-5f19-4067-9b15-cc93491ecba7",
-      "id": "03001d4c7bef28c0"
+      "url": "https://www.autoscout24.lu/offres/volkswagen-tiguan-life-dsg-p-design-p-confort-diesel-noir-382fd8ae-754f-4c73-aa82-2f5295dbeb3b",
+      "id": "02de12218b4de518"
     },
     {
       "lat": 49.6761,
@@ -5910,7 +5415,7 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 36990,
       "km": 72628,
-      "deal_score": 58.0,
+      "deal_score": 46.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volkswagen-t6-1-caravelle-comfortline-lang-dsg-9sitze-ahk-diesel-blanc-e610f186-1125-41b6-a134-55ad42c184cb",
       "id": "0ee165f51b707258"
@@ -5925,25 +5430,10 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 49900,
       "km": 32210,
-      "deal_score": 48.0,
+      "deal_score": 42.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/bmw-430-430-i-xdrive-m-sport-cabriolet-opf-euro-6d-led-essence-noir-7f7c03ed-84c7-483c-87ca-d4478c96a13e",
       "id": "def68a27c863e046"
-    },
-    {
-      "lat": 49.6116,
-      "lng": 6.1319,
-      "ville": "Luxembourg",
-      "region": "Centre",
-      "marque": "Mercedes",
-      "modele": "Glc 200",
-      "annee": 2024,
-      "prix": 50990,
-      "km": 16440,
-      "deal_score": 63.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.lu/offres/mercedes-benz-glc-200-glc-200-4matic-avantgarde-kamera-19-led-mbux-essence-noir-fc43839f-560b-42ed-9026-28b65aa6b72e",
-      "id": "c0131108b5056e6e"
     },
     {
       "lat": 49.6116,
@@ -5955,7 +5445,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 27990,
       "km": 29259,
-      "deal_score": 62.0,
+      "deal_score": 51.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/mercedes-benz-a-180-a-180-d-progressive-led-kamera-mbux-navi-autom-diesel-noir-df8477d8-7c01-4326-a6dd-c75052e76c93",
       "id": "ad2e88960fe2442c"
@@ -5970,7 +5460,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 79990,
       "km": 8532,
-      "deal_score": 67.0,
+      "deal_score": 56.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/mercedes-benz-cle-53-amg-cle-53-amg-4matic-premium-plus-navi-styling-klima-essence-blanc-d1707a4a-19d0-4519-a91a-9320c39d7379",
       "id": "c94753d0033436af"
@@ -5985,7 +5475,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 85490,
       "km": 14658,
-      "deal_score": 68.0,
+      "deal_score": 56.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/mercedes-benz-e-53-amg-e-53-amg-4matic-digital-pano-360-burm-navi-klima-electrique-essence-noir-577bad58-bc1c-43b3-bfd5-6082908de6e6",
       "id": "f3ccd96b8e0d0cc6"
@@ -6000,8 +5490,8 @@ const MAP_DATA = {
       "annee": 2020,
       "prix": 27990,
       "km": 136407,
-      "deal_score": 47.0,
-      "color": "amber",
+      "deal_score": 33.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/jaguar-f-pace-r-sport-aut-4motion-navi-sound-diesel-bleu-f1cfb177-1bf8-46da-8c2f-17798eb4fa8b",
       "id": "231e56b62317a999"
     },
@@ -6015,7 +5505,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 42378,
       "km": 9900,
-      "deal_score": 51.0,
+      "deal_score": 43.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/audi-a3-s-line-diesel-noir-50f32a21-30b1-43b4-a770-2adeb980b220",
       "id": "89d67841a09ced37"
@@ -6030,7 +5520,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 31490,
       "km": 43629,
-      "deal_score": 63.0,
+      "deal_score": 51.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/mercedes-benz-cla-180-cla-180-d-cpe-progressive-led-kamera-mbux-apple-diesel-argent-04f7bc98-bbfa-47a1-8708-da46936fb3fa",
       "id": "852ad09039b3f1ba"
@@ -6045,7 +5535,7 @@ const MAP_DATA = {
       "annee": 2022,
       "prix": 36490,
       "km": 48692,
-      "deal_score": 57.0,
+      "deal_score": 46.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/audi-q3-s-line-40tdi-quattro-s-tronic-diesel-noir-b5d8ef10-0481-4ed2-b157-e0020ee75514",
       "id": "8822ff7da7fe131f"
@@ -6060,8 +5550,8 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 27990,
       "km": 10555,
-      "deal_score": 75.0,
-      "color": "green",
+      "deal_score": 69.0,
+      "color": "amber",
       "url": "https://www.autoscout24.lu/offres/mini-cooper-s-experience-2-0-178-steptronic-essence-gris-0e79ac63-ac75-4381-8426-7945887a6bde",
       "id": "45690969760be483"
     },
@@ -6075,7 +5565,7 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 69990,
       "km": 49500,
-      "deal_score": 61.0,
+      "deal_score": 49.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/bmw-x5-30d-m-sport-pro-286cv-diesel-bleu-fb206fec-1163-42cc-a96b-8c17d8cce14f",
       "id": "9da31694eb3d4a42"
@@ -6090,7 +5580,7 @@ const MAP_DATA = {
       "annee": 2022,
       "prix": 59990,
       "km": 95490,
-      "deal_score": 54.0,
+      "deal_score": 41.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/bmw-x3-m-competition-f97-grigio-telesto-pearl-essence-gris-53493af2-ed0c-4ad0-8079-97b9a9396ff4",
       "id": "ec69059bde693a99"
@@ -6105,7 +5595,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 23990,
       "km": 4049,
-      "deal_score": 65.0,
+      "deal_score": 55.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/audi-a1-allstreet-30tfsi-navi-bvm-essence-blanc-6bc925e6-602f-4c1d-a024-037d3c507278",
       "id": "3015c7a79cedab0a"
@@ -6120,8 +5610,8 @@ const MAP_DATA = {
       "annee": 2016,
       "prix": 15900,
       "km": 75000,
-      "deal_score": 52.0,
-      "color": "amber",
+      "deal_score": 39.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/opel-adam-1-4-turbo-rocks-s-open-air-recaro-cuir-alu-18-essence-blanc-6042fb81-a8dd-4f06-b0c5-6cf37f7731bc",
       "id": "cfce1d678db9fd9e"
     },
@@ -6135,7 +5625,7 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 40990,
       "km": 17321,
-      "deal_score": 62.0,
+      "deal_score": 52.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/alfa-romeo-giulia-competizione-2-0-turbo-essence-rouge-7c5ca403-9295-4a0d-b8f3-5fd3731d847a",
       "id": "b2caafceb641f7e2"
@@ -6150,7 +5640,7 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 35990,
       "km": 97246,
-      "deal_score": 45.0,
+      "deal_score": 40.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/skoda-kodiaq-rs-dsg-4x4-ahk-essence-gris-13c4734f-ff0d-416a-a8ba-ab3e81c00bb6",
       "id": "b814089c23bb1490"
@@ -6165,7 +5655,7 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 33490,
       "km": 37667,
-      "deal_score": 64.0,
+      "deal_score": 57.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/audi-q3-s-line-dsg-led-navi-digi-essence-blanc-8c300b2a-c7fd-4f5f-8271-4aa049c725d1",
       "id": "a12f4d7b21a73f6d"
@@ -6180,7 +5670,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 38990,
       "km": 24500,
-      "deal_score": 62.0,
+      "deal_score": 52.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/audi-q3-sb-s-line-35tdi-s-tronic-diesel-argent-cbd23ace-1ebe-456d-8600-a3959f956a07",
       "id": "130d6bdd19767019"
@@ -6195,7 +5685,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 35900,
       "km": 7000,
-      "deal_score": 59.0,
+      "deal_score": 44.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volkswagen-t-roc-life-autres-noir-69da5063-f870-4c5b-90c3-cf79fc372742",
       "id": "b5cd89ad317d9038"
@@ -6210,25 +5700,10 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 29990,
       "km": 7771,
-      "deal_score": 53.0,
+      "deal_score": 47.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/skoda-kamiq-monte-carlo-dsg-pano-led-essence-gris-b9a3b623-f3f7-4686-b93b-0bad89326744",
       "id": "0ad68293d8acdb9c"
-    },
-    {
-      "lat": 49.8672,
-      "lng": 6.1597,
-      "ville": "Diekirch",
-      "region": "Nord",
-      "marque": "Abarth",
-      "modele": "695",
-      "annee": 2023,
-      "prix": 30990,
-      "km": 21222,
-      "deal_score": 65.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.lu/offres/abarth-695-1-4-t-jet-180-essence-noir-b32c8b98-66aa-483a-89e2-82601aeaf320",
-      "id": "3a01190a2614748f"
     },
     {
       "lat": 49.8672,
@@ -6240,7 +5715,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 23990,
       "km": 29008,
-      "deal_score": 65.0,
+      "deal_score": 53.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/abarth-595-1-4-t-jet-165-essence-blanc-b93ab319-f173-4534-9165-2e69e9c3b933",
       "id": "b422e9fb472c487a"
@@ -6255,7 +5730,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 35990,
       "km": 15337,
-      "deal_score": 63.0,
+      "deal_score": 53.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/audi-q4-e-tron-zertifikat82kwh-p-buisness-lm19-p-clim-electrique-blanc-9d30a80f-0ec3-4e01-b29f-fe541b79caa4",
       "id": "ee21619821d13cc3"
@@ -6270,8 +5745,8 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 43990,
       "km": 6451,
-      "deal_score": 71.0,
-      "color": "green",
+      "deal_score": 58.0,
+      "color": "amber",
       "url": "https://www.autoscout24.lu/offres/mercedes-benz-cle-180-cle-180-coupe-led-kamera-night-memo-essence-blanc-53b1a1e9-22c7-4b45-a9ac-2715091b2965",
       "id": "0e534172193244f4"
     },
@@ -6285,7 +5760,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 76470,
       "km": 18100,
-      "deal_score": 67.0,
+      "deal_score": 56.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/audi-a7-50-tdi-quattro-tiptronic-diesel-gris-6827e07a-cbd5-418f-94ae-580b5f5af79a",
       "id": "19f404725ef97f51"
@@ -6300,8 +5775,8 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 40990,
       "km": 45065,
-      "deal_score": 45.0,
-      "color": "amber",
+      "deal_score": 37.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/volkswagen-tiguan-r-line-dsg-4m-black-style-ahk-diesel-blanc-54815615-8753-4f60-8d5c-f9e05f0b9b7c",
       "id": "093807b6b2657933"
     },
@@ -6315,7 +5790,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 36990,
       "km": 9500,
-      "deal_score": 65.0,
+      "deal_score": 55.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/skoda-octavia-limo-sb-rs-ahk-dsg-essence-blanc-fb4f19c7-f8f7-47f4-ae47-d09612389a1a",
       "id": "072c4ac43d76e7e9"
@@ -6330,7 +5805,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 20000,
       "km": 5000,
-      "deal_score": 66.0,
+      "deal_score": 56.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/seat-ibiza-fr-essence-gris-e930f3f4-fd23-4bc6-bcab-e386ffe45180",
       "id": "7be86c848419b676"
@@ -6345,7 +5820,7 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 179990,
       "km": 18090,
-      "deal_score": 63.0,
+      "deal_score": 54.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/ferrari-roma-v8-grigio-silverstone-cioccolato-essence-gris-509f3c69-64e3-49eb-b78f-d396a3902384",
       "id": "2b6d650b43961d9d"
@@ -6360,7 +5835,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 159990,
       "km": 6846,
-      "deal_score": 68.0,
+      "deal_score": 56.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/porsche-boxster-718-spyder-rs-pdk-essence-gris-4fb2f258-2877-442c-9d44-5462997fdf76",
       "id": "755e2bcf3200da5c"
@@ -6375,8 +5850,8 @@ const MAP_DATA = {
       "annee": 2020,
       "prix": 21990,
       "km": 100350,
-      "deal_score": 52.0,
-      "color": "amber",
+      "deal_score": 26.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/skoda-karoq-style-4m-dsg-p-premium-diesel-gris-2c929a45-5d93-4273-9269-0866cbc0fb45",
       "id": "f0dcf92d335e4159"
     },
@@ -6390,25 +5865,10 @@ const MAP_DATA = {
       "annee": 2020,
       "prix": 12900,
       "km": 40156,
-      "deal_score": 57.0,
+      "deal_score": 54.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/renault-clio-clio-1-0-tce-corporate-edition-12-mois-de-garantie-essence-blanc-31661669-f993-405b-94f0-ac5f0626356a",
       "id": "e90fb18a287f4783"
-    },
-    {
-      "lat": 49.8672,
-      "lng": 6.1597,
-      "ville": "Diekirch",
-      "region": "Nord",
-      "marque": "Alfa Romeo",
-      "modele": "Giulia",
-      "annee": 2023,
-      "prix": 40990,
-      "km": 17998,
-      "deal_score": 62.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.lu/offres/alfa-romeo-giulia-competizione-2-0-turbo-essence-noir-e4f7300b-e4e6-4a92-ad1e-6693f98fbb54",
-      "id": "c30bcc598d0aba96"
     },
     {
       "lat": 49.4958,
@@ -6420,8 +5880,8 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 28369,
       "km": 12750,
-      "deal_score": 76.0,
-      "color": "green",
+      "deal_score": 62.0,
+      "color": "amber",
       "url": "https://www.autoscout24.lu/offres/audi-a3-40-tfsie-sportback-s-tronic-electrique-essence-noir-9941f1e4-3349-4e24-9b6e-212dcb2e1cea",
       "id": "4cd743cbc027ffac"
     },
@@ -6435,25 +5895,25 @@ const MAP_DATA = {
       "annee": 2026,
       "prix": 20490,
       "km": 11,
-      "deal_score": 60.0,
+      "deal_score": 49.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/renault-clio-1-5-blue-dci-100-evolution-diesel-gris-768a2afa-a1ed-4681-a237-a857cdbff5e6",
       "id": "e5ea93417603ea06"
     },
     {
-      "lat": 49.4958,
-      "lng": 5.9807,
-      "ville": "Esch-sur-Alzette",
+      "lat": 49.5572,
+      "lng": 5.8797,
+      "ville": "Pétange",
       "region": "Sud",
-      "marque": "Volkswagen",
-      "modele": "Tiguan",
-      "annee": 2024,
-      "prix": 29990,
-      "km": 63490,
-      "deal_score": 57.0,
+      "marque": "Audi",
+      "modele": "Q3",
+      "annee": 2022,
+      "prix": 35990,
+      "km": 46747,
+      "deal_score": 47.0,
       "color": "amber",
-      "url": "https://www.autoscout24.lu/offres/volkswagen-tiguan-urban-sport-dsg-led-navi-essence-gris-24c372b0-3c4d-4fb1-b355-d5f6107f97d4",
-      "id": "4bc577ebb748ec0e"
+      "url": "https://www.autoscout24.lu/offres/audi-q3-35-tfsi-150-s-tronic-essence-gris-194b2ee1-54a7-4481-a626-09648d3b8ce7",
+      "id": "642838a8aec9b720"
     },
     {
       "lat": 49.4958,
@@ -6465,25 +5925,10 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 26990,
       "km": 16925,
-      "deal_score": 64.0,
+      "deal_score": 54.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/skoda-kamiq-monte-carlo-dsg-pano-rearview-essence-rouge-e169627b-d68a-46af-9276-737ad6b5af11",
       "id": "3086d216b47c8eb8"
-    },
-    {
-      "lat": 49.5461,
-      "lng": 6.0181,
-      "ville": "Foetz",
-      "region": "Sud",
-      "marque": "Peugeot",
-      "modele": "5008",
-      "annee": 2020,
-      "prix": 18900,
-      "km": 128890,
-      "deal_score": 48.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.lu/offres/peugeot-5008-7-places-garantie-12-mois--diesel-noir-8f8b2e11-17e7-4a4e-b05b-69bf6bf96834",
-      "id": "90bd86ea03c6c5dc"
     },
     {
       "lat": 49.6761,
@@ -6495,7 +5940,7 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 16990,
       "km": 20590,
-      "deal_score": 65.0,
+      "deal_score": 53.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/hyundai-i20-twist-navi-lm16-digital-cockpit-essence-bleu-5d81442c-3fa4-4ecd-b96d-fab924a24e79",
       "id": "cbf6789fb7bec7ff"
@@ -6507,43 +5952,13 @@ const MAP_DATA = {
       "region": "Centre",
       "marque": "Mercedes",
       "modele": "Glc 300",
-      "annee": 2022,
-      "prix": 37990,
-      "km": 99528,
-      "deal_score": 50.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.lu/offres/mercedes-benz-glc-300-glc-300-d-4matic-coupe-led-kamera-apple-easypack-diesel-argent-5b255a0d-3f90-488b-911d-6be7cb268fae",
-      "id": "7d62247e9677db40"
-    },
-    {
-      "lat": 49.6116,
-      "lng": 6.1319,
-      "ville": "Luxembourg",
-      "region": "Centre",
-      "marque": "Mercedes",
-      "modele": "Glc 300",
       "annee": 2020,
       "prix": 34990,
       "km": 89333,
-      "deal_score": 54.0,
+      "deal_score": 40.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/mercedes-benz-glc-300-glc-300-de-4matic-led-ahk-360-apple-electrique-diesel-blanc-dfe622f2-3d3d-4ecf-8038-8b14e351dc89",
       "id": "776598fde76a8588"
-    },
-    {
-      "lat": 49.5572,
-      "lng": 5.8797,
-      "ville": "Pétange",
-      "region": "Sud",
-      "marque": "Mercedes",
-      "modele": "E 220",
-      "annee": 2019,
-      "prix": 37990,
-      "km": 28787,
-      "deal_score": 75.0,
-      "color": "green",
-      "url": "https://www.autoscout24.lu/offres/mercedes-benz-e-220-d-limousine-amg-line-9g-tronic-diesel-gris-add2333a-81f5-46ff-ae4a-aaa45cbbe772",
-      "id": "1790d65ff8eb86b3"
     },
     {
       "lat": 49.6761,
@@ -6555,8 +5970,8 @@ const MAP_DATA = {
       "annee": 2022,
       "prix": 30990,
       "km": 76796,
-      "deal_score": 41.0,
-      "color": "amber",
+      "deal_score": 34.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/skoda-kodiaq-sportline-dsg-led-navi-diesel-bleu-4da0cd5c-8b75-4e4f-9262-ada2ce81920e",
       "id": "aa0eb9c2bdf75f73"
     },
@@ -6570,25 +5985,10 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 26990,
       "km": 49549,
-      "deal_score": 59.0,
+      "deal_score": 48.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/mercedes-benz-a-180-a-180-d-progressive-line-advanced-plus-navi-klima-diesel-blanc-f0ed005e-b093-4025-9f85-b08ac6edac82",
       "id": "aa95d7f79249c3d1"
-    },
-    {
-      "lat": 49.6761,
-      "lng": 6.3253,
-      "ville": "Roost",
-      "region": "Est",
-      "marque": "Audi",
-      "modele": "Rs3",
-      "annee": 2025,
-      "prix": 64490,
-      "km": 17585,
-      "deal_score": 64.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.lu/offres/audi-rs3-sb-quattro-s-tronic-p-premium-essence-noir-28c1132e-ed22-40af-aeb3-fa40e99d9252",
-      "id": "0a9df8b07b02dc54"
     },
     {
       "lat": 49.6116,
@@ -6600,7 +6000,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 27490,
       "km": 34250,
-      "deal_score": 62.0,
+      "deal_score": 51.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/seat-ateca-ateca-1-5-tsi-act-xperience-navi-distronic-autom-essence-blanc-3f6dabc8-7a08-42b8-b3d7-2b9831a1742a",
       "id": "34ca4dbd6a9131e8"
@@ -6615,7 +6015,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 35990,
       "km": 16338,
-      "deal_score": 63.0,
+      "deal_score": 53.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/audi-q4-e-tron-zertifikat-82kwh-sb-p-bussiness-lm19-electrique-bleu-e9674101-30d4-4985-81f2-0ed170ca7235",
       "id": "740770906420d510"
@@ -6630,8 +6030,8 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 16990,
       "km": 2,
-      "deal_score": 71.0,
-      "color": "green",
+      "deal_score": 64.0,
+      "color": "amber",
       "url": "https://www.autoscout24.lu/offres/opel-corsa-1-2-turbo-100ps-corsa-edition-essence-blanc-65f99c60-6a92-40c4-b218-e149004368de",
       "id": "1b5793dc47939a23"
     },
@@ -6645,25 +6045,10 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 17990,
       "km": 29000,
-      "deal_score": 74.0,
-      "color": "green",
+      "deal_score": 59.0,
+      "color": "amber",
       "url": "https://www.autoscout24.lu/offres/seat-arona-fr-lemans-fullled-navi-essence-gris-471efaae-688a-4b55-bf33-bf2af53944aa",
       "id": "3867c0beb1d9110b"
-    },
-    {
-      "lat": 49.6116,
-      "lng": 6.1319,
-      "ville": "Luxembourg",
-      "region": "Centre",
-      "marque": "Mercedes",
-      "modele": "Glc 250",
-      "annee": 2018,
-      "prix": 29990,
-      "km": 106845,
-      "deal_score": 51.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.lu/offres/mercedes-benz-glc-250-glc-250-d-4matic-amg-line-amg-line-comand-aps-led-diesel-argent-ba0f39f7-c8b6-4113-b4af-68ece9812bb2",
-      "id": "c589d88b500ab340"
     },
     {
       "lat": 49.5461,
@@ -6675,7 +6060,7 @@ const MAP_DATA = {
       "annee": 2019,
       "prix": 19900,
       "km": 63852,
-      "deal_score": 56.0,
+      "deal_score": 43.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volkswagen-t-cross-t-cross-1-0-tsi-opf-dsg-r-line-garantie-12-mois-essence-noir-cf829916-7670-4d48-bece-555933bd1452",
       "id": "281d6e3c9cfdc8e3"
@@ -6690,7 +6075,7 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 18490,
       "km": 60890,
-      "deal_score": 56.0,
+      "deal_score": 46.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volkswagen-polo-life-dsg-led-digi-essence-gris-519a53c9-56fe-4f3a-b275-46166ac20030",
       "id": "6aba38932144a61f"
@@ -6705,7 +6090,7 @@ const MAP_DATA = {
       "annee": 2026,
       "prix": 58094,
       "km": 6000,
-      "deal_score": 67.0,
+      "deal_score": 57.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/audi-a6-sportback-e-tron-electrique-noir-50fd2931-7358-424e-97ae-d58d2d83bfef",
       "id": "92730515afd68fbb"
@@ -6720,7 +6105,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 50990,
       "km": 18704,
-      "deal_score": 64.0,
+      "deal_score": 54.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volkswagen-t7-multivan-life-dsg-p-easy-7sitze-p-top-diesel-bleu-909f9162-0b1f-4309-bac9-da9346e33042",
       "id": "617b55d4bd7e1a58"
@@ -6735,8 +6120,8 @@ const MAP_DATA = {
       "annee": 2022,
       "prix": 19490,
       "km": 81631,
-      "deal_score": 46.0,
-      "color": "amber",
+      "deal_score": 34.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/volkswagen-polo-r-line-dsg-pano-matrix-led-essence-rouge-54071508-da7a-4bbd-afd3-b03a43d73c39",
       "id": "c60c559b81c74e1c"
     },
@@ -6750,7 +6135,7 @@ const MAP_DATA = {
       "annee": 2021,
       "prix": 16900,
       "km": 98586,
-      "deal_score": 52.0,
+      "deal_score": 40.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/peugeot-3008-3008-1-5-bluehdi-allure-pack-garantie-12-mois-diesel-blanc-5ca9e983-173b-4c9f-b750-ee76ae80e562",
       "id": "b1b3f4213e7f43ce"
@@ -6765,8 +6150,8 @@ const MAP_DATA = {
       "annee": 2019,
       "prix": 51990,
       "km": 151190,
-      "deal_score": 45.0,
-      "color": "amber",
+      "deal_score": 31.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/porsche-cayenne-coupe-pack-sport-allege-essence-noir-0887319a-8e82-4077-88b2-4c139e72a95b",
       "id": "aacf2585b4ecf64b"
     },
@@ -6780,7 +6165,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 83990,
       "km": 10321,
-      "deal_score": 68.0,
+      "deal_score": 57.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/lotus-emira-2-0i4-364-dct-first-edition-essence-vert-e66bc368-ed9b-4aef-bec3-0b50a2557e2d",
       "id": "6a14d3f6be003903"
@@ -6795,25 +6180,10 @@ const MAP_DATA = {
       "annee": 2007,
       "prix": 99990,
       "km": 74090,
-      "deal_score": 48.0,
-      "color": "amber",
+      "deal_score": 34.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/ferrari-f430-coupe-grigio-silverstone-rosso-essence-gris-e8994468-23e0-4440-aa5c-854e402e2651",
       "id": "a72108ed6d4bc3ef"
-    },
-    {
-      "lat": 49.6116,
-      "lng": 6.1319,
-      "ville": "Luxembourg",
-      "region": "Centre",
-      "marque": "Mercedes",
-      "modele": "Cle 180",
-      "annee": 2025,
-      "prix": 46990,
-      "km": 16627,
-      "deal_score": 57.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.lu/offres/mercedes-benz-cle-180-cle-180-amg-line-coupe-led-pano-night-burm-360-essence-gris-1db9e2a8-b063-453d-9d4b-142341e832c7",
-      "id": "37be486570b8644e"
     },
     {
       "lat": 49.6444,
@@ -6825,7 +6195,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 34980,
       "km": 10,
-      "deal_score": 66.0,
+      "deal_score": 56.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/peugeot-rifter-gt-l1-diesel-vert-918be051-0d6d-4747-8204-d5ec25e101a2",
       "id": "054653171a578157"
@@ -6840,7 +6210,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 22490,
       "km": 16789,
-      "deal_score": 69.0,
+      "deal_score": 62.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/audi-a1-sb-advanced-30tfsi-essence-blanc-708ab2cd-88f7-4403-91dc-83fb8b68c86f",
       "id": "87d016ab5c4841e5"
@@ -6855,8 +6225,8 @@ const MAP_DATA = {
       "annee": 2022,
       "prix": 18990,
       "km": 74813,
-      "deal_score": 47.0,
-      "color": "amber",
+      "deal_score": 35.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/seat-arona-fr-dsg-fulllink-led-essence-blanc-6eda890d-d841-4731-b6a1-57948c00fbb1",
       "id": "489098587e5468d1"
     },
@@ -6870,25 +6240,10 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 34750,
       "km": 5,
-      "deal_score": 65.0,
+      "deal_score": 55.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/peugeot-rifter-gt-l1-diesel-blanc-fe8b28ed-34f0-474b-ba64-044493482162",
       "id": "1dd4e9025d5aabd3"
-    },
-    {
-      "lat": 49.6116,
-      "lng": 6.1319,
-      "ville": "Luxembourg",
-      "region": "Centre",
-      "marque": "Mercedes",
-      "modele": "Amg Gt",
-      "annee": 2019,
-      "prix": 79990,
-      "km": 71890,
-      "deal_score": 55.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.lu/offres/mercedes-benz-amg-gt-4-doors-53-amg-4-matic-electrique-essence-gris-4225f721-3aad-4638-9f6c-b66bc6db5f9d",
-      "id": "98bea1496bc19107"
     },
     {
       "lat": 49.5097,
@@ -6900,25 +6255,10 @@ const MAP_DATA = {
       "annee": 2010,
       "prix": 42900,
       "km": 89900,
-      "deal_score": 46.0,
-      "color": "amber",
+      "deal_score": 31.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/porsche-boxster-s-3-4-pdk-new-model-pack-chrono-cuir-navi-essence-noir-8ffbba53-05e7-4598-b5a5-9b0f8d5aa3bf",
       "id": "8fad5a0d420b6865"
-    },
-    {
-      "lat": 49.6761,
-      "lng": 6.3253,
-      "ville": "Roost",
-      "region": "Est",
-      "marque": "Volkswagen",
-      "modele": "Golf Gti",
-      "annee": 2025,
-      "prix": 42990,
-      "km": 10876,
-      "deal_score": 51.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.lu/offres/volkswagen-golf-gti-clubsport-dsg-led-lm19-essence-blanc-d373486f-fe8c-4fef-9d58-5e287ee9ac5e",
-      "id": "bd59ae5c4497c6eb"
     },
     {
       "lat": 49.6761,
@@ -6930,7 +6270,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 29990,
       "km": 20095,
-      "deal_score": 68.0,
+      "deal_score": 61.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/audi-a3-sb-advanced-30tfsi-s-tronic-essence-noir-b2185c12-ae93-4ba4-9a4f-c0db183afbc2",
       "id": "e9be1716d91504e4"
@@ -6945,7 +6285,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 31689,
       "km": 8000,
-      "deal_score": 65.0,
+      "deal_score": 55.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/cupra-born-eboost-all-seasons-tires-electrique-bleu-787b413b-303c-48d5-aeac-6ed362a17340",
       "id": "7ace470ea5f997a7"
@@ -6960,25 +6300,10 @@ const MAP_DATA = {
       "annee": 2020,
       "prix": 29900,
       "km": 43439,
-      "deal_score": 57.0,
+      "deal_score": 45.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/mercedes-benz-gla-200-gla-200-essence-noir-a029ddd5-f344-4257-a79d-8fb3d8fbf808",
       "id": "95c2bd668508ebea"
-    },
-    {
-      "lat": 49.6761,
-      "lng": 6.3253,
-      "ville": "Roost",
-      "region": "Est",
-      "marque": "Audi",
-      "modele": "Rs Q3",
-      "annee": 2022,
-      "prix": 51990,
-      "km": 73211,
-      "deal_score": 57.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.lu/offres/audi-rs-q3-sb-quattro-s-tronic-essence-noir-d9b68bb0-34d9-4a65-80bb-53025c32cb30",
-      "id": "0cccc51a40c5ba36"
     },
     {
       "lat": 49.4958,
@@ -6990,7 +6315,7 @@ const MAP_DATA = {
       "annee": 2022,
       "prix": 36990,
       "km": 36886,
-      "deal_score": 59.0,
+      "deal_score": 48.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/audi-q3-sb-s-line-s-tronic-quattro-40tfsi-essence-gris-a29b1a3c-b44f-4e22-822a-0527e7f27ab9",
       "id": "a9143d4853c7f321"
@@ -7005,8 +6330,8 @@ const MAP_DATA = {
       "annee": 2022,
       "prix": 37990,
       "km": 98724,
-      "deal_score": 50.0,
-      "color": "amber",
+      "deal_score": 28.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/mercedes-benz-glc-300-glc-300-de-4matic-led-pano-360-easypack-amg-line-electrique-diesel-gris-70cbaaa1-c4bd-43ca-8678-c45fbb72c25d",
       "id": "02f48522ca2459c3"
     },
@@ -7020,8 +6345,8 @@ const MAP_DATA = {
       "annee": 2021,
       "prix": 29990,
       "km": 107412,
-      "deal_score": 51.0,
-      "color": "amber",
+      "deal_score": 39.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/mercedes-benz-gla-180-gla-180-amg-line-led-kamera-night-ahk-19-amg-line-essence-noir-2ad66a30-7261-4c98-9f27-ab1b7dbdca65",
       "id": "426c90f69e60b3bf"
     },
@@ -7035,8 +6360,8 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 23990,
       "km": 5516,
-      "deal_score": 71.0,
-      "color": "green",
+      "deal_score": 64.0,
+      "color": "amber",
       "url": "https://www.autoscout24.lu/offres/skoda-scala-monte-carlo-bvm-pano-rearview-essence-noir-b36cb34c-2218-4831-9ec4-704810921ad4",
       "id": "beaaa732cb83c166"
     },
@@ -7050,7 +6375,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 46990,
       "km": 16314,
-      "deal_score": 64.0,
+      "deal_score": 54.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volkswagen-t7-caravelle-life-kurz-dsg-9sitze-led-diesel-gris-dc0e706a-5d3d-4a2b-8f86-46647c5d2183",
       "id": "f4cd4b2eedb1a7f0"
@@ -7065,7 +6390,7 @@ const MAP_DATA = {
       "annee": 2026,
       "prix": 21590,
       "km": 10,
-      "deal_score": 53.0,
+      "deal_score": 45.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/fiat-500-hybrid-torino-essence-bleu-4f8acfa2-4480-4e9d-bb8b-7eeabdd349df",
       "id": "85490f6f01c69caa"
@@ -7080,7 +6405,7 @@ const MAP_DATA = {
       "annee": 2022,
       "prix": 119990,
       "km": 92490,
-      "deal_score": 54.0,
+      "deal_score": 42.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/mercedes-benz-gls-600-maybach-4-matic-essence-gris-2468fa69-ad16-4f0b-b711-3b233a45997b",
       "id": "04316adbc305d52e"
@@ -7095,8 +6420,8 @@ const MAP_DATA = {
       "annee": 2022,
       "prix": 39990,
       "km": 38729,
-      "deal_score": 70.0,
-      "color": "green",
+      "deal_score": 56.0,
+      "color": "amber",
       "url": "https://www.autoscout24.lu/offres/bmw-430-i-m-sport-gran-coupe-steptronic-essence-bleu-7d1338c5-3b19-4b0c-aa16-808fef879d68",
       "id": "35efc85128994fcd"
     },
@@ -7108,10 +6433,10 @@ const MAP_DATA = {
       "marque": "Land Rover",
       "modele": "Range Rover Velar",
       "annee": 2023,
-      "prix": 42900,
+      "prix": 38900,
       "km": 146900,
-      "deal_score": 46.0,
-      "color": "amber",
+      "deal_score": 34.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/land-rover-range-rover-velar-new-model-p400-awd-r-dynamic-meridian-pano-cuir-na-essence-noir-7ed41cdc-4c4f-40d8-9ab0-5268cb194cc2",
       "id": "a124b73e5bf42790"
     },
@@ -7123,10 +6448,10 @@ const MAP_DATA = {
       "marque": "Porsche",
       "modele": "997",
       "annee": 2007,
-      "prix": 59900,
+      "prix": 58900,
       "km": 99990,
-      "deal_score": 44.0,
-      "color": "amber",
+      "deal_score": 30.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/porsche-997-4-s-3-8-carrera-cuir-navi-full-historie-essence-gris-f1e7bdf9-f6f0-4895-b722-b4f63bf4bf82",
       "id": "3290b72e3112dd3b"
     },
@@ -7140,7 +6465,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 31990,
       "km": 4060,
-      "deal_score": 66.0,
+      "deal_score": 56.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/audi-q2-advanced-s-tronic-35tfsi-led-essence-argent-0759d7aa-ea4a-481b-a4cf-8b1d0487c55d",
       "id": "1fdce55a549af16e"
@@ -7155,7 +6480,7 @@ const MAP_DATA = {
       "annee": 2019,
       "prix": 53990,
       "km": 79484,
-      "deal_score": 54.0,
+      "deal_score": 41.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/porsche-cayenne-cayenne-opf-essence-bleu-b9ca7f69-d09b-48e0-abf6-323a5fa00e87",
       "id": "86ff7f3ae842977f"
@@ -7170,7 +6495,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 27490,
       "km": 20243,
-      "deal_score": 52.0,
+      "deal_score": 43.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/seat-leon-fr-dsg-led-navi-kessy-essence-noir-228ef28e-4993-462c-a85f-0e3985885d65",
       "id": "0aee8b14e3d8c98b"
@@ -7185,25 +6510,10 @@ const MAP_DATA = {
       "annee": 2022,
       "prix": 25990,
       "km": 49692,
-      "deal_score": 57.0,
+      "deal_score": 48.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/skoda-karoq-style-dsg-ahk-p-convenience-essence-orange-0862bb74-98a4-40eb-b32a-b0ab6fbb5b56",
       "id": "5d25273bc707d0f3"
-    },
-    {
-      "lat": 49.6116,
-      "lng": 6.1319,
-      "ville": "Luxembourg",
-      "region": "Centre",
-      "marque": "Mclaren",
-      "modele": "650S Coupe",
-      "annee": 2016,
-      "prix": 154990,
-      "km": 34790,
-      "deal_score": 57.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.lu/offres/mclaren-650s-coupe-mso-chantilly-edition-2014-essence-blanc-a1dd558e-9862-47e5-8820-e737af21de74",
-      "id": "65a706852d743672"
     },
     {
       "lat": 49.6116,
@@ -7215,25 +6525,10 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 164890,
       "km": 3257,
-      "deal_score": 69.0,
+      "deal_score": 58.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/mercedes-benz-g-580-g-580-mit-eq-technologie--verfuegbar-ab-3-000km-electrique-bleu-2fdea4a5-5616-4b7b-9c58-4ba026e9eac7",
       "id": "6007e0797f819f53"
-    },
-    {
-      "lat": 49.6761,
-      "lng": 6.3253,
-      "ville": "Roost",
-      "region": "Est",
-      "marque": "Audi",
-      "modele": "Q3",
-      "annee": 2024,
-      "prix": 43490,
-      "km": 45195,
-      "deal_score": 45.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.lu/offres/audi-q3-sb-s-line-40tdi-quattro-s-tronic-diesel-blanc-ed3b0861-27c5-4b92-9413-1846de949557",
-      "id": "a2469b8a6f32844f"
     },
     {
       "lat": 49.6116,
@@ -7245,7 +6540,7 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 55990,
       "km": 44102,
-      "deal_score": 62.0,
+      "deal_score": 50.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/mercedes-benz-e-450-e-450-4matic-amg-line-cpe-pano-360-memo-burm-led-essence-noir-344b099f-cb15-47ce-80ba-b24b14595c01",
       "id": "a3cdbed749fbb8e0"
@@ -7260,7 +6555,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 36990,
       "km": 19739,
-      "deal_score": 67.0,
+      "deal_score": 56.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/cupra-terramar-dsg-led-head-navi-essence-noir-dae02e60-3b7b-4dff-baf7-25d21640efea",
       "id": "8acdf5d32bdb2fb4"
@@ -7273,9 +6568,9 @@ const MAP_DATA = {
       "marque": "Volkswagen",
       "modele": "Golf Gti",
       "annee": 2019,
-      "prix": 21900,
+      "prix": 20900,
       "km": 91900,
-      "deal_score": 61.0,
+      "deal_score": 53.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volkswagen-golf-gti-2-0-tsi-245-performance-facelift-virtual-cockpit-l-essence-noir-73215928-19c5-47c8-ad64-3c53cdf8c80f",
       "id": "d2e6c5163ec5dff9"
@@ -7290,7 +6585,7 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 24990,
       "km": 53728,
-      "deal_score": 57.0,
+      "deal_score": 47.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/hyundai-i30-i30-n-line-electrique-essence-gris-2966b29a-38a6-4764-84c1-bef86085a414",
       "id": "c05b41ed9485a276"
@@ -7305,8 +6600,8 @@ const MAP_DATA = {
       "annee": 2017,
       "prix": 69900,
       "km": 89000,
-      "deal_score": 51.0,
-      "color": "amber",
+      "deal_score": 37.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/porsche-panamera-4s-sport-turismo-441-pack-chrono-carbon-pano-c-essence-gris-44d5d619-949f-42a9-abff-7089cf300755",
       "id": "ce2cd5fc62009f73"
     },
@@ -7320,7 +6615,7 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 18490,
       "km": 47925,
-      "deal_score": 61.0,
+      "deal_score": 49.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volkswagen-taigo-life-p-aide-p-lumiere-led-essence-noir-710faf36-2252-4738-9f11-b05d271b94fc",
       "id": "2a68ddbf14d1194c"
@@ -7335,7 +6630,7 @@ const MAP_DATA = {
       "annee": 2026,
       "prix": 66580,
       "km": 6000,
-      "deal_score": 60.0,
+      "deal_score": 57.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/audi-rs3-tfsi-sportback-quattro-s-tronic-essence-noir-f393ad53-5f31-433f-ab99-7b99fbfc6978",
       "id": "984f68e59b663322"
@@ -7350,25 +6645,10 @@ const MAP_DATA = {
       "annee": 2022,
       "prix": 48990,
       "km": 98790,
-      "deal_score": 53.0,
+      "deal_score": 41.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/audi-q7-s-line-quattro-tiptronic-50tdi-diesel-bleu-81690ae9-a3fc-4e5e-a020-332120e1b777",
       "id": "8c8aeb823c93ed30"
-    },
-    {
-      "lat": 49.6116,
-      "lng": 6.1319,
-      "ville": "Luxembourg",
-      "region": "Centre",
-      "marque": "Lamborghini",
-      "modele": "Urus",
-      "annee": 2021,
-      "prix": 219990,
-      "km": 47990,
-      "deal_score": 59.0,
-      "color": "amber",
-      "url": "https://www.autoscout24.lu/offres/lamborghini-urus-v8-nero-helene-verde-essence-noir-a26f6cec-31c3-4c74-8254-be528f35394a",
-      "id": "c19a57927a164fa6"
     },
     {
       "lat": 49.4958,
@@ -7380,7 +6660,7 @@ const MAP_DATA = {
       "annee": 2024,
       "prix": 32490,
       "km": 17221,
-      "deal_score": 68.0,
+      "deal_score": 69.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/skoda-karoq-sportline-dsg-essence-blanc-571c45cc-a103-41ab-a070-728fdd2b4d2e",
       "id": "070fdf995fdb32d7"
@@ -7393,9 +6673,9 @@ const MAP_DATA = {
       "marque": "Mercedes",
       "modele": "Eqa 250",
       "annee": 2022,
-      "prix": 28990,
+      "prix": 27990,
       "km": 66567,
-      "deal_score": 58.0,
+      "deal_score": 46.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/mercedes-benz-eqa-250-eqa-250-progressive-led-pano-mbux-easypack-navi-electrique-blanc-c3f53cc9-0b10-483c-b73a-ee82e776f13e",
       "id": "f45e640364e46270"
@@ -7410,8 +6690,8 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 20800,
       "km": 7500,
-      "deal_score": 71.0,
-      "color": "green",
+      "deal_score": 63.0,
+      "color": "amber",
       "url": "https://www.autoscout24.lu/offres/skoda-fabia-essence-essence-gris-d85df687-f777-46ba-87cd-2f42add7a06e",
       "id": "8ea3c0ddb4c506c4"
     },
@@ -7425,8 +6705,8 @@ const MAP_DATA = {
       "annee": 2022,
       "prix": 20990,
       "km": 71698,
-      "deal_score": 42.0,
-      "color": "amber",
+      "deal_score": 32.0,
+      "color": "default",
       "url": "https://www.autoscout24.lu/offres/volkswagen-polo-r-line-dsg-p-style-p-lumiere-essence-noir-5288080b-fcbb-4fa3-bb10-ca965644b821",
       "id": "fd4372a61a8fe205"
     },
@@ -7438,9 +6718,9 @@ const MAP_DATA = {
       "marque": "Mercedes",
       "modele": "Cla 200",
       "annee": 2024,
-      "prix": 37990,
+      "prix": 34990,
       "km": 19796,
-      "deal_score": 68.0,
+      "deal_score": 61.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/mercedes-benz-cla-200-cla-200-d-amg-line-amg-line-navi-distronic-autom-diesel-gris-657f71cc-4baf-422c-bd7a-c752502225c1",
       "id": "b03f4bb8528ba5c6"
@@ -7455,7 +6735,7 @@ const MAP_DATA = {
       "annee": 2021,
       "prix": 24690,
       "km": 55392,
-      "deal_score": 60.0,
+      "deal_score": 52.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/mercedes-benz-a-180-a-180-d-progressive-led-ambi-mbux-apple-navi-klima-diesel-argent-1b48c77e-07fb-4cd3-8f78-3621867718cc",
       "id": "8acb22ca623387cf"
@@ -7470,7 +6750,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 36990,
       "km": 21996,
-      "deal_score": 67.0,
+      "deal_score": 55.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/mercedes-benz-gla-180-gla-180-d-progressive-led-kamera-night-mbux-navi-diesel-noir-aef711ae-ffba-445c-813d-6ef86c73af34",
       "id": "9f9fcf10851d748a"
@@ -7485,7 +6765,7 @@ const MAP_DATA = {
       "annee": 2025,
       "prix": 23990,
       "km": 19505,
-      "deal_score": 64.0,
+      "deal_score": 54.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/audi-a1-advanced-dsg-led-navi-essence-noir-34f2bdce-1106-44d5-8ce0-a59266a8cffe",
       "id": "b290f78c707b470d"
@@ -7500,10 +6780,730 @@ const MAP_DATA = {
       "annee": 2023,
       "prix": 22990,
       "km": 75634,
-      "deal_score": 54.0,
+      "deal_score": 43.0,
       "color": "amber",
       "url": "https://www.autoscout24.lu/offres/volkswagen-t-roc-life-bvm-rearview-led-diesel-blanc-b1c78ecb-d02f-4a98-9d1d-7f655af31e08",
       "id": "e76041fc95f85280"
+    },
+    {
+      "lat": 49.4958,
+      "lng": 5.9807,
+      "ville": "Esch-sur-Alzette",
+      "region": "Sud",
+      "marque": "Skoda",
+      "modele": "Kamiq",
+      "annee": 2024,
+      "prix": 25990,
+      "km": 13770,
+      "deal_score": 53.0,
+      "color": "amber",
+      "url": "https://www.autoscout24.lu/offres/skoda-kamiq-monte-carlo-bvm-pano-ahk-essence-noir-ca039453-bf61-4ac2-9815-2a6a70e63817",
+      "id": "94ab97d3d7aee326"
+    },
+    {
+      "lat": 49.6761,
+      "lng": 6.3253,
+      "ville": "Roost",
+      "region": "Est",
+      "marque": "Volkswagen",
+      "modele": "Golf",
+      "annee": 2024,
+      "prix": 23490,
+      "km": 77803,
+      "deal_score": 36.0,
+      "color": "default",
+      "url": "https://www.autoscout24.lu/offres/volkswagen-golf-life-dsg-led-digi-essence-gris-2b199616-3769-4fc7-a306-cdc2102666ea",
+      "id": "179c8f18a2a45906"
+    },
+    {
+      "lat": 49.4958,
+      "lng": 5.9807,
+      "ville": "Esch-sur-Alzette",
+      "region": "Sud",
+      "marque": "Volkswagen",
+      "modele": "Polo",
+      "annee": 2025,
+      "prix": 20990,
+      "km": 14246,
+      "deal_score": 54.0,
+      "color": "amber",
+      "url": "https://www.autoscout24.lu/offres/volkswagen-polo-life-bvm-iq-drive-led-essence-argent-84e67248-681f-4eff-9e7b-e456009f8bca",
+      "id": "9034d23530699e36"
+    },
+    {
+      "lat": 49.6761,
+      "lng": 6.3253,
+      "ville": "Roost",
+      "region": "Est",
+      "marque": "Mercedes",
+      "modele": "C 63 Amg",
+      "annee": 2020,
+      "prix": 54990,
+      "km": 51285,
+      "deal_score": 46.0,
+      "color": "amber",
+      "url": "https://www.autoscout24.lu/offres/mercedes-benz-c-63-amg-9aut-soundburmester-head-essence-noir-437decdc-00b8-47d8-90e2-98f001e3c09f",
+      "id": "3c16559b7201cfac"
+    },
+    {
+      "lat": 49.6761,
+      "lng": 6.3253,
+      "ville": "Roost",
+      "region": "Est",
+      "marque": "Skoda",
+      "modele": "Kodiaq",
+      "annee": 2023,
+      "prix": 37990,
+      "km": 93859,
+      "deal_score": 33.0,
+      "color": "default",
+      "url": "https://www.autoscout24.lu/offres/skoda-kodiaq-rs-dsg-4x4-pano-ahk-stand-h-essence-gris-664b255e-ceed-44c3-bf4b-9100e4fe1250",
+      "id": "e941706daca997ba"
+    },
+    {
+      "lat": 49.6761,
+      "lng": 6.3253,
+      "ville": "Roost",
+      "region": "Est",
+      "marque": "Audi",
+      "modele": "Q3",
+      "annee": 2022,
+      "prix": 37990,
+      "km": 29484,
+      "deal_score": 49.0,
+      "color": "amber",
+      "url": "https://www.autoscout24.lu/offres/audi-q3-s-line-40tdi-quattro-s-tronic-diesel-gris-8ebf7d8f-ddc8-4d1d-99a6-ec9db3e61ac5",
+      "id": "2dccc56146caab56"
+    },
+    {
+      "lat": 49.6761,
+      "lng": 6.3253,
+      "ville": "Roost",
+      "region": "Est",
+      "marque": "Audi",
+      "modele": "Sq8",
+      "annee": 2022,
+      "prix": 69990,
+      "km": 58157,
+      "deal_score": 47.0,
+      "color": "amber",
+      "url": "https://www.autoscout24.lu/offres/audi-sq8-quattro-tiptronic-ahk-pano-essence-argent-8a7172e2-b1ac-4964-9378-48c3398ea9aa",
+      "id": "2bc9ad833370e5cc"
+    },
+    {
+      "lat": 49.5836,
+      "lng": 5.9864,
+      "ville": "Schouweiler",
+      "region": "Sud",
+      "marque": "Porsche",
+      "modele": "Cayenne",
+      "annee": 2019,
+      "prix": 88900,
+      "km": 59900,
+      "deal_score": 30.0,
+      "color": "default",
+      "url": "https://www.autoscout24.lu/offres/porsche-cayenne-4-0-turbo-pscb-sport-design-carbon-approved-hinter-essence-blanc-83a86346-6c13-445c-b3fb-a4f1848d219a",
+      "id": "c4e18a2c90f248fa"
+    },
+    {
+      "lat": 49.6761,
+      "lng": 6.3253,
+      "ville": "Roost",
+      "region": "Est",
+      "marque": "Volkswagen",
+      "modele": "Golf",
+      "annee": 2024,
+      "prix": 23990,
+      "km": 63592,
+      "deal_score": 38.0,
+      "color": "default",
+      "url": "https://www.autoscout24.lu/offres/volkswagen-golf-life-dsg-lm17-led-essence-gris-1b7d4c8a-b05e-4f93-bc1f-45f3d7e0a78e",
+      "id": "d7c8ce66c4ca0fd6"
+    },
+    {
+      "lat": 49.6761,
+      "lng": 6.3253,
+      "ville": "Roost",
+      "region": "Est",
+      "marque": "Volkswagen",
+      "modele": "T6.1 Multivan",
+      "annee": 2022,
+      "prix": 44490,
+      "km": 104320,
+      "deal_score": 27.0,
+      "color": "default",
+      "url": "https://www.autoscout24.lu/offres/volkswagen-t6-1-multivan-highline-court-dsg-4m-navi-ahk-diesel-noir-cc00cecd-2bb4-406f-bffc-492d7c2b8687",
+      "id": "808e44d30ffda9f9"
+    },
+    {
+      "lat": 49.4958,
+      "lng": 5.9807,
+      "ville": "Esch-sur-Alzette",
+      "region": "Sud",
+      "marque": "Audi",
+      "modele": "Q5",
+      "annee": 2025,
+      "prix": 58397,
+      "km": 23000,
+      "deal_score": 45.0,
+      "color": "amber",
+      "url": "https://www.autoscout24.lu/offres/audi-q5-tdi-quattro-s-tronic-diesel-noir-c6de3ef4-a16a-4f8b-baf7-2f575c010cbf",
+      "id": "5f4e7ca0bf4016ce"
+    },
+    {
+      "lat": 49.5836,
+      "lng": 5.9864,
+      "ville": "Schouweiler",
+      "region": "Sud",
+      "marque": "Mercedes",
+      "modele": "Glc 220",
+      "annee": 2020,
+      "prix": 35900,
+      "km": 130900,
+      "deal_score": 34.0,
+      "color": "default",
+      "url": "https://www.autoscout24.lu/offres/mercedes-benz-glc-220-coupe-d-new-model-4matic-coupe-amg-line-cuir-navi-diesel-gris-cec5f704-b484-41ec-a98a-7d88ef217786",
+      "id": "3ca0cd8d3dd507bd"
+    },
+    {
+      "lat": 49.5097,
+      "lng": 5.9681,
+      "ville": "Soleuvre",
+      "region": "Sud",
+      "marque": "BMW",
+      "modele": "M2",
+      "annee": 2024,
+      "prix": 76900,
+      "km": 3900,
+      "deal_score": 47.0,
+      "color": "amber",
+      "url": "https://www.autoscout24.lu/offres/bmw-m2-m-performence-ceramic-garantie-02-2027-essence-noir-7241d64d-37a9-4cca-af48-844e207e1e48",
+      "id": "f17769b1c9fa04c6"
+    },
+    {
+      "lat": 49.6444,
+      "lng": 6.0117,
+      "ville": "Ell",
+      "region": "Ouest",
+      "marque": "Volkswagen",
+      "modele": "Amarok",
+      "annee": 2019,
+      "prix": 24900,
+      "km": 183390,
+      "deal_score": 31.0,
+      "color": "default",
+      "url": "https://www.autoscout24.lu/offres/volkswagen-amarok-highline-doublecab-4motion-diesel-noir-ba572a95-4e95-4159-b546-65ffd4e87052",
+      "id": "fe22831eb8860225"
+    },
+    {
+      "lat": 49.5572,
+      "lng": 5.8797,
+      "ville": "Pétange",
+      "region": "Sud",
+      "marque": "Porsche",
+      "modele": "Macan",
+      "annee": 2019,
+      "prix": 51990,
+      "km": 70487,
+      "deal_score": 42.0,
+      "color": "amber",
+      "url": "https://www.autoscout24.lu/offres/porsche-macan-gts-3-0-360-pdk-essence-blanc-3e9c8683-e7f5-42ed-9963-89c0d86cf068",
+      "id": "89504d9b0c29952e"
+    },
+    {
+      "lat": 49.6761,
+      "lng": 6.3253,
+      "ville": "Roost",
+      "region": "Est",
+      "marque": "Audi",
+      "modele": "Q5",
+      "annee": 2024,
+      "prix": 48990,
+      "km": 11142,
+      "deal_score": 62.0,
+      "color": "amber",
+      "url": "https://www.autoscout24.lu/offres/audi-q5-sb-s-line-40tdi-quattro-s-tronic-diesel-gris-9affa3f6-04a7-41dc-9d08-08d01de14c09",
+      "id": "4a98b7399e981c40"
+    },
+    {
+      "lat": 49.5456,
+      "lng": 6.2408,
+      "ville": "Contern",
+      "region": "Est",
+      "marque": "Ferrari",
+      "modele": "812",
+      "annee": 2019,
+      "prix": 379900,
+      "km": 7380,
+      "deal_score": 51.0,
+      "color": "amber",
+      "url": "https://www.autoscout24.lu/offres/ferrari-812-superfast-afs-painted-shields-lift-pncc-essence-rouge-df01321d-1e1a-4e46-91e3-8057b3b1fef7",
+      "id": "6c7b33808ec0a6d3"
+    },
+    {
+      "lat": 49.5461,
+      "lng": 6.0181,
+      "ville": "Foetz",
+      "region": "Sud",
+      "marque": "BMW",
+      "modele": "216",
+      "annee": 2020,
+      "prix": 21900,
+      "km": 86342,
+      "deal_score": 41.0,
+      "color": "amber",
+      "url": "https://www.autoscout24.lu/offres/bmw-216-gran-coupe-216d-automatique-garantie-12-mois-diesel-gris-e4eade2a-e652-4b3b-be28-6015e42e0131",
+      "id": "b7cae664f3d954ad"
+    },
+    {
+      "lat": 49.5461,
+      "lng": 6.0181,
+      "ville": "Foetz",
+      "region": "Sud",
+      "marque": "BMW",
+      "modele": "116",
+      "annee": 2023,
+      "prix": 19900,
+      "km": 79535,
+      "deal_score": 45.0,
+      "color": "amber",
+      "url": "https://www.autoscout24.lu/offres/bmw-116-116i-automatique-12-mois-de-garantie-essence-blanc-f969a28c-26ec-4049-87dd-be72cd1f674d",
+      "id": "dd94924b5fbf7c5d"
+    },
+    {
+      "lat": 49.4958,
+      "lng": 5.9807,
+      "ville": "Esch-sur-Alzette",
+      "region": "Sud",
+      "marque": "Audi",
+      "modele": "Sq5",
+      "annee": 2025,
+      "prix": 84990,
+      "km": 4635,
+      "deal_score": 58.0,
+      "color": "amber",
+      "url": "https://www.autoscout24.lu/offres/audi-sq5-sb-s-tronic-quattro-p-premium-essence-gris-17e6a3fd-6dc5-4fd0-b949-ee92805f8eda",
+      "id": "3dfede8cd29bcf44"
+    },
+    {
+      "lat": 49.4958,
+      "lng": 5.9807,
+      "ville": "Esch-sur-Alzette",
+      "region": "Sud",
+      "marque": "Skoda",
+      "modele": "Superb",
+      "annee": 2025,
+      "prix": 39990,
+      "km": 18437,
+      "deal_score": 56.0,
+      "color": "amber",
+      "url": "https://www.autoscout24.lu/offres/skoda-superb-l-k-dsg-stand-h-ahk-lm19-diesel-jaune-1b15a1e1-f3bb-450c-be71-182df824673b",
+      "id": "42dbcbf7bd85ae2d"
+    },
+    {
+      "lat": 49.6116,
+      "lng": 6.1319,
+      "ville": "Luxembourg",
+      "region": "Centre",
+      "marque": "Mercedes",
+      "modele": "E 220",
+      "annee": 2025,
+      "prix": 62490,
+      "km": 16338,
+      "deal_score": 46.0,
+      "color": "amber",
+      "url": "https://www.autoscout24.lu/offres/mercedes-benz-e-220-e-220-d-limousine-diesel-argent-a02f6a99-e191-4b41-9fb5-16d46606b94a",
+      "id": "9118ed7b5a85d638"
+    },
+    {
+      "lat": 49.6116,
+      "lng": 6.1319,
+      "ville": "Luxembourg",
+      "region": "Centre",
+      "marque": "Mercedes",
+      "modele": "S 450",
+      "annee": 2025,
+      "prix": 118490,
+      "km": 13529,
+      "deal_score": 57.0,
+      "color": "amber",
+      "url": "https://www.autoscout24.lu/offres/mercedes-benz-s-450-s-450-d-4matic-limousine-lang-amg-line-navi-klima-diesel-argent-fa977dea-4bf5-4a49-9991-3d35652ae671",
+      "id": "84e3745f9ed35ab9"
+    },
+    {
+      "lat": 49.6444,
+      "lng": 6.0117,
+      "ville": "Ell",
+      "region": "Ouest",
+      "marque": "Volvo",
+      "modele": "S80",
+      "annee": 2014,
+      "prix": 16990,
+      "km": 61799,
+      "deal_score": 38.0,
+      "color": "default",
+      "url": "https://www.autoscout24.lu/offres/volvo-s80-t5-momentum-essence-gris-f0ba618b-6cd5-4bef-8838-7258aee7c475",
+      "id": "f7b4fd09d62f4333"
+    },
+    {
+      "lat": 49.4958,
+      "lng": 5.9807,
+      "ville": "Esch-sur-Alzette",
+      "region": "Sud",
+      "marque": "Volkswagen",
+      "modele": "Id.7",
+      "annee": 2024,
+      "prix": 41990,
+      "km": 26594,
+      "deal_score": 54.0,
+      "color": "amber",
+      "url": "https://www.autoscout24.lu/offres/volkswagen-id-7-zertifikat-77kwh-pro-p-ext-p-int-navi-electrique-gris-d79ced20-65ef-4c34-a034-859624aa7518",
+      "id": "511948178453ef90"
+    },
+    {
+      "lat": 49.4958,
+      "lng": 5.9807,
+      "ville": "Esch-sur-Alzette",
+      "region": "Sud",
+      "marque": "Audi",
+      "modele": "A6",
+      "annee": 2026,
+      "prix": 70460,
+      "km": 6000,
+      "deal_score": 46.0,
+      "color": "amber",
+      "url": "https://www.autoscout24.lu/offres/audi-a6-avant-tdi-quattro-s-tronic-diesel-blanc-920026c1-f991-497a-8a5c-753943d7cdb4",
+      "id": "0cd575c23f657466"
+    },
+    {
+      "lat": 49.5572,
+      "lng": 5.8797,
+      "ville": "Pétange",
+      "region": "Sud",
+      "marque": "Mercedes",
+      "modele": "Glc 63 Amg",
+      "annee": 2022,
+      "prix": 67990,
+      "km": 72437,
+      "deal_score": 45.0,
+      "color": "amber",
+      "url": "https://www.autoscout24.lu/offres/mercedes-benz-glc-63-amg-s-amg-coupe-4matic-essence-noir-6deeb3f4-055e-4704-968e-1c46133f8cc5",
+      "id": "b93a505af8b9fcb0"
+    },
+    {
+      "lat": 49.5572,
+      "lng": 5.8797,
+      "ville": "Pétange",
+      "region": "Sud",
+      "marque": "BMW",
+      "modele": "X6",
+      "annee": 2023,
+      "prix": 78990,
+      "km": 17000,
+      "deal_score": 54.0,
+      "color": "amber",
+      "url": "https://www.autoscout24.lu/offres/bmw-x6-xdrive-40i-m-sport-bva-essence-bleu-8fb65050-22e4-4ba3-a21c-8b118948d00c",
+      "id": "e4eab7a207789608"
+    },
+    {
+      "lat": 49.4958,
+      "lng": 5.9807,
+      "ville": "Esch-sur-Alzette",
+      "region": "Sud",
+      "marque": "Volkswagen",
+      "modele": "T-Roc",
+      "annee": 2025,
+      "prix": 29240,
+      "km": 16000,
+      "deal_score": 62.0,
+      "color": "amber",
+      "url": "https://www.autoscout24.lu/offres/volkswagen-t-roc-life-essence-gris-cd1d5beb-ca15-42a4-aaa3-725935660a14",
+      "id": "02795b5ca5a106e0"
+    },
+    {
+      "lat": 49.5461,
+      "lng": 6.0181,
+      "ville": "Foetz",
+      "region": "Sud",
+      "marque": "Peugeot",
+      "modele": "5008",
+      "annee": 2021,
+      "prix": 19900,
+      "km": 95353,
+      "deal_score": 31.0,
+      "color": "default",
+      "url": "https://www.autoscout24.lu/offres/peugeot-5008-5008-1-5-bluehdi-allure-12-mois-de-garantie-diesel-gris-b6e0ac28-cd58-4bee-9a4b-d7dd1a988c97",
+      "id": "f7481fa40a29e47f"
+    },
+    {
+      "lat": 49.4958,
+      "lng": 5.9807,
+      "ville": "Esch-sur-Alzette",
+      "region": "Sud",
+      "marque": "Cupra",
+      "modele": "Leon",
+      "annee": 2025,
+      "prix": 38850,
+      "km": 9000,
+      "deal_score": 47.0,
+      "color": "amber",
+      "url": "https://www.autoscout24.lu/offres/cupra-leon-vz-ehybrid-electrique-essence-gris-c3b83781-eac4-4934-857e-2beb870ef43b",
+      "id": "7435f321b0019018"
+    },
+    {
+      "lat": 49.6116,
+      "lng": 6.1319,
+      "ville": "Luxembourg",
+      "region": "Centre",
+      "marque": "Mercedes",
+      "modele": "Gla 180",
+      "annee": 2020,
+      "prix": 23990,
+      "km": 123669,
+      "deal_score": 35.0,
+      "color": "default",
+      "url": "https://www.autoscout24.lu/offres/mercedes-benz-gla-180-gla-180-d-kamera-pts-shz-mbux-diesel-gris-3d97b102-27a1-428d-84c4-00cb6d3cb8a2",
+      "id": "bdf2dca4afc8b0e3"
+    },
+    {
+      "lat": 49.4958,
+      "lng": 5.9807,
+      "ville": "Esch-sur-Alzette",
+      "region": "Sud",
+      "marque": "Volkswagen",
+      "modele": "T7 Caravelle",
+      "annee": 2025,
+      "prix": 46990,
+      "km": 14391,
+      "deal_score": 54.0,
+      "color": "amber",
+      "url": "https://www.autoscout24.lu/offres/volkswagen-t7-caravelle-life-kurz-dsg-9sitze-led-diesel-gris-dee21b58-0068-4f82-9ad0-ebde6cc8be14",
+      "id": "d1109874cdbc7d77"
+    },
+    {
+      "lat": 49.5836,
+      "lng": 5.9864,
+      "ville": "Schouweiler",
+      "region": "Sud",
+      "marque": "Mclaren",
+      "modele": "570S",
+      "annee": 2017,
+      "prix": 124900,
+      "km": 59999,
+      "deal_score": 42.0,
+      "color": "amber",
+      "url": "https://www.autoscout24.lu/offres/mclaren-570s-carbon-keramik-lift-essence-noir-a447a6e0-252f-450a-8a33-4f2f52f16fb0",
+      "id": "8f5f85317cf3865d"
+    },
+    {
+      "lat": 49.6116,
+      "lng": 6.1319,
+      "ville": "Luxembourg",
+      "region": "Centre",
+      "marque": "Ford",
+      "modele": "Kuga",
+      "annee": 2025,
+      "prix": 32990,
+      "km": 26700,
+      "deal_score": 49.0,
+      "color": "amber",
+      "url": "https://www.autopolis.lu/stock/483331720-1-ford-kuga-15i-ecoboost-137kw-aut-titanium",
+      "id": "e321ec219386c34a"
+    },
+    {
+      "lat": 49.6116,
+      "lng": 6.1319,
+      "ville": "Luxembourg",
+      "region": "Centre",
+      "marque": "Jeep",
+      "modele": "Compass",
+      "annee": 2019,
+      "prix": 18990,
+      "km": 84000,
+      "deal_score": 36.0,
+      "color": "default",
+      "url": "https://www.autopolis.lu/stock/68820273-1-jeep-compass-20-mjd-103kw-4x4-limited-auto",
+      "id": "16cb70b02fa9c891"
+    },
+    {
+      "lat": 49.6116,
+      "lng": 6.1319,
+      "ville": "Luxembourg",
+      "region": "Centre",
+      "marque": "Kia",
+      "modele": "Xceed",
+      "annee": 2024,
+      "prix": 25990,
+      "km": 31400,
+      "deal_score": 47.0,
+      "color": "amber",
+      "url": "https://www.autopolis.lu/stock/433130549-1-kia-xceed-15-t-gdi-140-dct-pulse",
+      "id": "ceeb34859a733404"
+    },
+    {
+      "lat": 49.6116,
+      "lng": 6.1319,
+      "ville": "Luxembourg",
+      "region": "Centre",
+      "marque": "Hyundai",
+      "modele": "I30",
+      "annee": 2023,
+      "prix": 23990,
+      "km": 10000,
+      "deal_score": 77.0,
+      "color": "green",
+      "url": "https://www.autopolis.lu/stock/18619102-1-hyundai-i30-15-t-gdi-118kw-sky-dct",
+      "id": "d06fefdbafb4dbf5"
+    },
+    {
+      "lat": 49.6116,
+      "lng": 6.1319,
+      "ville": "Luxembourg",
+      "region": "Centre",
+      "marque": "Cadillac",
+      "modele": "Xt4",
+      "annee": 2022,
+      "prix": 23990,
+      "km": 56500,
+      "deal_score": 69.0,
+      "color": "amber",
+      "url": "https://www.autopolis.lu/stock/418492467-1-cadillac-xt4-350t-awd-sport-auto",
+      "id": "0c18fca896300b44"
+    },
+    {
+      "lat": 49.6116,
+      "lng": 6.1319,
+      "ville": "Luxembourg",
+      "region": "Centre",
+      "marque": "Hyundai",
+      "modele": "Santa Fe",
+      "annee": 2024,
+      "prix": 49990,
+      "km": 46771,
+      "deal_score": 53.0,
+      "color": "amber",
+      "url": "https://www.autopolis.lu/stock/361447803-1-hyundai-santa-fe-phev-shine-line-family-sensati",
+      "id": "0c01d4b91631fd40"
+    },
+    {
+      "lat": 49.6116,
+      "lng": 6.1319,
+      "ville": "Luxembourg",
+      "region": "Centre",
+      "marque": "Ford",
+      "modele": "Kuga",
+      "annee": 2023,
+      "prix": 43990,
+      "km": 39800,
+      "deal_score": 33.0,
+      "color": "default",
+      "url": "https://www.autopolis.lu/stock/282113384-1-ford-kuga-25i-phev-aut-165kw-st-line",
+      "id": "8a98d1358e983501"
+    },
+    {
+      "lat": 49.6116,
+      "lng": 6.1319,
+      "ville": "Luxembourg",
+      "region": "Centre",
+      "marque": "Hyundai",
+      "modele": "Tucson",
+      "annee": 2022,
+      "prix": 31990,
+      "km": 19100,
+      "deal_score": 70.0,
+      "color": "green",
+      "url": "https://www.autopolis.lu/stock/167721241-1-hyundai-tucson-16-hev-shine-n-line",
+      "id": "ae0a2ea4e0887106"
+    },
+    {
+      "lat": 49.6116,
+      "lng": 6.1319,
+      "ville": "Luxembourg",
+      "region": "Centre",
+      "marque": "MG",
+      "modele": "Mg4",
+      "annee": 2023,
+      "prix": 22990,
+      "km": 19000,
+      "deal_score": 48.0,
+      "color": "amber",
+      "url": "https://www.autopolis.lu/stock/362989687-1-mg-mg4-64-kwh-luxury",
+      "id": "257d034b9613ac7f"
+    },
+    {
+      "lat": 49.6116,
+      "lng": 6.1319,
+      "ville": "Luxembourg",
+      "region": "Centre",
+      "marque": "Mini",
+      "modele": "Cooper S",
+      "annee": 2017,
+      "prix": 19990,
+      "km": 66500,
+      "deal_score": 37.0,
+      "color": "default",
+      "url": "https://www.autopolis.lu/stock/102881988-1-mini-cooper-s",
+      "id": "3430e0e7bff4a404"
+    },
+    {
+      "lat": 49.6116,
+      "lng": 6.1319,
+      "ville": "Luxembourg",
+      "region": "Centre",
+      "marque": "Cadillac",
+      "modele": "Xt4",
+      "annee": 2022,
+      "prix": 34990,
+      "km": 31300,
+      "deal_score": 53.0,
+      "color": "amber",
+      "url": "https://www.autopolis.lu/stock/241105770-1-cadillac-xt4-20-premium-luxury-awd",
+      "id": "383d5722482cfc7f"
+    },
+    {
+      "lat": 49.6116,
+      "lng": 6.1319,
+      "ville": "Luxembourg",
+      "region": "Centre",
+      "marque": "Volkswagen",
+      "modele": "Golf",
+      "annee": 2015,
+      "prix": 19990,
+      "km": 110000,
+      "deal_score": 14.0,
+      "color": "default",
+      "url": "https://www.autopolis.lu/stock/307486907-1-volkswagen-golf-20-vii-gti-performance",
+      "id": "c970e851134aa050"
+    },
+    {
+      "lat": 49.6116,
+      "lng": 6.1319,
+      "ville": "Luxembourg",
+      "region": "Centre",
+      "marque": "Opel",
+      "modele": "Grandland X",
+      "annee": 2018,
+      "prix": 16990,
+      "km": 85500,
+      "deal_score": 41.0,
+      "color": "amber",
+      "url": "https://www.autopolis.lu/stock/357039797-1-opel-grandland-x-12-turbo-s-s-at8-innovation",
+      "id": "77b7bff3161c5a39"
+    },
+    {
+      "lat": 49.6116,
+      "lng": 6.1319,
+      "ville": "Luxembourg",
+      "region": "Centre",
+      "marque": "Kia",
+      "modele": "Ceed Sportswagon",
+      "annee": 2024,
+      "prix": 24990,
+      "km": 31100,
+      "deal_score": 47.0,
+      "color": "amber",
+      "url": "https://www.autopolis.lu/stock/461890655-1-kia-ceed-sportswagon-style-edition-10-t-gdi-100-isg",
+      "id": "192c7a76b14821ba"
     }
   ],
   "clusters": [
@@ -7512,8 +7512,8 @@ const MAP_DATA = {
       "lng": 6.1319,
       "ville": "Luxembourg",
       "region": "Centre",
-      "nb": 449,
-      "best_score": 78.0,
+      "nb": 439,
+      "best_score": 77.0,
       "annonces": [
         {
           "id": "43dc52f99e9c50cd",
@@ -7551,15 +7551,15 @@ const MAP_DATA = {
           "url": "https://www.luxauto.lu/fr/car/smart-5-electrique-2025-1806461"
         }
       ],
-      "prix_moyen": 47283
+      "prix_moyen": 45740
     },
     {
       "lat": 49.6761,
       "lng": 6.3253,
       "ville": "Roost",
       "region": "Est",
-      "nb": 77,
-      "best_score": 79.0,
+      "nb": 73,
+      "best_score": 73.0,
       "annonces": [
         {
           "id": "45ca0660333e3a97",
@@ -7597,7 +7597,7 @@ const MAP_DATA = {
           "url": "https://www.luxauto.lu/fr/car/hyundai-i30-essence-2024-1806059"
         }
       ],
-      "prix_moyen": 35652
+      "prix_moyen": 33339
     },
     {
       "lat": 49.4958,
@@ -7605,7 +7605,7 @@ const MAP_DATA = {
       "ville": "Esch-sur-Alzette",
       "region": "Sud",
       "nb": 59,
-      "best_score": 79.0,
+      "best_score": 72.0,
       "annonces": [
         {
           "id": "026625bc84ca5fad",
@@ -7643,15 +7643,15 @@ const MAP_DATA = {
           "url": "https://www.luxauto.lu/fr/car/seat-ibiza-essence-2025-1806497"
         }
       ],
-      "prix_moyen": 38242
+      "prix_moyen": 39324
     },
     {
       "lat": 49.5039,
       "lng": 6.0156,
       "ville": "Schifflange - Foetz",
       "region": "Sud",
-      "nb": 56,
-      "best_score": 79.0,
+      "nb": 45,
+      "best_score": 75.0,
       "annonces": [
         {
           "id": "dffb89d9cb137bae",
@@ -7675,34 +7675,34 @@ const MAP_DATA = {
           "url": "https://www.autoscout24.lu/offres/volvo-xc60-43-t6-phev-350cv-bva8-4x4-t-pano-gps-options-electrique-essence-argent-7ba5a554-ceff-401d-9f00-d994036f7332"
         },
         {
-          "id": "8d5635641e788a9f",
+          "id": "63036cdbb98aa0a5",
           "titre": "Volvo S60 2024",
-          "prix": 25950,
-          "km": 44944,
-          "url": "https://www.autoscout24.lu/offres/volvo-s60-46-b4-mhev-197cv-bva-gps-cam-led-clim-options-essence-gris-3f8193ec-2d17-4b29-9d35-c2e45dfd37da"
+          "prix": 26990,
+          "km": 17735,
+          "url": "https://www.autoscout24.lu/offres/volvo-s60-46-b4-mhev-197cv-bva-gps-cam-led-clim-options-essence-blanc-8877114f-1632-40b3-a79b-35716c4c40ca"
         },
         {
-          "id": "1d70f309849b2256",
-          "titre": "Volvo S60 2024",
-          "prix": 25950,
-          "km": 37842,
-          "url": "https://www.autoscout24.lu/offres/volvo-s60-48-b4-mhev-197cv-bva-gps-cam-led-clim-options-essence-argent-3f1e777a-acdc-48ca-8737-248e46b388a1"
+          "id": "c271195a71fde945",
+          "titre": "BMW 420 2021",
+          "prix": 39490,
+          "km": 68541,
+          "url": "https://www.autoscout24.lu/offres/bmw-420-d-cabrio-42-190cv-bva8-m-sport-gps-cuir-options-diesel-vert-ca873044-8920-46d0-891d-296efa903774"
         }
       ],
-      "prix_moyen": 33046
+      "prix_moyen": 34783
     },
     {
       "lat": 49.5836,
       "lng": 5.9864,
       "ville": "Schouweiler",
       "region": "Sud",
-      "nb": 33,
-      "best_score": 70.0,
+      "nb": 32,
+      "best_score": 65.0,
       "annonces": [
         {
           "id": "bdfff8899632f072",
           "titre": "Audi Q5 2021",
-          "prix": 39900,
+          "prix": 38900,
           "km": 42900,
           "url": "https://www.autoscout24.lu/offres/audi-q5-sportback-50-e-hybrid-quattro-s-line-cuir-navi-electrique-essence-noir-8ca81d7f-b46d-4bc5-a5a4-bb4aca8b0de6"
         },
@@ -7716,7 +7716,7 @@ const MAP_DATA = {
         {
           "id": "027dc82b95677387",
           "titre": "Volkswagen Tiguan 2022",
-          "prix": 29900,
+          "prix": 28900,
           "km": 56900,
           "url": "https://www.autoscout24.lu/offres/volkswagen-tiguan-1-5-tsi-150-urban-sport-virtual-head-up-harman-kar-essence-blanc-ccd5f9fa-ce69-4ad9-a997-b1e03822f3a4"
         },
@@ -7735,15 +7735,15 @@ const MAP_DATA = {
           "url": "https://www.autoscout24.lu/offres/mercedes-benz-c-200-d-t-kombi-avantgarde-led-cuir-navi-diesel-bleu-70e96264-6cf1-4442-bbc8-ce9cf1a3e04b"
         }
       ],
-      "prix_moyen": 52021
+      "prix_moyen": 49306
     },
     {
       "lat": 52.52,
       "lng": 13.405,
       "ville": "Berlin",
       "region": "Allemagne",
-      "nb": 24,
-      "best_score": 70.0,
+      "nb": 22,
+      "best_score": 78.0,
       "annonces": [
         {
           "id": "4260f25b871ed4d6",
@@ -7767,67 +7767,21 @@ const MAP_DATA = {
           "url": "https://www.autoscout24.de/angebote/hyundai-i30-cw-1-6-automatik-trend-navigation-benzin-silber-36c581aa-21c4-443e-813e-d79b600e2c4e"
         },
         {
-          "id": "aedc0d125f5c35be",
-          "titre": "BMW 116 2016",
-          "prix": 11890,
-          "km": 150609,
-          "url": "https://www.autoscout24.de/angebote/bmw-116-d-steptronic-advantage-navi-leder-shz-acc-pdc-diesel-grau-c35b3d16-7a9c-478d-96e7-e0c9039c3ce7"
-        },
-        {
           "id": "5be148b8dde3e3ea",
           "titre": "Volkswagen Caddy 2016",
           "prix": 17800,
           "km": 128048,
           "url": "https://www.autoscout24.de/angebote/volkswagen-caddy-2-0-tdi-highline-dsg-7sitze-xenon-navi-shz-diesel-braun-9d76eecb-89a3-4f2d-9432-bfcff9bceb0b"
+        },
+        {
+          "id": "8744c61dc2f99869",
+          "titre": "Citroen C3 Aircross 2021",
+          "prix": 15900,
+          "km": 27324,
+          "url": "https://www.autoscout24.de/angebote/citroen-c3-aircross-1-2-pure-tech-130-feel-pack-auitomatik-benzin-schwarz-f85a92e7-f8da-4f5a-8f4c-1f2896c79ad3"
         }
       ],
-      "prix_moyen": 21991
-    },
-    {
-      "lat": 49.8672,
-      "lng": 6.1597,
-      "ville": "Diekirch",
-      "region": "Nord",
-      "nb": 19,
-      "best_score": 71.0,
-      "annonces": [
-        {
-          "id": "f2f5de14ea474bff",
-          "titre": "Porsche Cayenne 2021",
-          "prix": 62490,
-          "km": 52890,
-          "url": "https://www.luxauto.lu/fr/car/porsche-cayenne-essence-2021-1806098"
-        },
-        {
-          "id": "39777d5050b9e588",
-          "titre": "Volkswagen Polo 2025",
-          "prix": 38990,
-          "km": 10,
-          "url": "https://www.luxauto.lu/fr/car/vw-polo-essence-2025-1806100"
-        },
-        {
-          "id": "c6412076e6af0d68",
-          "titre": "Volkswagen T Cross 2025",
-          "prix": 26980,
-          "km": 15600,
-          "url": "https://www.luxauto.lu/fr/car/vw-t-cross-essence-2025-1806609"
-        },
-        {
-          "id": "528f2ed349cd2f8c",
-          "titre": "Skoda Kamiq 2025",
-          "prix": 29980,
-          "km": 4900,
-          "url": "https://www.luxauto.lu/fr/car/skoda-kamiq-essence-2025-1806616"
-        },
-        {
-          "id": "0b260da4b018f173",
-          "titre": "Skoda Fabia 2025",
-          "prix": 23480,
-          "km": 2300,
-          "url": "https://www.luxauto.lu/fr/car/skoda-fabia-essence-2025-1806610"
-        }
-      ],
-      "prix_moyen": 34068
+      "prix_moyen": 22580
     },
     {
       "lat": 49.5461,
@@ -7835,7 +7789,7 @@ const MAP_DATA = {
       "ville": "Foetz",
       "region": "Sud",
       "nb": 19,
-      "best_score": 65.0,
+      "best_score": 54.0,
       "annonces": [
         {
           "id": "5e60b6ff29a5d339",
@@ -7873,15 +7827,61 @@ const MAP_DATA = {
           "url": "https://www.autoscout24.lu/offres/ford-fiesta-vignale-1-0-titanium-automatique-garantie--essence-rouge-c5559277-e8fd-4162-b840-8979129f438a"
         }
       ],
-      "prix_moyen": 16742
+      "prix_moyen": 16584
+    },
+    {
+      "lat": 49.8672,
+      "lng": 6.1597,
+      "ville": "Diekirch",
+      "region": "Nord",
+      "nb": 16,
+      "best_score": 64.0,
+      "annonces": [
+        {
+          "id": "f2f5de14ea474bff",
+          "titre": "Porsche Cayenne 2021",
+          "prix": 62490,
+          "km": 52890,
+          "url": "https://www.luxauto.lu/fr/car/porsche-cayenne-essence-2021-1806098"
+        },
+        {
+          "id": "39777d5050b9e588",
+          "titre": "Volkswagen Polo 2025",
+          "prix": 38990,
+          "km": 10,
+          "url": "https://www.luxauto.lu/fr/car/vw-polo-essence-2025-1806100"
+        },
+        {
+          "id": "c6412076e6af0d68",
+          "titre": "Volkswagen T Cross 2025",
+          "prix": 25980,
+          "km": 15600,
+          "url": "https://www.luxauto.lu/fr/car/vw-t-cross-essence-2025-1806609"
+        },
+        {
+          "id": "528f2ed349cd2f8c",
+          "titre": "Skoda Kamiq 2025",
+          "prix": 29480,
+          "km": 4900,
+          "url": "https://www.luxauto.lu/fr/car/skoda-kamiq-essence-2025-1806616"
+        },
+        {
+          "id": "0b260da4b018f173",
+          "titre": "Skoda Fabia 2025",
+          "prix": 23480,
+          "km": 2300,
+          "url": "https://www.luxauto.lu/fr/car/skoda-fabia-essence-2025-1806610"
+        }
+      ],
+      "prix_moyen": 35180
     },
     {
       "lat": 49.5572,
       "lng": 5.8797,
       "ville": "Pétange",
       "region": "Sud",
-      "nb": 13,
-      "best_score": 75.0,
+      "nb": 12,
+      "best_score": 69.0,
       "annonces": [
         {
           "id": "96376af7dba682e8",
@@ -7898,13 +7898,6 @@ const MAP_DATA = {
           "url": "https://www.autoscout24.lu/offres/volkswagen-t-cross-style-1-0-tsi-110-dsg7-essence-blanc-1618e73c-7e59-44fc-b782-8fe8e3fe3d36"
         },
         {
-          "id": "e5396e708ab60260",
-          "titre": "Audi A3 2024",
-          "prix": 29990,
-          "km": 55406,
-          "url": "https://www.autoscout24.lu/offres/audi-a3-sportback-30tfsi-110-s-line-s-tronic-essence-noir-1c4254e2-ac4c-4a03-a0bf-85e18db23eb9"
-        },
-        {
           "id": "224ab8c93fa2d4bc",
           "titre": "Land Rover Defender 2023",
           "prix": 59990,
@@ -7917,17 +7910,24 @@ const MAP_DATA = {
           "prix": 27990,
           "km": 10555,
           "url": "https://www.autoscout24.lu/offres/mini-cooper-s-experience-2-0-178-steptronic-essence-gris-0e79ac63-ac75-4381-8426-7945887a6bde"
+        },
+        {
+          "id": "9da31694eb3d4a42",
+          "titre": "BMW X5 2023",
+          "prix": 69990,
+          "km": 49500,
+          "url": "https://www.autoscout24.lu/offres/bmw-x5-30d-m-sport-pro-286cv-diesel-bleu-fb206fec-1163-42cc-a96b-8c17d8cce14f"
         }
       ],
-      "prix_moyen": 62374
+      "prix_moyen": 64906
     },
     {
       "lat": 49.5097,
       "lng": 5.9681,
       "ville": "Soleuvre",
       "region": "Sud",
-      "nb": 12,
-      "best_score": 65.0,
+      "nb": 11,
+      "best_score": 54.0,
       "annonces": [
         {
           "id": "101a10c47803508b",
@@ -7951,29 +7951,29 @@ const MAP_DATA = {
           "url": "https://www.autoscout24.lu/offres/volkswagen-polo-1-6-tdi-105-comfortline-garantie-12-mois-diesel-rouge-6ef25409-f348-4948-a2b1-46dab04b7c18"
         },
         {
-          "id": "0c69ec6137b8149c",
-          "titre": "Volkswagen T-Roc 2022",
-          "prix": 26900,
-          "km": 58500,
-          "url": "https://www.autoscout24.lu/offres/volkswagen-t-roc-1-5-tsi-150-dsg-style-virtual-kamera-navi-carplay-essence-blanc-6ac833e7-7dc8-452f-98a3-da5c4d1198ab"
-        },
-        {
           "id": "347c769e4de1433d",
           "titre": "Mini John Cooper Works Countryman 2024",
           "prix": 39900,
           "km": 26000,
           "url": "https://www.autoscout24.lu/offres/mini-john-cooper-works-countryman-full-schiebedach-ahk-4x4-harmann-kardon-essence-noir-74dea8ab-aea6-4a65-add3-11bff6676f81"
+        },
+        {
+          "id": "2397cd3336ddedb9",
+          "titre": "Skoda Fabia 2016",
+          "prix": 14900,
+          "km": 58000,
+          "url": "https://www.autoscout24.lu/offres/skoda-fabia-1-2-tsi-110-dsg-style-klimaauto-58000km-garantie-essence-gris-9294beab-d60a-4ea9-b80d-0e6e5bbda032"
         }
       ],
-      "prix_moyen": 31824
+      "prix_moyen": 32180
     },
     {
       "lat": 53.5511,
       "lng": 9.9937,
       "ville": "Hamburg",
       "region": "Allemagne",
-      "nb": 11,
-      "best_score": 70.0,
+      "nb": 9,
+      "best_score": 59.0,
       "annonces": [
         {
           "id": "c82b68dcadbfc012",
@@ -7990,36 +7990,36 @@ const MAP_DATA = {
           "url": "https://www.autoscout24.de/angebote/kia-ceed-2f-ceed-gt-line-1-5-t-gdi-leder-technik-glasdach-benzin-weiss-4e614c09-4178-4d28-9c91-f4308952fa49"
         },
         {
-          "id": "2228f73aed3b9b95",
-          "titre": "Mazda 6E 2026",
-          "prix": 39950,
-          "km": 22,
-          "url": "https://www.autoscout24.de/angebote/mazda-6e-takumi-sony-voll-led-pano-leder-elektro-58c746ad-1b28-41a9-8f2e-3dfc25aea558"
-        },
-        {
-          "id": "42c1f258e2fa3455",
-          "titre": "Mazda Cx-30 2021",
-          "prix": 18950,
-          "km": 35326,
-          "url": "https://www.autoscout24.de/angebote/mazda-cx-30-selection-2-0i-voll-led-head-up-keyless-elektro-benzin-blau-6ceefd6e-1074-4e2d-936c-f3063c5661ab"
-        },
-        {
           "id": "79b2f3a2a32c6e59",
           "titre": "Porsche Cayenne 2022",
           "prix": 64900,
           "km": 50821,
           "url": "https://www.autoscout24.de/angebote/porsche-cayenne-e-hybrid-ahk-chrono-360-elektro-benzin-schwarz-d3380c02-8252-4c1f-8d24-9ec87f3f447a"
+        },
+        {
+          "id": "9d11fbb056e773b4",
+          "titre": "Audi A3 2015",
+          "prix": 16900,
+          "km": 100500,
+          "url": "https://www.autoscout24.de/angebote/audi-a3-cabrio-dsg-ultra-akustik-verdeck-xenon-plus-benzin-schwarz-b86b67b3-cee3-49bf-8132-1780c24573ab"
+        },
+        {
+          "id": "f54bad93c06a480f",
+          "titre": "Audi A8 2017",
+          "prix": 34900,
+          "km": 110000,
+          "url": "https://www.autoscout24.de/angebote/audi-a8-50-tdi-quattro-hud-allradlenkung-b-o-standhzg-diesel-schwarz-9634f493-e704-4776-8837-184c84b2dc18"
         }
       ],
-      "prix_moyen": 42293
+      "prix_moyen": 36686
     },
     {
       "lat": 50.8042,
       "lng": 6.49,
       "ville": "Düren",
       "region": "Allemagne",
-      "nb": 9,
-      "best_score": 72.0,
+      "nb": 8,
+      "best_score": 65.0,
       "annonces": [
         {
           "id": "885bbbc3b1b59dd3",
@@ -8050,106 +8050,14 @@ const MAP_DATA = {
           "url": "https://www.autoscout24.de/angebote/cupra-ateca-dsg-19zoll-leder-memory-el-heckklappe-ahk-benzin-gruen-de9d227a-365b-4c82-8c20-ebad2a8bce97"
         },
         {
-          "id": "aefa6b6520885052",
-          "titre": "Volkswagen Golf Variant 2023",
-          "prix": 20850,
-          "km": 83915,
-          "url": "https://www.autoscout24.de/angebote/volkswagen-golf-variant-2-0tdi-dsg-life-led-navi-kamera-diesel-schwarz-b31eec41-27dd-44bf-a4d3-20d66764e8a6"
+          "id": "b97a530d773f742f",
+          "titre": "Cupra Formentor 2025",
+          "prix": 40690,
+          "km": 4995,
+          "url": "https://www.autoscout24.de/angebote/cupra-formentor-vz-2-0-245-kw-4d-sennheiser-aktion-benzin-schwarz-ec892992-c4ca-43d2-8078-7ce147d2de99"
         }
       ],
-      "prix_moyen": 33030
-    },
-    {
-      "lat": 48.1351,
-      "lng": 11.582,
-      "ville": "München",
-      "region": "Allemagne",
-      "nb": 8,
-      "best_score": 70.0,
-      "annonces": [
-        {
-          "id": "5e320db9eca1da9b",
-          "titre": "Mini Aceman 2025",
-          "prix": 32443,
-          "km": 2509,
-          "url": "https://www.autoscout24.de/angebote/mini-aceman-favoured-trim-elektro-blau-c77a83d7-8f0b-420d-90e6-46c6f09e4f0b"
-        },
-        {
-          "id": "ef585f47bff3cde0",
-          "titre": "Mini Countryman D 2025",
-          "prix": 41180,
-          "km": 3934,
-          "url": "https://www.autoscout24.de/angebote/mini-countryman-d-favoured-trim-diesel-grau-9e536665-b305-4dfe-8ca5-989d1df846ed"
-        },
-        {
-          "id": "2fa39e35a653b6d6",
-          "titre": "Kia Sorento 2020",
-          "prix": 29990,
-          "km": 98926,
-          "url": "https://www.autoscout24.de/angebote/kia-sorento-sorento-2-2d-awd-automatik-spirit-assistenz-ahk-diesel-grau-84087ef0-6835-4c98-9370-0b6d9f1f5c37"
-        },
-        {
-          "id": "9654b9ea800cdf3b",
-          "titre": "Mini Cooper S Cabrio 2025",
-          "prix": 42796,
-          "km": 5397,
-          "url": "https://www.autoscout24.de/angebote/mini-cooper-s-cabrio-john-cooper-works-trim-benzin-schwarz-7ced97c9-bbaa-464e-8fb1-d06a2d019031"
-        },
-        {
-          "id": "ce3022b0d6be8340",
-          "titre": "Mini Cooper C 2024",
-          "prix": 25660,
-          "km": 7629,
-          "url": "https://www.autoscout24.de/angebote/mini-cooper-c-classic-trim-benzin-grau-31393cbe-7d3d-459e-9beb-bbdc7604200d"
-        }
-      ],
-      "prix_moyen": 32871
-    },
-    {
-      "lat": 51.2217,
-      "lng": 6.7762,
-      "ville": "Düsseldorf",
-      "region": "Allemagne",
-      "nb": 8,
-      "best_score": 70.0,
-      "annonces": [
-        {
-          "id": "030ba2e71ae2a8a0",
-          "titre": "BYD Dolphin Surf 2025",
-          "prix": 20350,
-          "km": 2219,
-          "url": "https://www.autoscout24.de/angebote/byd-dolphin-surf-boost-navi-kamera-leder-elektro-weiss-d5b5edec-3f18-4809-858b-18c267ba7a59"
-        },
-        {
-          "id": "350d43d935d71334",
-          "titre": "Skoda Karoq 2022",
-          "prix": 24690,
-          "km": 40637,
-          "url": "https://www.autoscout24.de/angebote/skoda-karoq-1-5-tsi-dsg-ambition-clever-benzin-schwarz-006c9ff0-1b82-4492-ac6d-27aa1745d0cb"
-        },
-        {
-          "id": "8fcb28a917e476e6",
-          "titre": "Mercedes Cla 250 2021",
-          "prix": 28475,
-          "km": 76254,
-          "url": "https://www.autoscout24.de/angebote/mercedes-benz-cla-250-shooting-b-amg-businessnightahkhud-benzin-grau-b84e6326-1365-4773-b8c7-21f5ef23ec98"
-        },
-        {
-          "id": "9bfcc03332f88489",
-          "titre": "Volvo Xc90 2024",
-          "prix": 51850,
-          "km": 40675,
-          "url": "https://www.autoscout24.de/angebote/volvo-xc90-b5-awd-plus-brigh-plus-bright-awd-diesel-blau-1fd176ff-9718-4b0a-8c8e-eaa97853990b"
-        },
-        {
-          "id": "1128219389d9fd5e",
-          "titre": "Volvo Xc40 2020",
-          "prix": 23949,
-          "km": 79159,
-          "url": "https://www.autoscout24.de/angebote/volvo-xc40-momentum-pro-winter-paketshzstandheizung-benzin-schwarz-7daf779b-a85d-43eb-9090-6ef78b31f2e0"
-        }
-      ],
-      "prix_moyen": 27328
+      "prix_moyen": 34553
     },
     {
       "lat": 51.5136,
@@ -8157,7 +8065,7 @@ const MAP_DATA = {
       "ville": "Dortmund",
       "region": "Allemagne",
       "nb": 7,
-      "best_score": 76.0,
+      "best_score": 70.0,
       "annonces": [
         {
           "id": "ed7b27de112a3d3e",
@@ -8195,7 +8103,7 @@ const MAP_DATA = {
           "url": "https://www.autoscout24.de/angebote/mazda-3-2-0-m-hybrid-selection-a18-benzin-weiss-95a96148-e01d-46de-b2ea-ed485890411f"
         }
       ],
-      "prix_moyen": 21827
+      "prix_moyen": 22527
     },
     {
       "lat": 50.9333,
@@ -8203,7 +8111,7 @@ const MAP_DATA = {
       "ville": "Köln",
       "region": "Allemagne",
       "nb": 7,
-      "best_score": 78.0,
+      "best_score": 72.0,
       "annonces": [
         {
           "id": "b8c60298ebb5d792",
@@ -8220,18 +8128,18 @@ const MAP_DATA = {
           "url": "https://www.autoscout24.de/angebote/mercedes-benz-cla-250-shooting-brake-aut-led-navi-tempo-shz-klima-elektro-benzin-schwarz-8672385c-d9fe-40fe-99cb-a3ad871c11c6"
         },
         {
-          "id": "8101e7fa6b61249f",
-          "titre": "Citroen C3 2024",
-          "prix": 15999,
-          "km": 16693,
-          "url": "https://www.autoscout24.de/angebote/citroen-c3-max-navi-led-kamera-keyless-carplay-android-auto-benzin-beige-e225e06a-10df-4d30-ba7e-83cad0ebaba7"
-        },
-        {
           "id": "4b64b56ce2feaa92",
           "titre": "Renault Megane E-Tech 2022",
           "prix": 18240,
           "km": 27076,
           "url": "https://www.autoscout24.de/angebote/renault-megane-e-tech-equilibre-ev40-130hp-ccs-elektro-schwarz-d86ec127-c20b-482c-8a59-9a5c1c4c4a62"
+        },
+        {
+          "id": "1cd485932b81da8f",
+          "titre": "Mercedes Glc 300 2018",
+          "prix": 28490,
+          "km": 96200,
+          "url": "https://www.autoscout24.de/angebote/mercedes-benz-glc-300-glc-300-4matic-exclusive-aut-navi-hud-led-benzin-schwarz-c005e7b5-9ece-48de-84b7-ce05171b7b41"
         },
         {
           "id": "33b49244364ef55d",
@@ -8241,15 +8149,107 @@ const MAP_DATA = {
           "url": "https://www.autoscout24.de/angebote/cupra-formentor-1-5-e-hybrid-vz-aut-navi-led-acc-elektro-benzin-schwarz-f718be27-5f2e-4f63-b85b-24ca1d33c11b"
         }
       ],
-      "prix_moyen": 27129
+      "prix_moyen": 28914
+    },
+    {
+      "lat": 48.1351,
+      "lng": 11.582,
+      "ville": "München",
+      "region": "Allemagne",
+      "nb": 6,
+      "best_score": 62.0,
+      "annonces": [
+        {
+          "id": "5e320db9eca1da9b",
+          "titre": "Mini Aceman 2025",
+          "prix": 32443,
+          "km": 2509,
+          "url": "https://www.autoscout24.de/angebote/mini-aceman-favoured-trim-elektro-blau-c77a83d7-8f0b-420d-90e6-46c6f09e4f0b"
+        },
+        {
+          "id": "ef585f47bff3cde0",
+          "titre": "Mini Countryman D 2025",
+          "prix": 41180,
+          "km": 3934,
+          "url": "https://www.autoscout24.de/angebote/mini-countryman-d-favoured-trim-diesel-grau-9e536665-b305-4dfe-8ca5-989d1df846ed"
+        },
+        {
+          "id": "ce3022b0d6be8340",
+          "titre": "Mini Cooper C 2024",
+          "prix": 25660,
+          "km": 7629,
+          "url": "https://www.autoscout24.de/angebote/mini-cooper-c-classic-trim-benzin-grau-31393cbe-7d3d-459e-9beb-bbdc7604200d"
+        },
+        {
+          "id": "231ab8f52502dd2c",
+          "titre": "Mini Cooper S 2025",
+          "prix": 35656,
+          "km": 10437,
+          "url": "https://www.autoscout24.de/angebote/mini-cooper-s-john-cooper-works-trim-benzin-schwarz-dc5611e1-873d-458f-950b-41044b2685ad"
+        },
+        {
+          "id": "0dffa3093a0457b2",
+          "titre": "Mini Cooper C 2025",
+          "prix": 28754,
+          "km": 7834,
+          "url": "https://www.autoscout24.de/angebote/mini-cooper-c-classic-trim-benzin-grau-35b3757a-31b1-414a-bcf7-daa8029328d0"
+        }
+      ],
+      "prix_moyen": 32669
+    },
+    {
+      "lat": 49.6444,
+      "lng": 6.0117,
+      "ville": "Ell",
+      "region": "Ouest",
+      "nb": 6,
+      "best_score": 56.0,
+      "annonces": [
+        {
+          "id": "d636e385beb167a8",
+          "titre": "Peugeot 308 2018",
+          "prix": 14900,
+          "km": 106681,
+          "url": "https://www.autoscout24.lu/offres/peugeot-308-gt-line-diesel-bleu-fc29a583-7144-495a-91d7-a4d8252bbf38"
+        },
+        {
+          "id": "054653171a578157",
+          "titre": "Peugeot Rifter 2025",
+          "prix": 34980,
+          "km": 10,
+          "url": "https://www.autoscout24.lu/offres/peugeot-rifter-gt-l1-diesel-vert-918be051-0d6d-4747-8204-d5ec25e101a2"
+        },
+        {
+          "id": "1dd4e9025d5aabd3",
+          "titre": "Peugeot Rifter 2024",
+          "prix": 34750,
+          "km": 5,
+          "url": "https://www.autoscout24.lu/offres/peugeot-rifter-gt-l1-diesel-blanc-fe8b28ed-34f0-474b-ba64-044493482162"
+        },
+        {
+          "id": "95c2bd668508ebea",
+          "titre": "Mercedes Gla 200 2020",
+          "prix": 29900,
+          "km": 43439,
+          "url": "https://www.autoscout24.lu/offres/mercedes-benz-gla-200-gla-200-essence-noir-a029ddd5-f344-4257-a79d-8fb3d8fbf808"
+        },
+        {
+          "id": "fe22831eb8860225",
+          "titre": "Volkswagen Amarok 2019",
+          "prix": 24900,
+          "km": 183390,
+          "url": "https://www.autoscout24.lu/offres/volkswagen-amarok-highline-doublecab-4motion-diesel-noir-ba572a95-4e95-4159-b546-65ffd4e87052"
+        }
+      ],
+      "prix_moyen": 26070
     },
     {
       "lat": 50.7764,
       "lng": 6.0836,
       "ville": "Aachen",
       "region": "Allemagne",
-      "nb": 6,
-      "best_score": 73.0,
+      "nb": 5,
+      "best_score": 67.0,
       "annonces": [
         {
           "id": "179aa7d08e70785b",
@@ -8280,43 +8280,68 @@ const MAP_DATA = {
           "url": "https://www.autoscout24.de/angebote/volkswagen-golf-gti-viii-2-0-l-tsi-dsg-navi-digitales-cockpit-led-sper-benzin-weiss-5168ef1c-c4c3-4c67-936d-e26ee99b25f6"
         },
         {
-          "id": "fc80f3908efd03dc",
-          "titre": "Dacia Spring 2023",
-          "prix": 9650,
-          "km": 24790,
-          "url": "https://www.autoscout24.de/angebote/dacia-spring-electric-essential-navi-kamera-bluetooth-elektro-gruen-8a484723-5daf-4930-adb0-9e14921de7d0"
+          "id": "534e9f687dbb298a",
+          "titre": "Fiat Panda 2024",
+          "prix": 12290,
+          "km": 9900,
+          "url": "https://www.autoscout24.de/angebote/fiat-panda-mild-hybrid-city-paket-cinema-schwarz-benzin-schwarz-e6d8d117-443e-42c2-9fc6-2c27a0bbee9e"
         }
       ],
-      "prix_moyen": 27318
+      "prix_moyen": 30852
+    },
+    {
+      "lat": 51.2217,
+      "lng": 6.7762,
+      "ville": "Neuss bei Düsseldorf",
+      "region": "Allemagne",
+      "nb": 4,
+      "best_score": 57.0,
+      "annonces": [
+        {
+          "id": "1128219389d9fd5e",
+          "titre": "Volvo Xc40 2020",
+          "prix": 23949,
+          "km": 79159,
+          "url": "https://www.autoscout24.de/angebote/volvo-xc40-momentum-pro-winter-paketshzstandheizung-benzin-schwarz-7daf779b-a85d-43eb-9090-6ef78b31f2e0"
+        },
+        {
+          "id": "5e86d63f7ac92673",
+          "titre": "Toyota Corolla 2020",
+          "prix": 19890,
+          "km": 86612,
+          "url": "https://www.autoscout24.de/angebote/toyota-corolla-touring-sports-1-8-team-d-pdc-carplay-elektro-benzin-silber-6981e91f-e66c-47ba-9c2e-47ac6bab1cf5"
+        },
+        {
+          "id": "6f0f9ec1e3b50d27",
+          "titre": "Volkswagen Taigo 2025",
+          "prix": 22980,
+          "km": 125,
+          "url": "https://www.autoscout24.de/angebote/volkswagen-taigo-1-0-tsi-dsg-life-led-app-kam-lm-pdc-benzin-schwarz-3c3efac8-8b99-44b2-b0a9-f45d137fbf2a"
+        },
+        {
+          "id": "360f9e584b65a4c5",
+          "titre": "Volkswagen Tiguan 2024",
+          "prix": 27429,
+          "km": 46856,
+          "url": "https://www.autoscout24.de/angebote/volkswagen-tiguan-elegance-fernlichassistnaviacckamera-benzin-weiss-0cfce5a4-e697-4e3d-ac71-8e5ff94d930d"
+        }
+      ],
+      "prix_moyen": 23562
     },
     {
       "lat": 50.1109,
       "lng": 8.6821,
-      "ville": "Frankfurt-Rödelheim",
+      "ville": "Frankfurt am Main",
       "region": "Allemagne",
-      "nb": 6,
-      "best_score": 77.0,
+      "nb": 3,
+      "best_score": 71.0,
       "annonces": [
-        {
-          "id": "8dbd23141e819e45",
-          "titre": "Cupra Ateca 2024",
-          "prix": 34980,
-          "km": 27450,
-          "url": "https://www.autoscout24.de/angebote/cupra-ateca-2-0-tsi-7-gang-dsg-4drive-beats-navi-benzin-grau-0fed4e7a-5f88-4b59-b710-d1bf2fd5b4b6"
-        },
         {
           "id": "8501a907f7df4599",
           "titre": "Mercedes E 300 2024",
           "prix": 53880,
           "km": 730,
           "url": "https://www.autoscout24.de/angebote/mercedes-benz-e-300-de-t-exclusiv-amg-hud-dis-20-ahk-bur-elektro-diesel-schwarz-501bbcfa-1a90-4532-8777-7ea45e81cf6d"
-        },
-        {
-          "id": "504b9c6d9a07584a",
-          "titre": "BMW X3 2023",
-          "prix": 39190,
-          "km": 115803,
-          "url": "https://www.autoscout24.de/angebote/bmw-x3-xdrive-30d-mild-hybrid-m-sport-aut-navi-laser-cam-diesel-grau-35e0af66-2258-4be8-bd04-41f775e86617"
         },
         {
           "id": "324821cb564de13a",
@@ -8326,163 +8351,46 @@ const MAP_DATA = {
           "url": "https://www.autoscout24.de/angebote/opel-insignia-b-gsi-4x4-sports-tourer-hud-ahk-klappbar-el-fonds-benzin-schwarz-19d97c5d-f97d-4c03-8951-fc4996f9c54c"
         },
         {
-          "id": "78d09578e11a4112",
-          "titre": "Dacia Spring 2024",
-          "prix": 12880,
-          "km": 22713,
-          "url": "https://www.autoscout24.de/angebote/dacia-spring-extreme-electric-65-ccs-inkl-batterie-elektro-grau-2eca5614-a6fa-44ad-889c-3d5b770757af"
+          "id": "d4e930ea306b2706",
+          "titre": "Mazda 6 2015",
+          "prix": 12950,
+          "km": 115309,
+          "url": "https://www.autoscout24.de/angebote/mazda-6-2-0-sports-line-nav-xenon-tempo-cam-pdc-shz-bt-benzin-schwarz-bb11684d-9066-4e95-88e2-8f2ae28b35dd"
         }
       ],
-      "prix_moyen": 30305
+      "prix_moyen": 31593
     },
     {
-      "lat": 49.6444,
-      "lng": 6.0117,
-      "ville": "Ell",
-      "region": "Ouest",
-      "nb": 5,
-      "best_score": 66.0,
-      "annonces": [
-        {
-          "id": "054653171a578157",
-          "titre": "Peugeot Rifter 2025",
-          "prix": 34980,
-          "km": 10,
-          "url": "https://www.autoscout24.lu/offres/peugeot-rifter-gt-l1-diesel-vert-918be051-0d6d-4747-8204-d5ec25e101a2"
-        },
-        {
-          "id": "1dd4e9025d5aabd3",
-          "titre": "Peugeot Rifter 2024",
-          "prix": 34750,
-          "km": 5,
-          "url": "https://www.autoscout24.lu/offres/peugeot-rifter-gt-l1-diesel-blanc-fe8b28ed-34f0-474b-ba64-044493482162"
-        },
-        {
-          "id": "95c2bd668508ebea",
-          "titre": "Mercedes Gla 200 2020",
-          "prix": 29900,
-          "km": 43439,
-          "url": "https://www.autoscout24.lu/offres/mercedes-benz-gla-200-gla-200-essence-noir-a029ddd5-f344-4257-a79d-8fb3d8fbf808"
-        },
-        {
-          "id": "fe22831eb8860225",
-          "titre": "Volkswagen Amarok 2019",
-          "prix": 24900,
-          "km": 183390,
-          "url": "https://www.autoscout24.lu/offres/volkswagen-amarok-highline-doublecab-4motion-diesel-noir-ba572a95-4e95-4159-b546-65ffd4e87052"
-        },
-        {
-          "id": "f7b4fd09d62f4333",
-          "titre": "Volvo S80 2014",
-          "prix": 16990,
-          "km": 61799,
-          "url": "https://www.autoscout24.lu/offres/volvo-s80-t5-momentum-essence-gris-f0ba618b-6cd5-4bef-8838-7258aee7c475"
-        }
-      ],
-      "prix_moyen": 28304
-    },
-    {
-      "lat": 49.5994,
-      "lng": 6.1381,
-      "ville": "Bonn",
-      "region": "Centre",
-      "nb": 4,
-      "best_score": 63.0,
-      "annonces": [
-        {
-          "id": "9cd29e40ea8b2f52",
-          "titre": "Volkswagen Golf Gti 2024",
-          "prix": 32647,
-          "km": 27270,
-          "url": "https://www.autoscout24.de/angebote/volkswagen-golf-gti-2-0-tsi-opf-dsg-pano-matrix-led-navi-harman-kardon-benzin-rot-368bd083-411e-4508-88b2-506f9164c109"
-        },
-        {
-          "id": "337bdf8649c6a5fa",
-          "titre": "Skoda Enyaq 2022",
-          "prix": 31980,
-          "km": 40745,
-          "url": "https://www.autoscout24.de/angebote/skoda-enyaq-80-loft-navi-led-ahk-pano-360-waermepumpe-acc-app-elektro-blau-ff0f142d-44e1-40f2-9351-b347ff4c26a2"
-        },
-        {
-          "id": "5a8031c8bd1b301c",
-          "titre": "Volvo Xc40 2023",
-          "prix": 37980,
-          "km": 16105,
-          "url": "https://www.autoscout24.de/angebote/volvo-xc40-ultimate-recharge-pure-electric-awd-panoramadac-elektro-gold-12ac3ea9-c1e4-47f6-9321-7c20fd952e75"
-        },
-        {
-          "id": "89dd85b505823812",
-          "titre": "Volkswagen Tiguan 2023",
-          "prix": 26980,
-          "km": 35686,
-          "url": "https://www.autoscout24.de/angebote/volkswagen-tiguan-life-1-5-tsi-navi-led-ahk-kamera-18-massage-benzin-schwarz-31b5f5f8-2f42-4911-a92b-9f3ca4d13835"
-        }
-      ],
-      "prix_moyen": 32396
-    },
-    {
-      "lat": 48.7758,
-      "lng": 9.1829,
-      "ville": "Stuttgart",
+      "lat": 49.9929,
+      "lng": 8.2473,
+      "ville": "Mainz",
       "region": "Allemagne",
       "nb": 3,
-      "best_score": 67.0,
+      "best_score": 64.0,
       "annonces": [
         {
-          "id": "d930c268b501a596",
-          "titre": "Mercedes C 250 2017",
-          "prix": 23840,
-          "km": 41519,
-          "url": "https://www.autoscout24.de/angebote/mercedes-benz-c-250-avantgarde-aut-led-acc-cam-pdc-shz-klima-garantie-benzin-schwarz-2b5b6ff5-c4ff-4992-86d7-acd0d30a04ef"
+          "id": "77c133f3e25e0d10",
+          "titre": "Audi A3 2022",
+          "prix": 21380,
+          "km": 51812,
+          "url": "https://www.autoscout24.de/angebote/audi-a3-sportback-35-tfsi-led-ahk-benzin-weiss-d8df9f7d-a684-478e-8cd2-78154c63a8ff"
         },
         {
-          "id": "0297765e6f785cd1",
-          "titre": "Opel Vivaro 2026",
-          "prix": 35728,
-          "km": 10,
-          "url": "https://www.autoscout24.de/angebote/opel-vivaro-doka-xl-2-2-kam-carpl-sichtp-nsw-pdc-132-kw-17-diesel-grau-cb1683d5-ff12-41ea-98db-a458ab16f917"
+          "id": "4dccde5e0e2bb6e2",
+          "titre": "Audi Q8 2022",
+          "prix": 53980,
+          "km": 82636,
+          "url": "https://www.autoscout24.de/angebote/audi-q8-55-tfsi-e-quattro-tiptronic-s-line-soh97-elektro-benzin-grau-14768cc0-2c3d-4488-b6c9-17eef0fda7a4"
         },
         {
-          "id": "3194e457d077df8e",
-          "titre": "Mercedes C 220 2017",
-          "prix": 18990,
-          "km": 166000,
-          "url": "https://www.autoscout24.de/angebote/mercedes-benz-c-220-d-amg-bluetec-led-kamera-navi-shz-ahk-diesel-grau-13fccc35-eb14-4c02-bb5b-aed1c966f952"
+          "id": "15a4b990470d3ec2",
+          "titre": "Volkswagen T-Roc 2023",
+          "prix": 26440,
+          "km": 24887,
+          "url": "https://www.autoscout24.de/angebote/volkswagen-t-roc-1-5-tsi-dsg-r-line-kamera-navi-benzin-grau-bbc8fe00-b14b-44cf-9edc-76f43cccfa6d"
         }
       ],
-      "prix_moyen": 26186
-    },
-    {
-      "lat": 49.4878,
-      "lng": 8.466,
-      "ville": "Mannheim",
-      "region": "Allemagne",
-      "nb": 3,
-      "best_score": 40.0,
-      "annonces": [
-        {
-          "id": "6140bc031e2d300e",
-          "titre": "Kia Sportage 2012",
-          "prix": 11990,
-          "km": 142874,
-          "url": "https://www.autoscout24.de/angebote/kia-sportage-spirit-4wd-navi-kamera-szh-tempo-pano-diesel-grau-fa90c000-e0c6-42e0-81f9-9e25b51232a1"
-        },
-        {
-          "id": "2d19089b86870258",
-          "titre": "Kia Venga 2015",
-          "prix": 8980,
-          "km": 137100,
-          "url": "https://www.autoscout24.de/angebote/kia-venga-dream-team-klima-navi-kamera-allwetter-tuev-diesel-schwarz-c788fc24-74d6-438c-bde1-4e7fd3f4ea4e"
-        },
-        {
-          "id": "5e6903be4e23cd53",
-          "titre": "Jeep Wrangler 2014",
-          "prix": 25450,
-          "km": 135000,
-          "url": "https://www.autoscout24.de/angebote/jeep-wrangler-wrangler-unlimited-sport-allrad-ahk-1hd-diesel-weiss-c7a18553-cb35-4ead-ba6b-029c5d19e4ec"
-        }
-      ],
-      "prix_moyen": 15473
+      "prix_moyen": 33933
     },
     {
       "lat": 50.3569,
@@ -8490,7 +8398,7 @@ const MAP_DATA = {
       "ville": "Koblenz",
       "region": "Allemagne",
       "nb": 2,
-      "best_score": 57.0,
+      "best_score": 43.0,
       "annonces": [
         {
           "id": "35201bbd9c880b4f",
@@ -8510,29 +8418,54 @@ const MAP_DATA = {
       "prix_moyen": 28230
     },
     {
-      "lat": 49.9929,
-      "lng": 8.2473,
-      "ville": "Mainz-Kastel",
+      "lat": 48.7758,
+      "lng": 9.1829,
+      "ville": "Stuttgart",
       "region": "Allemagne",
       "nb": 2,
-      "best_score": 73.0,
+      "best_score": 57.0,
       "annonces": [
         {
-          "id": "f7e82edb5b607941",
-          "titre": "Volvo Xc60 2025",
-          "prix": 51750,
-          "km": 24810,
-          "url": "https://www.autoscout24.de/angebote/volvo-xc60-t8-plus-dark-plug-in-hybrid-awd-voll-led-standhzg-elektro-benzin-schwarz-bdf00470-f83a-4c1d-b890-24c7538d6056"
+          "id": "d930c268b501a596",
+          "titre": "Mercedes C 250 2017",
+          "prix": 23840,
+          "km": 41519,
+          "url": "https://www.autoscout24.de/angebote/mercedes-benz-c-250-avantgarde-aut-led-acc-cam-pdc-shz-klima-garantie-benzin-schwarz-2b5b6ff5-c4ff-4992-86d7-acd0d30a04ef"
         },
         {
-          "id": "77c133f3e25e0d10",
-          "titre": "Audi A3 2022",
-          "prix": 21380,
-          "km": 51812,
-          "url": "https://www.autoscout24.de/angebote/audi-a3-sportback-35-tfsi-led-ahk-benzin-weiss-d8df9f7d-a684-478e-8cd2-78154c63a8ff"
+          "id": "0297765e6f785cd1",
+          "titre": "Opel Vivaro 2026",
+          "prix": 35728,
+          "km": 10,
+          "url": "https://www.autoscout24.de/angebote/opel-vivaro-doka-xl-2-2-kam-carpl-sichtp-nsw-pdc-132-kw-17-diesel-grau-cb1683d5-ff12-41ea-98db-a458ab16f917"
         }
       ],
-      "prix_moyen": 36565
+      "prix_moyen": 29784
+    },
+    {
+      "lat": 49.4878,
+      "lng": 8.466,
+      "ville": "Mannheim",
+      "region": "Allemagne",
+      "nb": 2,
+      "best_score": 26.0,
+      "annonces": [
+        {
+          "id": "2d19089b86870258",
+          "titre": "Kia Venga 2015",
+          "prix": 8980,
+          "km": 137100,
+          "url": "https://www.autoscout24.de/angebote/kia-venga-dream-team-klima-navi-kamera-allwetter-tuev-diesel-schwarz-c788fc24-74d6-438c-bde1-4e7fd3f4ea4e"
+        },
+        {
+          "id": "5e6903be4e23cd53",
+          "titre": "Jeep Wrangler 2014",
+          "prix": 25450,
+          "km": 135000,
+          "url": "https://www.autoscout24.de/angebote/jeep-wrangler-wrangler-unlimited-sport-allrad-ahk-1hd-diesel-weiss-c7a18553-cb35-4ead-ba6b-029c5d19e4ec"
+        }
+      ],
+      "prix_moyen": 17215
     },
     {
       "lat": 49.6011,
@@ -8540,7 +8473,7 @@ const MAP_DATA = {
       "ville": "Bertrange",
       "region": "Centre",
       "nb": 2,
-      "best_score": 60.0,
+      "best_score": 49.0,
       "annonces": [
         {
           "id": "f312b24063e6fa4b",
@@ -8565,7 +8498,7 @@ const MAP_DATA = {
       "ville": "Contern",
       "region": "Est",
       "nb": 2,
-      "best_score": 63.0,
+      "best_score": 51.0,
       "annonces": [
         {
           "id": "628f37602f874f48",
@@ -8585,22 +8518,40 @@ const MAP_DATA = {
       "prix_moyen": 229900
     },
     {
-      "lat": 49.6356,
-      "lng": 6.1194,
-      "ville": "Olpe",
+      "lat": 49.5994,
+      "lng": 6.1381,
+      "ville": "Bonn",
       "region": "Centre",
       "nb": 1,
-      "best_score": 55.0,
+      "best_score": 46.0,
       "annonces": [
         {
-          "id": "ba1b4f5a8e9e3dcd",
-          "titre": "Volkswagen T-Roc 2026",
-          "prix": 39980,
-          "km": 5,
-          "url": "https://www.autoscout24.de/angebote/volkswagen-t-roc-style-1-5-l-etsi-150-ps-7-gang-dsg-pano-benzin-grau-7b9b7289-03dc-4681-ab51-6e20ce235b1a"
+          "id": "89dd85b505823812",
+          "titre": "Volkswagen Tiguan 2023",
+          "prix": 26980,
+          "km": 35686,
+          "url": "https://www.autoscout24.de/angebote/volkswagen-tiguan-life-1-5-tsi-navi-led-ahk-kamera-18-massage-benzin-schwarz-31b5f5f8-2f42-4911-a92b-9f3ca4d13835"
         }
       ],
-      "prix_moyen": 39980
+      "prix_moyen": 26980
+    },
+    {
+      "lat": 49.7542,
+      "lng": 6.6414,
+      "ville": "Trier",
+      "region": "Allemagne",
+      "nb": 1,
+      "best_score": 44.0,
+      "annonces": [
+        {
+          "id": "a0fb163f82e1d221",
+          "titre": "Volkswagen T7 Multivan 2026",
+          "prix": 76990,
+          "km": 10000,
+          "url": "https://www.autoscout24.de/angebote/volkswagen-t7-multivan-2-0-tdi-dsg-style-lang-ahk-iq-light-diesel-rot-17346ea0-74c1-42e2-98a0-86333aceaa7f"
+        }
+      ],
+      "prix_moyen": 76990
     }
   ],
   "centre_lu": {

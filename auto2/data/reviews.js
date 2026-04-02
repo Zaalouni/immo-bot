@@ -1,4 +1,4 @@
-// Généré automatiquement le 2026-04-02 16:01
+// Généré automatiquement le 2026-04-02 19:20
 const REVIEWS = {
   "date_calcul": "2026-04-02",
   "nb_modeles": 20,
@@ -86,7 +86,15 @@ const REVIEWS = {
         "Attention aux frais de garantie hors réseau Audi"
       ],
       "sources": "TÜV Report 2023, ADAC 2022, L'Argus",
-      "derniere_maj": "2026-04-02"
+      "derniere_maj": "2026-04-02",
+      "points_faibles": [
+        "Coût d'entretien significativement plus élevé que VW/Skoda",
+        "Même habitacle que la Golf pour un prix supérieur",
+        "Coffre limité (325 L)"
+      ],
+      "fiabilite_resumee": "Premium bien fini mais coût d'entretien élevé. Même plateforme que la Golf avec une image de marque supplémentaire.",
+      "consommation_mixte_l100": 6.5,
+      "consommation_autoroute_l100": 7.8
     },
     {
       "id": 7,
@@ -117,7 +125,16 @@ const REVIEWS = {
         "Vérifier consommation d'huile avant achat"
       ],
       "sources": "TÜV Report 2023, ADAC 2023, Bimmerforums",
-      "derniere_maj": "2026-04-02"
+      "derniere_maj": "2026-04-02",
+      "points_faibles": [
+        "Fiabilité inférieure aux marques japonaises",
+        "Consommation réelle élevée",
+        "Pièces détachées coûteuses",
+        "Suspension ferme en mode Sport"
+      ],
+      "fiabilite_resumee": "Plaisir de conduite excellent mais fiabilité en-deçà des Toyota/Mazda. Coût total de possession élevé.",
+      "consommation_mixte_l100": 7.5,
+      "consommation_autoroute_l100": 8.5
     },
     {
       "id": 12,
@@ -146,7 +163,15 @@ const REVIEWS = {
         "Vérifier entretien de la courroie de distribution"
       ],
       "sources": "TÜV Report 2023, ADAC 2022, Quechoisir",
-      "derniere_maj": "2026-04-02"
+      "derniere_maj": "2026-04-02",
+      "points_faibles": [
+        "Finition intérieure basique",
+        "Confort limité sur mauvaise route",
+        "Équipements électroniques minimalistes"
+      ],
+      "fiabilite_resumee": "Meilleur rapport coût total de possession du marché. Finition basique mais mécanique robuste et pièces bon marché.",
+      "consommation_mixte_l100": 6.5,
+      "consommation_autoroute_l100": 7.5
     },
     {
       "id": 20,
@@ -175,7 +200,14 @@ const REVIEWS = {
         "Vérifier absence de surchauffe (joint de culasse)"
       ],
       "sources": "TÜV Report 2022, ADAC, WhatCar",
-      "derniere_maj": "2026-04-02"
+      "derniere_maj": "2026-04-02",
+      "points_faibles": [
+        "Boîte automatique PowerShift à éviter (fiabilité problématique)",
+        "Consommation réelle EcoBoost souvent supérieure à l'annoncé"
+      ],
+      "fiabilite_resumee": "Compacte polyvalente avec une bonne tenue de route. Moteur EcoBoost 1.0 fiable mais demande de l'entretien.",
+      "consommation_mixte_l100": 6.3,
+      "consommation_autoroute_l100": 7.2
     },
     {
       "id": 11,
@@ -203,7 +235,14 @@ const REVIEWS = {
         "Préférer les modèles avec historique mixte ville/route"
       ],
       "sources": "Auto Express, What Car 2023, ADAC",
-      "derniere_maj": "2026-04-02"
+      "derniere_maj": "2026-04-02",
+      "points_faibles": [
+        "Habitabilité arrière en retrait vs concurrents",
+        "Moteur 3 cylindres perceptible à l'accélération"
+      ],
+      "fiabilite_resumee": "Crossover compact très bien équilibré. Moteur EcoBoost mild-hybrid économique. Bon comportement routier.",
+      "consommation_mixte_l100": 5.8,
+      "consommation_autoroute_l100": 6.8
     },
     {
       "id": 17,
@@ -232,7 +271,15 @@ const REVIEWS = {
         "Carnet entretien Honda complet souhaitable"
       ],
       "sources": "Consumer Reports, ADAC 2022",
-      "derniere_maj": "2026-04-02"
+      "derniere_maj": "2026-04-02",
+      "points_faibles": [
+        "Réseau Honda moins dense en Luxembourg",
+        "Interface multimédia datée sur premières années",
+        "Consommation sur autoroute correcte mais pas exemplaire"
+      ],
+      "fiabilite_resumee": "Fiabilité japonaise au rendez-vous. Espace intérieur généreux. Moins courant en occasion = attention au réseau.",
+      "consommation_mixte_l100": 7.0,
+      "consommation_autoroute_l100": 8.0
     },
     {
       "id": 8,
@@ -260,7 +307,15 @@ const REVIEWS = {
         "Tester le multimédia (mises à jour disponibles)"
       ],
       "sources": "TÜV Report 2023, Auto Plus, Caradisiac",
-      "derniere_maj": "2026-04-02"
+      "derniere_maj": "2026-04-02",
+      "points_faibles": [
+        "Consommation réelle au-dessus de l'annoncé sur autoroute",
+        "Système multimédia parfois lent",
+        "Rayon de braquage important"
+      ],
+      "fiabilite_resumee": "SUV familial moderne avec bon niveau d'équipement. Hybride bien intégré, fiabilité correcte.",
+      "consommation_mixte_l100": 6.2,
+      "consommation_autoroute_l100": 7.2
     },
     {
       "id": 9,
@@ -287,7 +342,14 @@ const REVIEWS = {
         "Tester la boîte DCT en usage urbain"
       ],
       "sources": "Auto Bild, Caradisiac 2023",
-      "derniere_maj": "2026-04-02"
+      "derniere_maj": "2026-04-02",
+      "points_faibles": [
+        "Peu de recul fiabilité sur cette génération (2022+)",
+        "Boîte DCT 6 à surveiller sur gros kilométrages"
+      ],
+      "fiabilite_resumee": "Nouvelle génération très réussie. Design moderne, bon espace, moteur hybride efficace. Peu de recul encore.",
+      "consommation_mixte_l100": 6.0,
+      "consommation_autoroute_l100": 7.0
     },
     {
       "id": 10,
@@ -315,7 +377,15 @@ const REVIEWS = {
         "Carnet entretien Mazda recommandé"
       ],
       "sources": "TÜV Report 2023, ADAC 2022, Consumer Reports",
-      "derniere_maj": "2026-04-02"
+      "derniere_maj": "2026-04-02",
+      "points_faibles": [
+        "Pas de motorisation hybride/électrique disponible",
+        "Légèrement énergivore sur autoroute vs concurrents hybrides",
+        "Système connectivité un peu daté sur premières années"
+      ],
+      "fiabilite_resumee": "L'une des SUV les plus fiables du marché européen. Finition japonaise sérieuse, peu de problèmes.",
+      "consommation_mixte_l100": 7.0,
+      "consommation_autoroute_l100": 7.8
     },
     {
       "id": 18,
@@ -345,7 +415,15 @@ const REVIEWS = {
         "Vérifier l'état de la garantie constructeur ou extension"
       ],
       "sources": "TÜV Report 2023, ADAC 2023, Auto Motor Sport",
-      "derniere_maj": "2026-04-02"
+      "derniere_maj": "2026-04-02",
+      "points_faibles": [
+        "Fiabilité électronique inférieure aux marques japonaises",
+        "Coût d'entretien très élevé (huiles spéciales, pièces d'origine)",
+        "Dépréciation rapide sur les premières années"
+      ],
+      "fiabilite_resumee": "Confort et luxe inégalés mais fiabilité et coûts d'entretien problématiques sur le long terme.",
+      "consommation_mixte_l100": 7.5,
+      "consommation_autoroute_l100": 8.5
     },
     {
       "id": 16,
@@ -373,7 +451,14 @@ const REVIEWS = {
         "Vérifier entretien Nissan officiel"
       ],
       "sources": "TÜV Report 2023, What Car, Auto Bild",
-      "derniere_maj": "2026-04-02"
+      "derniere_maj": "2026-04-02",
+      "points_faibles": [
+        "Boîte CVT sur certaines versions peu sportive",
+        "Consommation e-Power décevante sur autoroute"
+      ],
+      "fiabilite_resumee": "SUV compact familial très équilibré. Moteur mild-hybrid propre, finition sérieuse, peu de problèmes.",
+      "consommation_mixte_l100": 6.5,
+      "consommation_autoroute_l100": 7.5
     },
     {
       "id": 19,
@@ -400,7 +485,14 @@ const REVIEWS = {
         "Peu de recul disponible — préférer si sous garantie constructeur"
       ],
       "sources": "Auto Bild 2023, Caradisiac",
-      "derniere_maj": "2026-04-02"
+      "derniere_maj": "2026-04-02",
+      "points_faibles": [
+        "Partage le moteur PureTech de Peugeot — mêmes problèmes potentiels",
+        "Peu de recul sur la fiabilité long terme (nouveau depuis 2022)"
+      ],
+      "fiabilite_resumee": "Nouvelle Astra très bien équipée. Partage les bases Peugeot 308 — même moteur PureTech, mêmes vigilances.",
+      "consommation_mixte_l100": 6.2,
+      "consommation_autoroute_l100": 7.0
     },
     {
       "id": 13,
@@ -429,7 +521,15 @@ const REVIEWS = {
         "Vérifier historique en réseau Peugeot agréé"
       ],
       "sources": "ADAC 2023, Quechoisir, 60 Millions de Consommateurs",
-      "derniere_maj": "2026-04-02"
+      "derniere_maj": "2026-04-02",
+      "points_faibles": [
+        "PureTech 1.2 : chaîne de distribution fragile sur premières années",
+        "Fiabilité électronique perfectible",
+        "Interface i-Cockpit pas toujours intuitive"
+      ],
+      "fiabilite_resumee": "Design intérieur primé. Bonne voiture mais la fiabilité des PSA reste un point d'attention, surtout sur les versions hybrides rechargeables.",
+      "consommation_mixte_l100": 6.2,
+      "consommation_autoroute_l100": 7.0
     },
     {
       "id": 14,
@@ -458,7 +558,15 @@ const REVIEWS = {
         "Tester la boîte EDC en conditions stop-and-go"
       ],
       "sources": "ADAC 2022, TÜV Report 2023, Caradisiac",
-      "derniere_maj": "2026-04-02"
+      "derniere_maj": "2026-04-02",
+      "points_faibles": [
+        "Boîte EDC (double embrayage) moins fiable que la manuelle",
+        "Multimédia Easy Link parfois lent",
+        "Coffre limité (391 L)"
+      ],
+      "fiabilite_resumee": "Citadine bien équilibrée. Moteur TCe 1.0 plus fiable que le PureTech Peugeot. Bonne polyvalence.",
+      "consommation_mixte_l100": 5.5,
+      "consommation_autoroute_l100": 6.5
     },
     {
       "id": 15,
@@ -485,7 +593,14 @@ const REVIEWS = {
         "Vérifier rappels VW/Seat effectués"
       ],
       "sources": "TÜV Report 2023, ADAC 2022",
-      "derniere_maj": "2026-04-02"
+      "derniere_maj": "2026-04-02",
+      "points_faibles": [
+        "Mêmes bugs logiciels que Golf Mk8",
+        "Moins valorisé à la revente que VW"
+      ],
+      "fiabilite_resumee": "Même plateforme que la Golf Mk8 avec un meilleur rapport prix/équipement. Mêmes points de vigilance électroniques.",
+      "consommation_mixte_l100": 6.0,
+      "consommation_autoroute_l100": 7.0
     },
     {
       "id": 5,
@@ -513,7 +628,14 @@ const REVIEWS = {
         "Préférer version avec entretien officiel Skoda"
       ],
       "sources": "TÜV Report 2023, ADAC 2023",
-      "derniere_maj": "2026-04-02"
+      "derniere_maj": "2026-04-02",
+      "points_faibles": [
+        "Dessin intérieur un peu terne",
+        "Moteur 1.5 TSI peut consommer plus que prévu"
+      ],
+      "fiabilite_resumee": "Très bon rapport qualité/prix. Partage la plateforme Golf avec moins de bugs et plus d'espace.",
+      "consommation_mixte_l100": 6.0,
+      "consommation_autoroute_l100": 7.0
     },
     {
       "id": 1,
@@ -541,7 +663,15 @@ const REVIEWS = {
         "Vérifier l'état de la batterie hybride si >150 000 km"
       ],
       "sources": "TÜV Report 2023, ADAC 2023, JD Power Europe 2022",
-      "derniere_maj": "2026-04-02"
+      "derniere_maj": "2026-04-02",
+      "points_faibles": [
+        "Boîte CVT bruyante à haut régime sur autoroute",
+        "Insonorisation perfectible",
+        "Coffre un peu juste pour une berline"
+      ],
+      "fiabilite_resumee": "L'une des voitures les plus fiables du marché. Moteur hybride éprouvé et sans surprise.",
+      "consommation_mixte_l100": 4.5,
+      "consommation_autoroute_l100": 5.2
     },
     {
       "id": 2,
@@ -568,7 +698,15 @@ const REVIEWS = {
         "Historique entretien obligatoire"
       ],
       "sources": "TÜV Report 2023, ADAC 2022, Caradisiac",
-      "derniere_maj": "2026-04-02"
+      "derniere_maj": "2026-04-02",
+      "points_faibles": [
+        "Habitabilité arrière limitée",
+        "Pas idéale pour longs trajets autoroute",
+        "Coffre petit (286 L)"
+      ],
+      "fiabilite_resumee": "Citadine hybride ultra-fiable. Idéale pour la ville, redoutablement efficace en consommation.",
+      "consommation_mixte_l100": 4.2,
+      "consommation_autoroute_l100": 5.5
     },
     {
       "id": 3,
@@ -598,7 +736,15 @@ const REVIEWS = {
         "Tester le multimédia et la climatisation avant achat"
       ],
       "sources": "TÜV Report 2023, ADAC 2023, Auto Motor Sport",
-      "derniere_maj": "2026-04-02"
+      "derniere_maj": "2026-04-02",
+      "points_faibles": [
+        "Bugs logiciels fréquents sur modèles 2020–2021",
+        "Interface tactile peu intuitive",
+        "Coût des réparations électroniques élevé"
+      ],
+      "fiabilite_resumee": "Bonne voiture mais la Mk8 a souffert de bugs électroniques à ses débuts. Les versions récentes (2022+) sont plus abouties.",
+      "consommation_mixte_l100": 6.5,
+      "consommation_autoroute_l100": 7.5
     },
     {
       "id": 4,
@@ -625,7 +771,14 @@ const REVIEWS = {
         "Vérifier l'entretien de la chaîne de distribution"
       ],
       "sources": "TÜV Report 2023, ADAC 2022",
-      "derniere_maj": "2026-04-02"
+      "derniere_maj": "2026-04-02",
+      "points_faibles": [
+        "Moteur 1.0 TSI 95ch un peu juste sur autoroute",
+        "Insonorisation moyenne"
+      ],
+      "fiabilite_resumee": "Citadine solide et polyvalente. Moins de problèmes électroniques que la Golf Mk8.",
+      "consommation_mixte_l100": 5.5,
+      "consommation_autoroute_l100": 6.5
     }
   ]
 };

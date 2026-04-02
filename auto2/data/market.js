@@ -1,69 +1,65 @@
-// Généré automatiquement le 2026-04-02 16:01
+// Généré automatiquement le 2026-04-02 19:20
 const MARKET = {
-  "date_calcul": "2026-04-02T16:01:12.512512",
-  "nb_annonces": 1268,
-  "prix_moyen": 38612,
-  "km_moyen": 47258,
+  "date_calcul": "2026-04-02T19:20:23.013516",
+  "nb_annonces": 1129,
+  "prix_moyen": 38493,
+  "km_moyen": 46654,
   "prix_tranches": {
-    "28k–30k €": 77,
-    "26k–28k €": 64,
+    "28k–30k €": 69,
+    "26k–28k €": 62,
     "10k–12k €": 20,
-    "16k–18k €": 55,
-    "22k–24k €": 115,
-    "6k–8k €": 14,
-    "30k–32k €": 51,
-    "38k–40k €": 60,
+    "16k–18k €": 53,
+    "22k–24k €": 110,
+    "6k–8k €": 12,
+    "30k–32k €": 44,
+    "38k–40k €": 55,
     "58k–60k €": 16,
-    "18k–20k €": 84,
-    "8k–10k €": 12,
-    "48k–50k €": 20,
-    "24k–26k €": 68,
-    "20k–22k €": 88,
-    "2k–4k €": 6,
-    "78k–80k €": 8,
-    "86k–88k €": 2,
-    "0k–2k €": 4,
-    "84k–86k €": 6,
-    "12k–14k €": 31,
-    "36k–38k €": 49,
-    "44k–46k €": 16,
-    "42k–44k €": 30,
-    "4k–6k €": 8,
-    "50k–52k €": 11,
-    "68k–70k €": 11,
-    "32k–34k €": 68,
-    "14k–16k €": 37,
-    "66k–68k €": 8,
-    "34k–36k €": 72,
-    "40k–42k €": 19,
-    "56k–58k €": 8,
+    "18k–20k €": 73,
+    "8k–10k €": 10,
+    "48k–50k €": 18,
+    "24k–26k €": 58,
+    "20k–22k €": 77,
+    "2k–4k €": 7,
+    "78k–80k €": 7,
+    "86k–88k €": 1,
+    "0k–2k €": 1,
+    "84k–86k €": 4,
+    "12k–14k €": 26,
+    "36k–38k €": 39,
+    "44k–46k €": 14,
+    "42k–44k €": 23,
+    "4k–6k €": 6,
+    "50k–52k €": 8,
+    "68k–70k €": 9,
+    "32k–34k €": 61,
+    "14k–16k €": 35,
+    "66k–68k €": 9,
+    "34k–36k €": 69,
+    "40k–42k €": 17,
+    "56k–58k €": 3,
     "88k–90k €": 4,
-    "46k–48k €": 21,
-    "76k–78k €": 3,
-    "62k–64k €": 6,
-    "98k–100k €": 8,
-    "54k–56k €": 10,
-    "90k–92k €": 2,
+    "46k–48k €": 18,
+    "76k–78k €": 4,
+    "62k–64k €": 5,
+    "98k–100k €": 7,
+    "54k–56k €": 7,
+    "90k–92k €": 3,
     "104k–106k €": 1,
     "106k–108k €": 1,
     "64k–66k €": 6,
     "340k–342k €": 1,
-    "52k–54k €": 8,
+    "52k–54k €": 7,
     "112k–114k €": 1,
-    "82k–84k €": 3,
-    "168k–170k €": 2,
-    "70k–72k €": 3,
-    "96k–98k €": 3,
-    "60k–62k €": 5,
+    "60k–62k €": 3,
     "278k–280k €": 1,
-    "118k–120k €": 5,
+    "118k–120k €": 6,
     "72k–74k €": 2,
     "130k–132k €": 1,
     "248k–250k €": 1,
-    "80k–82k €": 1,
+    "70k–72k €": 2,
+    "96k–98k €": 2,
     "94k–96k €": 1,
-    "158k–160k €": 2,
-    "122k–124k €": 1,
+    "156k–158k €": 1,
     "258k–260k €": 2,
     "274k–276k €": 1,
     "296k–298k €": 1,
@@ -80,105 +76,105 @@ const MARKET = {
     "298k–300k €": 1,
     "300k–302k €": 1,
     "412k–414k €": 1,
-    "154k–156k €": 1,
+    "158k–160k €": 1,
+    "82k–84k €": 2,
     "164k–166k €": 1,
-    "218k–220k €": 1,
     "114k–116k €": 1,
     "378k–380k €": 1,
-    "308k–310k €": 1,
-    "126k–128k €": 1,
+    "124k–126k €": 1,
+    "168k–170k €": 1,
     "212k–214k €": 1,
     "142k–144k €": 1
   },
   "km_tranches": {
-    "20–40k km": 345,
-    "40–60k km": 169,
-    "60–80k km": 121,
-    "0–20k km": 390,
+    "20–40k km": 309,
+    "40–60k km": 153,
+    "60–80k km": 103,
+    "0–20k km": 351,
     "260–280k km": 3,
     "240–260k km": 8,
-    "100–120k km": 50,
-    "200–220k km": 6,
-    "120–140k km": 21,
-    "80–100k km": 95,
+    "100–120k km": 43,
+    "200–220k km": 5,
+    "120–140k km": 19,
+    "80–100k km": 85,
     "220–240k km": 3,
-    "140–160k km": 18,
-    "180–200k km": 10,
+    "140–160k km": 14,
+    "180–200k km": 6,
     "300–320k km": 2,
-    "160–180k km": 10
+    "160–180k km": 8
   },
   "prix_par_marque": {
-    "Dacia": 14788,
-    "Fiat": 16781,
-    "Renault": 19027,
-    "Peugeot": 19535,
-    "Citroen": 19707,
-    "Opel": 20539,
-    "Toyota": 20605,
-    "Seat": 20713,
-    "Suzuki": 20960,
-    "Mazda": 21662,
-    "Abarth": 22865,
+    "Dacia": 14602,
+    "Fiat": 16727,
+    "Renault": 17746,
+    "Honda": 19490,
+    "Citroen": 19992,
+    "Abarth": 20156,
+    "Seat": 20534,
+    "Opel": 20688,
+    "Suzuki": 21208,
+    "Toyota": 21706,
+    "Peugeot": 22065,
     "Lancia": 22990
   },
   "repartition_carburant": {
-    "Diesel": 291,
-    "Electrique": 124,
-    "Essence": 717,
-    "Hybride": 127,
+    "Diesel": 253,
+    "Electrique": 107,
+    "Essence": 631,
+    "Hybride": 128,
     "Inconnu": 5,
     "GPL": 2,
-    "GNV": 1,
+    "GNV": 2,
     "Autres": 1
   },
   "repartition_boite": {
-    "Automatique": 976,
-    "Manuelle": 155,
+    "Automatique": 859,
+    "Manuelle": 133,
     "Inconnu": 137
   },
   "repartition_annees": {
-    "2001": 2,
+    "2001": 1,
     "2004": 1,
     "2005": 3,
-    "2007": 5,
-    "2008": 5,
+    "2007": 4,
+    "2008": 4,
     "2009": 5,
     "2010": 5,
     "2011": 6,
-    "2012": 7,
-    "2013": 9,
+    "2012": 6,
+    "2013": 7,
     "2014": 8,
     "2015": 18,
-    "2016": 24,
-    "2017": 24,
-    "2018": 22,
-    "2019": 48,
-    "2020": 62,
-    "2021": 104,
-    "2022": 134,
-    "2023": 237,
-    "2024": 249,
-    "2025": 232,
-    "2026": 53,
+    "2016": 19,
+    "2017": 18,
+    "2018": 21,
+    "2019": 40,
+    "2020": 56,
+    "2021": 97,
+    "2022": 117,
+    "2023": 218,
+    "2024": 226,
+    "2025": 202,
+    "2026": 42,
     "2027": 1
   },
   "repartition_sites": {
-    "autoscout24": 837,
+    "autoscout24": 697,
     "luxauto": 100,
-    "autopolis": 331
+    "autopolis": 332
   },
   "repartition_pays": {
-    "Allemagne": 520,
-    "Luxembourg": 748
+    "Allemagne": 411,
+    "Luxembourg": 718
   },
   "repartition_vendeur": {
-    "pro": 1268
+    "pro": 1129
   },
   "prix_par_pays": {
-    "Allemagne": 30545,
-    "Luxembourg": 44221
+    "Allemagne": 30016,
+    "Luxembourg": 43346
   },
-  "nb_avec_ct": 19,
+  "nb_avec_ct": 17,
   "scatter_prix_km": [
     {
       "x": 21862,
@@ -512,7 +508,7 @@ const MARKET = {
     },
     {
       "x": 64002,
-      "y": 39990,
+      "y": 39490,
       "label": "BMW 330 2023"
     },
     {
@@ -802,7 +798,7 @@ const MARKET = {
     },
     {
       "x": 42900,
-      "y": 39900,
+      "y": 38900,
       "label": "Audi Q5 2021"
     },
     {
@@ -1082,7 +1078,7 @@ const MARKET = {
     },
     {
       "x": 15600,
-      "y": 26980,
+      "y": 25980,
       "label": "Volkswagen T Cross 2025"
     },
     {
@@ -1092,7 +1088,7 @@ const MARKET = {
     },
     {
       "x": 4900,
-      "y": 29980,
+      "y": 29480,
       "label": "Skoda Kamiq 2025"
     },
     {
@@ -1136,39 +1132,9 @@ const MARKET = {
       "label": "Bentley Continental 2027"
     },
     {
-      "x": 139332,
-      "y": 19898,
-      "label": "Mercedes Glk 350 2013"
-    },
-    {
-      "x": 43500,
-      "y": 17490,
-      "label": "Mini Cooper Countryman 2019"
-    },
-    {
-      "x": 191900,
-      "y": 5700,
-      "label": "Mazda 5 2015"
-    },
-    {
-      "x": 99988,
-      "y": 28000,
-      "label": "Mercedes E 200 2018"
-    },
-    {
       "x": 13350,
       "y": 29990,
       "label": "Volkswagen T-Roc 2025"
-    },
-    {
-      "x": 94179,
-      "y": 8900,
-      "label": "Ford Fiesta 2018"
-    },
-    {
-      "x": 52300,
-      "y": 1990,
-      "label": "Opel Vectra 2001"
     },
     {
       "x": 57100,
@@ -1176,9 +1142,39 @@ const MARKET = {
       "label": "Ford Ranger 2018"
     },
     {
-      "x": 16900,
-      "y": 34873,
-      "label": "Audi Q3 2025"
+      "x": 28000,
+      "y": 32650,
+      "label": "Ford Transit 2025"
+    },
+    {
+      "x": 730,
+      "y": 53880,
+      "label": "Mercedes E 300 2024"
+    },
+    {
+      "x": 999,
+      "y": 32885,
+      "label": "Skoda Kamiq 2025"
+    },
+    {
+      "x": 3934,
+      "y": 41180,
+      "label": "Mini Countryman D 2025"
+    },
+    {
+      "x": 247000,
+      "y": 7999,
+      "label": "BMW 530 2013"
+    },
+    {
+      "x": 19900,
+      "y": 14980,
+      "label": "Citroen C3 2024"
+    },
+    {
+      "x": 16950,
+      "y": 23880,
+      "label": "Volkswagen Id.4 2023"
     }
   ],
   "depreciation": [
@@ -1207,16 +1203,28 @@ const MARKET = {
       "perte_pct_total": 19.7
     },
     {
+      "marque": "Volkswagen",
+      "modele": "T7 Multivan",
+      "nb_annonces": 5,
+      "annee_min": 2024,
+      "annee_max": 2026,
+      "prix_recent_median": 76990,
+      "prix_vieux_median": 50490,
+      "perte_pct_par_an": 17.2,
+      "perte_pct_par_10k_km": 0.0,
+      "perte_pct_total": 34.4
+    },
+    {
       "marque": "Seat",
       "modele": "Ibiza",
-      "nb_annonces": 9,
+      "nb_annonces": 7,
       "annee_min": 2022,
       "annee_max": 2025,
-      "prix_recent_median": 19690,
+      "prix_recent_median": 19990,
       "prix_vieux_median": 9880,
-      "perte_pct_par_an": 16.6,
+      "perte_pct_par_an": 16.9,
       "perte_pct_par_10k_km": 4.2,
-      "perte_pct_total": 49.8
+      "perte_pct_total": 50.6
     },
     {
       "marque": "Cupra",
@@ -1243,21 +1251,9 @@ const MARKET = {
       "perte_pct_total": 26.7
     },
     {
-      "marque": "Opel",
-      "modele": "Astra",
-      "nb_annonces": 8,
-      "annee_min": 2022,
-      "annee_max": 2025,
-      "prix_recent_median": 30800,
-      "prix_vieux_median": 19970,
-      "perte_pct_par_an": 11.7,
-      "perte_pct_par_10k_km": 5.6,
-      "perte_pct_total": 35.2
-    },
-    {
       "marque": "Hyundai",
       "modele": "Kona",
-      "nb_annonces": 9,
+      "nb_annonces": 8,
       "annee_min": 2021,
       "annee_max": 2025,
       "prix_recent_median": 35990,
@@ -1268,56 +1264,44 @@ const MARKET = {
     },
     {
       "marque": "Volkswagen",
-      "modele": "Id.4",
-      "nb_annonces": 5,
+      "modele": "T-Roc",
+      "nb_annonces": 14,
       "annee_min": 2021,
-      "annee_max": 2023,
-      "prix_recent_median": 23899,
-      "prix_vieux_median": 18900,
-      "perte_pct_par_an": 10.5,
-      "perte_pct_par_10k_km": 0.0,
-      "perte_pct_total": 20.9
+      "annee_max": 2026,
+      "prix_recent_median": 47980,
+      "prix_vieux_median": 21490,
+      "perte_pct_par_an": 11.0,
+      "perte_pct_par_10k_km": 4.7,
+      "perte_pct_total": 55.2
+    },
+    {
+      "marque": "Opel",
+      "modele": "Astra",
+      "nb_annonces": 8,
+      "annee_min": 2021,
+      "annee_max": 2024,
+      "prix_recent_median": 21490,
+      "prix_vieux_median": 14490,
+      "perte_pct_par_an": 10.9,
+      "perte_pct_par_10k_km": 6.6,
+      "perte_pct_total": 32.6
     },
     {
       "marque": "Mercedes",
       "modele": "E 300",
-      "nb_annonces": 7,
+      "nb_annonces": 5,
       "annee_min": 2020,
       "annee_max": 2025,
       "prix_recent_median": 68890,
-      "prix_vieux_median": 32990,
-      "perte_pct_par_an": 10.4,
-      "perte_pct_par_10k_km": 4.3,
-      "perte_pct_total": 52.1
-    },
-    {
-      "marque": "Mercedes",
-      "modele": "Glc 300",
-      "nb_annonces": 6,
-      "annee_min": 2020,
-      "annee_max": 2025,
-      "prix_recent_median": 71690,
-      "prix_vieux_median": 34990,
-      "perte_pct_par_an": 10.2,
-      "perte_pct_par_10k_km": 4.9,
-      "perte_pct_total": 51.2
-    },
-    {
-      "marque": "Volkswagen",
-      "modele": "T7 Multivan",
-      "nb_annonces": 5,
-      "annee_min": 2022,
-      "annee_max": 2025,
-      "prix_recent_median": 51310,
-      "prix_vieux_median": 35980,
-      "perte_pct_par_an": 10.0,
-      "perte_pct_par_10k_km": 3.3,
-      "perte_pct_total": 29.9
+      "prix_vieux_median": 31770,
+      "perte_pct_par_an": 10.8,
+      "perte_pct_par_10k_km": 5.4,
+      "perte_pct_total": 53.9
     },
     {
       "marque": "Volkswagen",
       "modele": "Taigo",
-      "nb_annonces": 5,
+      "nb_annonces": 6,
       "annee_min": 2022,
       "annee_max": 2025,
       "prix_recent_median": 23830,
@@ -1328,27 +1312,15 @@ const MARKET = {
     },
     {
       "marque": "Volkswagen",
-      "modele": "T-Roc",
-      "nb_annonces": 18,
-      "annee_min": 2021,
-      "annee_max": 2026,
-      "prix_recent_median": 39980,
-      "prix_vieux_median": 21490,
-      "perte_pct_par_an": 9.2,
-      "perte_pct_par_10k_km": 5.7,
-      "perte_pct_total": 46.2
-    },
-    {
-      "marque": "Volkswagen",
       "modele": "Golf Gti",
-      "nb_annonces": 9,
+      "nb_annonces": 6,
       "annee_min": 2019,
       "annee_max": 2025,
       "prix_recent_median": 47990,
-      "prix_vieux_median": 21900,
-      "perte_pct_par_an": 9.1,
-      "perte_pct_par_10k_km": 1.9,
-      "perte_pct_total": 54.4
+      "prix_vieux_median": 20900,
+      "perte_pct_par_an": 9.4,
+      "perte_pct_par_10k_km": 4.9,
+      "perte_pct_total": 56.4
     },
     {
       "marque": "Mercedes",
@@ -1363,9 +1335,21 @@ const MARKET = {
       "perte_pct_total": 35.2
     },
     {
+      "marque": "Mini",
+      "modele": "Cooper C",
+      "nb_annonces": 5,
+      "annee_min": 2023,
+      "annee_max": 2025,
+      "prix_recent_median": 29990,
+      "prix_vieux_median": 24790,
+      "perte_pct_par_an": 8.7,
+      "perte_pct_par_10k_km": 0.0,
+      "perte_pct_total": 17.3
+    },
+    {
       "marque": "Audi",
       "modele": "Q5",
-      "nb_annonces": 8,
+      "nb_annonces": 6,
       "annee_min": 2020,
       "annee_max": 2025,
       "prix_recent_median": 58397,
@@ -1373,6 +1357,30 @@ const MARKET = {
       "perte_pct_par_an": 8.7,
       "perte_pct_par_10k_km": 4.4,
       "perte_pct_total": 43.7
+    },
+    {
+      "marque": "Mercedes",
+      "modele": "Glc 300",
+      "nb_annonces": 6,
+      "annee_min": 2018,
+      "annee_max": 2025,
+      "prix_recent_median": 71690,
+      "prix_vieux_median": 28490,
+      "perte_pct_par_an": 8.6,
+      "perte_pct_par_10k_km": 4.9,
+      "perte_pct_total": 60.3
+    },
+    {
+      "marque": "Skoda",
+      "modele": "Karoq",
+      "nb_annonces": 11,
+      "annee_min": 2019,
+      "annee_max": 2026,
+      "prix_recent_median": 39910,
+      "prix_vieux_median": 16549,
+      "perte_pct_par_an": 8.4,
+      "perte_pct_par_10k_km": 4.5,
+      "perte_pct_total": 58.5
     },
     {
       "marque": "Cadillac",
@@ -1387,92 +1395,69 @@ const MARKET = {
       "perte_pct_total": 16.7
     },
     {
+      "marque": "Opel",
+      "modele": "Mokka",
+      "nb_annonces": 6,
+      "annee_min": 2016,
+      "annee_max": 2025,
+      "prix_recent_median": 22965,
+      "prix_vieux_median": 8499,
+      "perte_pct_par_an": 7.0,
+      "perte_pct_par_10k_km": 10.5,
+      "perte_pct_total": 63.0
+    },
+    {
       "marque": "Volkswagen",
       "modele": "Tiguan",
-      "nb_annonces": 17,
-      "annee_min": 2020,
-      "annee_max": 2026,
-      "prix_recent_median": 43490,
-      "prix_vieux_median": 21970,
-      "perte_pct_par_an": 8.2,
-      "perte_pct_par_10k_km": 5.4,
-      "perte_pct_total": 49.5
-    },
-    {
-      "marque": "Volvo",
-      "modele": "Xc40",
-      "nb_annonces": 9,
-      "annee_min": 2020,
+      "nb_annonces": 14,
+      "annee_min": 2019,
       "annee_max": 2025,
-      "prix_recent_median": 39980,
-      "prix_vieux_median": 23949,
-      "perte_pct_par_an": 8.0,
-      "perte_pct_par_10k_km": 6.2,
-      "perte_pct_total": 40.1
-    },
-    {
-      "marque": "Skoda",
-      "modele": "Karoq",
-      "nb_annonces": 11,
-      "annee_min": 2020,
-      "annee_max": 2026,
-      "prix_recent_median": 39910,
-      "prix_vieux_median": 21990,
-      "perte_pct_par_an": 7.5,
-      "perte_pct_par_10k_km": 4.3,
-      "perte_pct_total": 44.9
+      "prix_recent_median": 39490,
+      "prix_vieux_median": 22890,
+      "perte_pct_par_an": 7.0,
+      "perte_pct_par_10k_km": 5.1,
+      "perte_pct_total": 42.0
     }
   ],
   "buyer_seller_index": [
     {
       "marque": "Hyundai",
       "modele": "Tucson",
-      "nb_annonces": 31,
-      "jours_moyen": 3.9,
-      "score": 6.3,
+      "nb_annonces": 28,
+      "jours_moyen": 5.1,
+      "score": 6.0,
       "label": "Neutre",
       "stars": "★★★☆☆",
       "color": "amber",
-      "conseil": "31 annonces, 4j moy — négocie raisonnablement"
+      "conseil": "28 annonces, 5j moy — négocie raisonnablement"
     },
     {
       "marque": "Volkswagen",
       "modele": "Golf",
-      "nb_annonces": 28,
-      "jours_moyen": 2.6,
-      "score": 5.5,
+      "nb_annonces": 25,
+      "jours_moyen": 3.2,
+      "score": 5.0,
       "label": "Neutre",
       "stars": "★★★☆☆",
       "color": "amber",
-      "conseil": "Offre limitée (28), 3j — sois réactif"
+      "conseil": "Offre limitée (25), 3j — sois réactif"
     },
     {
       "marque": "Audi",
       "modele": "A3",
-      "nb_annonces": 26,
-      "jours_moyen": 3.3,
-      "score": 5.2,
+      "nb_annonces": 24,
+      "jours_moyen": 3.9,
+      "score": 4.9,
       "label": "Neutre",
       "stars": "★★★☆☆",
       "color": "amber",
-      "conseil": "Offre limitée (26), 3j — sois réactif"
+      "conseil": "Offre limitée (24), 4j — sois réactif"
     },
     {
       "marque": "Audi",
       "modele": "Q3",
-      "nb_annonces": 22,
-      "jours_moyen": 3.3,
-      "score": 4.4,
-      "label": "Neutre",
-      "stars": "★★★☆☆",
-      "color": "amber",
-      "conseil": "Offre limitée (22), 3j — sois réactif"
-    },
-    {
-      "marque": "Kia",
-      "modele": "Sportage",
       "nb_annonces": 19,
-      "jours_moyen": 4.2,
+      "jours_moyen": 4.4,
       "score": 4.0,
       "label": "Neutre",
       "stars": "★★★☆☆",
@@ -1483,84 +1468,84 @@ const MARKET = {
       "marque": "Ford",
       "modele": "Puma",
       "nb_annonces": 19,
-      "jours_moyen": 4.6,
-      "score": 4.1,
+      "jours_moyen": 5.5,
+      "score": 4.2,
       "label": "Neutre",
       "stars": "★★★☆☆",
       "color": "amber",
       "conseil": "Offre limitée (19), 5j — sois réactif"
     },
     {
-      "marque": "Volkswagen",
-      "modele": "T-Roc",
+      "marque": "Kia",
+      "modele": "Sportage",
       "nb_annonces": 18,
-      "jours_moyen": 1.9,
-      "score": 3.4,
-      "label": "Vendeur",
-      "stars": "★★☆☆☆",
-      "color": "red",
-      "conseil": "Rare (18 ann.), 2j en ligne — agis vite"
-    },
-    {
-      "marque": "Volkswagen",
-      "modele": "Tiguan",
-      "nb_annonces": 17,
-      "jours_moyen": 2.2,
-      "score": 3.2,
-      "label": "Vendeur",
-      "stars": "★★☆☆☆",
-      "color": "red",
-      "conseil": "Rare (17 ann.), 2j en ligne — agis vite"
+      "jours_moyen": 5.4,
+      "score": 4.0,
+      "label": "Neutre",
+      "stars": "★★★☆☆",
+      "color": "amber",
+      "conseil": "Offre limitée (18), 5j — sois réactif"
     },
     {
       "marque": "Volkswagen",
       "modele": "Polo",
       "nb_annonces": 16,
-      "jours_moyen": 3.3,
-      "score": 3.2,
+      "jours_moyen": 4.0,
+      "score": 3.4,
       "label": "Vendeur",
       "stars": "★★☆☆☆",
       "color": "red",
-      "conseil": "Rare (16 ann.), 3j en ligne — agis vite"
+      "conseil": "Rare (16 ann.), 4j en ligne — agis vite"
     },
     {
       "marque": "Skoda",
-      "modele": "Kodiaq",
-      "nb_annonces": 15,
-      "jours_moyen": 2.1,
-      "score": 2.8,
+      "modele": "Kamiq",
+      "nb_annonces": 14,
+      "jours_moyen": 3.4,
+      "score": 2.9,
       "label": "Vendeur",
       "stars": "★★☆☆☆",
       "color": "red",
-      "conseil": "Rare (15 ann.), 2j en ligne — agis vite"
+      "conseil": "Rare (14 ann.), 3j en ligne — agis vite"
     },
     {
-      "marque": "Volvo",
-      "modele": "Xc60",
+      "marque": "Volkswagen",
+      "modele": "Tiguan",
       "nb_annonces": 14,
-      "jours_moyen": 1.8,
-      "score": 2.5,
+      "jours_moyen": 2.9,
+      "score": 2.7,
       "label": "Vendeur",
       "stars": "★★☆☆☆",
       "color": "red",
-      "conseil": "Rare (14 ann.), 2j en ligne — agis vite"
+      "conseil": "Rare (14 ann.), 3j en ligne — agis vite"
+    },
+    {
+      "marque": "Volkswagen",
+      "modele": "T-Roc",
+      "nb_annonces": 14,
+      "jours_moyen": 2.9,
+      "score": 2.7,
+      "label": "Vendeur",
+      "stars": "★★☆☆☆",
+      "color": "red",
+      "conseil": "Rare (14 ann.), 3j en ligne — agis vite"
     },
     {
       "marque": "Ford",
       "modele": "Focus Clipper",
       "nb_annonces": 14,
-      "jours_moyen": 4.7,
-      "score": 3.1,
+      "jours_moyen": 5.7,
+      "score": 3.3,
       "label": "Vendeur",
       "stars": "★★☆☆☆",
       "color": "red",
-      "conseil": "Rare (14 ann.), 5j en ligne — agis vite"
+      "conseil": "Rare (14 ann.), 6j en ligne — agis vite"
     },
     {
       "marque": "Skoda",
-      "modele": "Kamiq",
+      "modele": "Kodiaq",
       "nb_annonces": 13,
-      "jours_moyen": 2.9,
+      "jours_moyen": 3.2,
       "score": 2.6,
       "label": "Vendeur",
       "stars": "★★☆☆☆",
@@ -1571,18 +1556,18 @@ const MARKET = {
       "marque": "MG",
       "modele": "Mg4",
       "nb_annonces": 12,
-      "jours_moyen": 4.8,
-      "score": 2.7,
+      "jours_moyen": 5.8,
+      "score": 2.9,
       "label": "Vendeur",
       "stars": "★★☆☆☆",
       "color": "red",
-      "conseil": "Rare (12 ann.), 5j en ligne — agis vite"
+      "conseil": "Rare (12 ann.), 6j en ligne — agis vite"
     },
     {
-      "marque": "Ford",
-      "modele": "Kuga",
+      "marque": "Volvo",
+      "modele": "Xc60",
       "nb_annonces": 11,
-      "jours_moyen": 2.7,
+      "jours_moyen": 2.5,
       "score": 2.1,
       "label": "Vendeur",
       "stars": "★★☆☆☆",
@@ -1590,8 +1575,8 @@ const MARKET = {
       "conseil": "Rare (11 ann.), 3j en ligne — agis vite"
     },
     {
-      "marque": "Audi",
-      "modele": "A6",
+      "marque": "Skoda",
+      "modele": "Karoq",
       "nb_annonces": 11,
       "jours_moyen": 2.5,
       "score": 2.1,
@@ -1601,77 +1586,55 @@ const MARKET = {
       "conseil": "Rare (11 ann.), 2j en ligne — agis vite"
     },
     {
-      "marque": "Skoda",
-      "modele": "Karoq",
-      "nb_annonces": 11,
-      "jours_moyen": 2.0,
-      "score": 2.0,
-      "label": "Vendeur",
-      "stars": "★★☆☆☆",
-      "color": "red",
-      "conseil": "Rare (11 ann.), 2j en ligne — agis vite"
-    },
-    {
-      "marque": "Volvo",
-      "modele": "S60",
-      "nb_annonces": 11,
-      "jours_moyen": 2.2,
-      "score": 2.0,
-      "label": "Vendeur",
-      "stars": "★★☆☆☆",
-      "color": "red",
-      "conseil": "Rare (11 ann.), 2j en ligne — agis vite"
-    },
-    {
-      "marque": "Cupra",
-      "modele": "Formentor",
-      "nb_annonces": 11,
-      "jours_moyen": 2.7,
-      "score": 2.1,
-      "label": "Vendeur",
-      "stars": "★★☆☆☆",
-      "color": "red",
-      "conseil": "Rare (11 ann.), 3j en ligne — agis vite"
-    },
-    {
-      "marque": "Seat",
-      "modele": "Arona",
+      "marque": "Audi",
+      "modele": "A6",
       "nb_annonces": 10,
-      "jours_moyen": 1.7,
-      "score": 1.7,
+      "jours_moyen": 3.1,
+      "score": 2.0,
+      "label": "Vendeur",
+      "stars": "★★☆☆☆",
+      "color": "red",
+      "conseil": "Rare (10 ann.), 3j en ligne — agis vite"
+    },
+    {
+      "marque": "Ford",
+      "modele": "Kuga",
+      "nb_annonces": 9,
+      "jours_moyen": 3.9,
+      "score": 1.9,
       "label": "Vendeur",
       "stars": "★☆☆☆☆",
       "color": "red",
-      "conseil": "Rare (10 ann.), 2j en ligne — agis vite"
+      "conseil": "Rare (9 ann.), 4j en ligne — agis vite"
     },
     {
       "marque": "Opel",
       "modele": "Corsa",
       "nb_annonces": 9,
-      "jours_moyen": 1.9,
-      "score": 1.6,
-      "label": "Vendeur",
-      "stars": "★☆☆☆☆",
-      "color": "red",
-      "conseil": "Rare (9 ann.), 2j en ligne — agis vite"
-    },
-    {
-      "marque": "Seat",
-      "modele": "Ibiza",
-      "nb_annonces": 9,
-      "jours_moyen": 1.3,
-      "score": 1.5,
-      "label": "Vendeur",
-      "stars": "★☆☆☆☆",
-      "color": "red",
-      "conseil": "Rare (9 ann.), 1j en ligne — agis vite"
-    },
-    {
-      "marque": "Audi",
-      "modele": "A1",
-      "nb_annonces": 9,
-      "jours_moyen": 2.8,
+      "jours_moyen": 2.6,
       "score": 1.7,
+      "label": "Vendeur",
+      "stars": "★☆☆☆☆",
+      "color": "red",
+      "conseil": "Rare (9 ann.), 3j en ligne — agis vite"
+    },
+    {
+      "marque": "Hyundai",
+      "modele": "I30",
+      "nb_annonces": 9,
+      "jours_moyen": 3.2,
+      "score": 1.8,
+      "label": "Vendeur",
+      "stars": "★☆☆☆☆",
+      "color": "red",
+      "conseil": "Rare (9 ann.), 3j en ligne — agis vite"
+    },
+    {
+      "marque": "Volvo",
+      "modele": "S60",
+      "nb_annonces": 9,
+      "jours_moyen": 3.3,
+      "score": 1.8,
       "label": "Vendeur",
       "stars": "★☆☆☆☆",
       "color": "red",
@@ -1681,34 +1644,67 @@ const MARKET = {
       "marque": "Audi",
       "modele": "Q2",
       "nb_annonces": 9,
-      "jours_moyen": 3.1,
-      "score": 1.8,
+      "jours_moyen": 3.9,
+      "score": 1.9,
+      "label": "Vendeur",
+      "stars": "★☆☆☆☆",
+      "color": "red",
+      "conseil": "Rare (9 ann.), 4j en ligne — agis vite"
+    },
+    {
+      "marque": "Mercedes",
+      "modele": "A 180",
+      "nb_annonces": 9,
+      "jours_moyen": 3.4,
+      "score": 1.9,
       "label": "Vendeur",
       "stars": "★☆☆☆☆",
       "color": "red",
       "conseil": "Rare (9 ann.), 3j en ligne — agis vite"
     },
     {
-      "marque": "Audi",
-      "modele": "A5",
+      "marque": "Cupra",
+      "modele": "Formentor",
       "nb_annonces": 9,
-      "jours_moyen": 2.2,
-      "score": 1.6,
+      "jours_moyen": 3.7,
+      "score": 1.9,
       "label": "Vendeur",
       "stars": "★☆☆☆☆",
       "color": "red",
-      "conseil": "Rare (9 ann.), 2j en ligne — agis vite"
+      "conseil": "Rare (9 ann.), 4j en ligne — agis vite"
+    },
+    {
+      "marque": "Mercedes",
+      "modele": "Benz Classe",
+      "nb_annonces": 9,
+      "jours_moyen": 4.9,
+      "score": 2.1,
+      "label": "Vendeur",
+      "stars": "★★☆☆☆",
+      "color": "red",
+      "conseil": "Rare (9 ann.), 5j en ligne — agis vite"
+    },
+    {
+      "marque": "Opel",
+      "modele": "Astra",
+      "nb_annonces": 8,
+      "jours_moyen": 4.5,
+      "score": 1.9,
+      "label": "Vendeur",
+      "stars": "★☆☆☆☆",
+      "color": "red",
+      "conseil": "Rare (8 ann.), 4j en ligne — agis vite"
     }
   ],
   "tco_par_carburant": {
     "Essence": {
-      "nb_annonces": 717,
-      "prix_achat": 27990,
+      "nb_annonces": 631,
+      "prix_achat": 27950,
       "carburant_5ans": 8715,
       "entretien_5ans": 4250,
-      "depreciation_5ans": 13219,
-      "valeur_residuelle": 14771,
-      "total_5ans": 40955,
+      "depreciation_5ans": 13200,
+      "valeur_residuelle": 14750,
+      "total_5ans": 40915,
       "cout_km": 0.546,
       "conso": 7.0,
       "unite": "L/100",
@@ -1717,7 +1713,7 @@ const MARKET = {
       "ans": 5
     },
     "Diesel": {
-      "nb_annonces": 291,
+      "nb_annonces": 253,
       "prix_achat": 32990,
       "carburant_5ans": 6975,
       "entretien_5ans": 4750,
@@ -1732,14 +1728,14 @@ const MARKET = {
       "ans": 5
     },
     "Hybride": {
-      "nb_annonces": 127,
-      "prix_achat": 27990,
+      "nb_annonces": 128,
+      "prix_achat": 28490,
       "carburant_5ans": 6474,
       "entretien_5ans": 3500,
-      "depreciation_5ans": 11462,
-      "valeur_residuelle": 16528,
-      "total_5ans": 37964,
-      "cout_km": 0.506,
+      "depreciation_5ans": 11667,
+      "valeur_residuelle": 16823,
+      "total_5ans": 38464,
+      "cout_km": 0.513,
       "conso": 5.2,
       "unite": "L/100",
       "prix_litre": 1.66,
@@ -1747,14 +1743,14 @@ const MARKET = {
       "ans": 5
     },
     "Electrique": {
-      "nb_annonces": 124,
-      "prix_achat": 29990,
+      "nb_annonces": 107,
+      "prix_achat": 27990,
       "carburant_5ans": 3469,
       "entretien_5ans": 2500,
-      "depreciation_5ans": 17448,
-      "valeur_residuelle": 12542,
-      "total_5ans": 35959,
-      "cout_km": 0.479,
+      "depreciation_5ans": 16284,
+      "valeur_residuelle": 11706,
+      "total_5ans": 33959,
+      "cout_km": 0.453,
       "conso": 18.5,
       "unite": "kWh/100",
       "prix_litre": 0.25,
@@ -1837,6 +1833,30 @@ const MARKET = {
         "ville": "Luxembourg"
       },
       {
+        "id": "063f688e4f146c76",
+        "marque": "Volkswagen",
+        "modele": "T-Roc",
+        "annee": 2026,
+        "km": 7000,
+        "prix": 47980,
+        "median": 31990,
+        "ecart_pct": 50.0,
+        "url": "https://www.autoscout24.de/angebote/volkswagen-t-roc-r-line-1-5-etsi-navi-ahk-sitzhz-acc-pdc-klima-elektro-benzin-schwarz-7b94d8fc-d5a1-4929-835b-d458425554fb",
+        "ville": "Kiel"
+      },
+      {
+        "id": "093807b6b2657933",
+        "marque": "Volkswagen",
+        "modele": "Tiguan",
+        "annee": 2024,
+        "km": 45065,
+        "prix": 40990,
+        "median": 27680,
+        "ecart_pct": 48.1,
+        "url": "https://www.autoscout24.lu/offres/volkswagen-tiguan-r-line-dsg-4m-black-style-ahk-diesel-blanc-54815615-8753-4f60-8d5c-f9e05f0b9b7c",
+        "ville": "Esch-sur-Alzette"
+      },
+      {
         "id": "fa8d6258a38e2e11",
         "marque": "Bentley",
         "modele": "Bentayga",
@@ -1885,54 +1905,6 @@ const MARKET = {
         "ville": "Sankt Augustin"
       },
       {
-        "id": "4f95116c514db850",
-        "marque": "Volkswagen",
-        "modele": "Golf Gti",
-        "annee": 2025,
-        "km": 9100,
-        "prix": 47990,
-        "median": 34280,
-        "ecart_pct": 40.0,
-        "url": "https://www.autopolis.lu/stock/469960383-1-volkswagen-golf-gti-clubsport-300-ps",
-        "ville": "Luxembourg"
-      },
-      {
-        "id": "063f688e4f146c76",
-        "marque": "Volkswagen",
-        "modele": "T-Roc",
-        "annee": 2026,
-        "km": 7000,
-        "prix": 47980,
-        "median": 34880,
-        "ecart_pct": 37.6,
-        "url": "https://www.autoscout24.de/angebote/volkswagen-t-roc-r-line-1-5-etsi-navi-ahk-sitzhz-acc-pdc-klima-elektro-benzin-schwarz-7b94d8fc-d5a1-4929-835b-d458425554fb",
-        "ville": "Kiel"
-      },
-      {
-        "id": "093807b6b2657933",
-        "marque": "Volkswagen",
-        "modele": "Tiguan",
-        "annee": 2024,
-        "km": 45065,
-        "prix": 40990,
-        "median": 29900,
-        "ecart_pct": 37.1,
-        "url": "https://www.autoscout24.lu/offres/volkswagen-tiguan-r-line-dsg-4m-black-style-ahk-diesel-blanc-54815615-8753-4f60-8d5c-f9e05f0b9b7c",
-        "ville": "Esch-sur-Alzette"
-      },
-      {
-        "id": "47b119be751875a0",
-        "marque": "Volkswagen",
-        "modele": "Golf",
-        "annee": 2023,
-        "km": 51462,
-        "prix": 38990,
-        "median": 28990,
-        "ecart_pct": 34.5,
-        "url": "https://www.autoscout24.lu/offres/volkswagen-golf-r-perfomance-4m-dsg-lm19-essence-bleu-72c6436e-7738-4663-92ea-9851cadb3b97",
-        "ville": "Roost"
-      },
-      {
         "id": "d52e87b05a437968",
         "marque": "Opel",
         "modele": "Corsa",
@@ -1943,6 +1915,18 @@ const MARKET = {
         "ecart_pct": 33.4,
         "url": "https://www.autoscout24.de/angebote/opel-corsa-electric-edition-elektromotor-100kw-136-p-elektro-weiss-b50edd09-db2d-42e9-b90b-b9302733e9c3",
         "ville": "Rüsselsheim am Main"
+      },
+      {
+        "id": "89d67841a09ced37",
+        "marque": "Audi",
+        "modele": "A3",
+        "annee": 2025,
+        "km": 9900,
+        "prix": 42378,
+        "median": 31990,
+        "ecart_pct": 32.5,
+        "url": "https://www.autoscout24.lu/offres/audi-a3-s-line-diesel-noir-50f32a21-30b1-43b4-a770-2adeb980b220",
+        "ville": "Esch-sur-Alzette"
       }
     ],
     "sous_evalues": [
@@ -1959,6 +1943,30 @@ const MARKET = {
         "ville": "Parkstetten"
       },
       {
+        "id": "2b746398a4a77a7b",
+        "marque": "Volkswagen",
+        "modele": "Golf",
+        "annee": 2022,
+        "km": 53550,
+        "prix": 18780,
+        "median": 32990,
+        "ecart_pct": -43.1,
+        "url": "https://www.autoscout24.de/angebote/volkswagen-golf-life-1-0-tsi-benzin-grau-8ed4f661-300b-41c1-9f49-051c9c58ae2a",
+        "ville": "Schweinfurt"
+      },
+      {
+        "id": "32d3411ba79349f0",
+        "marque": "Volkswagen",
+        "modele": "Golf",
+        "annee": 2022,
+        "km": 47349,
+        "prix": 20925,
+        "median": 32990,
+        "ecart_pct": -36.6,
+        "url": "https://www.autoscout24.de/angebote/volkswagen-golf-viii-1-5-tsi-life-3-99-navi-digitales-cockpit-led-benzin-weiss-2ddb9e9f-60f2-4140-94ee-6ee8544ef3fe",
+        "ville": "Bernau"
+      },
+      {
         "id": "5c990ab8656b58d4",
         "marque": "Volkswagen",
         "modele": "Golf",
@@ -1971,76 +1979,16 @@ const MARKET = {
         "ville": "Calden-Westuffeln"
       },
       {
-        "id": "3d0a8c7ba0cc7a71",
-        "marque": "Volkswagen",
-        "modele": "Golf",
-        "annee": 2023,
-        "km": 55748,
-        "prix": 18650,
-        "median": 28990,
-        "ecart_pct": -35.7,
-        "url": "https://www.autoscout24.de/angebote/volkswagen-golf-life-1-0-tsi-benzin-silber-a80018dc-2aa5-4e69-901d-6213a37e1fe6",
-        "ville": "Maintal"
-      },
-      {
-        "id": "2b746398a4a77a7b",
-        "marque": "Volkswagen",
-        "modele": "Golf",
-        "annee": 2022,
-        "km": 53550,
-        "prix": 18780,
-        "median": 28990,
-        "ecart_pct": -35.2,
-        "url": "https://www.autoscout24.de/angebote/volkswagen-golf-life-1-0-tsi-benzin-grau-8ed4f661-300b-41c1-9f49-051c9c58ae2a",
-        "ville": "Schweinfurt"
-      },
-      {
-        "id": "89521cb6f7914815",
-        "marque": "Volkswagen",
-        "modele": "T-Roc",
-        "annee": 2023,
-        "km": 3450,
-        "prix": 22590,
-        "median": 34880,
-        "ecart_pct": -35.2,
-        "url": "https://www.autoscout24.de/angebote/volkswagen-t-roc-tsi-move-led-navi-benzin-weiss-2e7a9d4a-7e7b-4a5a-a029-bdfef1d52bfc",
-        "ville": "Korbach"
-      },
-      {
-        "id": "d7f35a15e3e698b3",
-        "marque": "Hyundai",
-        "modele": "Tucson",
-        "annee": 2026,
-        "km": 5,
-        "prix": 28699,
-        "median": 41990,
-        "ecart_pct": -31.7,
-        "url": "https://www.autoscout24.de/angebote/hyundai-tucson-1-6-t-gdi-dct-navi-kamera-keyless-sitzhz-benzin-schwarz-dabc2a51-f10b-46a4-8706-e15057b1607b",
-        "ville": "Hohenwarsleben"
-      },
-      {
         "id": "61d0865243730945",
         "marque": "Hyundai",
         "modele": "Tucson",
         "annee": 2025,
         "km": 13000,
         "prix": 28990,
-        "median": 41990,
-        "ecart_pct": -31.0,
+        "median": 42990,
+        "ecart_pct": -32.6,
         "url": "https://www.autoscout24.de/angebote/hyundai-tucson-select-1-6-benzin-bluetooth-navi-led-klima-benzin-schwarz-0a7c4ac0-2d65-46fb-9334-68cd7b4b345f",
         "ville": "Moers"
-      },
-      {
-        "id": "79ed34e8a34c21c3",
-        "marque": "Volkswagen",
-        "modele": "T-Roc",
-        "annee": 2021,
-        "km": 32400,
-        "prix": 18300,
-        "median": 26490,
-        "ecart_pct": -30.9,
-        "url": "https://www.autoscout24.de/angebote/volkswagen-t-roc-1-5-tsi-united-navi-kamera-ahk-shz-dab-mfl-benzin-gelb-6c3cfa18-6967-4d45-8037-6a44995ff157",
-        "ville": "Bebra"
       },
       {
         "id": "077a22cb8a4a05bc",
@@ -2055,18 +2003,6 @@ const MARKET = {
         "ville": "Luxembourg"
       },
       {
-        "id": "2b0a933034123c02",
-        "marque": "Volvo",
-        "modele": "Xc40",
-        "annee": 2024,
-        "km": 29585,
-        "prix": 26950,
-        "median": 37980,
-        "ecart_pct": -29.0,
-        "url": "https://www.autoscout24.lu/offres/volvo-xc40-39-t2-129cv-bva-gps-cam-led-hayon-elec-opts-essence-rouge-38e045bb-7045-4f45-bc06-3ca7bff4ffff",
-        "ville": "Schifflange - Foetz"
-      },
-      {
         "id": "00c21b549c1bad65",
         "marque": "Opel",
         "modele": "Corsa",
@@ -2079,28 +2015,16 @@ const MARKET = {
         "ville": "Homburg"
       },
       {
-        "id": "32d3411ba79349f0",
-        "marque": "Volkswagen",
-        "modele": "Golf",
+        "id": "ae0a2ea4e0887106",
+        "marque": "Hyundai",
+        "modele": "Tucson",
         "annee": 2022,
-        "km": 47349,
-        "prix": 20925,
-        "median": 28990,
-        "ecart_pct": -27.8,
-        "url": "https://www.autoscout24.de/angebote/volkswagen-golf-viii-1-5-tsi-life-3-99-navi-digitales-cockpit-led-benzin-weiss-2ddb9e9f-60f2-4140-94ee-6ee8544ef3fe",
-        "ville": "Bernau"
-      },
-      {
-        "id": "49bd9d574de8147e",
-        "marque": "Cupra",
-        "modele": "Formentor",
-        "annee": 2023,
-        "km": 12400,
-        "prix": 25750,
-        "median": 34790,
-        "ecart_pct": -26.0,
-        "url": "https://www.autoscout24.de/angebote/cupra-formentor-1-4-e-hybrid-acc-ahk-esitz-navi-elektro-benzin-weiss-2310afac-00a3-450e-a7a3-fcdfd4563f09",
-        "ville": "Heideck"
+        "km": 19100,
+        "prix": 31990,
+        "median": 42990,
+        "ecart_pct": -25.6,
+        "url": "https://www.autopolis.lu/stock/167721241-1-hyundai-tucson-16-hev-shine-n-line",
+        "ville": "Luxembourg"
       },
       {
         "id": "9a7d2a8381cee48a",
