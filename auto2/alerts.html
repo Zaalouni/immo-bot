@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Auto-Bot LU — Alertes</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0d1117">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="AutoBot LU">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <meta name="description" content="Alertes intelligentes — Auto-Bot Luxembourg">
+  <meta name="robots" content="noindex,nofollow">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0d1117; --surface: #161b22; --surface2: #21262d;
+      --border: #30363d; --border2: #3d444e;
+      --txt: #e6edf3; --txt2: #8b949e; --txt3: #6e7681;
+      --accent: #388bfd; --accent-dim: rgba(56,139,253,.15);
+      --green: #3fb950; --green-dim: rgba(63,185,80,.15);
+      --amber: #d29922; --amber-dim: rgba(210,153,34,.15);
+      --red: #f85149; --red-dim: rgba(248,81,73,.15);
+      --purple: #bc8cff; --purple-dim: rgba(188,140,255,.15);
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { background: var(--bg); color: var(--txt); font-family: 'Barlow', sans-serif; font-size: 14px; margin: 0; }
+    ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+    /* Navbar */
+    .navbar { background: var(--surface) !important; border-bottom: 1px solid var(--border); padding: 0 1rem; }
+    .navbar-brand { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 1.2rem; color: var(--txt) !important; }
+    .navbar-brand span { color: var(--accent); }
+    .navbar-toggler { border: 1px solid var(--border) !important; padding: 4px 8px; }
+    .navbar-toggler-icon { filter: invert(1); }
+    .navbar-collapse { background: var(--surface); }
+    .nav-link { color: var(--txt2) !important; font-size: 13px; font-weight: 500; padding: 12px 14px !important; transition: color .15s; }
+    .nav-link:hover { color: var(--txt) !important; }
+    .nav-link.active { color: var(--accent) !important; }
+
+    /* KPI */
+    .kpi-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 18px; text-align: center; }
+    .kpi-card.kpi-green  { border-top: 2px solid var(--green); }
+    .kpi-card.kpi-amber  { border-top: 2px solid var(--amber); }
+    .kpi-card.kpi-red    { border-top: 2px solid var(--red); }
+    .kpi-card.kpi-purple { border-top: 2px solid var(--purple); }
+    .kpi-card.kpi-accent { border-top: 2px solid var(--accent); }
+    .kpi-val   { font-family: 'DM Mono', monospace; font-size: 2rem; font-weight: 500; line-height: 1; }
+    .kpi-green  .kpi-val { color: var(--green); }
+    .kpi-amber  .kpi-val { color: var(--amber); }
+    .kpi-red    .kpi-val { color: var(--red); }
+    .kpi-purple .kpi-val { color: var(--purple); }
+    .kpi-accent .kpi-val { color: var(--accent); }
+    .kpi-label { font-size: .72rem; color: var(--txt3); text-transform: uppercase; letter-spacing: .05em; margin-top: 5px; }
+
+    /* Filtres onglets */
+    .filter-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+    .filter-tab {
+      padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 600;
+      cursor: pointer; border: 1px solid var(--border); background: var(--surface2);
+      color: var(--txt2); transition: all .15s;
+    }
+    .filter-tab:hover { color: var(--txt); border-color: var(--txt3); }
+    .filter-tab.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .filter-tab.tab-green.active  { background: var(--green);  border-color: var(--green); }
+    .filter-tab.tab-amber.active  { background: var(--amber);  border-color: var(--amber); }
+    .filter-tab.tab-red.active    { background: var(--red);    border-color: var(--red); }
+    .filter-tab.tab-purple.active { background: var(--purple); border-color: var(--purple); }
+
+    /* Alert cards */
+    .alert-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; padding: 14px 16px; margin-bottom: 10px;
+      border-left: 4px solid var(--border2); transition: border-color .15s;
+    }
+    .alert-card:hover { border-left-color: var(--accent); }
+    .alert-card.type-WATCHLIST_NEW   { border-left-color: var(--green); }
+    .alert-card.type-WATCHLIST_DROP  { border-left-color: var(--amber); }
+    .alert-card.type-WATCHLIST_GONE  { border-left-color: var(--purple); }
+    .alert-card.type-TOP_DEAL        { border-left-color: var(--red); }
+
+    .alert-type-badge {
+      display: inline-block; padding: 2px 10px; border-radius: 12px;
+      font-size: 10px; font-weight: 700; letter-spacing: .06em;
+      text-transform: uppercase; margin-bottom: 6px;
+    }
+    .badge-WATCHLIST_NEW   { background: var(--green-dim);  color: var(--green); }
+    .badge-WATCHLIST_DROP  { background: var(--amber-dim);  color: var(--amber); }
+    .badge-WATCHLIST_GONE  { background: var(--purple-dim); color: var(--purple); }
+    .badge-TOP_DEAL        { background: var(--red-dim);    color: var(--red); }
+
+    .alert-titre  { font-weight: 600; font-size: 14px; color: var(--txt); margin-bottom: 2px; }
+    .alert-detail { font-size: 13px; color: var(--txt2); }
+    .alert-meta   { font-size: 11px; color: var(--txt3); margin-top: 4px; font-family: 'DM Mono', monospace; }
+    .btn-voir { font-size: 12px; padding: 4px 12px; border-radius: 6px; background: var(--surface2); border: 1px solid var(--border); color: var(--accent); text-decoration: none; }
+    .btn-voir:hover { border-color: var(--accent); background: var(--accent-dim); }
+
+    /* Vide */
+    .empty-state { text-align: center; padding: 60px 20px; color: var(--txt3); }
+    .empty-icon { font-size: 3rem; margin-bottom: 12px; }
+
+    /* Section header */
+    .section-header { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1rem; letter-spacing: .03em; color: var(--txt); border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 14px; text-transform: uppercase; }
+    .section-header span { font-size: .75rem; color: var(--txt3); font-family: 'Barlow', sans-serif; font-weight: 400; margin-left: 8px; text-transform: none; }
+  </style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="navbar navbar-expand-lg">
+  <a class="navbar-brand" href="index.html"><span>◈</span> AUTO-BOT LU</a>
+  <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navMenu">
+    <ul class="navbar-nav ms-auto">
+      <li class="nav-item"><a class="nav-link" href="index.html">Annonces</a></li>
+      <li class="nav-item"><a class="nav-link" href="deals.html">Deals</a></li>
+      <li class="nav-item"><a class="nav-link" href="rapport.html">Rapport</a></li>
+      <li class="nav-item"><a class="nav-link" href="watchlist.html">Watchlist</a></li>
+      <li class="nav-item"><a class="nav-link active" href="alerts.html">Alertes</a></li>
+      <li class="nav-item"><a class="nav-link" href="map.html">Carte</a></li>
+      <li class="nav-item"><a class="nav-link" href="reviews.html">Avis</a></li>
+      <li class="nav-item"><a class="nav-link" href="market.html">Marché</a></li>
+      <li class="nav-item"><a class="nav-link" href="compare.html">Comparer</a></li>
+      <li class="nav-item"><a class="nav-link" href="budget.html">Budget</a></li>
+      <li class="nav-item"><a class="nav-link" href="top-models.html">Top Modèles</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container-fluid p-3" style="max-width:960px">
+
+  <!-- En-tête -->
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <div>
+      <h1 style="font-family:'Barlow Condensed',sans-serif;font-size:1.6rem;font-weight:800;margin:0;">
+        Alertes du jour
+      </h1>
+      <div id="date-label" style="font-size:12px;color:var(--txt3);margin-top:2px;"></div>
+    </div>
+    <div id="badge-total" style="font-family:'DM Mono',monospace;font-size:1.5rem;font-weight:500;color:var(--red);"></div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="row g-2 mb-3" id="kpis">
+    <div class="col-6 col-md-3">
+      <div class="kpi-card kpi-green">
+        <div class="kpi-val" id="kpi-new">—</div>
+        <div class="kpi-label">Nouvelles watchlist</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="kpi-card kpi-amber">
+        <div class="kpi-val" id="kpi-drop">—</div>
+        <div class="kpi-label">Baisses de prix</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="kpi-card kpi-red">
+        <div class="kpi-val" id="kpi-deal">—</div>
+        <div class="kpi-label">Top deals</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="kpi-card kpi-purple">
+        <div class="kpi-val" id="kpi-gone">—</div>
+        <div class="kpi-label">Disparues</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filtres onglets -->
+  <div class="filter-tabs">
+    <div class="filter-tab active" data-filter="ALL" onclick="filterAlerts('ALL', this)">Toutes</div>
+    <div class="filter-tab tab-green"  data-filter="WATCHLIST_NEW"  onclick="filterAlerts('WATCHLIST_NEW', this)">Nouvelles watchlist</div>
+    <div class="filter-tab tab-amber"  data-filter="WATCHLIST_DROP" onclick="filterAlerts('WATCHLIST_DROP', this)">Baisses de prix</div>
+    <div class="filter-tab tab-red"    data-filter="TOP_DEAL"        onclick="filterAlerts('TOP_DEAL', this)">Top deals</div>
+    <div class="filter-tab tab-purple" data-filter="WATCHLIST_GONE"  onclick="filterAlerts('WATCHLIST_GONE', this)">Disparues</div>
+  </div>
+
+  <!-- Liste alertes -->
+  <div id="alerts-container"></div>
+
+</div>
+
+<script src="data/alerts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const TYPE_LABELS = {
+  WATCHLIST_NEW:  'Nouvelle watchlist',
+  WATCHLIST_DROP: 'Baisse de prix',
+  WATCHLIST_GONE: 'Disparue',
+  TOP_DEAL:       'Top deal',
+};
+
+let currentFilter = 'ALL';
+
+function init() {
+  if (typeof ALERTS === 'undefined') { showEmpty('Données non disponibles.'); return; }
+
+  document.getElementById('date-label').textContent = 'Mis à jour le ' + (ALERTS.date || '—');
+  document.getElementById('badge-total').textContent = ALERTS.total + ' alerte' + (ALERTS.total > 1 ? 's' : '');
+  document.getElementById('kpi-new').textContent  = ALERTS.nb_new  || 0;
+  document.getElementById('kpi-drop').textContent = ALERTS.nb_drop || 0;
+  document.getElementById('kpi-deal').textContent = ALERTS.nb_deal || 0;
+  document.getElementById('kpi-gone').textContent = ALERTS.nb_gone || 0;
+
+  renderAlerts(ALERTS.alerts || []);
+}
+
+function filterAlerts(type, el) {
+  currentFilter = type;
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  renderAlerts((ALERTS.alerts || []).filter(a => type === 'ALL' || a.type === type));
+}
+
+function renderAlerts(alerts) {
+  const container = document.getElementById('alerts-container');
+  if (!alerts || alerts.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">✔</div>
+        <div style="font-size:1.1rem;font-weight:600;color:var(--txt2);margin-bottom:6px;">Aucune alerte</div>
+        <div style="color:var(--txt3);font-size:13px;">Tout est calme du côté de ta watchlist.</div>
+      </div>`;
+    return;
+  }
+
+  container.innerHTML = alerts.map(a => {
+    const label = TYPE_LABELS[a.type] || a.type;
+    const url   = a.url ? `<a href="${a.url}" target="_blank" class="btn-voir">Voir l'annonce</a>` : '';
+
+    let extra = '';
+    if (a.type === 'WATCHLIST_DROP' && a.baisse_eur) {
+      extra = `<span style="color:var(--amber);font-weight:700;">&#8211;${fmt(a.baisse_eur)} € (-${a.baisse_pct}%)</span> `;
+    }
+    if (a.type === 'TOP_DEAL' && a.deal_score) {
+      const bar = Math.round(a.deal_score);
+      extra = `<span style="color:var(--red);">Score ${bar}/100</span> `;
+    }
+
+    const critere = a.critere
+      ? `<span>Critère : ${a.critere.marque || ''} ${a.critere.modele || ''}</span> · `
+      : '';
+
+    return `
+    <div class="alert-card type-${a.type}">
+      <div class="d-flex justify-content-between align-items-start gap-2">
+        <div style="flex:1;min-width:0;">
+          <div class="alert-type-badge badge-${a.type}">${label}</div>
+          <div class="alert-titre">${a.titre}</div>
+          <div class="alert-detail">${extra}${a.detail}</div>
+          <div class="alert-meta">${critere}<span>${a.date}</span></div>
+        </div>
+        <div style="flex-shrink:0;padding-top:2px;">${url}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function showEmpty(msg) {
+  document.getElementById('alerts-container').innerHTML =
+    `<div class="empty-state"><div class="empty-icon">⚠</div><div>${msg}</div></div>`;
+}
+
+function fmt(n) {
+  return typeof n === 'number' ? n.toLocaleString('fr-FR') : (n || '—');
+}
+
+init();
+</script>
+</body>
+</html>

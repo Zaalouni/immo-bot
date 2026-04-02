@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Auto-Bot LU — Carte</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0d1117">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="AutoBot LU">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <meta name="description" content="Carte des annonces voitures Luxembourg — Auto-Bot">
+  <meta name="robots" content="noindex,nofollow">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0d1117; --surface: #161b22; --surface2: #21262d;
+      --border: #30363d; --border2: #3d444e;
+      --txt: #e6edf3; --txt2: #8b949e; --txt3: #6e7681;
+      --accent: #388bfd; --accent-dim: rgba(56,139,253,.15);
+      --green: #3fb950; --green-dim: rgba(63,185,80,.15);
+      --amber: #d29922; --amber-dim: rgba(210,153,34,.15);
+      --red: #f85149;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { background: var(--bg); color: var(--txt); font-family: 'Barlow', sans-serif; font-size: 14px; margin: 0; height: 100vh; display: flex; flex-direction: column; }
+    ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+    /* Navbar */
+    .navbar { background: var(--surface) !important; border-bottom: 1px solid var(--border); padding: 0 1rem; flex-shrink: 0; }
+    .navbar-brand { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 1.2rem; color: var(--txt) !important; }
+    .navbar-brand span { color: var(--accent); }
+    .navbar-toggler { border: 1px solid var(--border) !important; padding: 4px 8px; }
+    .navbar-toggler-icon { filter: invert(1); }
+    .navbar-collapse { background: var(--surface); }
+    .nav-link { color: var(--txt2) !important; font-size: 13px; font-weight: 500; padding: 12px 14px !important; transition: color .15s; }
+    .nav-link:hover { color: var(--txt) !important; }
+    .nav-link.active { color: var(--accent) !important; }
+
+    /* Barre stat */
+    #map-bar { background: var(--surface2); border-bottom: 1px solid var(--border); padding: 6px 16px; font-size: 12px; font-family: 'DM Mono', monospace; display: flex; gap: 20px; flex-wrap: wrap; align-items: center; flex-shrink: 0; }
+    #map-bar strong { color: var(--txt); }
+
+    /* Layout carte + sidebar */
+    #map-layout { flex: 1; display: flex; overflow: hidden; }
+    #map { flex: 1; min-height: 0; }
+
+    /* Sidebar */
+    #sidebar {
+      width: 300px; flex-shrink: 0; background: var(--surface);
+      border-left: 1px solid var(--border); overflow-y: auto;
+      display: flex; flex-direction: column;
+    }
+    #sidebar-header {
+      padding: 12px 14px; border-bottom: 1px solid var(--border);
+      font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+      font-size: .95rem; text-transform: uppercase; letter-spacing: .03em;
+      color: var(--txt); flex-shrink: 0;
+    }
+    #sidebar-content { padding: 10px 12px; flex: 1; }
+
+    /* Légende */
+    .legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--txt2); margin-bottom: 6px; }
+    .legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+
+    /* Filtres */
+    .map-filter { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px; color: var(--txt); font-size: 12px; width: 100%; margin-bottom: 8px; }
+    .map-filter:focus { outline: none; border-color: var(--accent); }
+
+    /* Ville cards dans sidebar */
+    .ville-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px; margin-bottom: 8px; cursor: pointer; transition: border-color .15s; }
+    .ville-card:hover { border-color: var(--accent); }
+    .ville-name { font-weight: 600; font-size: 13px; color: var(--txt); }
+    .ville-stats { font-size: 11px; color: var(--txt3); font-family: 'DM Mono', monospace; margin-top: 2px; }
+    .ville-region { font-size: 10px; color: var(--accent); font-weight: 600; margin-top: 2px; }
+
+    /* Popup Leaflet dark */
+    .leaflet-popup-content-wrapper { background: var(--surface); color: var(--txt); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,.5); font-family: 'Barlow', sans-serif; }
+    .leaflet-popup-tip { background: var(--surface); }
+    .leaflet-popup-content { margin: 12px 16px; min-width: 200px; }
+    .popup-titre { font-weight: 700; font-size: 13px; margin-bottom: 4px; color: var(--txt); }
+    .popup-detail { font-size: 12px; color: var(--txt2); margin-bottom: 2px; }
+    .popup-link { display: inline-block; margin-top: 8px; font-size: 11px; color: var(--accent); text-decoration: none; padding: 3px 10px; border: 1px solid var(--accent); border-radius: 4px; }
+    .popup-link:hover { background: var(--accent-dim); }
+    .popup-nb { font-family: 'DM Mono', monospace; font-size: 1.2rem; font-weight: 600; color: var(--accent); }
+
+    /* Responsive */
+    @media (max-width: 768px) { #sidebar { display: none; } }
+  </style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="navbar navbar-expand-lg">
+  <a class="navbar-brand" href="index.html"><span>◈</span> AUTO-BOT LU</a>
+  <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navMenu">
+    <ul class="navbar-nav ms-auto">
+      <li class="nav-item"><a class="nav-link" href="index.html">Annonces</a></li>
+      <li class="nav-item"><a class="nav-link" href="deals.html">Deals</a></li>
+      <li class="nav-item"><a class="nav-link" href="rapport.html">Rapport</a></li>
+      <li class="nav-item"><a class="nav-link" href="watchlist.html">Watchlist</a></li>
+      <li class="nav-item"><a class="nav-link" href="alerts.html">Alertes</a></li>
+      <li class="nav-item"><a class="nav-link active" href="map.html">Carte</a></li>
+      <li class="nav-item"><a class="nav-link" href="reviews.html">Avis</a></li>
+      <li class="nav-item"><a class="nav-link" href="market.html">Marché</a></li>
+      <li class="nav-item"><a class="nav-link" href="compare.html">Comparer</a></li>
+      <li class="nav-item"><a class="nav-link" href="budget.html">Budget</a></li>
+      <li class="nav-item"><a class="nav-link" href="top-models.html">Top Modèles</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Stats bar -->
+<div id="map-bar">
+  <span>GÉOLOCALISÉES <strong id="nb-geo">—</strong></span>
+  <span>VILLES <strong id="nb-villes">—</strong></span>
+  <span>SANS COORDS <strong id="nb-sans">—</strong></span>
+  <span>MAJ <strong id="maj-date">—</strong></span>
+  <span style="margin-left:auto;display:flex;gap:12px;align-items:center;">
+    <span class="legend-item"><span class="legend-dot" style="background:var(--green)"></span>Bon deal (score ≥70)</span>
+    <span class="legend-item"><span class="legend-dot" style="background:var(--amber)"></span>Moyen (40–69)</span>
+    <span class="legend-item"><span class="legend-dot" style="background:#555"></span>Standard</span>
+  </span>
+</div>
+
+<!-- Layout -->
+<div id="map-layout">
+  <div id="map"></div>
+  <div id="sidebar">
+    <div id="sidebar-header">Villes</div>
+    <div id="sidebar-content">
+      <input type="text" class="map-filter" id="ville-search" placeholder="Rechercher une ville..." oninput="filterVilles(this.value)">
+      <div id="villes-list"></div>
+    </div>
+  </div>
+</div>
+
+<script src="data/map.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+let map, markersLayer, clustersLayer;
+let allClusters = [];
+
+function init() {
+  if (typeof MAP_DATA === 'undefined') { return; }
+
+  // Stats bar
+  document.getElementById('nb-geo').textContent    = MAP_DATA.nb_geolocalisees || 0;
+  document.getElementById('nb-villes').textContent = (MAP_DATA.clusters || []).length;
+  document.getElementById('nb-sans').textContent   = MAP_DATA.nb_sans_coords || 0;
+  document.getElementById('maj-date').textContent  = MAP_DATA.date_calcul || '—';
+
+  // Initialiser la carte Leaflet centrée sur Luxembourg
+  const centre = MAP_DATA.centre_lu || { lat: 49.6116, lng: 6.1319 };
+  map = L.map('map', { zoomControl: true }).setView([centre.lat, centre.lng], 10);
+
+  // Tuiles CartoDB Dark (sans clé API)
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution: '© OpenStreetMap contributors © CARTO',
+    subdomains: 'abcd',
+    maxZoom: 19
+  }).addTo(map);
+
+  markersLayer  = L.layerGroup().addTo(map);
+  clustersLayer = L.layerGroup().addTo(map);
+
+  allClusters = MAP_DATA.clusters || [];
+  renderClusters(allClusters);
+  renderPoints(MAP_DATA.points || []);
+  renderVillesList(allClusters);
+}
+
+function getColor(score) {
+  if (score >= 70) return '#3fb950'; // vert
+  if (score >= 40) return '#d29922'; // amber
+  return '#555';
+}
+
+function renderClusters(clusters) {
+  clustersLayer.clearLayers();
+  clusters.forEach(c => {
+    const color  = getColor(c.best_score);
+    const radius = Math.max(14, Math.min(40, 14 + c.nb * 1.5));
+    const circle = L.circleMarker([c.lat, c.lng], {
+      radius:      radius,
+      fillColor:   color,
+      color:       color,
+      weight:      1.5,
+      opacity:     0.9,
+      fillOpacity: 0.25,
+    });
+
+    // Label nombre
+    const label = L.divIcon({
+      html: `<div style="font-family:'DM Mono',monospace;font-size:11px;font-weight:600;color:${color};white-space:nowrap;text-shadow:0 1px 3px #000">${c.nb}</div>`,
+      iconSize: [30, 14],
+      iconAnchor: [15, 7],
+      className: '',
+    });
+    L.marker([c.lat, c.lng], { icon: label, interactive: false }).addTo(clustersLayer);
+
+    const prix = c.prix_moyen ? c.prix_moyen.toLocaleString('fr-FR') + ' €' : '—';
+    const annoncesHtml = (c.annonces || []).map(a =>
+      `<div style="border-top:1px solid #30363d;padding-top:6px;margin-top:6px;">
+        <div style="font-weight:600;font-size:12px;">${a.titre}</div>
+        <div class="popup-detail">${a.km ? a.km.toLocaleString('fr-FR') + ' km' : ''} ${a.prix ? '— ' + a.prix.toLocaleString('fr-FR') + ' €' : ''}</div>
+        ${a.url ? `<a href="${a.url}" target="_blank" class="popup-link">Voir</a>` : ''}
+      </div>`
+    ).join('');
+
+    circle.bindPopup(`
+      <div>
+        <div class="popup-titre">${c.ville}</div>
+        <div style="color:#8b949e;font-size:11px;margin-bottom:8px;">${c.region}</div>
+        <div><span class="popup-nb">${c.nb}</span> <span style="color:#8b949e;font-size:12px;">annonce${c.nb > 1 ? 's' : ''}</span></div>
+        <div class="popup-detail">Prix moyen : <strong>${prix}</strong></div>
+        ${annoncesHtml}
+      </div>
+    `, { maxWidth: 260 });
+
+    circle.addTo(clustersLayer);
+  });
+}
+
+function renderPoints(points) {
+  markersLayer.clearLayers();
+  // N'affiche les marqueurs individuels qu'à zoom ≥ 13
+  map.on('zoomend', () => {
+    const z = map.getZoom();
+    if (z >= 13) {
+      points.forEach(p => {
+        const color = getColor(p.deal_score);
+        const dot = L.circleMarker([p.lat, p.lng], {
+          radius: 5, fillColor: color, color: '#000',
+          weight: 1, opacity: 1, fillOpacity: 0.85,
+        });
+        const prix = p.prix ? p.prix.toLocaleString('fr-FR') + ' €' : '—';
+        const km   = p.km   ? p.km.toLocaleString('fr-FR')   + ' km' : '—';
+        dot.bindPopup(`
+          <div>
+            <div class="popup-titre">${p.marque} ${p.modele} ${p.annee || ''}</div>
+            <div class="popup-detail">${km} — ${prix}</div>
+            ${p.url ? `<a href="${p.url}" target="_blank" class="popup-link">Voir l'annonce</a>` : ''}
+          </div>
+        `);
+        dot.addTo(markersLayer);
+      });
+    } else {
+      markersLayer.clearLayers();
+    }
+  });
+}
+
+function renderVillesList(clusters) {
+  const list = document.getElementById('villes-list');
+  list.innerHTML = clusters.map(c => {
+    const prix = c.prix_moyen ? c.prix_moyen.toLocaleString('fr-FR') + ' €' : '—';
+    return `
+    <div class="ville-card" onclick="flyToVille(${c.lat}, ${c.lng})">
+      <div class="ville-name">${c.ville}</div>
+      <div class="ville-region">${c.region}</div>
+      <div class="ville-stats">${c.nb} annonce${c.nb > 1 ? 's' : ''} · moy. ${prix}</div>
+    </div>`;
+  }).join('');
+}
+
+function flyToVille(lat, lng) {
+  map.flyTo([lat, lng], 13, { duration: 1 });
+}
+
+function filterVilles(query) {
+  const q = query.toLowerCase();
+  const filtered = allClusters.filter(c =>
+    c.ville.toLowerCase().includes(q) || c.region.toLowerCase().includes(q)
+  );
+  renderVillesList(filtered);
+}
+
+init();
+</script>
+</body>
+</html>

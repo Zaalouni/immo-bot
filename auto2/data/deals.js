@@ -1,4 +1,4 @@
-// Généré automatiquement le 2026-04-02 09:09
+// Généré automatiquement le 2026-04-02 14:43
 const DEALS = [
   {
     "id": "475d531be8724b8b",

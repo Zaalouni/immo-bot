@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Auto-Bot LU — Avis modèles</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0d1117">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="AutoBot LU">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <meta name="description" content="Avis et fiabilité par modèle — Auto-Bot Luxembourg">
+  <meta name="robots" content="noindex,nofollow">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0d1117; --surface: #161b22; --surface2: #21262d;
+      --border: #30363d; --border2: #3d444e;
+      --txt: #e6edf3; --txt2: #8b949e; --txt3: #6e7681;
+      --accent: #388bfd; --accent-dim: rgba(56,139,253,.15);
+      --green: #3fb950; --green-dim: rgba(63,185,80,.15);
+      --amber: #d29922; --amber-dim: rgba(210,153,34,.15);
+      --red: #f85149; --red-dim: rgba(248,81,73,.15);
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { background: var(--bg); color: var(--txt); font-family: 'Barlow', sans-serif; font-size: 14px; margin: 0; }
+    ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+    /* Navbar */
+    .navbar { background: var(--surface) !important; border-bottom: 1px solid var(--border); padding: 0 1rem; }
+    .navbar-brand { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 1.2rem; color: var(--txt) !important; }
+    .navbar-brand span { color: var(--accent); }
+    .navbar-toggler { border: 1px solid var(--border) !important; padding: 4px 8px; }
+    .navbar-toggler-icon { filter: invert(1); }
+    .navbar-collapse { background: var(--surface); }
+    .nav-link { color: var(--txt2) !important; font-size: 13px; font-weight: 500; padding: 12px 14px !important; transition: color .15s; }
+    .nav-link:hover { color: var(--txt) !important; }
+    .nav-link.active { color: var(--accent) !important; }
+
+    /* Layout */
+    #layout { display: flex; min-height: calc(100vh - 52px); }
+    #sidebar { width: 240px; flex-shrink: 0; background: var(--surface); border-right: 1px solid var(--border); overflow-y: auto; padding: 12px; }
+    #content { flex: 1; padding: 20px; overflow-y: auto; }
+
+    /* Sidebar */
+    .sidebar-search { width: 100%; background: var(--surface2); border: 1px solid var(--border); color: var(--txt); border-radius: 6px; padding: 6px 10px; font-size: 12px; margin-bottom: 12px; }
+    .sidebar-search:focus { outline: none; border-color: var(--accent); }
+    .marque-group { margin-bottom: 10px; }
+    .marque-label { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--txt3); padding: 4px 0; }
+    .modele-btn { display: block; width: 100%; text-align: left; background: transparent; border: none; padding: 5px 8px; border-radius: 5px; font-size: 13px; color: var(--txt2); cursor: pointer; transition: background .12s, color .12s; }
+    .modele-btn:hover { background: var(--surface2); color: var(--txt); }
+    .modele-btn.active { background: var(--accent-dim); color: var(--accent); font-weight: 600; }
+
+    /* Fiche avis */
+    .review-fiche { display: none; }
+    .review-fiche.visible { display: block; }
+
+    .fiche-header {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+      padding: 20px 24px; margin-bottom: 16px;
+    }
+    .fiche-marque { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--accent); margin-bottom: 2px; }
+    .fiche-titre  { font-family: 'Barlow Condensed', sans-serif; font-size: 2rem; font-weight: 800; color: var(--txt); line-height: 1.1; }
+    .fiche-gen    { font-size: 13px; color: var(--txt3); margin-top: 4px; }
+    .fiche-resume { font-size: 14px; color: var(--txt2); margin-top: 10px; line-height: 1.5; }
+
+    /* Notes radar */
+    .notes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 16px; }
+    .note-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px; text-align: center; }
+    .note-val  { font-family: 'DM Mono', monospace; font-size: 2rem; font-weight: 500; line-height: 1; }
+    .note-label { font-size: 11px; color: var(--txt3); text-transform: uppercase; letter-spacing: .05em; margin-top: 4px; }
+    .note-bar  { height: 4px; border-radius: 2px; background: var(--border2); margin-top: 8px; }
+    .note-bar-fill { height: 100%; border-radius: 2px; }
+
+    /* Conso card */
+    .conso-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin-bottom: 16px; }
+    .conso-row  { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+    .conso-icon { font-size: 1.2rem; width: 28px; text-align: center; }
+    .conso-txt  { font-size: 13px; color: var(--txt2); }
+    .conso-val  { font-family: 'DM Mono', monospace; font-size: 1.1rem; color: var(--txt); margin-left: auto; }
+
+    /* Listes */
+    .list-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin-bottom: 12px; }
+    .list-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: .95rem; text-transform: uppercase; letter-spacing: .03em; margin-bottom: 10px; }
+    .list-title.green  { color: var(--green); }
+    .list-title.red    { color: var(--red); }
+    .list-title.amber  { color: var(--amber); }
+    .list-item { font-size: 13px; color: var(--txt2); padding: 4px 0; display: flex; align-items: flex-start; gap: 8px; }
+    .list-item::before { content: '·'; color: var(--txt3); flex-shrink: 0; }
+    .list-item.warning { color: var(--amber); }
+    .list-item.warning::before { content: '⚠'; }
+    .list-item.danger  { color: var(--red); }
+    .list-item.danger::before  { content: '!'; }
+
+    /* Tags */
+    .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+    .tag { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 2px 10px; font-size: 11px; color: var(--txt3); }
+
+    /* Entretien badge */
+    .entretien-badge { display: inline-block; padding: 3px 12px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+    .entretien-Faible         { background: var(--green-dim); color: var(--green); }
+    .entretien-Moyen          { background: var(--amber-dim); color: var(--amber); }
+    .entretien-Élevé          { background: var(--red-dim);   color: var(--red); }
+    .entretien-très-élevé     { background: var(--red-dim);   color: var(--red); }
+    .entretien-Faible-à-moyen { background: var(--green-dim); color: var(--green); }
+    .entretien-Très-faible    { background: var(--green-dim); color: var(--green); }
+
+    /* Sources */
+    .sources-txt { font-size: 11px; color: var(--txt3); margin-top: 12px; }
+
+    /* Placeholder */
+    #placeholder { text-align: center; padding: 80px 20px; color: var(--txt3); }
+    #placeholder .icon { font-size: 3rem; margin-bottom: 16px; }
+
+    @media (max-width: 768px) { #sidebar { display: none; } }
+  </style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="navbar navbar-expand-lg">
+  <a class="navbar-brand" href="index.html"><span>◈</span> AUTO-BOT LU</a>
+  <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navMenu">
+    <ul class="navbar-nav ms-auto">
+      <li class="nav-item"><a class="nav-link" href="index.html">Annonces</a></li>
+      <li class="nav-item"><a class="nav-link" href="deals.html">Deals</a></li>
+      <li class="nav-item"><a class="nav-link" href="rapport.html">Rapport</a></li>
+      <li class="nav-item"><a class="nav-link" href="watchlist.html">Watchlist</a></li>
+      <li class="nav-item"><a class="nav-link" href="alerts.html">Alertes</a></li>
+      <li class="nav-item"><a class="nav-link" href="map.html">Carte</a></li>
+      <li class="nav-item"><a class="nav-link active" href="reviews.html">Avis</a></li>
+      <li class="nav-item"><a class="nav-link" href="market.html">Marché</a></li>
+      <li class="nav-item"><a class="nav-link" href="compare.html">Comparer</a></li>
+      <li class="nav-item"><a class="nav-link" href="budget.html">Budget</a></li>
+      <li class="nav-item"><a class="nav-link" href="top-models.html">Top Modèles</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div id="layout">
+
+  <!-- Sidebar navigation modèles -->
+  <div id="sidebar">
+    <input type="text" class="sidebar-search" placeholder="Rechercher un modèle..." oninput="filterSidebar(this.value)" id="sidebar-search">
+    <div id="sidebar-nav"></div>
+  </div>
+
+  <!-- Contenu principal -->
+  <div id="content">
+
+    <!-- Placeholder de démarrage -->
+    <div id="placeholder">
+      <div class="icon">🚗</div>
+      <div style="font-size:1.1rem;font-weight:600;color:var(--txt2);margin-bottom:8px;">Choisir un modèle</div>
+      <div style="font-size:13px;">Sélectionne un modèle dans la liste à gauche<br>pour consulter sa fiche fiabilité complète.</div>
+      <div style="font-size:12px;color:var(--txt3);margin-top:16px;" id="nb-modeles-txt"></div>
+    </div>
+
+    <!-- Fiches (une par modèle, masquées par défaut) -->
+    <div id="fiches-container"></div>
+
+  </div>
+</div>
+
+<script src="data/reviews.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+let allReviews = [];
+let currentId  = null;
+
+function init() {
+  if (typeof REVIEWS === 'undefined' || !REVIEWS.reviews) return;
+  allReviews = REVIEWS.reviews;
+
+  document.getElementById('nb-modeles-txt').textContent =
+    REVIEWS.nb_modeles + ' modèles disponibles — note moyenne ' + REVIEWS.note_moyenne_globale + '/10';
+
+  buildSidebar(allReviews);
+  buildFiches(allReviews);
+
+  // Ouvrir le premier par défaut
+  if (allReviews.length > 0) showFiche(ficheId(allReviews[0]));
+}
+
+function ficheId(r) {
+  return 'fiche_' + r.marque.replace(/\s/g, '_') + '_' + r.modele.replace(/\s/g, '_') + '_' + (r.annee_debut || '');
+}
+
+function buildSidebar(reviews) {
+  const nav = document.getElementById('sidebar-nav');
+  const marques = {};
+  reviews.forEach(r => {
+    marques[r.marque] = marques[r.marque] || [];
+    marques[r.marque].push(r);
+  });
+  nav.innerHTML = Object.entries(marques).map(([marque, modeles]) => `
+    <div class="marque-group">
+      <div class="marque-label">${marque}</div>
+      ${modeles.map(r => `
+        <button class="modele-btn" id="btn_${ficheId(r)}" onclick="showFiche('${ficheId(r)}')">${r.modele} <span style="font-size:11px;color:var(--txt3)">${r.annee_debut}–${r.annee_fin || '…'}</span></button>
+      `).join('')}
+    </div>
+  `).join('');
+}
+
+function buildFiches(reviews) {
+  const container = document.getElementById('fiches-container');
+  container.innerHTML = reviews.map(r => {
+    const id = ficheId(r);
+    return `<div class="review-fiche" id="${id}">${renderFiche(r)}</div>`;
+  }).join('');
+}
+
+function showFiche(id) {
+  if (currentId) {
+    document.getElementById(currentId)?.classList.remove('visible');
+    document.getElementById('btn_' + currentId)?.classList.remove('active');
+  }
+  document.getElementById('placeholder')?.remove();
+  document.getElementById(id)?.classList.add('visible');
+  document.getElementById('btn_' + id)?.classList.add('active');
+  currentId = id;
+  window.scrollTo({ top: 0 });
+}
+
+function filterSidebar(q) {
+  const query = q.toLowerCase();
+  const filtered = allReviews.filter(r =>
+    r.marque.toLowerCase().includes(query) ||
+    r.modele.toLowerCase().includes(query) ||
+    (r.tags || []).some(t => t.includes(query))
+  );
+  buildSidebar(filtered);
+  // Ré-activer le bouton courant si présent
+  if (currentId) document.getElementById('btn_' + currentId)?.classList.add('active');
+}
+
+function noteColor(n) {
+  if (n >= 8) return 'var(--green)';
+  if (n >= 6) return 'var(--amber)';
+  return 'var(--red)';
+}
+
+function notebar(n) {
+  const pct = Math.round((n / 10) * 100);
+  const color = noteColor(n);
+  return `<div class="note-bar"><div class="note-bar-fill" style="width:${pct}%;background:${color}"></div></div>`;
+}
+
+function listItems(arr, cssClass) {
+  if (!arr || !arr.length) return '<div style="font-size:12px;color:var(--txt3)">Aucun renseigné</div>';
+  return arr.map(item => `<div class="list-item ${cssClass || ''}">${item}</div>`).join('');
+}
+
+function dangerClass(item) {
+  const low = item.toLowerCase();
+  if (low.includes('critique') || low.includes('absolument') || low.includes('important')) return 'danger';
+  if (low.includes('vérifier') || low.includes('surveiller') || low.includes('préférer') || low.includes('exiger')) return 'warning';
+  return '';
+}
+
+function renderFiche(r) {
+  const entretienKey = (r.cout_entretien || '').replace(/\s+/g, '-').replace('à', 'a');
+  const tags = (r.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
+  const sources = r.sources ? `<div class="sources-txt">Sources : ${r.sources}</div>` : '';
+  const generation = [r.generation, r.annee_debut && r.annee_fin ? `${r.annee_debut}–${r.annee_fin}` : ''].filter(Boolean).join(' · ');
+  const carburant = r.carburant ? `<span style="font-size:12px;color:var(--accent);margin-left:8px;font-weight:600;">${r.carburant}</span>` : '';
+
+  const risquesHtml = (r.risques_achat || []).map(item =>
+    `<div class="list-item ${dangerClass(item)}">${item}</div>`
+  ).join('') || '<div style="font-size:12px;color:var(--txt3)">Aucun risque particulier identifié</div>';
+
+  const pbHtml = (r.problemes_connus || []).map(item =>
+    `<div class="list-item ${dangerClass(item)}">${item}</div>`
+  ).join('') || '<div style="font-size:12px;color:var(--txt3)">Très peu de problèmes connus</div>';
+
+  return `
+  <div class="fiche-header">
+    <div class="fiche-marque">${r.marque}</div>
+    <div class="fiche-titre">${r.modele}${carburant}</div>
+    ${generation ? `<div class="fiche-gen">${generation}</div>` : ''}
+    <div class="fiche-resume">${r.fiabilite_resumee || ''}</div>
+    ${tags ? `<div class="tags">${tags}</div>` : ''}
+  </div>
+
+  <!-- Notes -->
+  <div class="notes-grid">
+    <div class="note-card">
+      <div class="note-val" style="color:${noteColor(r.note_globale)}">${r.note_globale || '—'}</div>
+      <div class="note-label">Note globale /10</div>
+      ${r.note_globale ? notebar(r.note_globale) : ''}
+    </div>
+    <div class="note-card">
+      <div class="note-val" style="color:${noteColor(r.note_fiabilite)}">${r.note_fiabilite || '—'}</div>
+      <div class="note-label">Fiabilité /10</div>
+      ${r.note_fiabilite ? notebar(r.note_fiabilite) : ''}
+    </div>
+    <div class="note-card">
+      <div class="note-val" style="color:${noteColor(r.note_confort)}">${r.note_confort || '—'}</div>
+      <div class="note-label">Confort /10</div>
+      ${r.note_confort ? notebar(r.note_confort) : ''}
+    </div>
+    <div class="note-card">
+      <div class="note-val" style="color:${noteColor(r.note_consommation)}">${r.note_consommation || '—'}</div>
+      <div class="note-label">Économie /10</div>
+      ${r.note_consommation ? notebar(r.note_consommation) : ''}
+    </div>
+  </div>
+
+  <!-- Consommation -->
+  <div class="conso-card">
+    <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem;text-transform:uppercase;letter-spacing:.03em;color:var(--txt2);margin-bottom:12px;">Consommation réelle</div>
+    <div class="conso-row">
+      <div class="conso-icon">⛽</div>
+      <div class="conso-txt">Mixte (ville + route)</div>
+      <div class="conso-val">${r.consommation_mixte_l100 ? r.consommation_mixte_l100 + ' L/100' : '—'}</div>
+    </div>
+    <div class="conso-row">
+      <div class="conso-icon">🛣️</div>
+      <div class="conso-txt">Autoroute</div>
+      <div class="conso-val">${r.consommation_autoroute_l100 ? r.consommation_autoroute_l100 + ' L/100' : '—'}</div>
+    </div>
+    <div class="conso-row" style="margin-bottom:0;">
+      <div class="conso-icon">🔧</div>
+      <div class="conso-txt">Coût d'entretien</div>
+      <div class="conso-val"><span class="entretien-badge entretien-${entretienKey}">${r.cout_entretien || '—'}</span></div>
+    </div>
+  </div>
+
+  <!-- 3 colonnes : points forts, problèmes, risques achat -->
+  <div class="row g-3 mb-3">
+    <div class="col-md-4">
+      <div class="list-card">
+        <div class="list-title green">Points forts</div>
+        ${listItems(r.points_forts, '')}
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="list-card">
+        <div class="list-title red">Problèmes connus</div>
+        ${pbHtml}
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="list-card">
+        <div class="list-title amber">Avant d'acheter</div>
+        ${risquesHtml}
+      </div>
+    </div>
+  </div>
+
+  ${r.recommande_pour && r.recommande_pour.length ? `
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin-bottom:12px;">
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--txt3);margin-bottom:8px;">Recommandé pour</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">${r.recommande_pour.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+  </div>` : ''}
+
+  ${sources}
+  `;
+}
+
+init();
+</script>
+</body>
+</html>

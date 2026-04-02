@@ -1,4 +1,4 @@
-// Généré automatiquement le 2026-04-02 09:09
+// Généré automatiquement le 2026-04-02 14:43
 const STATS = {
   "total_actives": 1268,
   "nouvelles_aujourd_hui": 395,
@@ -74,5 +74,5 @@ const STATS = {
       "meilleur_deal_id": "test_abc123"
     }
   ],
-  "date_calcul": "2026-04-02T09:09:07.713087"
+  "date_calcul": "2026-04-02T14:43:12.507912"
 };
