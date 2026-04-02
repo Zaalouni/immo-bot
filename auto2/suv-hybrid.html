@@ -126,6 +126,22 @@
     .vs-worse  { background: var(--red-dim); color: var(--red); }
     .vs-equal  { background: var(--amber-dim); color: var(--amber); }
 
+    /* Filtres avancés */
+    .filter-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; margin-bottom: 14px; }
+    .filter-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+    .filter-row:last-child { margin-bottom: 0; }
+    .filter-label { font-size: 11px; font-weight: 700; color: var(--txt3); text-transform: uppercase; letter-spacing: .05em; min-width: 72px; }
+    .filter-chip { padding: 4px 12px; border-radius: 14px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: var(--surface2); color: var(--txt2); transition: all .15s; user-select: none; }
+    .filter-chip:hover { color: var(--txt); border-color: var(--txt3); }
+    .filter-chip.active-blue   { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .filter-chip.active-green  { background: var(--green); border-color: var(--green); color: #fff; }
+    .filter-chip.active-amber  { background: var(--amber); border-color: var(--amber); color: #fff; }
+    .filter-chip.active-purple { background: var(--purple); border-color: var(--purple); color: #fff; }
+    .filter-chip.active-teal   { background: var(--teal); border-color: var(--teal); color: #fff; }
+    .filter-reset { font-size: 11px; color: var(--txt3); cursor: pointer; text-decoration: underline; margin-left: auto; }
+    .filter-reset:hover { color: var(--txt); }
+    .filter-count-badge { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--txt3); margin-left: 8px; }
+
     /* Footer version */
     .version-footer { font-size: 11px; color: var(--txt3); text-align: center; padding: 20px 0 30px; font-family: 'DM Mono', monospace; }
   </style>
@@ -214,11 +230,54 @@
   </div>
 
   <!-- Tableau toutes annonces -->
-  <div class="section-header mt-4">Toutes les annonces SUV Hybride Auto <span id="count-label"></span></div>
+  <div class="section-header mt-4">Toutes les annonces SUV Hybride Auto <span id="count-label"></span><span class="filter-count-badge" id="filter-count-badge"></span></div>
+
+  <!-- Filtres avancés -->
+  <div class="filter-panel">
+    <div class="filter-row">
+      <span class="filter-label">Carburant</span>
+      <span class="filter-chip active-blue" data-dim="carbu" data-val="ALL" onclick="setFilter(this)">Tous</span>
+      <span class="filter-chip" data-dim="carbu" data-val="HEV"  onclick="setFilter(this)">Hybride HEV</span>
+      <span class="filter-chip" data-dim="carbu" data-val="PHEV" onclick="setFilter(this)">Hybride PHEV</span>
+    </div>
+    <div class="filter-row">
+      <span class="filter-label">Budget</span>
+      <span class="filter-chip active-amber" data-dim="budget" data-val="ALL"   onclick="setFilter(this)">Tous</span>
+      <span class="filter-chip" data-dim="budget" data-val="u20"   onclick="setFilter(this)">< 20 000 €</span>
+      <span class="filter-chip" data-dim="budget" data-val="20-30" onclick="setFilter(this)">20 – 30k €</span>
+      <span class="filter-chip" data-dim="budget" data-val="30-40" onclick="setFilter(this)">30 – 40k €</span>
+      <span class="filter-chip" data-dim="budget" data-val="40-55" onclick="setFilter(this)">40 – 55k €</span>
+      <span class="filter-chip" data-dim="budget" data-val="o55"   onclick="setFilter(this)">> 55 000 €</span>
+    </div>
+    <div class="filter-row">
+      <span class="filter-label">Kilométrage</span>
+      <span class="filter-chip active-green" data-dim="km" data-val="ALL"    onclick="setFilter(this)">Tous</span>
+      <span class="filter-chip" data-dim="km" data-val="u30"    onclick="setFilter(this)">< 30 000 km</span>
+      <span class="filter-chip" data-dim="km" data-val="30-70"  onclick="setFilter(this)">30 – 70k km</span>
+      <span class="filter-chip" data-dim="km" data-val="70-120" onclick="setFilter(this)">70 – 120k km</span>
+      <span class="filter-chip" data-dim="km" data-val="o120"   onclick="setFilter(this)">> 120 000 km</span>
+    </div>
+    <div class="filter-row">
+      <span class="filter-label">Année</span>
+      <span class="filter-chip active-purple" data-dim="annee" data-val="ALL"  onclick="setFilter(this)">Toutes</span>
+      <span class="filter-chip" data-dim="annee" data-val="o2022" onclick="setFilter(this)">2022 +</span>
+      <span class="filter-chip" data-dim="annee" data-val="20-21" onclick="setFilter(this)">2020 – 2021</span>
+      <span class="filter-chip" data-dim="annee" data-val="18-19" onclick="setFilter(this)">2018 – 2019</span>
+      <span class="filter-chip" data-dim="annee" data-val="u2018" onclick="setFilter(this)">< 2018</span>
+    </div>
+    <div class="filter-row">
+      <span class="filter-label">Deal score</span>
+      <span class="filter-chip active-teal" data-dim="score" data-val="ALL" onclick="setFilter(this)">Tous</span>
+      <span class="filter-chip" data-dim="score" data-val="70" onclick="setFilter(this)">≥ 70 — Excellent</span>
+      <span class="filter-chip" data-dim="score" data-val="50" onclick="setFilter(this)">≥ 50 — Bon</span>
+      <span class="filter-chip" data-dim="score" data-val="30" onclick="setFilter(this)">≥ 30 — Correct</span>
+      <span class="filter-reset" onclick="resetAllFilters()">Réinitialiser tous les filtres</span>
+    </div>
+  </div>
 
   <!-- Filtre par marque -->
-  <div class="filter-tabs" id="marque-tabs">
-    <div class="filter-tab active" data-marque="ALL" onclick="filterMarque(this)">Toutes</div>
+  <div class="filter-tabs" id="marque-tabs" style="margin-bottom:12px;">
+    <div class="filter-tab active" data-marque="ALL" onclick="filterMarque(this)">Toutes marques</div>
   </div>
 
   <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;">
@@ -229,9 +288,9 @@
           <th>Année</th>
           <th>Km</th>
           <th>Carburant</th>
-          <th>Boîte</th>
           <th>Prix</th>
           <th>Score</th>
+          <th>Négo</th>
           <th>vs RAV4</th>
           <th>Ville</th>
           <th>Site</th>
@@ -438,83 +497,157 @@ if (D.prix_median && D.rav4_median) {
   </div>`;
 })();
 
-// ── Tableau DataTables ────────────────────────────────────────────────────────
-let allAnnonces = D.annonces || [];
-let currentMarque = 'ALL';
+// ── Tableau DataTables + filtres combinables ──────────────────────────────────
+const allAnnonces = D.annonces || [];
+const medRav4     = D.rav4_median || 0;
 
-function buildTable(data) {
-  const tbody = document.getElementById('table-body');
-  const medRav4 = D.rav4_median || 0;
-  tbody.innerHTML = data.map(l => {
-    const vsRav4 = medRav4 && l.prix ? Math.round(((l.prix - medRav4) / medRav4) * 100) : null;
-    const vsTag = vsRav4 !== null
-      ? `<span class="vs-tag ${vsRav4 <= -5 ? 'vs-better' : vsRav4 >= 5 ? 'vs-worse' : 'vs-equal'}">${vsRav4 > 0 ? '+' : ''}${vsRav4}%</span>`
-      : '—';
-    return `<tr>
-      <td style="font-weight:600;">${l.marque_norm || l.marque || ''} ${l.modele_norm || l.modele || ''}</td>
-      <td>${l.annee || '—'}</td>
-      <td style="font-family:'DM Mono',monospace;">${fmtKm(l.km)}</td>
-      <td>${carbuBadge(l.carburant)}</td>
-      <td style="font-size:12px;">${l.boite || '—'}</td>
-      <td style="font-family:'DM Mono',monospace;font-weight:600;color:var(--amber);">${fmtPrix(l.prix)}</td>
-      <td>${scoreBadge(l.deal_score)}</td>
-      <td>${vsTag}</td>
-      <td style="font-size:12px;color:var(--txt2);">${l.ville || '—'}</td>
-      <td>${siteBadge(l.site)}</td>
-      <td>${l.url ? `<a href="${l.url}" target="_blank" rel="noopener" class="row-link">→</a>` : '—'}</td>
-    </tr>`;
-  }).join('');
+// État des filtres
+const filters = { carbu: 'ALL', budget: 'ALL', km: 'ALL', annee: 'ALL', score: 'ALL', marque: 'ALL' };
+
+// Préfixes des classes active par dimension
+const activeClass = { carbu:'active-blue', budget:'active-amber', km:'active-green', annee:'active-purple', score:'active-teal' };
+
+function matchesFilters(l) {
+  const prix   = l.prix || 0;
+  const km     = l.km   || 0;
+  const annee  = l.annee || 0;
+  const score  = l.deal_score != null ? l.deal_score : 0;
+  const carb   = (l.carburant || '').toLowerCase();
+  const marque = l.marque_norm || l.marque || '';
+
+  if (filters.marque !== 'ALL' && marque !== filters.marque) return false;
+
+  if (filters.carbu !== 'ALL') {
+    const isPhev = carb.includes('phev') || carb.includes('rechargeable') || carb.includes('plug');
+    const isHev  = !isPhev && (carb.includes('hybr') || carb.includes('hybrid'));
+    if (filters.carbu === 'PHEV' && !isPhev) return false;
+    if (filters.carbu === 'HEV'  && !isHev)  return false;
+  }
+
+  if (filters.budget !== 'ALL') {
+    if (filters.budget === 'u20'   && prix >= 20000) return false;
+    if (filters.budget === '20-30' && (prix < 20000 || prix >= 30000)) return false;
+    if (filters.budget === '30-40' && (prix < 30000 || prix >= 40000)) return false;
+    if (filters.budget === '40-55' && (prix < 40000 || prix >= 55000)) return false;
+    if (filters.budget === 'o55'   && prix < 55000) return false;
+  }
+
+  if (filters.km !== 'ALL') {
+    if (filters.km === 'u30'    && km >= 30000) return false;
+    if (filters.km === '30-70'  && (km < 30000 || km >= 70000)) return false;
+    if (filters.km === '70-120' && (km < 70000 || km >= 120000)) return false;
+    if (filters.km === 'o120'   && km < 120000) return false;
+  }
+
+  if (filters.annee !== 'ALL') {
+    if (filters.annee === 'o2022' && annee < 2022) return false;
+    if (filters.annee === '20-21' && (annee < 2020 || annee > 2021)) return false;
+    if (filters.annee === '18-19' && (annee < 2018 || annee > 2019)) return false;
+    if (filters.annee === 'u2018' && annee >= 2018) return false;
+  }
+
+  if (filters.score !== 'ALL') {
+    const minScore = parseInt(filters.score, 10);
+    if (score < minScore) return false;
+  }
+
+  return true;
 }
 
-function initTable() {
-  buildTable(allAnnonces);
-  $('#suv-table').DataTable({
-    pageLength: 25,
-    order: [[6, 'desc']],
-    language: {
-      url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json'
-    },
-    columnDefs: [
-      { targets: [10], orderable: false }
-    ]
-  });
-  document.getElementById('count-label').textContent = `${allAnnonces.length} annonce${allAnnonces.length > 1 ? 's' : ''}`;
+function makeRow(l) {
+  const vsRav4 = medRav4 && l.prix ? Math.round(((l.prix - medRav4) / medRav4) * 100) : null;
+  const vsTag  = vsRav4 !== null
+    ? `<span class="vs-tag ${vsRav4 <= -5 ? 'vs-better' : vsRav4 >= 5 ? 'vs-worse' : 'vs-equal'}">${vsRav4 > 0 ? '+' : ''}${vsRav4}%</span>`
+    : '—';
+  return [
+    `<span style="font-weight:600;">${l.marque_norm || l.marque || ''} ${l.modele_norm || l.modele || ''}</span>`,
+    l.annee || '—',
+    `<span style="font-family:'DM Mono',monospace;">${fmtKm(l.km)}</span>`,
+    carbuBadge(l.carburant),
+    `<span style="font-family:'DM Mono',monospace;font-weight:600;color:var(--amber);">${fmtPrix(l.prix)}</span>`,
+    scoreBadge(l.deal_score),
+    negoBadge(l.nego_score),
+    vsTag,
+    `<span style="font-size:12px;color:var(--txt2);">${l.ville || '—'}</span>`,
+    siteBadge(l.site),
+    l.url ? `<a href="${l.url}" target="_blank" rel="noopener" class="row-link">→</a>` : '—',
+  ];
 }
 
-// Filtre marques
+function negoBadge(s) {
+  if (s == null) return '—';
+  const n = Math.round(s);
+  const color = n >= 50 ? 'var(--green)' : n >= 30 ? 'var(--amber)' : 'var(--txt3)';
+  return `<span style="font-family:'DM Mono',monospace;font-size:11px;color:${color};">${n}</span>`;
+}
+
+function applyFilters() {
+  const filtered = allAnnonces.filter(matchesFilters);
+  const dt = $('#suv-table').DataTable();
+  dt.clear();
+  filtered.forEach(l => dt.row.add(makeRow(l)));
+  dt.draw();
+
+  const nb = filtered.length;
+  const total = allAnnonces.length;
+  document.getElementById('count-label').textContent = `${nb} annonce${nb > 1 ? 's' : ''}`;
+  const badge = document.getElementById('filter-count-badge');
+  badge.textContent = nb < total ? ` — ${total - nb} masquées par filtres` : '';
+  badge.style.color = nb < total ? 'var(--amber)' : 'var(--txt3)';
+}
+
+// Setter générique pour tous les filtres à chips
+function setFilter(el) {
+  const dim = el.dataset.dim;
+  const val = el.dataset.val;
+  const cls = activeClass[dim] || 'active-blue';
+  // désactiver tous les chips de cette dimension
+  document.querySelectorAll(`[data-dim="${dim}"]`).forEach(c => c.classList.remove(cls));
+  el.classList.add(cls);
+  filters[dim] = val;
+  applyFilters();
+}
+
 function filterMarque(el) {
   document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
-  currentMarque = el.dataset.marque;
-  const filtered = currentMarque === 'ALL'
-    ? allAnnonces
-    : allAnnonces.filter(l => (l.marque_norm || l.marque || '') === currentMarque);
-
-  const dt = $('#suv-table').DataTable();
-  dt.clear();
-  const medRav4 = D.rav4_median || 0;
-  filtered.forEach(l => {
-    const vsRav4 = medRav4 && l.prix ? Math.round(((l.prix - medRav4) / medRav4) * 100) : null;
-    const vsTag = vsRav4 !== null
-      ? `<span class="vs-tag ${vsRav4 <= -5 ? 'vs-better' : vsRav4 >= 5 ? 'vs-worse' : 'vs-equal'}">${vsRav4 > 0 ? '+' : ''}${vsRav4}%</span>`
-      : '—';
-    dt.row.add([
-      `<span style="font-weight:600;">${l.marque_norm || l.marque || ''} ${l.modele_norm || l.modele || ''}</span>`,
-      l.annee || '—',
-      `<span style="font-family:'DM Mono',monospace;">${fmtKm(l.km)}</span>`,
-      carbuBadge(l.carburant),
-      l.boite || '—',
-      `<span style="font-family:'DM Mono',monospace;font-weight:600;color:var(--amber);">${fmtPrix(l.prix)}</span>`,
-      scoreBadge(l.deal_score),
-      vsTag,
-      `<span style="font-size:12px;color:var(--txt2);">${l.ville || '—'}</span>`,
-      siteBadge(l.site),
-      l.url ? `<a href="${l.url}" target="_blank" rel="noopener" class="row-link">→</a>` : '—',
-    ]);
-  });
-  dt.draw();
-  document.getElementById('count-label').textContent = `${filtered.length} annonce${filtered.length > 1 ? 's' : ''}`;
+  filters.marque = el.dataset.marque;
+  applyFilters();
 }
+
+function resetAllFilters() {
+  // Réinitialiser état
+  Object.keys(filters).forEach(k => filters[k] = 'ALL');
+  // Réinitialiser UI chips
+  Object.entries(activeClass).forEach(([dim, cls]) => {
+    document.querySelectorAll(`[data-dim="${dim}"]`).forEach(c => c.classList.remove(cls));
+    const first = document.querySelector(`[data-dim="${dim}"][data-val="ALL"]`);
+    if (first) first.classList.add(cls);
+  });
+  // Réinitialiser onglets marque
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  const firstTab = document.querySelector('.filter-tab[data-marque="ALL"]');
+  if (firstTab) firstTab.classList.add('active');
+  applyFilters();
+}
+
+// Init DataTable
+$(document).ready(function() {
+  const tbody = document.getElementById('table-body');
+  tbody.innerHTML = allAnnonces.map(l => {
+    const row = makeRow(l);
+    return `<tr>${row.map(c => `<td>${c}</td>`).join('')}</tr>`;
+  }).join('');
+
+  $('#suv-table').DataTable({
+    pageLength: 25,
+    order: [[5, 'desc']],
+    language: { url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json' },
+    columnDefs: [{ targets: [10], orderable: false }]
+  });
+  document.getElementById('count-label').textContent =
+    `${allAnnonces.length} annonce${allAnnonces.length > 1 ? 's' : ''}`;
+});
 
 // Construire les onglets de marques
 (function() {
@@ -530,9 +663,6 @@ function filterMarque(el) {
     tabs.appendChild(t);
   });
 })();
-
-// Init DataTable
-$(document).ready(initTable);
 
 // Version footer
 if (typeof VERSION !== 'undefined') {

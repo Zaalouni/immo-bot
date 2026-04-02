@@ -192,6 +192,17 @@
       </table>
     </div>
 
+    <!-- Historique prix -->
+    <div class="row g-3 mb-4" id="history-section" style="display:none">
+      <div class="col-12">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem;text-transform:uppercase;letter-spacing:.04em;color:var(--txt2);margin-bottom:14px;">Historique des prix</div>
+          <canvas id="history-chart" height="70"></canvas>
+          <div id="history-empty" style="display:none;font-size:13px;color:var(--txt3);padding:8px 0;">Aucun historique de prix disponible pour ces annonces (données trop récentes).</div>
+        </div>
+      </div>
+    </div>
+
     <!-- Verdict -->
     <div class="verdict-card">
       <div class="verdict-title">Verdict</div>
@@ -213,6 +224,8 @@
 
 <script src="data/listings.js"></script>
 <script src="data/version.js"></script>
+<script src="data/price_history.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.0/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
@@ -364,6 +377,64 @@ function renderCompare() {
     verdict += ` <span style="color:var(--txt3)">— ${cheaperName} est moins chère de ${fmtEur(diff)}.</span>`;
   }
   document.getElementById('verdict-text').innerHTML = verdict;
+
+  // ── Sparkline historique prix ──────────────────────────────────────────────
+  renderHistoryChart(idA, idB, titreA, titreB);
+}
+
+let _histChart = null;
+function renderHistoryChart(idA, idB, titreA, titreB) {
+  const histData = (typeof PRICE_HISTORY !== 'undefined') ? PRICE_HISTORY : {};
+  const hA = histData[idA] || [];
+  const hB = histData[idB] || [];
+  const section = document.getElementById('history-section');
+  const emptyEl = document.getElementById('history-empty');
+
+  if (!hA.length && !hB.length) {
+    section.style.display = 'block';
+    document.getElementById('history-chart').style.display = 'none';
+    emptyEl.style.display = 'block';
+    return;
+  }
+
+  section.style.display = 'block';
+  document.getElementById('history-chart').style.display = 'block';
+  emptyEl.style.display = 'none';
+
+  // Union des dates
+  const allDates = [...new Set([...hA.map(p=>p.date), ...hB.map(p=>p.date)])].sort();
+  function prixAt(hist, dates) {
+    const map = Object.fromEntries(hist.map(p=>[p.date, p.prix]));
+    return dates.map(d => map[d] ?? null);
+  }
+
+  if (_histChart) { _histChart.destroy(); _histChart = null; }
+  const ctx = document.getElementById('history-chart').getContext('2d');
+  _histChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: allDates,
+      datasets: [
+        { label: titreA, data: prixAt(hA, allDates), borderColor: '#388bfd', backgroundColor: 'rgba(56,139,253,.08)', pointRadius: 3, tension: 0.3, spanGaps: true },
+        { label: titreB, data: prixAt(hB, allDates), borderColor: '#d29922', backgroundColor: 'rgba(210,153,34,.08)', pointRadius: 3, tension: 0.3, spanGaps: true },
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { labels: { color: '#8b949e', font: { size: 11 } } },
+        tooltip: {
+          backgroundColor: '#161b22', borderColor: '#30363d', borderWidth: 1,
+          titleColor: '#e6edf3', bodyColor: '#8b949e',
+          callbacks: { label: ctx => ctx.parsed.y ? new Intl.NumberFormat('fr-LU',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(ctx.parsed.y) : '—' }
+        }
+      },
+      scales: {
+        x: { grid: { color: '#21262d' }, ticks: { color: '#8b949e', font: { size: 10 }, maxTicksLimit: 10 } },
+        y: { grid: { color: '#21262d' }, ticks: { color: '#8b949e', font: { size: 10 }, callback: v => v ? v.toLocaleString('fr-LU')+'€' : '' } }
+      }
+    }
+  });
 }
 
 if (typeof VERSION !== 'undefined') {

@@ -17,6 +17,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+  <link href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.bootstrap5.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
     :root {
@@ -69,6 +70,8 @@
 
     /* ── Table DataTables dark ── */
     .dataTables_wrapper { color: var(--text); }
+    .dt-buttons .btn { background: var(--surface2) !important; border: 1px solid var(--border) !important; color: var(--muted) !important; font-size: 12px !important; border-radius: 6px !important; padding: 4px 12px !important; transition: all .15s; }
+    .dt-buttons .btn:hover { color: var(--text) !important; border-color: var(--accent) !important; }
     .dataTables_wrapper .dataTables_length,
     .dataTables_wrapper .dataTables_filter,
     .dataTables_wrapper .dataTables_info { color: var(--muted); font-size: 12px; }
@@ -284,6 +287,10 @@
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.bootstrap5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
 <script src="data/listings.js"></script>
 <script src="data/stats.js"></script>
 <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});</script>
@@ -422,6 +429,15 @@
     dtTable = $('#table-listings').DataTable({
       pageLength: 25,
       order: [[0,'asc']],
+      dom: '<"d-flex align-items-center gap-2 mb-2"Bf>rtip',
+      buttons: [{
+        extend: 'csv',
+        text: '⬇ Exporter CSV',
+        className: 'btn btn-sm',
+        filename: 'auto-bot-lu-annonces',
+        exportOptions: { columns: ':not(:last-child)' },
+        title: null,
+      }],
       language: { search:'', searchPlaceholder:'Rechercher…', lengthMenu:'_MENU_ lignes', info:'_START_–_END_ / _TOTAL_', paginate:{previous:'‹',next:'›'} },
       columnDefs: [{ orderable: false, targets: [12,13] }],
     });

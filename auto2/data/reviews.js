@@ -1,4 +1,4 @@
-// Généré automatiquement le 2026-04-02 19:20
+// Généré automatiquement le 2026-04-02 20:26
 const REVIEWS = {
   "date_calcul": "2026-04-02",
   "nb_modeles": 20,
