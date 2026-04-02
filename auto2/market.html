@@ -78,6 +78,7 @@
       <li class="nav-item"><a class="nav-link" href="rapport.html">Rapport</a></li>
       <li class="nav-item"><a class="nav-link" href="watchlist.html">Watchlist</a></li>
       <li class="nav-item"><a class="nav-link active" href="market.html">Marché</a></li>
+      <li class="nav-item"><a class="nav-link" href="suv-hybrid.html">SUV Auto</a></li>
       <li class="nav-item"><a class="nav-link" href="compare.html">Comparer</a></li>
       <li class="nav-item"><a class="nav-link" href="budget.html">Budget</a></li>
       <li class="nav-item"><a class="nav-link" href="top-models.html">Top Modèles</a></li>
@@ -184,6 +185,112 @@
       <div class="chart-card">
         <div class="chart-title">Prix vs Kilométrage — nuage de points</div>
         <canvas id="chart-scatter" style="max-height:380px"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       SECTION ANALYSES AVANCÉES
+  ══════════════════════════════════════════════════════════════ -->
+
+  <div style="border-top:1px solid var(--border2);margin:28px 0 20px;padding-top:6px;">
+    <span style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.1rem;letter-spacing:.04em;color:var(--txt3);text-transform:uppercase;">
+      Analyses avancées
+    </span>
+  </div>
+
+  <!-- ── 1. Dépréciation par modèle ── -->
+  <div class="row g-3 mb-2">
+    <div class="col-lg-7">
+      <div class="chart-card">
+        <div class="chart-title">Dépréciation annuelle par modèle <span style="font-size:11px;color:var(--txt3);font-weight:400">% de valeur perdu par an (médian)</span></div>
+        <canvas id="chart-depreciation" style="max-height:340px"></canvas>
+      </div>
+    </div>
+    <div class="col-lg-5">
+      <div class="chart-card" style="overflow-x:auto">
+        <div class="chart-title">Tableau dépréciation</div>
+        <table class="table table-sm w-100" id="tbl-depreciation" style="font-size:12px;color:var(--txt2);margin:0">
+          <thead><tr>
+            <th style="color:var(--txt3)">Modèle</th>
+            <th style="color:var(--txt3);text-align:right">%/an</th>
+            <th style="color:var(--txt3);text-align:right">%/10k km</th>
+            <th style="color:var(--txt3);text-align:right">Prix médian</th>
+          </tr></thead>
+          <tbody id="tbody-depreciation"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 2. Index Acheteur / Vendeur ── -->
+  <div class="row g-3 mb-2">
+    <div class="col-12">
+      <div class="chart-card" style="overflow-x:auto">
+        <div class="chart-title">Index Acheteur / Vendeur par modèle <span style="font-size:11px;color:var(--txt3);font-weight:400">Qui a le pouvoir de négociation ?</span></div>
+        <div id="bsi-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;margin-top:4px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 3. TCO par carburant ── -->
+  <div class="row g-3 mb-2">
+    <div class="col-lg-6">
+      <div class="chart-card">
+        <div class="chart-title">Coût Total de Possession sur 5 ans <span style="font-size:11px;color:var(--txt3);font-weight:400">15 000 km/an — prix médian LU</span></div>
+        <canvas id="chart-tco" style="max-height:300px"></canvas>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="chart-card" style="overflow-x:auto">
+        <div class="chart-title">Détail TCO par motorisation</div>
+        <table class="table table-sm w-100" style="font-size:12px;color:var(--txt2);margin:0">
+          <thead><tr>
+            <th style="color:var(--txt3)">Carburant</th>
+            <th style="color:var(--txt3);text-align:right">Achat médian</th>
+            <th style="color:var(--txt3);text-align:right">Carbu 5 ans</th>
+            <th style="color:var(--txt3);text-align:right">Entretien</th>
+            <th style="color:var(--txt3);text-align:right">Total 5 ans</th>
+            <th style="color:var(--txt3);text-align:right">€/km</th>
+          </tr></thead>
+          <tbody id="tbody-tco"></tbody>
+        </table>
+        <div style="font-size:10px;color:var(--txt3);margin-top:10px;line-height:1.5;">
+          * Dépréciation non incluse dans le total (dépend de la revente).<br>
+          * Prix carburant LU : Essence 1,66 €/L — Diesel 1,55 €/L — Électricité 0,25 €/kWh
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 4. Prix suspects ── -->
+  <div class="row g-3">
+    <div class="col-lg-6">
+      <div class="chart-card" style="overflow-x:auto">
+        <div class="chart-title" style="color:var(--red)">Annonces surévaluées <span style="font-size:11px;font-weight:400;color:var(--txt3)">&gt;+25% vs médian segment</span></div>
+        <table class="table table-sm w-100" style="font-size:12px;color:var(--txt2);margin:0">
+          <thead><tr>
+            <th style="color:var(--txt3)">Annonce</th>
+            <th style="color:var(--txt3);text-align:right">Prix</th>
+            <th style="color:var(--txt3);text-align:right">Médian</th>
+            <th style="color:var(--txt3);text-align:right">Écart</th>
+          </tr></thead>
+          <tbody id="tbody-surevalues"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="chart-card" style="overflow-x:auto">
+        <div class="chart-title" style="color:var(--amber)">Annonces sous-évaluées <span style="font-size:11px;font-weight:400;color:var(--txt3)">&lt;-25% vs médian — vérifier pourquoi</span></div>
+        <table class="table table-sm w-100" style="font-size:12px;color:var(--txt2);margin:0">
+          <thead><tr>
+            <th style="color:var(--txt3)">Annonce</th>
+            <th style="color:var(--txt3);text-align:right">Prix</th>
+            <th style="color:var(--txt3);text-align:right">Médian</th>
+            <th style="color:var(--txt3);text-align:right">Écart</th>
+          </tr></thead>
+          <tbody id="tbody-sous-evalues"></tbody>
+        </table>
       </div>
     </div>
   </div>
@@ -384,6 +491,155 @@ function pieChart(id, labels, data) {
 if (typeof VERSION !== 'undefined') {
   document.getElementById('v-time').textContent = VERSION.generated_date + ' ' + VERSION.generated_time + ' · v' + VERSION.bot_version;
 }
+
+// ── 1. Dépréciation par modèle ────────────────────────────────────────────────
+(function() {
+  const data = (MARKET.depreciation || []).slice(0, 15);
+  if (!data.length) return;
+
+  const labels = data.map(d => `${d.marque} ${d.modele}`);
+  const values = data.map(d => d.perte_pct_par_an);
+  const colors = values.map(v => v > 14 ? '#f85149' : v > 10 ? '#d29922' : '#3fb950');
+
+  new Chart(document.getElementById('chart-depreciation'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: '% perdu / an',
+        data: values,
+        backgroundColor: colors,
+        borderRadius: 4,
+      }]
+    },
+    options: {
+      indexAxis: 'y', responsive: true, maintainAspectRatio: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => `${ctx.parsed.x.toFixed(1)} % / an` } }
+      },
+      scales: {
+        x: { grid: { color: 'rgba(48,54,61,.6)' }, ticks: { color: '#8b949e', callback: v => v + '%' }, beginAtZero: true },
+        y: { grid: { color: 'rgba(48,54,61,.6)' }, ticks: { color: '#8b949e', font: { size: 11 } } }
+      }
+    }
+  });
+
+  const tbody = document.getElementById('tbody-depreciation');
+  data.forEach(d => {
+    const color = d.perte_pct_par_an > 14 ? 'var(--red)' : d.perte_pct_par_an > 10 ? 'var(--amber)' : 'var(--green)';
+    tbody.innerHTML += `<tr>
+      <td>${d.marque} ${d.modele}<br><span style="font-size:10px;color:var(--txt3)">${d.annee_min}–${d.annee_max} · ${d.nb_annonces} ann.</span></td>
+      <td style="text-align:right;font-family:'DM Mono',monospace;color:${color};font-weight:600">${d.perte_pct_par_an.toFixed(1)}%</td>
+      <td style="text-align:right;font-family:'DM Mono',monospace;color:var(--txt2)">${d.perte_pct_par_10k_km ? d.perte_pct_par_10k_km.toFixed(1)+'%' : '—'}</td>
+      <td style="text-align:right;font-family:'DM Mono',monospace">${fmtEur(d.prix_recent_median)}</td>
+    </tr>`;
+  });
+})();
+
+// ── 2. Index Acheteur / Vendeur ───────────────────────────────────────────────
+(function() {
+  const data = MARKET.buyer_seller_index || [];
+  const grid = document.getElementById('bsi-grid');
+  if (!data.length) { grid.innerHTML = '<div style="color:var(--txt3)">Données insuffisantes</div>'; return; }
+
+  const COLOR = { green: 'var(--green)', amber: 'var(--amber)', red: 'var(--red)' };
+  const BG    = { green: 'var(--green-dim)', amber: 'var(--amber-dim)', red: 'var(--red-dim)' };
+
+  data.forEach(d => {
+    const barW = Math.round(d.score * 10);
+    grid.innerHTML += `
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <span style="font-weight:600;font-size:13px;color:var(--txt)">${d.marque} ${d.modele}</span>
+        <span style="font-size:11px;font-weight:700;padding:2px 10px;border-radius:10px;background:${BG[d.color]};color:${COLOR[d.color]}">${d.label}</span>
+      </div>
+      <div style="height:4px;background:var(--border2);border-radius:2px;margin-bottom:8px;">
+        <div style="height:100%;width:${barW}%;background:${COLOR[d.color]};border-radius:2px;transition:width .4s"></div>
+      </div>
+      <div style="font-size:11px;color:var(--txt3)">${d.conseil}</div>
+      <div style="font-size:10px;color:var(--txt3);margin-top:4px;font-family:'DM Mono',monospace">Score ${d.score}/10 · ${d.nb_annonces} ann. · ${d.jours_moyen}j moy.</div>
+    </div>`;
+  });
+})();
+
+// ── 3. TCO par carburant ──────────────────────────────────────────────────────
+(function() {
+  const tco = MARKET.tco_par_carburant || {};
+  const order = ['Hybride', 'Essence', 'Electrique', 'Diesel'];
+  const carbus = order.filter(c => tco[c]);
+  if (!carbus.length) return;
+
+  const COLORS_MAP = { Essence: '#388bfd', Diesel: '#d29922', Hybride: '#3fb950', Electrique: '#bc8cff' };
+
+  new Chart(document.getElementById('chart-tco'), {
+    type: 'bar',
+    data: {
+      labels: carbus,
+      datasets: [
+        { label: 'Achat (médian)',   data: carbus.map(c => tco[c].prix_achat),       backgroundColor: carbus.map(c => COLORS_MAP[c]),  borderRadius: 4, stack: 's' },
+        { label: 'Carburant 5 ans', data: carbus.map(c => tco[c].carburant_5ans),    backgroundColor: 'rgba(248,81,73,.5)',              stack: 's' },
+        { label: 'Entretien 5 ans', data: carbus.map(c => tco[c].entretien_5ans),    backgroundColor: 'rgba(227,179,65,.5)',             stack: 's' },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: true,
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { size: 11 }, color: '#8b949e', padding: 10 } },
+        tooltip: { callbacks: { label: ctx => `${ctx.dataset.label} : ${fmtEur(ctx.parsed.y)}` } }
+      },
+      scales: {
+        x: { stacked: true, grid: { color: 'rgba(48,54,61,.6)' }, ticks: { color: '#8b949e' } },
+        y: { stacked: true, grid: { color: 'rgba(48,54,61,.6)' }, ticks: { color: '#8b949e', callback: v => (v/1000).toFixed(0)+'k' }, beginAtZero: true }
+      }
+    }
+  });
+
+  // Tableau détail
+  const tbody = document.getElementById('tbody-tco');
+  const sorted = [...carbus].sort((a,b) => tco[a].total_5ans - tco[b].total_5ans);
+  sorted.forEach((c, i) => {
+    const d = tco[c];
+    const isBest = i === 0;
+    const rowStyle = isBest ? 'background:var(--green-dim);' : '';
+    tbody.innerHTML += `<tr style="${rowStyle}">
+      <td style="font-weight:600;color:var(--txt)">${c}${isBest ? ' <span style="font-size:10px;color:var(--green)">✓ meilleur TCO</span>' : ''}</td>
+      <td style="text-align:right;font-family:'DM Mono',monospace">${fmtEur(d.prix_achat)}</td>
+      <td style="text-align:right;font-family:'DM Mono',monospace">${fmtEur(d.carburant_5ans)}</td>
+      <td style="text-align:right;font-family:'DM Mono',monospace">${fmtEur(d.entretien_5ans)}</td>
+      <td style="text-align:right;font-family:'DM Mono',monospace;font-weight:700;color:var(--txt)">${fmtEur(d.total_5ans)}</td>
+      <td style="text-align:right;font-family:'DM Mono',monospace;color:var(--txt3)">${d.cout_km.toFixed(2)} €</td>
+    </tr>`;
+  });
+})();
+
+// ── 4. Prix suspects ──────────────────────────────────────────────────────────
+(function() {
+  function fillTable(tbodyId, rows, isOver) {
+    const tbody = document.getElementById(tbodyId);
+    if (!rows || !rows.length) {
+      tbody.innerHTML = `<tr><td colspan="4" style="color:var(--txt3);text-align:center;padding:12px">Aucune anomalie détectée</td></tr>`;
+      return;
+    }
+    rows.forEach(r => {
+      const color = isOver ? 'var(--red)' : 'var(--amber)';
+      const sign  = isOver ? '+' : '';
+      const km    = r.km ? r.km.toLocaleString('fr-LU') + ' km' : '—';
+      const link  = r.url ? `<a href="${r.url}" target="_blank" style="font-size:10px;color:var(--accent)">↗</a>` : '';
+      tbody.innerHTML += `<tr>
+        <td>${r.marque} ${r.modele} ${r.annee || ''}<br>
+            <span style="font-size:10px;color:var(--txt3)">${km} · ${r.ville || ''} ${link}</span></td>
+        <td style="text-align:right;font-family:'DM Mono',monospace">${fmtEur(r.prix)}</td>
+        <td style="text-align:right;font-family:'DM Mono',monospace;color:var(--txt3)">${fmtEur(r.median)}</td>
+        <td style="text-align:right;font-family:'DM Mono',monospace;font-weight:700;color:${color}">${sign}${r.ecart_pct}%</td>
+      </tr>`;
+    });
+  }
+
+  const ps = MARKET.prix_suspects || {};
+  fillTable('tbody-surevalues',  ps.surevalues  || [], true);
+  fillTable('tbody-sous-evalues', ps.sous_evalues || [], false);
+})();
 </script>
 
 <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});</script>

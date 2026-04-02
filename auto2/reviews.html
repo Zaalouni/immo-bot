@@ -137,6 +137,7 @@
       <li class="nav-item"><a class="nav-link" href="map.html">Carte</a></li>
       <li class="nav-item"><a class="nav-link active" href="reviews.html">Avis</a></li>
       <li class="nav-item"><a class="nav-link" href="market.html">Marché</a></li>
+      <li class="nav-item"><a class="nav-link" href="suv-hybrid.html">SUV Auto</a></li>
       <li class="nav-item"><a class="nav-link" href="compare.html">Comparer</a></li>
       <li class="nav-item"><a class="nav-link" href="budget.html">Budget</a></li>
       <li class="nav-item"><a class="nav-link" href="top-models.html">Top Modèles</a></li>
@@ -334,21 +335,27 @@ function renderFiche(r) {
     </div>
   </div>
 
-  <!-- 3 colonnes : points forts, problèmes, risques achat -->
+  <!-- 4 colonnes : points forts, points faibles, problèmes, risques achat -->
   <div class="row g-3 mb-3">
-    <div class="col-md-4">
+    <div class="col-md-3">
       <div class="list-card">
         <div class="list-title green">Points forts</div>
         ${listItems(r.points_forts, '')}
       </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
+      <div class="list-card">
+        <div class="list-title" style="color:var(--purple);">Points faibles</div>
+        ${r.points_faibles && r.points_faibles.length ? listItems(r.points_faibles, '') : '<div style="color:var(--txt3);font-size:13px;">Aucun point faible majeur signalé.</div>'}
+      </div>
+    </div>
+    <div class="col-md-3">
       <div class="list-card">
         <div class="list-title red">Problèmes connus</div>
         ${pbHtml}
       </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
       <div class="list-card">
         <div class="list-title amber">Avant d'acheter</div>
         ${risquesHtml}

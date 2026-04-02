@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Auto-Bot LU — SUV Hybride Auto</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0d1117">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="AutoBot LU">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <meta name="description" content="SUV Hybride Automatique — Auto-Bot Luxembourg">
+  <meta name="robots" content="noindex,nofollow">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0d1117; --surface: #161b22; --surface2: #21262d;
+      --border: #30363d; --border2: #3d444e;
+      --txt: #e6edf3; --txt2: #8b949e; --txt3: #6e7681;
+      --accent: #388bfd; --accent-dim: rgba(56,139,253,.15);
+      --green: #3fb950; --green-dim: rgba(63,185,80,.15);
+      --amber: #d29922; --amber-dim: rgba(210,153,34,.15);
+      --red: #f85149; --red-dim: rgba(248,81,73,.15);
+      --purple: #bc8cff; --purple-dim: rgba(188,140,255,.15);
+      --teal: #39d353; --teal-dim: rgba(57,211,83,.12);
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { background: var(--bg); color: var(--txt); font-family: 'Barlow', sans-serif; font-size: 14px; margin: 0; }
+    ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+    /* Navbar */
+    .navbar { background: var(--surface) !important; border-bottom: 1px solid var(--border); padding: 0 1rem; }
+    .navbar-brand { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 1.2rem; color: var(--txt) !important; }
+    .navbar-brand span { color: var(--accent); }
+    .navbar-toggler { border: 1px solid var(--border) !important; padding: 4px 8px; }
+    .navbar-toggler-icon { filter: invert(1); }
+    .navbar-collapse { background: var(--surface); }
+    .nav-link { color: var(--txt2) !important; font-size: 13px; font-weight: 500; padding: 12px 14px !important; transition: color .15s; }
+    .nav-link:hover { color: var(--txt) !important; }
+    .nav-link.active { color: var(--accent) !important; }
+
+    /* KPI */
+    .kpi-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 18px; text-align: center; }
+    .kpi-card.kpi-green  { border-top: 2px solid var(--green); }
+    .kpi-card.kpi-amber  { border-top: 2px solid var(--amber); }
+    .kpi-card.kpi-red    { border-top: 2px solid var(--red); }
+    .kpi-card.kpi-purple { border-top: 2px solid var(--purple); }
+    .kpi-card.kpi-accent { border-top: 2px solid var(--accent); }
+    .kpi-val   { font-family: 'DM Mono', monospace; font-size: 2rem; font-weight: 500; line-height: 1; }
+    .kpi-green  .kpi-val { color: var(--green); }
+    .kpi-amber  .kpi-val { color: var(--amber); }
+    .kpi-red    .kpi-val { color: var(--red); }
+    .kpi-purple .kpi-val { color: var(--purple); }
+    .kpi-accent .kpi-val { color: var(--accent); }
+    .kpi-label { font-size: .72rem; color: var(--txt3); text-transform: uppercase; letter-spacing: .05em; margin-top: 5px; }
+    .kpi-sub   { font-size: .72rem; color: var(--txt3); margin-top: 3px; }
+
+    /* Section header */
+    .section-header { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1rem; letter-spacing: .03em; color: var(--txt); border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 16px; text-transform: uppercase; }
+    .section-header span { font-size: .75rem; color: var(--txt3); font-family: 'Barlow', sans-serif; font-weight: 400; margin-left: 8px; text-transform: none; }
+
+    /* Chart card */
+    .chart-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px; margin-bottom: 20px; }
+    .chart-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: .9rem; text-transform: uppercase; letter-spacing: .04em; color: var(--txt2); margin-bottom: 14px; }
+
+    /* DataTables dark */
+    .dataTables_wrapper { color: var(--txt); }
+    table.dataTable { background: var(--surface) !important; color: var(--txt) !important; border-collapse: collapse !important; }
+    table.dataTable thead th { background: var(--surface2) !important; color: var(--txt2) !important; border: 1px solid var(--border) !important; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
+    table.dataTable tbody tr { background: var(--surface) !important; }
+    table.dataTable tbody tr:hover { background: var(--surface2) !important; }
+    table.dataTable tbody td { border: 1px solid var(--border) !important; color: var(--txt) !important; font-size: 13px; }
+    .dataTables_filter input, .dataTables_length select {
+      background: var(--surface2) !important; border: 1px solid var(--border) !important;
+      color: var(--txt) !important; border-radius: 6px; padding: 4px 10px; font-size: 13px;
+    }
+    .dataTables_info, .dataTables_paginate { color: var(--txt3) !important; font-size: 12px; margin-top: 8px; }
+    .paginate_button { color: var(--txt2) !important; background: var(--surface2) !important; border: 1px solid var(--border) !important; border-radius: 4px !important; margin: 0 2px; padding: 4px 10px !important; }
+    .paginate_button.current { background: var(--accent) !important; color: #fff !important; border-color: var(--accent) !important; }
+
+    /* Badges */
+    .badge-carbu { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 700; text-transform: uppercase; }
+    .badge-hybride { background: var(--green-dim); color: var(--green); }
+    .badge-phev    { background: var(--teal-dim); color: var(--teal); }
+    .badge-auto    { background: var(--accent-dim); color: var(--accent); }
+
+    /* Score bar */
+    .score-bar { height: 5px; border-radius: 3px; background: var(--border); position: relative; overflow: hidden; }
+    .score-fill { height: 100%; border-radius: 3px; background: var(--green); }
+
+    /* RAV4 reference card */
+    .rav4-card {
+      background: linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%);
+      border: 1px solid var(--amber); border-radius: 10px; padding: 16px 20px; margin-bottom: 16px;
+    }
+    .rav4-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 1.3rem; color: var(--amber); }
+    .rav4-badge { display: inline-block; padding: 3px 10px; border-radius: 10px; font-size: 10px; font-weight: 700; background: var(--amber-dim); color: var(--amber); text-transform: uppercase; margin-left: 8px; }
+
+    /* Segment grid */
+    .segment-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-bottom: 20px; }
+    .segment-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+    .segment-marque { font-weight: 700; font-size: 13px; margin-bottom: 6px; }
+    .segment-line { display: flex; justify-content: space-between; font-size: 12px; color: var(--txt2); margin-bottom: 2px; }
+    .segment-prix { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--txt); }
+
+    /* Listing row link */
+    a.row-link { color: var(--accent); text-decoration: none; font-size: 12px; }
+    a.row-link:hover { text-decoration: underline; }
+
+    /* Filter tabs */
+    .filter-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .filter-tab { padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: var(--surface2); color: var(--txt2); transition: all .15s; }
+    .filter-tab:hover { color: var(--txt); border-color: var(--txt3); }
+    .filter-tab.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .filter-tab.tab-green.active { background: var(--green); border-color: var(--green); }
+    .filter-tab.tab-amber.active { background: var(--amber); border-color: var(--amber); }
+
+    /* Vs RAV4 */
+    .vs-tag { font-size: 11px; padding: 2px 8px; border-radius: 8px; font-family: 'DM Mono', monospace; font-weight: 600; display: inline-block; }
+    .vs-better { background: var(--green-dim); color: var(--green); }
+    .vs-worse  { background: var(--red-dim); color: var(--red); }
+    .vs-equal  { background: var(--amber-dim); color: var(--amber); }
+
+    /* Footer version */
+    .version-footer { font-size: 11px; color: var(--txt3); text-align: center; padding: 20px 0 30px; font-family: 'DM Mono', monospace; }
+  </style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="navbar navbar-expand-lg">
+  <a class="navbar-brand" href="index.html"><span>◈</span> AUTO-BOT LU</a>
+  <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navMenu">
+    <ul class="navbar-nav ms-auto">
+      <li class="nav-item"><a class="nav-link" href="index.html">Annonces</a></li>
+      <li class="nav-item"><a class="nav-link" href="deals.html">Deals</a></li>
+      <li class="nav-item"><a class="nav-link" href="rapport.html">Rapport</a></li>
+      <li class="nav-item"><a class="nav-link" href="watchlist.html">Watchlist</a></li>
+      <li class="nav-item"><a class="nav-link" href="alerts.html">Alertes</a></li>
+      <li class="nav-item"><a class="nav-link" href="map.html">Carte</a></li>
+      <li class="nav-item"><a class="nav-link" href="reviews.html">Avis</a></li>
+      <li class="nav-item"><a class="nav-link" href="market.html">Marché</a></li>
+      <li class="nav-item"><a class="nav-link active" href="suv-hybrid.html">SUV Auto</a></li>
+      <li class="nav-item"><a class="nav-link" href="compare.html">Comparer</a></li>
+      <li class="nav-item"><a class="nav-link" href="budget.html">Budget</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container-fluid p-3" style="max-width:1200px">
+
+  <!-- En-tête -->
+  <div class="d-flex align-items-start justify-content-between mb-3">
+    <div>
+      <h1 style="font-family:'Barlow Condensed',sans-serif;font-size:1.7rem;font-weight:800;margin:0;">
+        SUV · Hybride · Automatique
+      </h1>
+      <div style="font-size:13px;color:var(--txt2);margin-top:4px;">
+        Annonces filtrées — boîte auto · carburant hybride/PHEV · carrosserie SUV/crossover
+      </div>
+      <div id="date-label" style="font-size:12px;color:var(--txt3);margin-top:2px;"></div>
+    </div>
+    <div id="badge-total" style="font-family:'DM Mono',monospace;font-size:1.8rem;font-weight:500;color:var(--green);"></div>
+  </div>
+
+  <!-- KPI cards -->
+  <div class="row g-3 mb-4" id="kpi-row">
+    <div class="col-6 col-md-3">
+      <div class="kpi-card kpi-green">
+        <div class="kpi-val" id="kpi-nb">—</div>
+        <div class="kpi-label">SUV Hybride Auto</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="kpi-card kpi-amber">
+        <div class="kpi-val" id="kpi-median">—</div>
+        <div class="kpi-label">Prix médian</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="kpi-card kpi-accent">
+        <div class="kpi-val" id="kpi-rav4-nb">—</div>
+        <div class="kpi-label">Toyota RAV4</div>
+        <div class="kpi-sub" id="kpi-rav4-med"></div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="kpi-card kpi-purple">
+        <div class="kpi-val" id="kpi-vs">—</div>
+        <div class="kpi-label">Marché vs RAV4</div>
+        <div class="kpi-sub" id="kpi-vs-sub"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Graphe segments par marque -->
+  <div class="chart-card">
+    <div class="chart-title">Marché SUV Hybride par marque — nb annonces &amp; prix médian</div>
+    <canvas id="segChart" height="90"></canvas>
+  </div>
+
+  <!-- Référence Toyota RAV4 -->
+  <div class="section-header">Référence Toyota RAV4 <span id="rav4-count-label"></span></div>
+  <div id="rav4-container">
+    <div style="color:var(--txt3);font-size:13px;">Chargement...</div>
+  </div>
+
+  <!-- Tableau toutes annonces -->
+  <div class="section-header mt-4">Toutes les annonces SUV Hybride Auto <span id="count-label"></span></div>
+
+  <!-- Filtre par marque -->
+  <div class="filter-tabs" id="marque-tabs">
+    <div class="filter-tab active" data-marque="ALL" onclick="filterMarque(this)">Toutes</div>
+  </div>
+
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;">
+    <table id="suv-table" class="table dataTable w-100" style="width:100%">
+      <thead>
+        <tr>
+          <th>Modèle</th>
+          <th>Année</th>
+          <th>Km</th>
+          <th>Carburant</th>
+          <th>Boîte</th>
+          <th>Prix</th>
+          <th>Score</th>
+          <th>vs RAV4</th>
+          <th>Ville</th>
+          <th>Site</th>
+          <th>Lien</th>
+        </tr>
+      </thead>
+      <tbody id="table-body"></tbody>
+    </table>
+  </div>
+
+  <div class="version-footer" id="version-footer">Auto-Bot LU</div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="data/suv_hybrid.js"></script>
+<script src="data/version.js"></script>
+<script>
+// ── Utilitaires ───────────────────────────────────────────────────────────────
+function fmtPrix(v) {
+  if (!v) return '—';
+  return new Intl.NumberFormat('fr-LU', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(v);
+}
+function fmtKm(v) {
+  if (!v) return '—';
+  return new Intl.NumberFormat('fr-LU').format(v) + ' km';
+}
+function siteBadge(s) {
+  const colors = { autoscout24: '#388bfd', autopolis: '#3fb950', luxauto: '#d29922' };
+  const c = colors[s] || '#6e7681';
+  return `<span style="font-size:10px;font-weight:700;color:${c};text-transform:uppercase;">${s || '?'}</span>`;
+}
+function carbuBadge(c) {
+  if (!c) return '—';
+  const cl = c.toLowerCase();
+  if (cl.includes('phev') || cl.includes('rechargeable')) return `<span class="badge-carbu badge-phev">PHEV</span>`;
+  if (cl.includes('hybrid') || cl.includes('hybride')) return `<span class="badge-carbu badge-hybride">Hybride</span>`;
+  return `<span class="badge-carbu" style="background:var(--surface2);color:var(--txt2);">${c}</span>`;
+}
+function scoreBadge(s) {
+  if (s == null) return '—';
+  const n = Math.round(s);
+  const color = n >= 70 ? 'var(--green)' : n >= 50 ? 'var(--amber)' : 'var(--txt3)';
+  return `<span style="font-family:'DM Mono',monospace;font-size:12px;font-weight:600;color:${color};">${n}</span>`;
+}
+
+// ── Rendu principal ───────────────────────────────────────────────────────────
+const D = SUV_HYBRID;
+
+document.getElementById('date-label').textContent = `Données au ${D.date_calcul || '—'}`;
+document.getElementById('badge-total').textContent = D.nb_total;
+document.getElementById('kpi-nb').textContent = D.nb_total;
+document.getElementById('kpi-median').textContent = fmtPrix(D.prix_median);
+
+const rav4Nb = D.nb_rav4 || 0;
+document.getElementById('kpi-rav4-nb').textContent = rav4Nb;
+document.getElementById('kpi-rav4-med').textContent = rav4Nb ? `Médian ${fmtPrix(D.rav4_median)}` : 'Aucun RAV4';
+
+// KPI marché vs RAV4
+if (D.prix_median && D.rav4_median) {
+  const diff = D.prix_median - D.rav4_median;
+  const pct  = Math.round((Math.abs(diff) / D.rav4_median) * 100);
+  const sign = diff < 0 ? '−' : '+';
+  document.getElementById('kpi-vs').textContent = `${sign}${pct}%`;
+  document.getElementById('kpi-vs-sub').textContent = diff < 0
+    ? `Marché ${pct}% moins cher que RAV4`
+    : `RAV4 ${pct}% plus cher que le médian`;
+  document.getElementById('kpi-vs').style.color = diff < 0 ? 'var(--green)' : 'var(--red)';
+}
+
+// ── Graphe segments ───────────────────────────────────────────────────────────
+(function() {
+  const seg = D.segments || {};
+  const marques = Object.keys(seg).sort((a, b) => seg[b].nb - seg[a].nb).slice(0, 18);
+  const nbs     = marques.map(m => seg[m].nb);
+  const medians = marques.map(m => seg[m].prix_median);
+
+  const ctx = document.getElementById('segChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: marques,
+      datasets: [
+        {
+          label: 'Nb annonces',
+          data: nbs,
+          backgroundColor: 'rgba(56,139,253,.6)',
+          borderColor: '#388bfd',
+          borderWidth: 1,
+          yAxisID: 'yNb',
+        },
+        {
+          label: 'Prix médian (€)',
+          data: medians,
+          type: 'line',
+          borderColor: '#d29922',
+          backgroundColor: 'rgba(210,153,34,.1)',
+          pointRadius: 4,
+          pointBackgroundColor: '#d29922',
+          yAxisID: 'yPrix',
+          tension: 0.3,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { labels: { color: '#8b949e', font: { size: 11 } } },
+        tooltip: {
+          backgroundColor: '#161b22',
+          borderColor: '#30363d',
+          borderWidth: 1,
+          titleColor: '#e6edf3',
+          bodyColor: '#8b949e',
+          callbacks: {
+            label: ctx => ctx.datasetIndex === 0
+              ? `${ctx.raw} annonce${ctx.raw > 1 ? 's' : ''}`
+              : new Intl.NumberFormat('fr-LU', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(ctx.raw),
+          }
+        }
+      },
+      scales: {
+        x:      { grid: { color: '#21262d' }, ticks: { color: '#8b949e', font: { size: 11 } } },
+        yNb:    { position: 'left',  grid: { color: '#21262d' }, ticks: { color: '#388bfd', font: { size: 10 } }, title: { display: true, text: 'Annonces', color: '#388bfd', font: { size: 10 } } },
+        yPrix:  { position: 'right', grid: { drawOnChartArea: false }, ticks: { color: '#d29922', font: { size: 10 }, callback: v => v ? v.toLocaleString('fr-LU') + ' €' : '' }, title: { display: true, text: 'Prix médian', color: '#d29922', font: { size: 10 } } },
+      }
+    }
+  });
+})();
+
+// ── RAV4 reference ────────────────────────────────────────────────────────────
+(function() {
+  const rav4 = D.rav4 || [];
+  const cnt  = document.getElementById('rav4-count-label');
+  cnt.textContent = rav4.length ? `${rav4.length} annonce${rav4.length > 1 ? 's' : ''}` : '';
+
+  const box = document.getElementById('rav4-container');
+  if (!rav4.length) {
+    box.innerHTML = '<div style="color:var(--txt3);font-size:13px;padding:12px 0;">Aucun Toyota RAV4 hybride automatique en vente actuellement.</div>';
+    return;
+  }
+
+  // Stats RAV4
+  const prixMin = D.rav4_prix_min;
+  const prixMax = D.rav4_prix_max;
+  const medRav4 = D.rav4_median;
+
+  box.innerHTML = `
+  <div class="rav4-card mb-3">
+    <div class="d-flex align-items-center mb-2">
+      <div class="rav4-title">Toyota RAV4 Hybride</div>
+      <div class="rav4-badge">Référence marché</div>
+    </div>
+    <div class="row g-3">
+      <div class="col-6 col-md-3">
+        <div style="font-size:11px;color:var(--txt3);text-transform:uppercase;letter-spacing:.05em;">Annonces</div>
+        <div style="font-family:'DM Mono',monospace;font-size:1.4rem;color:var(--amber);">${rav4.length}</div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div style="font-size:11px;color:var(--txt3);text-transform:uppercase;letter-spacing:.05em;">Prix médian</div>
+        <div style="font-family:'DM Mono',monospace;font-size:1.4rem;color:var(--amber);">${fmtPrix(medRav4)}</div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div style="font-size:11px;color:var(--txt3);text-transform:uppercase;letter-spacing:.05em;">Prix min</div>
+        <div style="font-family:'DM Mono',monospace;font-size:1.4rem;color:var(--green);">${fmtPrix(prixMin)}</div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div style="font-size:11px;color:var(--txt3);text-transform:uppercase;letter-spacing:.05em;">Prix max</div>
+        <div style="font-family:'DM Mono',monospace;font-size:1.4rem;color:var(--red);">${fmtPrix(prixMax)}</div>
+      </div>
+    </div>
+  </div>
+  <div class="row g-2">
+    ${rav4.slice(0, 8).map(l => {
+      const vsMarche = D.prix_median ? Math.round(((l.prix || 0) - D.prix_median) / D.prix_median * 100) : null;
+      const vsTag = vsMarche !== null
+        ? `<span class="vs-tag ${vsMarche <= 0 ? 'vs-better' : 'vs-worse'}">${vsMarche > 0 ? '+' : ''}${vsMarche}% vs marché</span>`
+        : '';
+      const vsMedianRav4 = medRav4 ? Math.round(((l.prix || 0) - medRav4) / medRav4 * 100) : null;
+      const vsRav4Tag = vsMedianRav4 !== null
+        ? `<span class="vs-tag ${vsMedianRav4 <= -5 ? 'vs-better' : vsMedianRav4 >= 5 ? 'vs-worse' : 'vs-equal'}" style="margin-left:4px;">${vsMedianRav4 > 0 ? '+' : ''}${vsMedianRav4}% vs médian RAV4</span>`
+        : '';
+      return `
+      <div class="col-12 col-md-6">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 14px;border-left:3px solid var(--amber);">
+          <div style="font-weight:700;font-size:13px;color:var(--txt);">Toyota RAV4 ${l.annee || ''}</div>
+          <div style="font-size:12px;color:var(--txt2);margin-top:2px;">${fmtKm(l.km)} · ${l.carburant || ''} · ${l.boite || '—'}</div>
+          <div style="margin-top:6px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+            <span style="font-family:'DM Mono',monospace;font-size:1.1rem;font-weight:500;color:var(--amber);">${fmtPrix(l.prix)}</span>
+            ${vsTag}${vsRav4Tag}
+          </div>
+          <div style="margin-top:6px;display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:12px;color:var(--txt3);">${l.ville || ''} · ${l.site || ''}</span>
+            ${l.url ? `<a href="${l.url}" target="_blank" rel="noopener" class="row-link">Voir →</a>` : ''}
+          </div>
+        </div>
+      </div>`;
+    }).join('')}
+  </div>`;
+})();
+
+// ── Tableau DataTables ────────────────────────────────────────────────────────
+let allAnnonces = D.annonces || [];
+let currentMarque = 'ALL';
+
+function buildTable(data) {
+  const tbody = document.getElementById('table-body');
+  const medRav4 = D.rav4_median || 0;
+  tbody.innerHTML = data.map(l => {
+    const vsRav4 = medRav4 && l.prix ? Math.round(((l.prix - medRav4) / medRav4) * 100) : null;
+    const vsTag = vsRav4 !== null
+      ? `<span class="vs-tag ${vsRav4 <= -5 ? 'vs-better' : vsRav4 >= 5 ? 'vs-worse' : 'vs-equal'}">${vsRav4 > 0 ? '+' : ''}${vsRav4}%</span>`
+      : '—';
+    return `<tr>
+      <td style="font-weight:600;">${l.marque_norm || l.marque || ''} ${l.modele_norm || l.modele || ''}</td>
+      <td>${l.annee || '—'}</td>
+      <td style="font-family:'DM Mono',monospace;">${fmtKm(l.km)}</td>
+      <td>${carbuBadge(l.carburant)}</td>
+      <td style="font-size:12px;">${l.boite || '—'}</td>
+      <td style="font-family:'DM Mono',monospace;font-weight:600;color:var(--amber);">${fmtPrix(l.prix)}</td>
+      <td>${scoreBadge(l.deal_score)}</td>
+      <td>${vsTag}</td>
+      <td style="font-size:12px;color:var(--txt2);">${l.ville || '—'}</td>
+      <td>${siteBadge(l.site)}</td>
+      <td>${l.url ? `<a href="${l.url}" target="_blank" rel="noopener" class="row-link">→</a>` : '—'}</td>
+    </tr>`;
+  }).join('');
+}
+
+function initTable() {
+  buildTable(allAnnonces);
+  $('#suv-table').DataTable({
+    pageLength: 25,
+    order: [[6, 'desc']],
+    language: {
+      url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json'
+    },
+    columnDefs: [
+      { targets: [10], orderable: false }
+    ]
+  });
+  document.getElementById('count-label').textContent = `${allAnnonces.length} annonce${allAnnonces.length > 1 ? 's' : ''}`;
+}
+
+// Filtre marques
+function filterMarque(el) {
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  currentMarque = el.dataset.marque;
+  const filtered = currentMarque === 'ALL'
+    ? allAnnonces
+    : allAnnonces.filter(l => (l.marque_norm || l.marque || '') === currentMarque);
+
+  const dt = $('#suv-table').DataTable();
+  dt.clear();
+  const medRav4 = D.rav4_median || 0;
+  filtered.forEach(l => {
+    const vsRav4 = medRav4 && l.prix ? Math.round(((l.prix - medRav4) / medRav4) * 100) : null;
+    const vsTag = vsRav4 !== null
+      ? `<span class="vs-tag ${vsRav4 <= -5 ? 'vs-better' : vsRav4 >= 5 ? 'vs-worse' : 'vs-equal'}">${vsRav4 > 0 ? '+' : ''}${vsRav4}%</span>`
+      : '—';
+    dt.row.add([
+      `<span style="font-weight:600;">${l.marque_norm || l.marque || ''} ${l.modele_norm || l.modele || ''}</span>`,
+      l.annee || '—',
+      `<span style="font-family:'DM Mono',monospace;">${fmtKm(l.km)}</span>`,
+      carbuBadge(l.carburant),
+      l.boite || '—',
+      `<span style="font-family:'DM Mono',monospace;font-weight:600;color:var(--amber);">${fmtPrix(l.prix)}</span>`,
+      scoreBadge(l.deal_score),
+      vsTag,
+      `<span style="font-size:12px;color:var(--txt2);">${l.ville || '—'}</span>`,
+      siteBadge(l.site),
+      l.url ? `<a href="${l.url}" target="_blank" rel="noopener" class="row-link">→</a>` : '—',
+    ]);
+  });
+  dt.draw();
+  document.getElementById('count-label').textContent = `${filtered.length} annonce${filtered.length > 1 ? 's' : ''}`;
+}
+
+// Construire les onglets de marques
+(function() {
+  const seg = D.segments || {};
+  const marques = Object.keys(seg).sort((a, b) => seg[b].nb - seg[a].nb);
+  const tabs = document.getElementById('marque-tabs');
+  marques.forEach(m => {
+    const t = document.createElement('div');
+    t.className = 'filter-tab';
+    t.dataset.marque = m;
+    t.textContent = `${m} (${seg[m].nb})`;
+    t.onclick = () => filterMarque(t);
+    tabs.appendChild(t);
+  });
+})();
+
+// Init DataTable
+$(document).ready(initTable);
+
+// Version footer
+if (typeof VERSION !== 'undefined') {
+  document.getElementById('version-footer').textContent =
+    `Auto-Bot LU v${VERSION.bot_version} — généré le ${VERSION.generated_date} à ${VERSION.generated_time}`;
+}
+</script>
+</body>
+</html>
