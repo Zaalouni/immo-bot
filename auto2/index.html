@@ -202,7 +202,12 @@
       </div>
       <div class="col-md-1 col-6">
         <label class="form-label">Prix max €</label>
-        <input type="number" id="filter-prix-max" class="form-control form-control-sm" placeholder="200000">
+        <div class="d-flex gap-1 align-items-center">
+          <input type="number" id="filter-prix-max" class="form-control form-control-sm" placeholder="200000">
+          <button class="btn btn-sm" id="btn-50k" title="≤ 50 000 €"
+            style="background:var(--surface2);border:1px solid var(--border);color:var(--txt2);font-size:11px;padding:3px 6px;white-space:nowrap;transition:all .15s"
+            onclick="togglePrix50k(this)">50k</button>
+        </div>
       </div>
       <div class="col-md-1 col-6">
         <label class="form-label">Km max</label>
@@ -425,10 +430,22 @@
     renderTable(filtered);
   }
 
+  function togglePrix50k(btn) {
+    const inp = document.getElementById('filter-prix-max');
+    const active = inp.value === '50000';
+    inp.value = active ? '' : '50000';
+    btn.style.background    = active ? 'var(--surface2)' : 'var(--accent-dim)';
+    btn.style.borderColor   = active ? 'var(--border)'   : 'var(--accent)';
+    btn.style.color         = active ? 'var(--txt2)'     : 'var(--accent)';
+    applyFilters();
+  }
+
   function resetFilters() {
     ['filter-marque','filter-carburant','filter-site','filter-pays','filter-vendeur'].forEach(id => document.getElementById(id).value = '');
     ['filter-prix-max','filter-km-max','filter-annee-min'].forEach(id => document.getElementById(id).value = '');
     ['only-new','only-deals','only-ct'].forEach(id => document.getElementById(id).checked = false);
+    const btn50k = document.getElementById('btn-50k');
+    if (btn50k) { btn50k.style.background = 'var(--surface2)'; btn50k.style.borderColor = 'var(--border)'; btn50k.style.color = 'var(--txt2)'; }
     renderTable(listings);
   }
 

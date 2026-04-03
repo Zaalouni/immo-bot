@@ -131,6 +131,7 @@
       <li class="nav-item"><a class="nav-link" href="suv-hybrid.html">SUV Auto</a></li>
       <li class="nav-item"><a class="nav-link" href="compare.html">Comparer</a></li>
       <li class="nav-item"><a class="nav-link" href="budget.html">Budget</a></li>
+      <li class="nav-item"><a class="nav-link" href="vendors.html">Vendeurs</a></li>
     </ul>
   </div>
 </nav>
@@ -187,6 +188,7 @@
     <span class="filter-pill" onclick="setFilter(this,'nego30')">Négo ≥ 30</span>
     <span class="filter-pill" onclick="setFilter(this,'u25k')">< 25 000 €</span>
     <span class="filter-pill" onclick="setFilter(this,'u40k')">< 40 000 €</span>
+    <span class="filter-pill" onclick="setFilter(this,'u50k')">≤ 50 000 €</span>
   </div>
 
   <!-- Liste -->
@@ -249,6 +251,7 @@ function matchFilter(l) {
   if (activeFilter === 'nego30') return (l.nego_score || 0) >= 30;
   if (activeFilter === 'u25k')   return (l.prix || 0) < 25000;
   if (activeFilter === 'u40k')   return (l.prix || 0) < 40000;
+  if (activeFilter === 'u50k')   return (l.prix || 0) <= 50000;
   return true;
 }
 

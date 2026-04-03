@@ -1,5 +1,50 @@
-// Généré automatiquement le 2026-04-03 08:20
+// Généré automatiquement le 2026-04-03 08:32
 const SCRAPER_RUNS = [
+  {
+    "run_id": "0a2271d8-bef",
+    "site": "luxauto",
+    "date_run": "2026-04-03",
+    "heure_debut": "2026-04-03T08:32:07.181032",
+    "heure_fin": "2026-04-03T08:32:38.792984",
+    "status": "success",
+    "nb_annonces_brutes": 100,
+    "nb_annonces_valides": 100,
+    "nb_nouvelles": 100,
+    "nb_mises_a_jour": 0,
+    "nb_erreurs": 0,
+    "version_scraper": "2.0",
+    "checksum_resultat": "a0d61120"
+  },
+  {
+    "run_id": "b09d608e-ca3",
+    "site": "autoscout24",
+    "date_run": "2026-04-03",
+    "heure_debut": "2026-04-03T08:29:40.103217",
+    "heure_fin": "2026-04-03T08:32:07.145212",
+    "status": "success",
+    "nb_annonces_brutes": 859,
+    "nb_annonces_valides": 859,
+    "nb_nouvelles": 859,
+    "nb_mises_a_jour": 0,
+    "nb_erreurs": 0,
+    "version_scraper": "2.0",
+    "checksum_resultat": "670060ef"
+  },
+  {
+    "run_id": "41de88fd-32b",
+    "site": "autopolis",
+    "date_run": "2026-04-03",
+    "heure_debut": "2026-04-03T08:26:14.298229",
+    "heure_fin": "2026-04-03T08:29:40.064928",
+    "status": "success",
+    "nb_annonces_brutes": 327,
+    "nb_annonces_valides": 310,
+    "nb_nouvelles": 310,
+    "nb_mises_a_jour": 0,
+    "nb_erreurs": 0,
+    "version_scraper": "1.0",
+    "checksum_resultat": "f61b5e4e"
+  },
   {
     "run_id": "bac89c1d-d5d",
     "site": "luxauto",
@@ -254,50 +299,5 @@ const SCRAPER_RUNS = [
     "nb_erreurs": 0,
     "version_scraper": "2.0",
     "checksum_resultat": "056d6b29"
-  },
-  {
-    "run_id": "27343c96-25f",
-    "site": "autopolis",
-    "date_run": "2026-04-02",
-    "heure_debut": "2026-04-02T09:00:13.763208",
-    "heure_fin": "2026-04-02T09:03:04.671292",
-    "status": "success",
-    "nb_annonces_brutes": 328,
-    "nb_annonces_valides": 312,
-    "nb_nouvelles": 312,
-    "nb_mises_a_jour": 0,
-    "nb_erreurs": 0,
-    "version_scraper": "1.0",
-    "checksum_resultat": "28914205"
-  },
-  {
-    "run_id": "5502ae5b-4d1",
-    "site": "luxauto",
-    "date_run": "2026-04-02",
-    "heure_debut": "2026-04-02T08:20:48.288937",
-    "heure_fin": "2026-04-02T08:21:18.071086",
-    "status": "success",
-    "nb_annonces_brutes": 100,
-    "nb_annonces_valides": 100,
-    "nb_nouvelles": 100,
-    "nb_mises_a_jour": 0,
-    "nb_erreurs": 0,
-    "version_scraper": "2.0",
-    "checksum_resultat": "1d9c9e51"
-  },
-  {
-    "run_id": "50324d9b-2da",
-    "site": "autoscout24",
-    "date_run": "2026-04-02",
-    "heure_debut": "2026-04-02T08:18:36.937625",
-    "heure_fin": "2026-04-02T08:20:48.277054",
-    "status": "success",
-    "nb_annonces_brutes": 700,
-    "nb_annonces_valides": 700,
-    "nb_nouvelles": 700,
-    "nb_mises_a_jour": 0,
-    "nb_erreurs": 0,
-    "version_scraper": "2.0",
-    "checksum_resultat": "fc80ae81"
   }
 ];

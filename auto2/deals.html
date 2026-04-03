@@ -153,6 +153,7 @@
       <li class="nav-item"><a class="nav-link" href="compare.html">Comparer</a></li>
       <li class="nav-item"><a class="nav-link" href="budget.html">Budget</a></li>
       <li class="nav-item"><a class="nav-link" href="top-models.html">Top Modèles</a></li>
+      <li class="nav-item"><a class="nav-link" href="vendors.html">Vendeurs</a></li>
     </ul>
   </div>
 </nav>
@@ -184,7 +185,12 @@
       </div>
       <div class="col-md-1 col-6">
         <label class="form-label" style="font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--txt3);margin-bottom:4px">Prix max €</label>
-        <input type="number" id="f-prix-max" class="form-control form-control-sm" placeholder="100 000" style="background:var(--surface2);border:1px solid var(--border);color:var(--txt)" oninput="renderDeals()">
+        <div class="d-flex gap-1 align-items-center">
+          <input type="number" id="f-prix-max" class="form-control form-control-sm" placeholder="100 000" style="background:var(--surface2);border:1px solid var(--border);color:var(--txt)" oninput="renderDeals()">
+          <button id="btn-50k-deals" title="≤ 50 000 €"
+            style="background:var(--surface2);border:1px solid var(--border);color:var(--txt2);font-size:11px;padding:3px 6px;border-radius:4px;white-space:nowrap;cursor:pointer;transition:all .15s"
+            onclick="toggleDealsPrix50k(this)">50k</button>
+        </div>
       </div>
       <div class="col-md-1 col-6">
         <label class="form-label" style="font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--txt3);margin-bottom:4px">Km max</label>
@@ -314,6 +320,16 @@
       if (pays && (d.pays||'') !== pays) return false;
       return true;
     });
+  }
+
+  function toggleDealsPrix50k(btn) {
+    const inp = document.getElementById('f-prix-max');
+    const active = inp.value === '50000';
+    inp.value = active ? '' : '50000';
+    btn.style.background  = active ? 'var(--surface2)' : 'var(--accent-dim)';
+    btn.style.borderColor = active ? 'var(--border)'   : 'var(--accent)';
+    btn.style.color       = active ? 'var(--txt2)'     : 'var(--accent)';
+    renderDeals();
   }
 
   function resetDealFilters() {
