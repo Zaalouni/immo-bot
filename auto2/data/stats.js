@@ -1,56 +1,56 @@
-// Généré automatiquement le 2026-04-03 09:02
+// Généré automatiquement le 2026-04-03 09:18
 const STATS = {
-  "total_actives": 1326,
-  "nouvelles_aujourd_hui": 389,
-  "prix_moyen": 27169,
+  "total_actives": 1410,
+  "nouvelles_aujourd_hui": 407,
+  "prix_moyen": 27181,
   "prix_min": 10190,
   "prix_max": 49990,
-  "km_moyen": 47908,
+  "km_moyen": 47556,
   "repartition_carburant": {
-    "Essence": 731,
-    "Diesel": 322,
+    "Essence": 780,
+    "Electrique": 145,
+    "Diesel": 337,
     "Autres": 13,
-    "Electrique": 126,
-    "Wasserstoff": 1,
-    "Inconnu": 8,
     "GPL": 3,
+    "Inconnu": 9,
+    "Wasserstoff": 1,
     "Hybride": 121,
     "GNV": 1
   },
   "repartition_marques": {
-    "Volkswagen": 156,
-    "Mercedes": 147,
-    "Audi": 108,
-    "Ford": 87,
-    "Hyundai": 77,
-    "BMW": 73,
-    "Skoda": 64,
-    "Volvo": 61,
-    "Kia": 56,
-    "Opel": 55
+    "Volkswagen": 168,
+    "Mercedes": 152,
+    "Audi": 117,
+    "BMW": 84,
+    "Ford": 82,
+    "Hyundai": 80,
+    "Volvo": 66,
+    "Skoda": 66,
+    "Opel": 57,
+    "Kia": 57
   },
   "repartition_pays": {
-    "France": 203,
-    "Allemagne": 468,
-    "Luxembourg": 655
+    "France": 206,
+    "Allemagne": 510,
+    "Luxembourg": 694
   },
   "repartition_vendeur": {
-    "pro": 1325,
+    "pro": 1409,
     "particulier": 1
   },
-  "nb_avec_ct": 26,
+  "nb_avec_ct": 23,
   "snapshots_30j": [
     {
-      "id": 14,
+      "id": 15,
       "date": "2026-04-03",
-      "run_id": "588461d4-e2a",
-      "nb_annonces_total": 1326,
-      "nb_nouvelles": 389,
+      "run_id": "62ae221e-3c5",
+      "nb_annonces_total": 1410,
+      "nb_nouvelles": 407,
       "nb_disparues": 0,
       "nb_prix_baisse": 0,
       "nb_suspects": 0,
-      "prix_moyen_marche": 27169,
-      "meilleur_deal_id": "1c4bdd4e0ef1c0c8"
+      "prix_moyen_marche": 27181,
+      "meilleur_deal_id": "25a8d45a22c07bee"
     },
     {
       "id": 10,
@@ -89,5 +89,5 @@ const STATS = {
       "meilleur_deal_id": "test_abc123"
     }
   ],
-  "date_calcul": "2026-04-03T09:02:50.756138"
+  "date_calcul": "2026-04-03T09:18:56.370028"
 };
