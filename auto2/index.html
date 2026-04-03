@@ -143,9 +143,12 @@
       <li class="nav-item"><a class="nav-link" href="map.html">Carte</a></li>
       <li class="nav-item"><a class="nav-link" href="reviews.html">Avis</a></li>
       <li class="nav-item"><a class="nav-link" href="market.html">Marché</a></li>
-      <li class="nav-item"><a class="nav-link" href="suv-hybrid.html">SUV Auto</a></li>
+      <li class="nav-item"><a class="nav-link" href="suv-hybrid.html">SUV Hybride</a></li>
+      <li class="nav-item"><a class="nav-link" href="suv.html">Guide SUV</a></li>
       <li class="nav-item"><a class="nav-link" href="compare.html">Comparer</a></li>
       <li class="nav-item"><a class="nav-link" href="budget.html">Budget</a></li>
+      <li class="nav-item"><a class="nav-link" href="tco.html">TCO</a></li>
+      <li class="nav-item"><a class="nav-link" href="selection.html">⭐ Sélection <span id="nav-fav-count" style="font-size:10px;background:var(--accent);color:#fff;border-radius:8px;padding:1px 5px;display:none;margin-left:2px;">0</span></a></li>
       <li class="nav-item"><a class="nav-link" href="top-models.html">Top Modèles</a></li>
     </ul>
   </div>
@@ -201,9 +204,13 @@
         <select id="filter-carburant" class="form-select form-select-sm"><option value="">Tous</option></select>
       </div>
       <div class="col-md-1 col-6">
+        <label class="form-label">Prix min €</label>
+        <input type="number" id="filter-prix-min" class="form-control form-control-sm" placeholder="10000" min="0">
+      </div>
+      <div class="col-md-1 col-6">
         <label class="form-label">Prix max €</label>
         <div class="d-flex gap-1 align-items-center">
-          <input type="number" id="filter-prix-max" class="form-control form-control-sm" placeholder="200000">
+          <input type="number" id="filter-prix-max" class="form-control form-control-sm" placeholder="50000" min="0">
           <button class="btn btn-sm" id="btn-50k" title="≤ 50 000 €"
             style="background:var(--surface2);border:1px solid var(--border);color:var(--txt2);font-size:11px;padding:3px 6px;white-space:nowrap;transition:all .15s"
             onclick="togglePrix50k(this)">50k</button>
@@ -251,11 +258,19 @@
         <div class="d-flex gap-3 ms-1">
           <div class="form-check mb-0">
             <input class="form-check-input" type="checkbox" id="only-new">
-            <label class="form-check-label" for="only-new" style="font-size:12px">Nouveaux</label>
+            <label class="form-check-label" for="only-new" style="font-size:12px">Aujourd'hui</label>
+          </div>
+          <div class="form-check mb-0">
+            <input class="form-check-input" type="checkbox" id="only-7j">
+            <label class="form-check-label" for="only-7j" style="font-size:12px">≤ 7 jours</label>
           </div>
           <div class="form-check mb-0">
             <input class="form-check-input" type="checkbox" id="only-deals">
             <label class="form-check-label" for="only-deals" style="font-size:12px">Deals</label>
+          </div>
+          <div class="form-check mb-0">
+            <input class="form-check-input" type="checkbox" id="only-favs">
+            <label class="form-check-label" for="only-favs" style="font-size:12px">⭐ Favoris</label>
           </div>
         </div>
       </div>
@@ -404,6 +419,7 @@
   function applyFilters() {
     const marque    = document.getElementById('filter-marque').value.toLowerCase();
     const carburant = document.getElementById('filter-carburant').value.toLowerCase();
+    const prixMin   = parseInt(document.getElementById('filter-prix-min').value) || 0;
     const prixMax   = parseInt(document.getElementById('filter-prix-max').value) || Infinity;
     const kmMax     = parseInt(document.getElementById('filter-km-max').value) || Infinity;
     const anneeMin  = parseInt(document.getElementById('filter-annee-min').value) || 0;
@@ -411,21 +427,33 @@
     const pays      = document.getElementById('filter-pays').value;
     const vendeur   = document.getElementById('filter-vendeur').value;
     const onlyNew   = document.getElementById('only-new').checked;
+    const only7j    = document.getElementById('only-7j').checked;
     const onlyDeals = document.getElementById('only-deals').checked;
     const onlyCt    = document.getElementById('only-ct').checked;
+    const onlyFavs  = document.getElementById('only-favs').checked;
     const today     = new Date().toISOString().slice(0, 10);
+    const favIds    = getFavIds();
     const filtered  = listings.filter(l => {
       if (marque    && !(l.marque_norm||'').toLowerCase().includes(marque))    return false;
       if (carburant && !(l.carburant||'').toLowerCase().includes(carburant))   return false;
-      if (l.prix    && l.prix > prixMax)  return false;
+      const prix = l.prix || 0;
+      if (prixMin > 0    && prix < prixMin)  return false;
+      if (prixMax < Infinity && prix > prixMax) return false;
+      if (!l.prix) return false;  // exclure toujours les annonces sans prix
       if (l.km      && l.km  > kmMax)     return false;
       if (l.annee   && l.annee < anneeMin) return false;
       if (site      && !(l.site||'').toLowerCase().includes(site))             return false;
       if (pays      && (l.pays||'') !== pays)                                  return false;
       if (vendeur   && (l.vendeur_type||'') !== vendeur)                       return false;
       if (onlyNew   && (l.date_premiere_vue||'').slice(0,10) !== today)        return false;
+      if (only7j) {
+        const dpv = l.date_premiere_vue ? new Date(l.date_premiere_vue.slice(0,10)) : null;
+        const diff = dpv ? Math.floor((new Date(today) - dpv) / 86400000) : 999;
+        if (diff > 7) return false;
+      }
       if (onlyDeals && (!l.deal_score || l.deal_score < 60))                   return false;
       if (onlyCt    && !l.controle_technique)                                  return false;
+      if (onlyFavs  && !favIds.has(l.id))                                      return false;
       return true;
     });
     renderTable(filtered);
@@ -443,8 +471,8 @@
 
   function resetFilters() {
     ['filter-marque','filter-carburant','filter-site','filter-pays','filter-vendeur'].forEach(id => document.getElementById(id).value = '');
-    ['filter-prix-max','filter-km-max','filter-annee-min'].forEach(id => document.getElementById(id).value = '');
-    ['only-new','only-deals','only-ct'].forEach(id => document.getElementById(id).checked = false);
+    ['filter-prix-min','filter-prix-max','filter-km-max','filter-annee-min'].forEach(id => document.getElementById(id).value = '');
+    ['only-new','only-7j','only-deals','only-ct','only-favs'].forEach(id => document.getElementById(id).checked = false);
     const btn50k = document.getElementById('btn-50k');
     if (btn50k) { btn50k.style.background = 'var(--surface2)'; btn50k.style.borderColor = 'var(--border)'; btn50k.style.color = 'var(--txt2)'; }
     renderTable(listings);
@@ -461,10 +489,17 @@
         ? `<span style="color:var(--green);font-family:'DM Mono',monospace;font-size:12px">${l.controle_technique}</span>`
         : `<span style="color:var(--border);font-size:11px">—</span>`;
       const vBadge = vendorBadge(l);
+      const isFav = getFavIds().has(l.id);
       tr.innerHTML = `
         <td>
-          <a href="${l.url||'#'}" target="_blank" class="listing-link">${l.marque_norm||l.marque||'—'} ${l.modele_norm||l.modele||''}</a>${fiabBadge(l)}
-          <div class="version-norm">${l.version_norm||l.version||''}</div>
+          <div style="display:flex;align-items:flex-start;gap:6px;">
+            <button onclick="toggleFav('${l.id}',this)" title="${isFav?'Retirer des favoris':'Ajouter aux favoris'}"
+              style="background:none;border:none;cursor:pointer;font-size:14px;padding:0;line-height:1;flex-shrink:0;margin-top:1px;">${isFav?'⭐':'☆'}</button>
+            <div>
+              <a href="${l.url||'#'}" target="_blank" class="listing-link">${l.marque_norm||l.marque||'—'} ${l.modele_norm||l.modele||''}</a>${fiabBadge(l)}
+              <div class="version-norm">${l.version_norm||l.version||''}</div>
+            </div>
+          </div>
         </td>
         <td style="font-family:'DM Mono',monospace">${l.annee||'—'}</td>
         <td style="font-family:'DM Mono',monospace;white-space:nowrap">${l.km ? l.km.toLocaleString('fr')+' km' : '—'}</td>
@@ -524,6 +559,35 @@
     if (l.risk_score && l.risk_score > 70) o += '<span class="badge badge-sus me-1">⚠</span>';
     return o || '<span style="color:var(--border)">—</span>';
   }
+
+  // ── Favoris (localStorage) ───────────────────────────────────────────────────
+  const FAV_KEY = 'autobot_favorites';
+
+  function getFavIds() {
+    try { return new Set(JSON.parse(localStorage.getItem(FAV_KEY) || '[]')); }
+    catch(e) { return new Set(); }
+  }
+
+  function saveFavIds(set) {
+    localStorage.setItem(FAV_KEY, JSON.stringify([...set]));
+    const count = set.size;
+    const badge = document.getElementById('nav-fav-count');
+    if (badge) { badge.textContent = count; badge.style.display = count ? '' : 'none'; }
+  }
+
+  function toggleFav(id, btn) {
+    const ids = getFavIds();
+    if (ids.has(id)) { ids.delete(id); btn.textContent = '☆'; btn.title = 'Ajouter aux favoris'; }
+    else             { ids.add(id);    btn.textContent = '⭐'; btn.title = 'Retirer des favoris'; }
+    saveFavIds(ids);
+  }
+
+  // Init compteur nav
+  (function() {
+    const count = getFavIds().size;
+    const badge = document.getElementById('nav-fav-count');
+    if (badge && count > 0) { badge.textContent = count; badge.style.display = ''; }
+  })();
 
   function formatPrix(p) { return p.toLocaleString('fr') + ' €'; }
   function formatDate(d) {

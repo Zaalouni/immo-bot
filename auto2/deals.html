@@ -140,6 +140,7 @@
   </button>
   <div class="collapse navbar-collapse" id="navMenu">
     <ul class="navbar-nav ms-auto flex-wrap">
+      
       <li class="nav-item"><a class="nav-link" href="index.html">Annonces</a></li>
       <li class="nav-item"><a class="nav-link active" href="deals.html">Deals</a></li>
       <li class="nav-item"><a class="nav-link" href="opportunities.html">Opportunités</a></li>
@@ -149,11 +150,15 @@
       <li class="nav-item"><a class="nav-link" href="map.html">Carte</a></li>
       <li class="nav-item"><a class="nav-link" href="reviews.html">Avis</a></li>
       <li class="nav-item"><a class="nav-link" href="market.html">Marché</a></li>
-      <li class="nav-item"><a class="nav-link" href="suv-hybrid.html">SUV Auto</a></li>
+      <li class="nav-item"><a class="nav-link" href="suv-hybrid.html">SUV Hybride</a></li>
+      <li class="nav-item"><a class="nav-link" href="suv.html">Guide SUV</a></li>
       <li class="nav-item"><a class="nav-link" href="compare.html">Comparer</a></li>
       <li class="nav-item"><a class="nav-link" href="budget.html">Budget</a></li>
+      <li class="nav-item"><a class="nav-link" href="tco.html">TCO</a></li>
+      <li class="nav-item"><a class="nav-link" href="selection.html">⭐ Sélection</a></li>
       <li class="nav-item"><a class="nav-link" href="top-models.html">Top Modèles</a></li>
       <li class="nav-item"><a class="nav-link" href="vendors.html">Vendeurs</a></li>
+    
     </ul>
   </div>
 </nav>
@@ -186,7 +191,7 @@
       <div class="col-md-1 col-6">
         <label class="form-label" style="font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--txt3);margin-bottom:4px">Prix max €</label>
         <div class="d-flex gap-1 align-items-center">
-          <input type="number" id="f-prix-max" class="form-control form-control-sm" placeholder="100 000" style="background:var(--surface2);border:1px solid var(--border);color:var(--txt)" oninput="renderDeals()">
+          <input type="number" id="f-prix-max" class="form-control form-control-sm" placeholder="50000" style="background:var(--surface2);border:1px solid var(--border);color:var(--txt)" oninput="renderDeals()">
           <button id="btn-50k-deals" title="≤ 50 000 €"
             style="background:var(--surface2);border:1px solid var(--border);color:var(--txt2);font-size:11px;padding:3px 6px;border-radius:4px;white-space:nowrap;cursor:pointer;transition:all .15s"
             onclick="toggleDealsPrix50k(this)">50k</button>
@@ -315,7 +320,8 @@
       if (hideSuspect && d.risk_score && d.risk_score > 70) return false;
       if (marque && (d.marque_norm||d.marque) !== marque) return false;
       if (modele && (d.modele_norm||d.modele) !== modele) return false;
-      if (d.prix && d.prix > prixMax) return false;
+      if (!d.prix) return false;
+      if (d.prix > prixMax) return false;
       if (d.km  && d.km  > kmMax)    return false;
       if (d.annee && d.annee < anneeMin) return false;
       if (pays && (d.pays||'') !== pays) return false;

@@ -1,8 +1,8 @@
-// Généré automatiquement le 2026-04-03 15:51
+// Généré automatiquement le 2026-04-03 21:16
 const REVIEWS = {
   "date_calcul": "2026-04-03",
-  "nb_modeles": 20,
-  "note_moyenne_globale": 7.7,
+  "nb_modeles": 24,
+  "note_moyenne_globale": 7.8,
   "marques_index": {
     "Audi": [
       "A3"
@@ -48,15 +48,21 @@ const REVIEWS = {
       "Leon"
     ],
     "Skoda": [
+      "Kodiaq",
       "Octavia"
     ],
     "Toyota": [
       "Corolla",
+      "RAV4",
       "Yaris"
     ],
     "Volkswagen": [
       "Golf",
-      "Polo"
+      "Polo",
+      "Tiguan"
+    ],
+    "Volvo": [
+      "XC40"
     ]
   },
   "reviews": [
@@ -603,6 +609,47 @@ const REVIEWS = {
       "consommation_autoroute_l100": 7.0
     },
     {
+      "id": 22,
+      "marque": "Skoda",
+      "modele": "Kodiaq",
+      "annee_debut": 2017,
+      "annee_fin": 2023,
+      "note_globale": 7.8,
+      "note_fiabilite": 7.5,
+      "note_confort": 8.4,
+      "note_consommation": 7.2,
+      "cout_entretien": "Moyen",
+      "problemes_connus": [
+        "Boîte DSG 7 : à-coups et saccades en petite vitesse (surtout 2017–2019, TSB disponible)",
+        "Module de direction assistée électrique — quelques pannes signalées",
+        "Capteurs de stationnement défaillants (problème commun MQB)"
+      ],
+      "points_forts": [
+        "7 places disponibles — rare dans ce segment de prix",
+        "Habitacle spacieux et bien fini pour le prix",
+        "Coffre modulable généreux (270–2 005 L)",
+        "Bonne valeur d'achat occasion",
+        "Version 4x4 4Drive disponible"
+      ],
+      "risques_achat": [
+        "Exiger historique entretien DSG (vidange huile boîte tous les 60 000 km)",
+        "Essai routier obligatoire avec la boîte DSG — tester les manœuvres lentes",
+        "Vérifier les logiciels : mise à jour MIB recommandée",
+        "Préférer les versions 2020+ pour la DSG améliorée"
+      ],
+      "sources": "TÜV Report 2023, Fiabilité-Auto.com, ADAC 2022, forums Skoda France",
+      "derniere_maj": "2026-04-03",
+      "points_faibles": [
+        "Boîte DSG 7 rapports parfois capricieuse sur les 2017–2019",
+        "Fiabilité inférieure aux Toyota/Mazda",
+        "Consommation diesel réelle souvent >7.5 L/100",
+        "Interface MIB2 vieillissante"
+      ],
+      "fiabilite_resumee": "Grand SUV familial 7 places solide sur la plateforme MQB Volkswagen. Fiabilité correcte mais surveillance de la DSG et des problèmes logiciels.",
+      "consommation_mixte_l100": 7.5,
+      "consommation_autoroute_l100": 6.2
+    },
+    {
       "id": 5,
       "marque": "Skoda",
       "modele": "Octavia",
@@ -672,6 +719,45 @@ const REVIEWS = {
       "fiabilite_resumee": "L'une des voitures les plus fiables du marché. Moteur hybride éprouvé et sans surprise.",
       "consommation_mixte_l100": 4.5,
       "consommation_autoroute_l100": 5.2
+    },
+    {
+      "id": 21,
+      "marque": "Toyota",
+      "modele": "RAV4",
+      "annee_debut": 2019,
+      "annee_fin": null,
+      "note_globale": 8.6,
+      "note_fiabilite": 9.0,
+      "note_confort": 8.2,
+      "note_consommation": 8.5,
+      "cout_entretien": "Faible",
+      "problemes_connus": [
+        "Quelques cas de fissures sur le pare-brise (rares, sous garantie)",
+        "Consommation d'huile légèrement élevée sur certains XA50 (surveiller)"
+      ],
+      "points_forts": [
+        "Fiabilité Toyota légendaire — parmi les meilleures du segment SUV",
+        "Consommation hybride très basse (4.5–6 L/100 en usage mixte)",
+        "Faibles coûts d'entretien vs concurrents premium",
+        "Excellente valeur de revente",
+        "Très bon comportement en conduite mixte ville/autoroute"
+      ],
+      "risques_achat": [
+        "Vérifier historique entretien Toyota exclusivement",
+        "Contrôler l'état de la batterie hybride haute tension si >120 000 km",
+        "Inspecter la carrosserie : véhicule très demandé, prix parfois gonflés"
+      ],
+      "sources": "TÜV Report 2023, ADAC 2023, What Car? 2023, Fiabilité Toyota France",
+      "derniere_maj": "2026-04-03",
+      "points_faibles": [
+        "Insonorisation inférieure aux BMW/Volvo de même gamme",
+        "Boîte CVT peu sportive",
+        "Coffre (580 L) dans la moyenne, non exceptionnel",
+        "Interface multimédia vieillissante sur les 2019–2021"
+      ],
+      "fiabilite_resumee": "Référence absolue en fiabilité SUV. Moteur hybride 2.5L sans problème majeur signalé. Valeur de revente exceptionnelle au Luxembourg.",
+      "consommation_mixte_l100": 5.5,
+      "consommation_autoroute_l100": 6.8
     },
     {
       "id": 2,
@@ -779,6 +865,89 @@ const REVIEWS = {
       "fiabilite_resumee": "Citadine solide et polyvalente. Moins de problèmes électroniques que la Golf Mk8.",
       "consommation_mixte_l100": 5.5,
       "consommation_autoroute_l100": 6.5
+    },
+    {
+      "id": 24,
+      "marque": "Volkswagen",
+      "modele": "Tiguan",
+      "annee_debut": 2016,
+      "annee_fin": 2023,
+      "note_globale": 7.6,
+      "note_fiabilite": 7.1,
+      "note_confort": 8.1,
+      "note_consommation": 7.0,
+      "cout_entretien": "Moyen",
+      "problemes_connus": [
+        "Boîte DSG 7 : saccades et claquements à basse vitesse (surtout 2016–2019)",
+        "Injecteurs diesel sur TDI 2.0 — surveiller",
+        "Capteurs de pluie et de luminosité défaillants (commun VW)"
+      ],
+      "points_forts": [
+        "Intérieur spacieux et bien fini",
+        "Bonne dynamique de conduite",
+        "4Motion (4x4) disponible sur tous les moteurs",
+        "Bonne valeur sur le marché de l'occasion",
+        "Version Allspace 7 places disponible"
+      ],
+      "risques_achat": [
+        "Vérifier la boîte DSG avec un test en circulation dense",
+        "Historique entretien VW agréé obligatoire",
+        "Contrôle OBD2 recommandé pour codes erreur latents",
+        "Préférer les versions 2020+ (mises à jour DSG et logiciel)"
+      ],
+      "sources": "TÜV Report 2023, ADAC 2023, Fiabilité-Auto.com, Auto Bild",
+      "derniere_maj": "2026-04-03",
+      "points_faibles": [
+        "Boîte DSG 7 : même problématique que Skoda (pré-2020)",
+        "Fiabilité électronique inférieure aux Toyota/Mazda",
+        "Consommation réelle souvent 10–15% au-dessus WLTP",
+        "Plastiques durs en bas de gamme de finition"
+      ],
+      "fiabilite_resumee": "SUV polyvalent bien construit mais quelques points de vigilance sur la DSG et le logiciel. Bon rapport espace/prix en occasion.",
+      "consommation_mixte_l100": 7.8,
+      "consommation_autoroute_l100": 7.0
+    },
+    {
+      "id": 23,
+      "marque": "Volvo",
+      "modele": "XC40",
+      "annee_debut": 2018,
+      "annee_fin": null,
+      "note_globale": 7.9,
+      "note_fiabilite": 7.3,
+      "note_confort": 8.8,
+      "note_consommation": 7.0,
+      "cout_entretien": "Élevé",
+      "problemes_connus": [
+        "Système SENSUS (pre-2021) — plantages et lenteurs",
+        "Correcteur électronique de stabilité (DSTC) parfois sensible — calibrage nécessaire",
+        "Petits problèmes de joints d'étanchéité sur les B3/B4 (2020+)",
+        "Tapis de coffre mal fixé — problème cosmétique répandu"
+      ],
+      "points_forts": [
+        "Sécurité 5 étoiles Euro NCAP — parmi les meilleurs du marché",
+        "Confort et qualité d'habitacle premium",
+        "Design intérieur Scandinave remarquable",
+        "Système d'aide à la conduite parmi les plus avancés",
+        "Version 100% électrique disponible (Recharge)"
+      ],
+      "risques_achat": [
+        "Chiffrage entretien Volvo préalable : compter 800–1 200 €/an",
+        "Vérifier historique entretien réseau agréé uniquement",
+        "Tester le système SENSUS : fluidité et connectivité smartphone",
+        "Préférer les 2021+ avec le nouveau système Google Android Automotive"
+      ],
+      "sources": "Euro NCAP 2022, TÜV Report 2023, ADAC 2023, What Car? Awards",
+      "derniere_maj": "2026-04-03",
+      "points_faibles": [
+        "Coût d'entretien Volvo élevé hors réseau agréé",
+        "Moteurs T3/T4 essence parfois gourmands en réalité",
+        "Fiabilité électronique inférieure aux japonaises",
+        "Interface SENSUS critiquée pour sa lenteur (pre-2021)"
+      ],
+      "fiabilite_resumee": "SUV compact premium très confortable, sécurité maximale. Fiabilité correcte mais coûts entretien élevés et quelques problèmes électroniques sur les premières séries.",
+      "consommation_mixte_l100": 7.8,
+      "consommation_autoroute_l100": 8.5
     }
   ]
 };

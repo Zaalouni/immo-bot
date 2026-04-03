@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Auto-Bot LU — Calculateur TCO</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0d1117">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="AutoBot LU">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <meta name="description" content="Calculateur Coût Total de Possession — Auto-Bot Luxembourg">
+  <meta name="robots" content="noindex,nofollow">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: #0d1117; --surface: #161b22; --surface2: #21262d;
+      --border: #30363d; --border2: #3d444e;
+      --txt: #e6edf3; --txt2: #8b949e; --txt3: #6e7681;
+      --accent: #388bfd; --accent-dim: rgba(56,139,253,.15);
+      --green: #3fb950; --green-dim: rgba(63,185,80,.15);
+      --amber: #d29922; --amber-dim: rgba(210,153,34,.15);
+      --red: #f85149; --red-dim: rgba(248,81,73,.15);
+      --purple: #bc8cff;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { background: var(--bg); color: var(--txt); font-family: 'Barlow', sans-serif; font-size: 14px; margin: 0; }
+    ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+    .navbar { background: var(--surface) !important; border-bottom: 1px solid var(--border); padding: 0 1rem; }
+    .navbar-brand { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 1.2rem; color: var(--txt) !important; }
+    .navbar-brand span { color: var(--accent); }
+    .navbar-toggler { border: 1px solid var(--border) !important; padding: 4px 8px; }
+    .navbar-toggler-icon { filter: invert(1); }
+    .navbar-collapse { background: var(--surface); }
+    .nav-link { color: var(--txt2) !important; font-size: 13px; font-weight: 500; padding: 12px 14px !important; transition: color .15s; }
+    .nav-link:hover { color: var(--txt) !important; }
+    .nav-link.active { color: var(--accent) !important; }
+
+    /* Form */
+    .form-section { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px 22px; margin-bottom: 18px; }
+    .form-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1rem; text-transform: uppercase; letter-spacing: .04em; color: var(--txt2); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    .form-label { font-size: 12px; font-weight: 600; color: var(--txt2); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 5px; }
+    .form-control, .form-select {
+      background: var(--surface2) !important; border: 1px solid var(--border) !important;
+      color: var(--txt) !important; border-radius: 6px; font-size: 13px; padding: 7px 12px;
+    }
+    .form-control:focus, .form-select:focus {
+      border-color: var(--accent) !important; box-shadow: 0 0 0 2px rgba(56,139,253,.2) !important; outline: none;
+    }
+    .form-control option, .form-select option { background: var(--surface2); color: var(--txt); }
+    .input-group-text { background: var(--surface2) !important; border: 1px solid var(--border) !important; color: var(--txt3) !important; font-size: 12px; }
+
+    /* Véhicule slot */
+    .veh-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .veh-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 1.1rem; }
+    .veh-a { color: var(--amber); } .veh-b { color: var(--accent); }
+
+    /* KPI result */
+    .result-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 16px; }
+    .result-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; text-align: center; }
+    .result-val { font-family: 'DM Mono', monospace; font-size: 1.5rem; font-weight: 500; line-height: 1; }
+    .result-label { font-size: 11px; color: var(--txt3); text-transform: uppercase; letter-spacing: .04em; margin-top: 4px; }
+
+    /* Détail ligne */
+    .detail-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    .detail-table td { padding: 6px 10px; font-size: 13px; border-bottom: 1px solid var(--border); }
+    .detail-table td:first-child { color: var(--txt2); }
+    .detail-table td:nth-child(2), .detail-table td:nth-child(3) { font-family: 'DM Mono', monospace; text-align: right; font-weight: 500; }
+    .detail-table tr:last-child td { border-bottom: none; font-weight: 700; font-size: 14px; }
+
+    /* Verdict */
+    .verdict { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px 22px; margin-top: 18px; }
+    .verdict-winner { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 1.8rem; }
+    .verdict-saving { font-family: 'DM Mono', monospace; font-size: 1.2rem; color: var(--green); }
+
+    /* Range slider */
+    input[type=range] { accent-color: var(--accent); width: 100%; }
+
+    /* Bouton calc */
+    .btn-calc {
+      background: var(--accent); border: none; color: #fff; font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700; font-size: 1.1rem; letter-spacing: .04em; text-transform: uppercase;
+      padding: 12px 32px; border-radius: 8px; cursor: pointer; transition: opacity .15s; width: 100%;
+    }
+    .btn-calc:hover { opacity: .85; }
+
+    /* Chart card */
+    .chart-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px; }
+
+    /* Hypothèses */
+    .hypo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 576px) { .hypo-grid { grid-template-columns: 1fr; } }
+
+    /* Tooltip info */
+    .info-tip { font-size: 11px; color: var(--txt3); margin-top: 3px; }
+
+    #version-bar { font-size: 11px; color: var(--txt3); text-align: center; padding: 8px 0 12px; border-top: 1px solid var(--border); background: var(--surface); margin-top: 20px; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg">
+  <a class="navbar-brand" href="index.html"><span>◈</span> AUTO-BOT LU</a>
+  <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navMenu">
+    <ul class="navbar-nav ms-auto">
+      <li class="nav-item"><a class="nav-link" href="index.html">Annonces</a></li>
+      <li class="nav-item"><a class="nav-link" href="deals.html">Deals</a></li>
+      <li class="nav-item"><a class="nav-link" href="opportunities.html">Opportunités</a></li>
+      <li class="nav-item"><a class="nav-link" href="rapport.html">Rapport</a></li>
+      <li class="nav-item"><a class="nav-link" href="watchlist.html">Watchlist</a></li>
+      <li class="nav-item"><a class="nav-link" href="alerts.html">Alertes</a></li>
+      <li class="nav-item"><a class="nav-link" href="map.html">Carte</a></li>
+      <li class="nav-item"><a class="nav-link" href="reviews.html">Avis</a></li>
+      <li class="nav-item"><a class="nav-link" href="market.html">Marché</a></li>
+      <li class="nav-item"><a class="nav-link" href="suv-hybrid.html">SUV Hybride</a></li>
+      <li class="nav-item"><a class="nav-link" href="suv.html">Guide SUV</a></li>
+      <li class="nav-item"><a class="nav-link" href="compare.html">Comparer</a></li>
+      <li class="nav-item"><a class="nav-link" href="budget.html">Budget</a></li>
+      <li class="nav-item"><a class="nav-link active" href="tco.html">TCO</a></li>
+      <li class="nav-item"><a class="nav-link" href="selection.html">⭐ Sélection</a></li>
+      <li class="nav-item"><a class="nav-link" href="top-models.html">Top Modèles</a></li>
+      <li class="nav-item"><a class="nav-link" href="vendors.html">Vendeurs</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container-fluid p-3" style="max-width:1100px">
+
+  <!-- Header -->
+  <div class="mb-4">
+    <h1 style="font-family:'Barlow Condensed',sans-serif;font-size:1.8rem;font-weight:800;margin:0;">
+      🧮 Calculateur TCO
+    </h1>
+    <div style="font-size:13px;color:var(--txt2);margin-top:4px;">
+      Coût Total de Possession — comparez 2 véhicules sur 3 ou 5 ans (achat + carburant + entretien + dépréciation)
+    </div>
+  </div>
+
+  <div class="row g-4">
+
+    <!-- Colonne gauche : paramètres -->
+    <div class="col-12 col-lg-5">
+
+      <!-- Hypothèses générales -->
+      <div class="form-section">
+        <div class="form-title">⚙️ Hypothèses générales</div>
+        <div class="hypo-grid">
+          <div>
+            <label class="form-label">Durée possession</label>
+            <select class="form-select" id="duree">
+              <option value="3">3 ans</option>
+              <option value="5" selected>5 ans</option>
+              <option value="7">7 ans</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">Km / an</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="km-an" value="15000" min="5000" max="50000" step="1000">
+              <span class="input-group-text">km</span>
+            </div>
+          </div>
+          <div>
+            <label class="form-label">Prix carburant</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="prix-carbu" value="1.65" min="1.0" max="3.0" step="0.01">
+              <span class="input-group-text">€/L</span>
+            </div>
+            <div class="info-tip">Prix moyen Luxembourg 2026</div>
+          </div>
+          <div>
+            <label class="form-label">Prix électricité</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="prix-elec" value="0.28" min="0.10" max="0.60" step="0.01">
+              <span class="input-group-text">€/kWh</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Véhicule A -->
+      <div class="form-section">
+        <div class="veh-header">
+          <div class="veh-title veh-a">🚗 Véhicule A</div>
+        </div>
+        <div class="row g-3">
+          <div class="col-12">
+            <label class="form-label">Nom / Modèle</label>
+            <input type="text" class="form-control" id="a-nom" placeholder="ex: Toyota RAV4 Hybride 2021" value="Véhicule A">
+          </div>
+          <div class="col-6">
+            <label class="form-label">Prix d'achat</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="a-prix" value="28000" min="0" step="500">
+              <span class="input-group-text">€</span>
+            </div>
+          </div>
+          <div class="col-6">
+            <label class="form-label">Carburant</label>
+            <select class="form-select" id="a-carbu">
+              <option value="essence">Essence</option>
+              <option value="diesel">Diesel</option>
+              <option value="hybride" selected>Hybride</option>
+              <option value="phev">PHEV</option>
+              <option value="electrique">Électrique</option>
+            </select>
+          </div>
+          <div class="col-6">
+            <label class="form-label">Conso réelle</label>
+            <div class="input-group" id="a-conso-wrap">
+              <input type="number" class="form-control" id="a-conso" value="5.2" min="0" step="0.1">
+              <span class="input-group-text" id="a-conso-unit">L/100</span>
+            </div>
+          </div>
+          <div class="col-6">
+            <label class="form-label">Entretien / an</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="a-entretien" value="500" min="0" step="50">
+              <span class="input-group-text">€</span>
+            </div>
+            <div class="info-tip">Vidanges, révisions, pneus...</div>
+          </div>
+          <div class="col-6">
+            <label class="form-label">Assurance / an</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="a-assurance" value="800" min="0" step="50">
+              <span class="input-group-text">€</span>
+            </div>
+          </div>
+          <div class="col-6">
+            <label class="form-label">Dépréciation / an</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="a-deprec" value="12" min="0" max="40" step="1">
+              <span class="input-group-text">%</span>
+            </div>
+            <div class="info-tip">Valeur perdue chaque année</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Véhicule B -->
+      <div class="form-section">
+        <div class="veh-header">
+          <div class="veh-title veh-b">🚙 Véhicule B</div>
+        </div>
+        <div class="row g-3">
+          <div class="col-12">
+            <label class="form-label">Nom / Modèle</label>
+            <input type="text" class="form-control" id="b-nom" placeholder="ex: Kia Sportage Diesel 2020" value="Véhicule B">
+          </div>
+          <div class="col-6">
+            <label class="form-label">Prix d'achat</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="b-prix" value="22000" min="0" step="500">
+              <span class="input-group-text">€</span>
+            </div>
+          </div>
+          <div class="col-6">
+            <label class="form-label">Carburant</label>
+            <select class="form-select" id="b-carbu">
+              <option value="essence">Essence</option>
+              <option value="diesel" selected>Diesel</option>
+              <option value="hybride">Hybride</option>
+              <option value="phev">PHEV</option>
+              <option value="electrique">Électrique</option>
+            </select>
+          </div>
+          <div class="col-6">
+            <label class="form-label">Conso réelle</label>
+            <div class="input-group" id="b-conso-wrap">
+              <input type="number" class="form-control" id="b-conso" value="6.5" min="0" step="0.1">
+              <span class="input-group-text" id="b-conso-unit">L/100</span>
+            </div>
+          </div>
+          <div class="col-6">
+            <label class="form-label">Entretien / an</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="b-entretien" value="700" min="0" step="50">
+              <span class="input-group-text">€</span>
+            </div>
+          </div>
+          <div class="col-6">
+            <label class="form-label">Assurance / an</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="b-assurance" value="750" min="0" step="50">
+              <span class="input-group-text">€</span>
+            </div>
+          </div>
+          <div class="col-6">
+            <label class="form-label">Dépréciation / an</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="b-deprec" value="14" min="0" max="40" step="1">
+              <span class="input-group-text">%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-calc" onclick="calculate()">⚡ Calculer le TCO</button>
+
+    </div>
+
+    <!-- Colonne droite : résultats -->
+    <div class="col-12 col-lg-7">
+      <div id="results-placeholder" style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:60px 20px;text-align:center;color:var(--txt3);">
+        <div style="font-size:3rem;margin-bottom:16px;">🧮</div>
+        <div style="font-size:1.1rem;font-weight:600;color:var(--txt2);margin-bottom:8px;">Renseignez les paramètres</div>
+        <div style="font-size:13px;">Ajustez les valeurs à gauche et cliquez<br><strong style="color:var(--accent)">⚡ Calculer le TCO</strong></div>
+      </div>
+
+      <div id="results" style="display:none;">
+
+        <!-- Verdict -->
+        <div class="verdict mb-4">
+          <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--txt3);margin-bottom:6px;">Verdict</div>
+          <div class="verdict-winner" id="verdict-winner"></div>
+          <div class="verdict-saving" id="verdict-saving"></div>
+          <div style="font-size:13px;color:var(--txt2);margin-top:6px;" id="verdict-detail"></div>
+        </div>
+
+        <!-- Résultats côte à côte -->
+        <div class="row g-3 mb-3">
+          <div class="col-6">
+            <div style="background:var(--surface);border:2px solid var(--amber);border-radius:10px;padding:16px;">
+              <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;color:var(--amber);margin-bottom:10px;" id="res-a-titre">Véhicule A</div>
+              <div class="result-grid">
+                <div class="result-card">
+                  <div class="result-val" id="res-a-total" style="color:var(--amber);font-size:1.3rem;"></div>
+                  <div class="result-label">Coût total</div>
+                </div>
+                <div class="result-card">
+                  <div class="result-val" id="res-a-mois" style="color:var(--txt);font-size:1.3rem;"></div>
+                  <div class="result-label">/ mois</div>
+                </div>
+              </div>
+              <table class="detail-table" id="detail-a"></table>
+            </div>
+          </div>
+          <div class="col-6">
+            <div style="background:var(--surface);border:2px solid var(--accent);border-radius:10px;padding:16px;">
+              <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;color:var(--accent);margin-bottom:10px;" id="res-b-titre">Véhicule B</div>
+              <div class="result-grid">
+                <div class="result-card">
+                  <div class="result-val" id="res-b-total" style="color:var(--accent);font-size:1.3rem;"></div>
+                  <div class="result-label">Coût total</div>
+                </div>
+                <div class="result-card">
+                  <div class="result-val" id="res-b-mois" style="color:var(--txt);font-size:1.3rem;"></div>
+                  <div class="result-label">/ mois</div>
+                </div>
+              </div>
+              <table class="detail-table" id="detail-b"></table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Graphe comparatif -->
+        <div class="chart-card mb-3">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.04em;color:var(--txt2);margin-bottom:12px;">Répartition des coûts</div>
+          <canvas id="tco-chart" height="180"></canvas>
+        </div>
+
+        <!-- Graphe évolution -->
+        <div class="chart-card">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.04em;color:var(--txt2);margin-bottom:12px;">Évolution du coût cumulé</div>
+          <canvas id="tco-line-chart" height="160"></canvas>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /row -->
+
+  <!-- Aide / référence conso -->
+  <div class="form-section mt-3">
+    <div class="form-title">📋 Consommations de référence & coûts entretien</div>
+    <div class="row g-3" style="font-size:13px;">
+      <div class="col-12 col-md-6">
+        <div style="font-weight:700;color:var(--txt2);margin-bottom:8px;font-size:12px;text-transform:uppercase;">Consommations réelles (L/100 km)</div>
+        <table style="width:100%;border-collapse:collapse;">
+          <tr><td style="padding:3px 8px;color:var(--txt2);">Citadine essence</td><td style="font-family:'DM Mono',monospace;text-align:right;color:var(--txt);">6–7 L</td></tr>
+          <tr><td style="padding:3px 8px;color:var(--txt2);">SUV essence</td><td style="font-family:'DM Mono',monospace;text-align:right;color:var(--txt);">8–10 L</td></tr>
+          <tr><td style="padding:3px 8px;color:var(--txt2);">SUV diesel</td><td style="font-family:'DM Mono',monospace;text-align:right;color:var(--txt);">6–7.5 L</td></tr>
+          <tr><td style="padding:3px 8px;color:var(--txt2);">SUV hybride HEV</td><td style="font-family:'DM Mono',monospace;text-align:right;color:var(--txt);">4.5–6 L</td></tr>
+          <tr><td style="padding:3px 8px;color:var(--txt2);">PHEV (mode hybride)</td><td style="font-family:'DM Mono',monospace;text-align:right;color:var(--txt);">2–4 L</td></tr>
+          <tr><td style="padding:3px 8px;color:var(--txt2);">Électrique</td><td style="font-family:'DM Mono',monospace;text-align:right;color:var(--txt);">15–22 kWh/100</td></tr>
+        </table>
+      </div>
+      <div class="col-12 col-md-6">
+        <div style="font-weight:700;color:var(--txt2);margin-bottom:8px;font-size:12px;text-transform:uppercase;">Coûts entretien annuels estimés</div>
+        <table style="width:100%;border-collapse:collapse;">
+          <tr><td style="padding:3px 8px;color:var(--txt2);">Dacia / Skoda / Kia</td><td style="font-family:'DM Mono',monospace;text-align:right;color:var(--green);">300–500 €</td></tr>
+          <tr><td style="padding:3px 8px;color:var(--txt2);">Toyota / Mazda / Honda</td><td style="font-family:'DM Mono',monospace;text-align:right;color:var(--green);">400–600 €</td></tr>
+          <tr><td style="padding:3px 8px;color:var(--txt2);">Volkswagen / Opel / Ford</td><td style="font-family:'DM Mono',monospace;text-align:right;color:var(--amber);">500–800 €</td></tr>
+          <tr><td style="padding:3px 8px;color:var(--txt2);">BMW / Mercedes / Audi</td><td style="font-family:'DM Mono',monospace;text-align:right;color:var(--red);">800–1 500 €</td></tr>
+          <tr><td style="padding:3px 8px;color:var(--txt2);">Électrique (pas de vidange)</td><td style="font-family:'DM Mono',monospace;text-align:right;color:var(--green);">200–400 €</td></tr>
+          <tr><td style="padding:3px 8px;color:var(--txt2);">Land Rover / Jaguar</td><td style="font-family:'DM Mono',monospace;text-align:right;color:var(--red);">1 200–2 500 €</td></tr>
+        </table>
+      </div>
+    </div>
+    <div style="margin-top:12px;font-size:11px;color:var(--txt3);">
+      ⚠ Les valeurs ci-dessus sont des estimations moyennes. Consultez un garagiste pour votre véhicule spécifique.
+      Dépréciation typique : 12–15%/an pour les voitures généralistes · 8–10%/an pour Toyota/Lexus · 18–22%/an pour les allemandes premium.
+    </div>
+  </div>
+
+</div>
+
+<div id="version-bar">Auto-Bot LU</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="data/version.js"></script>
+<script>
+// ── Mise à jour unité conso selon carburant ───────────────────────────────────
+['a','b'].forEach(function(v) {
+  document.getElementById(v + '-carbu').addEventListener('change', function() {
+    var unit = document.getElementById(v + '-conso-unit');
+    var inp  = document.getElementById(v + '-conso');
+    if (this.value === 'electrique') {
+      unit.textContent = 'kWh/100';
+      inp.value = '18';
+    } else {
+      unit.textContent = 'L/100';
+      inp.value = v === 'a' ? '5.2' : '6.5';
+    }
+  });
+});
+
+var tcoChart = null;
+var tcoLineChart = null;
+
+function fmt(n) {
+  return Math.round(n).toLocaleString('fr') + ' €';
+}
+
+function computeTCO(prix, carbu, conso, entretien, assurance, deprecPct, kmAn, duree, prixCarbu, prixElec) {
+  // Carburant total
+  var coutCarbuAn;
+  if (carbu === 'electrique') {
+    coutCarbuAn = (kmAn / 100) * conso * prixElec;
+  } else {
+    coutCarbuAn = (kmAn / 100) * conso * prixCarbu;
+  }
+  var totalCarbu = coutCarbuAn * duree;
+
+  // Entretien total
+  var totalEntretien = entretien * duree;
+
+  // Assurance totale
+  var totalAssurance = assurance * duree;
+
+  // Dépréciation : valeur résiduelle = prix * (1 - deprecPct/100)^duree
+  var valeurResiduelle = prix * Math.pow(1 - deprecPct / 100, duree);
+  var totalDeprec = prix - valeurResiduelle;
+
+  var total = prix + totalCarbu + totalEntretien + totalAssurance - valeurResiduelle;
+  var parMois = total / (duree * 12);
+
+  // Courbe annuelle cumulée
+  var courbe = [];
+  var cumul = prix;
+  for (var an = 1; an <= duree; an++) {
+    var resid = prix * Math.pow(1 - deprecPct / 100, an);
+    cumul = prix + coutCarbuAn * an + entretien * an + assurance * an - resid;
+    courbe.push(Math.round(cumul));
+  }
+
+  return {
+    total: Math.round(total),
+    parMois: Math.round(parMois),
+    carbu: Math.round(totalCarbu),
+    entretien: Math.round(totalEntretien),
+    assurance: Math.round(totalAssurance),
+    deprec: Math.round(totalDeprec),
+    residuelle: Math.round(valeurResiduelle),
+    courbe: courbe,
+  };
+}
+
+function buildDetailTable(r, prefix) {
+  var rows = [
+    ['Prix achat',           fmt(parseInt(document.getElementById(prefix + '-prix').value) || 0)],
+    ['Carburant total',      fmt(r.carbu)],
+    ['Entretien total',      fmt(r.entretien)],
+    ['Assurance totale',     fmt(r.assurance)],
+    ['Dépréciation totale',  '−' + fmt(r.deprec)],
+    ['Valeur résiduelle',    '−' + fmt(r.residuelle)],
+    ['<strong>Coût total</strong>', '<strong>' + fmt(r.total) + '</strong>'],
+  ];
+  return rows.map(function(row) {
+    return '<tr><td>' + row[0] + '</td><td>' + row[1] + '</td></tr>';
+  }).join('');
+}
+
+function calculate() {
+  var duree      = parseInt(document.getElementById('duree').value);
+  var kmAn       = parseInt(document.getElementById('km-an').value) || 15000;
+  var prixCarbu  = parseFloat(document.getElementById('prix-carbu').value) || 1.65;
+  var prixElec   = parseFloat(document.getElementById('prix-elec').value) || 0.28;
+
+  var aData = {
+    nom:       document.getElementById('a-nom').value || 'Véhicule A',
+    prix:      parseInt(document.getElementById('a-prix').value) || 0,
+    carbu:     document.getElementById('a-carbu').value,
+    conso:     parseFloat(document.getElementById('a-conso').value) || 0,
+    entretien: parseInt(document.getElementById('a-entretien').value) || 0,
+    assurance: parseInt(document.getElementById('a-assurance').value) || 0,
+    deprec:    parseInt(document.getElementById('a-deprec').value) || 12,
+  };
+  var bData = {
+    nom:       document.getElementById('b-nom').value || 'Véhicule B',
+    prix:      parseInt(document.getElementById('b-prix').value) || 0,
+    carbu:     document.getElementById('b-carbu').value,
+    conso:     parseFloat(document.getElementById('b-conso').value) || 0,
+    entretien: parseInt(document.getElementById('b-entretien').value) || 0,
+    assurance: parseInt(document.getElementById('b-assurance').value) || 0,
+    deprec:    parseInt(document.getElementById('b-deprec').value) || 14,
+  };
+
+  var rA = computeTCO(aData.prix, aData.carbu, aData.conso, aData.entretien, aData.assurance, aData.deprec, kmAn, duree, prixCarbu, prixElec);
+  var rB = computeTCO(bData.prix, bData.carbu, bData.conso, bData.entretien, bData.assurance, bData.deprec, kmAn, duree, prixCarbu, prixElec);
+
+  // Afficher les résultats
+  document.getElementById('results-placeholder').style.display = 'none';
+  document.getElementById('results').style.display = 'block';
+
+  document.getElementById('res-a-titre').textContent = aData.nom;
+  document.getElementById('res-b-titre').textContent = bData.nom;
+  document.getElementById('res-a-total').textContent = fmt(rA.total);
+  document.getElementById('res-b-total').textContent = fmt(rB.total);
+  document.getElementById('res-a-mois').textContent  = fmt(rA.parMois) + '/mois';
+  document.getElementById('res-b-mois').textContent  = fmt(rB.parMois) + '/mois';
+
+  document.getElementById('detail-a').innerHTML = buildDetailTable(rA, 'a');
+  document.getElementById('detail-b').innerHTML = buildDetailTable(rB, 'b');
+
+  // Verdict
+  var diff = Math.abs(rA.total - rB.total);
+  var winner = rA.total <= rB.total ? aData.nom : bData.nom;
+  var winnerColor = rA.total <= rB.total ? 'var(--amber)' : 'var(--accent)';
+  document.getElementById('verdict-winner').textContent = '🏆 ' + winner + ' est moins cher';
+  document.getElementById('verdict-winner').style.color = winnerColor;
+  document.getElementById('verdict-saving').textContent = 'Économie : ' + fmt(diff) + ' sur ' + duree + ' ans';
+  document.getElementById('verdict-detail').textContent =
+    fmt(rA.parMois) + '/mois vs ' + fmt(rB.parMois) + '/mois · '
+    + fmt(Math.round(diff / duree)) + '/an de différence';
+
+  // Graphe barres empilées
+  if (tcoChart) tcoChart.destroy();
+  var ctx1 = document.getElementById('tco-chart').getContext('2d');
+  tcoChart = new Chart(ctx1, {
+    type: 'bar',
+    data: {
+      labels: [aData.nom, bData.nom],
+      datasets: [
+        { label: 'Prix achat net', data: [aData.prix - rA.residuelle, bData.prix - rB.residuelle], backgroundColor: 'rgba(188,140,255,.7)', borderColor: '#bc8cff', borderWidth: 1 },
+        { label: 'Carburant',      data: [rA.carbu, rB.carbu],       backgroundColor: 'rgba(210,153,34,.7)',   borderColor: '#d29922', borderWidth: 1 },
+        { label: 'Entretien',      data: [rA.entretien, rB.entretien], backgroundColor: 'rgba(56,139,253,.7)', borderColor: '#388bfd', borderWidth: 1 },
+        { label: 'Assurance',      data: [rA.assurance, rB.assurance], backgroundColor: 'rgba(63,185,80,.7)',  borderColor: '#3fb950', borderWidth: 1 },
+      ]
+    },
+    options: {
+      responsive: true, plugins: {
+        legend: { labels: { color: '#8b949e', font: { size: 11 } } },
+        tooltip: {
+          backgroundColor: '#161b22', borderColor: '#30363d', borderWidth: 1,
+          titleColor: '#e6edf3', bodyColor: '#8b949e',
+          callbacks: { label: function(ctx) { return ' ' + ctx.dataset.label + ' : ' + Math.round(ctx.raw).toLocaleString('fr') + ' €'; } }
+        }
+      },
+      scales: {
+        x: { stacked: true, grid: { color: '#21262d' }, ticks: { color: '#8b949e' } },
+        y: { stacked: true, grid: { color: '#21262d' }, ticks: { color: '#8b949e', callback: function(v) { return v.toLocaleString('fr') + ' €'; } } }
+      }
+    }
+  });
+
+  // Graphe ligne cumulé
+  if (tcoLineChart) tcoLineChart.destroy();
+  var ctx2 = document.getElementById('tco-line-chart').getContext('2d');
+  var years = [];
+  for (var y = 1; y <= duree; y++) years.push('An ' + y);
+  tcoLineChart = new Chart(ctx2, {
+    type: 'line',
+    data: {
+      labels: years,
+      datasets: [
+        { label: aData.nom, data: rA.courbe, borderColor: '#d29922', backgroundColor: 'rgba(210,153,34,.1)', pointBackgroundColor: '#d29922', pointRadius: 4, tension: 0.3 },
+        { label: bData.nom, data: rB.courbe, borderColor: '#388bfd', backgroundColor: 'rgba(56,139,253,.1)',  pointBackgroundColor: '#388bfd', pointRadius: 4, tension: 0.3 },
+      ]
+    },
+    options: {
+      responsive: true,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { labels: { color: '#8b949e', font: { size: 11 } } },
+        tooltip: {
+          backgroundColor: '#161b22', borderColor: '#30363d', borderWidth: 1,
+          titleColor: '#e6edf3', bodyColor: '#8b949e',
+          callbacks: { label: function(ctx) { return ' ' + ctx.dataset.label + ' : ' + ctx.raw.toLocaleString('fr') + ' €'; } }
+        }
+      },
+      scales: {
+        x: { grid: { color: '#21262d' }, ticks: { color: '#8b949e' } },
+        y: { grid: { color: '#21262d' }, ticks: { color: '#8b949e', callback: function(v) { return v.toLocaleString('fr') + ' €'; } } }
+      }
+    }
+  });
+}
+
+// Calculer automatiquement au chargement avec les valeurs par défaut
+window.addEventListener('DOMContentLoaded', calculate);
+
+// ── Version bar ───────────────────────────────────────────────────────────────
+if (typeof VERSION !== 'undefined') {
+  var v = VERSION;
+  var bar = document.getElementById('version-bar');
+  if (bar) {
+    var ann  = v.nb_listings  ? v.nb_listings.toLocaleString('fr') + ' ann.' : '';
+    var nouv = v.nb_new_today ? '+' + v.nb_new_today + ' nouvelles' : '';
+    var scr  = v.last_scraping && v.last_scraping !== '—' ? 'Scraping : ' + v.last_scraping : '';
+    var stats = [ann, nouv].filter(Boolean).join(' · ');
+    bar.innerHTML = 'Auto-Bot LU <strong>v' + v.dashboard_version + '</strong>'
+      + ' — Deploy <strong>#' + v.deploy_count + '</strong>'
+      + ' — ' + v.generated_date + ' ' + v.generated_time
+      + (stats ? ' — ' + stats : '')
+      + (scr   ? ' | ' + scr   : '');
+  }
+}
+</script>
+</body>
+</html>

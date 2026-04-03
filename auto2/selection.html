@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Auto-Bot LU — Ma Sélection</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0d1117">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="AutoBot LU">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <meta name="description" content="Ma Sélection — Favoris sauvegardés — Auto-Bot Luxembourg">
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0d1117; --surface: #161b22; --surface2: #21262d;
+      --border: #30363d; --border2: #3d444e;
+      --txt: #e6edf3; --txt2: #8b949e; --txt3: #6e7681;
+      --accent: #388bfd; --accent-dim: rgba(56,139,253,.15);
+      --green: #3fb950; --green-dim: rgba(63,185,80,.15);
+      --amber: #d29922; --amber-dim: rgba(210,153,34,.15);
+      --red: #f85149; --red-dim: rgba(248,81,73,.15);
+      --gold: #e3b341; --purple: #bc8cff;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--txt); font-family: 'Barlow', sans-serif; font-size: 14px; margin: 0; }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+    /* ── Navbar ── */
+    .navbar { background: var(--surface) !important; border-bottom: 1px solid var(--border); padding: 0 1rem; }
+    .navbar-brand { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 1.2rem; letter-spacing: .03em; color: var(--txt) !important; }
+    .navbar-brand span { color: var(--accent); }
+    .navbar-toggler { border: 1px solid var(--border) !important; padding: 4px 8px; }
+    .navbar-toggler-icon { filter: invert(1); }
+    .navbar-collapse { background: var(--surface); }
+    .nav-link { color: var(--txt2) !important; font-size: 13px; font-weight: 500; padding: 12px 10px !important; transition: color .15s; }
+    .nav-link:hover { color: var(--txt) !important; }
+    .nav-link.active { color: var(--accent) !important; }
+
+    /* ── Page header ── */
+    .page-header { padding: 24px 0 16px; border-bottom: 1px solid var(--border); background: var(--surface); margin-bottom: 24px; }
+    .page-header h1 { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 2rem; color: var(--txt); margin: 0 0 4px; }
+    .page-header .subtitle { font-size: 13px; color: var(--txt2); margin: 0; }
+    .page-header .update-date { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--txt3); }
+
+    /* ── KPI cards ── */
+    .kpi-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; }
+    .kpi-label { font-size: 10px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; color: var(--txt3); margin-bottom: 6px; }
+    .kpi-value { font-family: 'DM Mono', monospace; font-size: 1.6rem; font-weight: 500; color: var(--txt); line-height: 1; }
+    .kpi-value.kpi-green { color: var(--green); }
+    .kpi-value.kpi-amber { color: var(--amber); }
+
+    /* ── Empty state ── */
+    .empty-state { text-align: center; padding: 80px 20px; }
+    .empty-state .empty-icon { font-size: 5rem; line-height: 1; margin-bottom: 20px; color: var(--txt3); }
+    .empty-state h3 { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1.5rem; color: var(--txt); margin-bottom: 10px; }
+    .empty-state p { color: var(--txt2); font-size: 14px; max-width: 400px; margin: 0 auto 24px; }
+    .btn-go { background: var(--accent); color: #fff; border: none; border-radius: 6px; padding: 8px 20px; font-size: 13px; font-weight: 600; text-decoration: none; display: inline-block; transition: background .15s; }
+    .btn-go:hover { background: #58a6ff; color: #fff; }
+
+    /* ── Fav cards grid ── */
+    .fav-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; transition: transform .15s, box-shadow .15s, border-color .15s;
+      overflow: hidden; height: 100%;
+    }
+    .fav-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.35); border-color: var(--border2); }
+    .fav-card .card-body { padding: 16px 18px; }
+    .fav-card-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1.2rem; color: var(--txt); margin-bottom: 4px; line-height: 1.2; }
+    .fav-card-meta { font-size: 12px; color: var(--txt3); margin-bottom: 10px; }
+    .fav-card-prix { font-family: 'DM Mono', monospace; font-weight: 500; font-size: 1.3rem; color: var(--amber); margin-bottom: 10px; }
+
+    /* ── Score badge ── */
+    .score-badge { display: inline-block; font-family: 'DM Mono', monospace; font-weight: 500; font-size: 12px; padding: 2px 8px; border-radius: 4px; }
+    .score-green { background: var(--green-dim); color: var(--green); border: 1px solid rgba(63,185,80,.3); }
+    .score-amber { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(210,153,34,.3); }
+    .score-muted { background: var(--surface2); color: var(--txt3); border: 1px solid var(--border); }
+
+    /* ── Site badge ── */
+    .site-badge { background: var(--surface2); color: var(--txt2); border: 1px solid var(--border); font-size: 10px; padding: 2px 6px; border-radius: 4px; font-family: 'DM Mono', monospace; }
+
+    /* ── Remove fav button ── */
+    .btn-fav { background: none; border: none; cursor: pointer; font-size: 1.1rem; padding: 2px 6px; border-radius: 4px; transition: background .15s; color: var(--gold); }
+    .btn-fav:hover { background: var(--red-dim); color: var(--red); }
+
+    /* ── Voir annonce btn ── */
+    .btn-voir { background: transparent; border: 1px solid var(--border); color: var(--txt2); font-size: 12px; padding: 4px 12px; border-radius: 4px; text-decoration: none; transition: all .15s; display: inline-block; }
+    .btn-voir:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+
+    /* ── Clear all button ── */
+    .btn-clear { background: var(--red-dim); color: var(--red); border: 1px solid rgba(248,81,73,.3); border-radius: 6px; padding: 6px 16px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all .15s; }
+    .btn-clear:hover { background: var(--red); color: #fff; border-color: var(--red); }
+
+    /* ── Section title ── */
+    .section-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1rem; letter-spacing: .05em; text-transform: uppercase; color: var(--txt2); margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+
+    /* ── Comparison table ── */
+    .cmp-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .cmp-table thead th {
+      background: var(--surface2); color: var(--txt3);
+      font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+      padding: 10px 12px; border-bottom: 2px solid var(--border);
+      white-space: nowrap;
+    }
+    .cmp-table tbody tr { background: var(--surface); }
+    .cmp-table tbody tr:hover td { background: rgba(56,139,253,.05); }
+    .cmp-table tbody td { border-bottom: 1px solid var(--border); padding: 9px 12px; vertical-align: middle; color: var(--txt); }
+    .cmp-table .td-model { font-weight: 600; color: var(--txt); }
+    .cmp-table .td-prix { font-family: 'DM Mono', monospace; font-weight: 500; color: var(--amber); }
+    .cmp-table .td-km { font-family: 'DM Mono', monospace; color: var(--txt2); }
+    .cmp-table .td-muted { color: var(--txt3); }
+
+    /* ── Note ── */
+    .note-bar { font-size: 11px; color: var(--txt3); text-align: center; padding: 10px; background: var(--surface); border-top: 1px solid var(--border); border-radius: 6px; font-family: 'DM Mono', monospace; }
+
+    hr { border-color: var(--border); opacity: 1; }
+
+    @media (max-width: 576px) {
+      .fav-card-prix { font-size: 1.1rem; }
+      .kpi-value { font-size: 1.3rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Navbar ── -->
+<nav class="navbar navbar-expand-lg px-3">
+  <a class="navbar-brand" href="index.html"><span>◈</span> AUTO-BOT LU</a>
+  <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Menu navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navMenu">
+    <ul class="navbar-nav ms-auto flex-wrap">
+      <li class="nav-item"><a class="nav-link" href="index.html">Annonces</a></li>
+      <li class="nav-item"><a class="nav-link" href="deals.html">Deals</a></li>
+      <li class="nav-item"><a class="nav-link" href="opportunities.html">Opportunités</a></li>
+      <li class="nav-item"><a class="nav-link" href="rapport.html">Rapport</a></li>
+      <li class="nav-item"><a class="nav-link" href="watchlist.html">Watchlist</a></li>
+      <li class="nav-item"><a class="nav-link" href="alerts.html">Alertes</a></li>
+      <li class="nav-item"><a class="nav-link" href="map.html">Carte</a></li>
+      <li class="nav-item"><a class="nav-link" href="reviews.html">Avis</a></li>
+      <li class="nav-item"><a class="nav-link" href="market.html">Marché</a></li>
+      <li class="nav-item"><a class="nav-link" href="suv-hybrid.html">SUV Hybride</a></li>
+      <li class="nav-item"><a class="nav-link" href="suv.html">Guide SUV</a></li>
+      <li class="nav-item"><a class="nav-link" href="compare.html">Comparer</a></li>
+      <li class="nav-item"><a class="nav-link" href="budget.html">Budget</a></li>
+      <li class="nav-item"><a class="nav-link" href="tco.html">TCO</a></li>
+      <li class="nav-item"><a class="nav-link active" href="selection.html">⭐ Sélection</a></li>
+      <li class="nav-item"><a class="nav-link" href="top-models.html">Top Modèles</a></li>
+      <li class="nav-item"><a class="nav-link" href="vendors.html">Vendeurs</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ── Page header ── -->
+<div class="page-header">
+  <div class="container-fluid px-3 px-md-4">
+    <div class="d-flex align-items-start justify-content-between flex-wrap gap-2">
+      <div>
+        <h1>⭐ Ma Sélection</h1>
+        <p class="subtitle">Vos annonces sauvegardées</p>
+      </div>
+      <div class="text-end">
+        <div class="update-date" id="page-date">—</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Main content ── -->
+<div class="container-fluid px-3 px-md-4 pb-4">
+
+  <!-- Empty state (shown when no favorites) -->
+  <div id="empty-state" class="empty-state" style="display:none">
+    <div class="empty-icon">☆</div>
+    <h3>Aucun favori enregistré</h3>
+    <p>Retournez aux annonces et cliquez ☆ pour sauvegarder des voitures</p>
+    <a href="index.html" class="btn-go">Voir les annonces</a>
+  </div>
+
+  <!-- Favorites content (shown when favorites exist) -->
+  <div id="fav-content" style="display:none">
+
+    <!-- KPI row -->
+    <div class="row g-3 mb-4" id="kpi-row">
+      <div class="col-md-4 col-6">
+        <div class="kpi-card">
+          <div class="kpi-label">Favoris</div>
+          <div class="kpi-value" id="kpi-count">—</div>
+        </div>
+      </div>
+      <div class="col-md-4 col-6">
+        <div class="kpi-card">
+          <div class="kpi-label">Prix médian</div>
+          <div class="kpi-value kpi-amber" id="kpi-median">—</div>
+        </div>
+      </div>
+      <div class="col-md-4 col-12">
+        <div class="kpi-card">
+          <div class="kpi-label">Deal score moyen</div>
+          <div class="kpi-value kpi-green" id="kpi-deal">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+      <div class="section-title mb-0">Vos favoris</div>
+      <button class="btn-clear" onclick="clearAll()">✕ Tout effacer</button>
+    </div>
+
+    <!-- Cards grid -->
+    <div class="row g-3 mb-4" id="cards-grid"></div>
+
+    <!-- Comparison table -->
+    <div class="section-title mt-2">Tableau comparatif</div>
+    <div class="table-responsive mb-3">
+      <table class="cmp-table" id="cmp-table">
+        <thead>
+          <tr>
+            <th>Modèle</th>
+            <th>Année</th>
+            <th>Km</th>
+            <th>Prix</th>
+            <th>Deal</th>
+            <th>Négo</th>
+            <th>Carburant</th>
+            <th>Ville</th>
+            <th>Retirer</th>
+          </tr>
+        </thead>
+        <tbody id="cmp-tbody"></tbody>
+      </table>
+    </div>
+
+    <!-- Local storage note -->
+    <div class="note-bar">
+      Favoris sauvegardés localement dans votre navigateur — non synchronisés entre appareils
+    </div>
+
+  </div><!-- /fav-content -->
+
+</div><!-- /container -->
+
+<!-- ── Data files ── -->
+<script src="data/listings.js"></script>
+<script src="data/version.js"></script>
+
+<!-- ── Bootstrap JS ── -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- ── Main script ── -->
+<script>
+  'use strict';
+
+  /* ─────────────────────────────────────────────
+     Constants & helpers
+  ───────────────────────────────────────────── */
+  const FAV_KEY = 'autobot_favorites';
+
+  /**
+   * Reads favorite IDs from localStorage.
+   * @returns {string[]} Array of listing IDs (strings)
+   */
+  function getFavIds() {
+    try {
+      return JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
+    } catch (e) {
+      return [];
+    }
+  }
+
+  /**
+   * Saves an array of IDs back to localStorage.
+   * @param {string[]} ids
+   */
+  function saveFavIds(ids) {
+    localStorage.setItem(FAV_KEY, JSON.stringify(ids));
+  }
+
+  /**
+   * Formats a price number as localised French string with € suffix.
+   * @param {number|null} p
+   * @returns {string}
+   */
+  function formatPrix(p) {
+    if (!p && p !== 0) return '—';
+    return Number(p).toLocaleString('fr') + ' €';
+  }
+
+  /**
+   * Formats a km value as localised French string with km suffix.
+   * @param {number|null} k
+   * @returns {string}
+   */
+  function formatKm(k) {
+    if (!k && k !== 0) return '—';
+    return Number(k).toLocaleString('fr') + ' km';
+  }
+
+  /**
+   * Returns the CSS class for a deal score badge.
+   * ≥70 → green, ≥50 → amber, else → muted
+   * @param {number} score
+   * @returns {string}
+   */
+  function dealScoreClass(score) {
+    if (score >= 70) return 'score-green';
+    if (score >= 50) return 'score-amber';
+    return 'score-muted';
+  }
+
+  /**
+   * Returns display label for deal score, or '—' if absent.
+   * @param {number|null} score
+   * @returns {string}
+   */
+  function dealScoreLabel(score) {
+    return (score !== null && score !== undefined) ? Math.round(score) : '—';
+  }
+
+  /* ─────────────────────────────────────────────
+     Remove a single favorite and re-render
+  ───────────────────────────────────────────── */
+  /**
+   * Removes a listing from favorites and triggers a full re-render.
+   * @param {string} id — listing ID to remove
+   */
+  function removeFav(id) {
+    const ids = getFavIds().filter(function(x) { return String(x) !== String(id); });
+    saveFavIds(ids);
+    render();
+  }
+
+  /* ─────────────────────────────────────────────
+     Clear all favorites and re-render
+  ───────────────────────────────────────────── */
+  /**
+   * Clears all saved favorites from localStorage and re-renders the page.
+   */
+  function clearAll() {
+    if (!confirm('Effacer tous les favoris ?')) return;
+    localStorage.removeItem(FAV_KEY);
+    render();
+  }
+
+  /* ─────────────────────────────────────────────
+     Build one card HTML string for a listing
+  ───────────────────────────────────────────── */
+  /**
+   * Generates the HTML for a single favorite listing card.
+   * @param {Object} l — listing object from LISTINGS
+   * @returns {string} HTML string for the card column
+   */
+  function buildCard(l) {
+    const id        = String(l.id || '');
+    const marque    = l.marque_norm || l.marque || '';
+    const modele    = l.modele_norm || l.modele || '';
+    const annee     = l.annee || '—';
+    const km        = formatKm(l.km);
+    const carbu     = l.carburant || '—';
+    const boite     = l.boite || '—';
+    const prix      = formatPrix(l.prix);
+    const deal      = dealScoreLabel(l.deal_score);
+    const dealCls   = dealScoreClass(l.deal_score || 0);
+    const nego      = (l.nego_score !== null && l.nego_score !== undefined) ? Math.round(l.nego_score) : '—';
+    const ville     = l.ville || '—';
+    const site      = l.site || l.source || '';
+    const url       = l.url || '';
+
+    var urlLink = '';
+    if (url) {
+      urlLink = '<a href="' + url + '" target="_blank" rel="noopener" class="btn-voir">Voir l\'annonce →</a>';
+    }
+
+    return '<div class="col-lg-4 col-md-6">'
+      + '<div class="fav-card">'
+      + '<div class="card-body">'
+      + '<div class="d-flex justify-content-between align-items-start mb-2">'
+      + '<div class="fav-card-title">' + marque + ' ' + modele + '</div>'
+      + '<button class="btn-fav" title="Retirer des favoris" onclick="removeFav(\'' + id + '\')">⭐</button>'
+      + '</div>'
+      + '<div class="fav-card-meta">' + annee + ' · ' + km + ' · ' + carbu + ' · ' + boite + '</div>'
+      + '<div class="fav-card-prix">' + prix + '</div>'
+      + '<div class="d-flex align-items-center gap-2 flex-wrap mb-3">'
+      + '<span class="score-badge ' + dealCls + '">Deal ' + deal + '</span>'
+      + '<span style="font-size:12px;color:var(--txt3);">Négo <span style="color:var(--amber);font-weight:600;">' + nego + '</span></span>'
+      + '</div>'
+      + '<div class="d-flex align-items-center justify-content-between flex-wrap gap-2">'
+      + '<div>'
+      + '<span style="font-size:12px;color:var(--txt2);">' + ville + '</span>'
+      + (site ? ' <span class="site-badge ms-1">' + site + '</span>' : '')
+      + '</div>'
+      + urlLink
+      + '</div>'
+      + '</div>'
+      + '</div>'
+      + '</div>';
+  }
+
+  /* ─────────────────────────────────────────────
+     Build one table row HTML string
+  ───────────────────────────────────────────── */
+  /**
+   * Generates the HTML for a single table row for the comparison table.
+   * @param {Object} l — listing object
+   * @returns {string} HTML string for <tr>
+   */
+  function buildRow(l) {
+    const id     = String(l.id || '');
+    const marque = l.marque_norm || l.marque || '';
+    const modele = l.modele_norm || l.modele || '';
+    const deal   = dealScoreLabel(l.deal_score);
+    const dealCls = dealScoreClass(l.deal_score || 0);
+    const nego   = (l.nego_score !== null && l.nego_score !== undefined) ? Math.round(l.nego_score) : '—';
+    const carbu  = l.carburant || '—';
+    const ville  = l.ville || '—';
+
+    return '<tr>'
+      + '<td class="td-model">' + marque + ' ' + modele + '</td>'
+      + '<td class="td-muted">' + (l.annee || '—') + '</td>'
+      + '<td class="td-km">' + formatKm(l.km) + '</td>'
+      + '<td class="td-prix">' + formatPrix(l.prix) + '</td>'
+      + '<td><span class="score-badge ' + dealCls + '">' + deal + '</span></td>'
+      + '<td style="font-family:\'DM Mono\',monospace;color:var(--amber);">' + nego + '</td>'
+      + '<td class="td-muted">' + carbu + '</td>'
+      + '<td class="td-muted">' + ville + '</td>'
+      + '<td><button class="btn-fav" style="font-size:.9rem;" title="Retirer" onclick="removeFav(\'' + id + '\')">✕</button></td>'
+      + '</tr>';
+  }
+
+  /* ─────────────────────────────────────────────
+     Compute median of a numeric array
+  ───────────────────────────────────────────── */
+  /**
+   * Returns the median value from an array of numbers.
+   * @param {number[]} arr
+   * @returns {number|null}
+   */
+  function median(arr) {
+    if (!arr.length) return null;
+    const sorted = arr.slice().sort(function(a, b) { return a - b; });
+    const mid = Math.floor(sorted.length / 2);
+    return sorted.length % 2 !== 0
+      ? sorted[mid]
+      : (sorted[mid - 1] + sorted[mid]) / 2;
+  }
+
+  /* ─────────────────────────────────────────────
+     Main render function
+  ───────────────────────────────────────────── */
+  /**
+   * Reads favorites from localStorage, cross-references with LISTINGS,
+   * then renders the page (KPIs, cards grid, comparison table) or empty state.
+   */
+  function render() {
+    var listings = (typeof LISTINGS !== 'undefined') ? LISTINGS : [];
+
+    var favIds = getFavIds().map(function(x) { return String(x); });
+    var favSet = new Set(favIds);
+
+    // Build a map for O(1) lookup
+    var favMap = {};
+    listings.forEach(function(l) {
+      if (favSet.has(String(l.id))) {
+        favMap[String(l.id)] = l;
+      }
+    });
+
+    // Collect matched listings, sorted by prix ascending
+    var favListings = favIds
+      .filter(function(id) { return favMap[id]; })
+      .map(function(id) { return favMap[id]; });
+
+    favListings.sort(function(a, b) { return (a.prix || 0) - (b.prix || 0); });
+
+    var emptyEl   = document.getElementById('empty-state');
+    var contentEl = document.getElementById('fav-content');
+
+    if (favListings.length === 0) {
+      emptyEl.style.display   = '';
+      contentEl.style.display = 'none';
+      return;
+    }
+
+    emptyEl.style.display   = 'none';
+    contentEl.style.display = '';
+
+    // ── KPIs ────────────────────────────────────
+    var prices  = favListings.map(function(l) { return l.prix; }).filter(function(p) { return p > 0; });
+    var deals   = favListings.map(function(l) { return l.deal_score; }).filter(function(d) { return d !== null && d !== undefined; });
+    var medPrix = median(prices);
+    var avgDeal = deals.length ? Math.round(deals.reduce(function(s, d) { return s + d; }, 0) / deals.length) : null;
+
+    document.getElementById('kpi-count').textContent  = favListings.length;
+    document.getElementById('kpi-median').textContent = medPrix !== null ? formatPrix(medPrix) : '—';
+    document.getElementById('kpi-deal').textContent   = avgDeal !== null ? avgDeal : '—';
+
+    // ── Cards ────────────────────────────────────
+    var cardsHtml = favListings.map(buildCard).join('');
+    document.getElementById('cards-grid').innerHTML = cardsHtml;
+
+    // ── Table ────────────────────────────────────
+    var rowsHtml = favListings.map(buildRow).join('');
+    document.getElementById('cmp-tbody').innerHTML = rowsHtml;
+  }
+
+  /* ─────────────────────────────────────────────
+     Set today's date in the header
+  ───────────────────────────────────────────── */
+  (function setDate() {
+    var d = new Date();
+    var opts = { day: '2-digit', month: 'long', year: 'numeric' };
+    try {
+      document.getElementById('page-date').textContent = d.toLocaleDateString('fr-FR', opts);
+    } catch (e) {
+      document.getElementById('page-date').textContent = d.toISOString().slice(0, 10);
+    }
+  })();
+
+  /* ─────────────────────────────────────────────
+     Initial render
+  ───────────────────────────────────────────── */
+  render();
+</script>
+
+<!-- ── Version bar ── -->
+<div id="version-bar" style="font-size:11px;color:var(--txt3);text-align:center;padding:8px 0 12px;border-top:1px solid var(--border);background:var(--surface);margin-top:16px">Auto-Bot LU</div>
+<script>
+if (typeof VERSION !== 'undefined') {
+  var v = VERSION;
+  var bar = document.getElementById('version-bar');
+  if (bar) {
+    var ann  = v.nb_listings  ? v.nb_listings.toLocaleString('fr') + ' ann.' : '';
+    var nouv = v.nb_new_today ? '+' + v.nb_new_today + ' nouvelles' : '';
+    var vend = v.nb_vendors   ? v.nb_vendors + ' vendeurs' : '';
+    var scr  = v.last_scraping && v.last_scraping !== '—' ? 'Scraping : ' + v.last_scraping : '';
+    var stats = [ann, nouv, vend].filter(Boolean).join(' · ');
+    bar.innerHTML = 'Auto-Bot LU <strong>v' + v.dashboard_version + '</strong>'
+      + ' — Deploy <strong>#' + v.deploy_count + '</strong>'
+      + ' — ' + v.generated_date + ' ' + v.generated_time
+      + (stats ? ' — ' + stats : '')
+      + (scr   ? ' | ' + scr   : '');
+  }
+}
+</script>
+</body>
+</html>
