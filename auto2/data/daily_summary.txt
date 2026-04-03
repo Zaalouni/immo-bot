@@ -1,8 +1,8 @@
 ═══════════════════════════════════════════════════════
   AUTO-BOT LUXEMBOURG — Résumé du 2026-04-03
 ═══════════════════════════════════════════════════════
-  Annonces actives    : 1,389
-  Nouvelles aujourd'hui: 404
+  Annonces actives    : 1,412
+  Nouvelles aujourd'hui: 421
   Baisses de prix (7j) : 17
 
   TOP 5 OPPORTUNITÉS DU JOUR
@@ -15,18 +15,18 @@
      Score: opp=59 deal=85 nego=10 | Oberhausen
      https://www.autoscout24.de/angebote/toyota-aygo-x-1-0-teamplayer-aygo-benzin-e0636925-1fc3-4bfa-b3b0-8f9a268c2c4c
 
-  3. Dacia Sandero 2026 — 9 500 km — 17 690 €
-     Score: opp=58 deal=84 nego=10 | Marignane
-     https://www.autoscout24.lu/offres/dacia-sandero-1-2-eco-g-120ch-journey-25-gpl-b8c31984-5144-4f73-ab47-636720d1ea61
-
-  4. Sonstige Sonstige 2024 — 1 862 km — 10 950 €
+  3. Sonstige Sonstige 2024 — 1 862 km — 10 950 €
      Score: opp=58 deal=83 nego=10 | Alsdorf
      https://www.autoscout24.de/angebote/sonstige-sonstige-microlino-pioneer-faltdach-90km-h-177km-led-elektro-weiss-4f3ec0a3-5399-4308-83d6-49aaa84088cc
 
-  5. Mazda Mx-30 2023 — 15 395 km — 15 980 €
-     Score: opp=58 deal=83 nego=10 | Dortmund
-     https://www.autoscout24.de/angebote/mazda-mx-30-ev-advantage-industrial-vintage-3-phasig-elektro-weiss-817bb88c-3dfc-428a-91dd-9414ea58bb75
+  4. Opel Corsa 2023 — 22 600 km — 12 900 €
+     Score: opp=58 deal=83 nego=10 | Homburg
+     https://www.autoscout24.de/angebote/opel-corsa-f-1-2-edition-sitzheiz-tempomat-spurhalte-benzin-weiss-4973e8c0-c04f-4e17-9b0b-b21c77d08935
+
+  5. Hyundai Bayon 2025 — 9 200 km — 16 300 €
+     Score: opp=57 deal=82 nego=10 | Arnstadt
+     https://www.autoscout24.de/angebote/hyundai-bayon-1-0-t-gdi-select-benzin-grau-07a0017b-986c-4769-9b11-728a8f53310b
 
 ═══════════════════════════════════════════════════════
-  Généré : 2026-04-03 09:39 | python3.9 dashboard_generator.py
+  Généré : 2026-04-03 10:01 | python3.9 dashboard_generator.py
 ═══════════════════════════════════════════════════════
