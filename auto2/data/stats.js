@@ -1,55 +1,55 @@
-// Généré automatiquement le 2026-04-03 09:18
+// Généré automatiquement le 2026-04-03 09:39
 const STATS = {
-  "total_actives": 1410,
-  "nouvelles_aujourd_hui": 407,
-  "prix_moyen": 27181,
+  "total_actives": 1389,
+  "nouvelles_aujourd_hui": 404,
+  "prix_moyen": 27153,
   "prix_min": 10190,
   "prix_max": 49990,
-  "km_moyen": 47556,
+  "km_moyen": 46567,
   "repartition_carburant": {
-    "Essence": 780,
-    "Electrique": 145,
-    "Diesel": 337,
-    "Autres": 13,
+    "Diesel": 319,
+    "Essence": 785,
+    "Autres": 11,
+    "Electrique": 139,
     "GPL": 3,
-    "Inconnu": 9,
+    "Inconnu": 8,
     "Wasserstoff": 1,
     "Hybride": 121,
-    "GNV": 1
+    "GNV": 2
   },
   "repartition_marques": {
-    "Volkswagen": 168,
-    "Mercedes": 152,
-    "Audi": 117,
-    "BMW": 84,
-    "Ford": 82,
+    "Volkswagen": 158,
+    "Mercedes": 132,
+    "Audi": 113,
+    "Ford": 85,
     "Hyundai": 80,
-    "Volvo": 66,
-    "Skoda": 66,
-    "Opel": 57,
-    "Kia": 57
+    "BMW": 73,
+    "Volvo": 70,
+    "Skoda": 64,
+    "Opel": 59,
+    "Kia": 53
   },
   "repartition_pays": {
-    "France": 206,
-    "Allemagne": 510,
-    "Luxembourg": 694
+    "France": 207,
+    "Allemagne": 494,
+    "Luxembourg": 688
   },
   "repartition_vendeur": {
-    "pro": 1409,
+    "pro": 1388,
     "particulier": 1
   },
-  "nb_avec_ct": 23,
+  "nb_avec_ct": 21,
   "snapshots_30j": [
     {
-      "id": 15,
+      "id": 16,
       "date": "2026-04-03",
-      "run_id": "62ae221e-3c5",
-      "nb_annonces_total": 1410,
-      "nb_nouvelles": 407,
+      "run_id": "8df67ab1-7ed",
+      "nb_annonces_total": 1389,
+      "nb_nouvelles": 404,
       "nb_disparues": 0,
       "nb_prix_baisse": 0,
       "nb_suspects": 0,
-      "prix_moyen_marche": 27181,
+      "prix_moyen_marche": 27153,
       "meilleur_deal_id": "25a8d45a22c07bee"
     },
     {
@@ -89,5 +89,5 @@ const STATS = {
       "meilleur_deal_id": "test_abc123"
     }
   ],
-  "date_calcul": "2026-04-03T09:18:56.370028"
+  "date_calcul": "2026-04-03T09:39:16.361935"
 };
