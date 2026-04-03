@@ -1,192 +1,993 @@
-// Généré automatiquement le 2026-04-03 08:52
+// Généré automatiquement le 2026-04-03 09:02
 const MARKET = {
-  "date_calcul": "2026-04-03T08:52:31.223829",
-  "nb_annonces": 1438,
-  "prix_moyen": 37312,
-  "km_moyen": 49592,
+  "date_calcul": "2026-04-03T09:02:50.781754",
+  "nb_annonces": 1326,
+  "prix_moyen": 27169,
+  "km_moyen": 47908,
   "prix_tranches": {
-    "48k–50k €": 27,
-    "14k–16k €": 60,
-    "32k–34k €": 56,
-    "30k–32k €": 54,
-    "52k–54k €": 9,
-    "68k–70k €": 12,
-    "20k–22k €": 88,
-    "12k–14k €": 40,
-    "10k–12k €": 31,
-    "24k–26k €": 80,
-    "196k–198k €": 1,
-    "16k–18k €": 74,
-    "28k–30k €": 86,
-    "18k–20k €": 108,
-    "6k–8k €": 17,
-    "34k–36k €": 84,
-    "22k–24k €": 134,
-    "46k–48k €": 20,
-    "62k–64k €": 5,
-    "50k–52k €": 15,
-    "4k–6k €": 9,
-    "8k–10k €": 25,
-    "36k–38k €": 48,
-    "26k–28k €": 73,
-    "428k–430k €": 1,
-    "66k–68k €": 9,
-    "116k–118k €": 2,
-    "54k–56k €": 10,
-    "80k–82k €": 2,
-    "86k–88k €": 3,
-    "56k–58k €": 6,
-    "224k–226k €": 1,
-    "58k–60k €": 13,
-    "60k–62k €": 6,
-    "64k–66k €": 8,
-    "104k–106k €": 2,
-    "38k–40k €": 52,
-    "2k–4k €": 8,
-    "44k–46k €": 20,
-    "42k–44k €": 27,
-    "40k–42k €": 23,
-    "94k–96k €": 3,
-    "78k–80k €": 7,
-    "88k–90k €": 5,
-    "90k–92k €": 4,
-    "258k–260k €": 3,
-    "178k–180k €": 3,
-    "98k–100k €": 6,
-    "84k–86k €": 4,
-    "72k–74k €": 2,
-    "0k–2k €": 4,
-    "156k–158k €": 2,
-    "238k–240k €": 2,
-    "92k–94k €": 1,
-    "70k–72k €": 3,
-    "128k–130k €": 1,
-    "76k–78k €": 4,
-    "106k–108k €": 1,
-    "340k–342k €": 1,
-    "112k–114k €": 1,
-    "278k–280k €": 1,
-    "248k–250k €": 1,
-    "118k–120k €": 4,
-    "274k–276k €": 1,
-    "296k–298k €": 1,
-    "346k–348k €": 1,
-    "360k–362k €": 1,
-    "268k–270k €": 1,
-    "318k–320k €": 1,
-    "394k–396k €": 1,
-    "282k–284k €": 1,
-    "380k–382k €": 1,
-    "288k–290k €": 1,
-    "298k–300k €": 1,
-    "300k–302k €": 1,
-    "412k–414k €": 1,
-    "158k–160k €": 1,
-    "82k–84k €": 2,
-    "154k–156k €": 1,
-    "164k–166k €": 1,
-    "218k–220k €": 1,
-    "114k–116k €": 1,
-    "378k–380k €": 1,
-    "124k–126k €": 1,
-    "168k–170k €": 1,
-    "212k–214k €": 1,
-    "96k–98k €": 1,
-    "142k–144k €": 1
+    "10k–12k €": 38,
+    "14k–16k €": 73,
+    "24k–26k €": 101,
+    "32k–34k €": 65,
+    "26k–28k €": 86,
+    "16k–18k €": 84,
+    "18k–20k €": 115,
+    "12k–14k €": 49,
+    "22k–24k €": 142,
+    "28k–30k €": 99,
+    "20k–22k €": 95,
+    "34k–36k €": 87,
+    "38k–40k €": 57,
+    "30k–32k €": 53,
+    "42k–44k €": 32,
+    "36k–38k €": 54,
+    "46k–48k €": 23,
+    "48k–50k €": 28,
+    "40k–42k €": 22,
+    "44k–46k €": 23
   },
   "km_tranches": {
-    "120–140k km": 46,
-    "40–60k km": 186,
-    "20–40k km": 364,
-    "140–160k km": 20,
-    "100–120k km": 64,
-    "60–80k km": 168,
-    "180–200k km": 7,
-    "0–20k km": 425,
-    "80–100k km": 105,
-    "160–180k km": 14,
+    "20–40k km": 378,
+    "100–120k km": 60,
+    "120–140k km": 37,
+    "0–20k km": 372,
+    "160–180k km": 13,
+    "220–240k km": 3,
+    "140–160k km": 16,
+    "80–100k km": 111,
+    "40–60k km": 167,
+    "60–80k km": 147,
+    "180–200k km": 8,
     "200–220k km": 8,
-    "240–260k km": 8,
-    "220–240k km": 5,
-    "280–300k km": 2,
-    "260–280k km": 1,
-    "300–320k km": 1
+    "240–260k km": 2
   },
   "prix_par_marque": {
-    "Dacia": 14673,
-    "Honda": 15965,
-    "Fiat": 17350,
-    "Renault": 17552,
-    "Peugeot": 18175,
-    "Citroen": 18869,
-    "Nissan": 19116,
-    "Seat": 19436,
-    "Opel": 20595,
-    "Mitsubishi": 21028,
-    "Mazda": 21182,
-    "Suzuki": 21283
+    "Dacia": 15900,
+    "Honda": 18320,
+    "Fiat": 19290,
+    "Seat": 19630,
+    "Renault": 19682,
+    "Opel": 20472,
+    "Peugeot": 20722,
+    "Mitsubishi": 20995,
+    "Nissan": 21424,
+    "Suzuki": 21565,
+    "Citroen": 21688,
+    "Toyota": 22299
   },
   "repartition_carburant": {
-    "Diesel": 340,
-    "Essence": 802,
-    "Autres": 14,
-    "GPL": 5,
-    "Electrique": 134,
-    "Hybride": 136,
-    "Inconnu": 7
+    "Essence": 731,
+    "Diesel": 322,
+    "Autres": 13,
+    "Electrique": 126,
+    "Wasserstoff": 1,
+    "Inconnu": 8,
+    "GPL": 3,
+    "Hybride": 121,
+    "GNV": 1
   },
   "repartition_boite": {
-    "Automatique": 1076,
-    "Manuelle": 213,
-    "Inconnu": 149
+    "Manuelle": 202,
+    "Automatique": 998,
+    "Inconnu": 126
   },
   "repartition_annees": {
-    "2001": 1,
-    "2003": 1,
-    "2004": 4,
-    "2006": 4,
-    "2007": 4,
-    "2008": 7,
-    "2009": 4,
+    "2006": 1,
+    "2008": 2,
     "2010": 6,
-    "2011": 7,
-    "2012": 11,
-    "2013": 8,
-    "2014": 12,
-    "2015": 25,
-    "2016": 27,
+    "2011": 3,
+    "2012": 2,
+    "2013": 5,
+    "2014": 4,
+    "2015": 20,
+    "2016": 24,
     "2017": 30,
-    "2018": 36,
-    "2019": 70,
-    "2020": 90,
-    "2021": 122,
-    "2022": 153,
-    "2023": 266,
-    "2024": 252,
-    "2025": 234,
-    "2026": 56,
-    "2027": 1
+    "2018": 39,
+    "2019": 65,
+    "2020": 86,
+    "2021": 114,
+    "2022": 154,
+    "2023": 249,
+    "2024": 257,
+    "2025": 211,
+    "2026": 49
   },
   "repartition_sites": {
-    "autoscout24": 1010,
-    "luxauto": 100,
-    "autopolis": 328
+    "autoscout24": 954,
+    "luxauto": 61,
+    "autopolis": 311
   },
   "repartition_pays": {
-    "France": 197,
-    "Allemagne": 496,
-    "Luxembourg": 745
+    "France": 203,
+    "Allemagne": 468,
+    "Luxembourg": 655
   },
   "repartition_vendeur": {
-    "pro": 1438
+    "pro": 1325,
+    "particulier": 1
   },
   "prix_par_pays": {
-    "France": 27382,
-    "Allemagne": 30989,
-    "Luxembourg": 44147
+    "France": 21672,
+    "Allemagne": 26967,
+    "Luxembourg": 29017
   },
-  "nb_avec_ct": 24,
+  "nb_avec_ct": 26,
   "scatter_prix_km": [
+    {
+      "x": 22241,
+      "y": 11899,
+      "label": "Citroen C3 2023"
+    },
+    {
+      "x": 100439,
+      "y": 14900,
+      "label": "Peugeot 5008 2020"
+    },
+    {
+      "x": 20891,
+      "y": 25950,
+      "label": "BMW 118 2023"
+    },
+    {
+      "x": 123000,
+      "y": 15990,
+      "label": "Mercedes A 220 2017"
+    },
+    {
+      "x": 16079,
+      "y": 32999,
+      "label": "BMW 225 2023"
+    },
+    {
+      "x": 10,
+      "y": 25998,
+      "label": "Jeep Avenger 2026"
+    },
+    {
+      "x": 10,
+      "y": 27215,
+      "label": "Jeep Avenger 2026"
+    },
+    {
+      "x": 165700,
+      "y": 16490,
+      "label": "Mercedes A 180 2021"
+    },
+    {
+      "x": 9034,
+      "y": 15499,
+      "label": "Peugeot 208 2024"
+    },
+    {
+      "x": 9110,
+      "y": 19990,
+      "label": "Renault Clio 2023"
+    },
+    {
+      "x": 226900,
+      "y": 12990,
+      "label": "Audi A7 2010"
+    },
+    {
+      "x": 34609,
+      "y": 17480,
+      "label": "Jeep Avenger 2024"
+    },
+    {
+      "x": 10146,
+      "y": 17999,
+      "label": "Renault Clio 2023"
+    },
+    {
+      "x": 10,
+      "y": 15980,
+      "label": "Peugeot 208 2023"
+    },
+    {
+      "x": 29472,
+      "y": 13499,
+      "label": "Renault Clio 2023"
+    },
+    {
+      "x": 24665,
+      "y": 15499,
+      "label": "Renault Clio 2022"
+    },
+    {
+      "x": 107500,
+      "y": 23990,
+      "label": "Mercedes Cla 220 2018"
+    },
+    {
+      "x": 159000,
+      "y": 25490,
+      "label": "Audi Q5 2019"
+    },
+    {
+      "x": 84692,
+      "y": 29999,
+      "label": "BMW 120 2022"
+    },
+    {
+      "x": 59200,
+      "y": 17480,
+      "label": "Citroen C4 2021"
+    },
+    {
+      "x": 10,
+      "y": 20480,
+      "label": "Renault Clio 2026"
+    },
+    {
+      "x": 55950,
+      "y": 20999,
+      "label": "Peugeot 2008 2022"
+    },
+    {
+      "x": 37070,
+      "y": 35999,
+      "label": "Mercedes C 220 2021"
+    },
+    {
+      "x": 163700,
+      "y": 12990,
+      "label": "BMW 120 2015"
+    },
+    {
+      "x": 70550,
+      "y": 27990,
+      "label": "Mercedes Cla 250 2020"
+    },
+    {
+      "x": 122000,
+      "y": 15990,
+      "label": "Land Rover Range Rover Evoque 2015"
+    },
+    {
+      "x": 48861,
+      "y": 16299,
+      "label": "Dacia Duster 2021"
+    },
+    {
+      "x": 114000,
+      "y": 25990,
+      "label": "BMW 135 2015"
+    },
+    {
+      "x": 10,
+      "y": 27999,
+      "label": "Mitsubishi Asx 2024"
+    },
+    {
+      "x": 28400,
+      "y": 14999,
+      "label": "Renault Clio 2023"
+    },
+    {
+      "x": 122000,
+      "y": 19490,
+      "label": "Mercedes A 180 2019"
+    },
+    {
+      "x": 182000,
+      "y": 10990,
+      "label": "Audi A4 2015"
+    },
+    {
+      "x": 5000,
+      "y": 38000,
+      "label": "Citroen C4 2025"
+    },
+    {
+      "x": 118000,
+      "y": 33990,
+      "label": "Land Rover Range Rover Sport 2015"
+    },
+    {
+      "x": 110000,
+      "y": 18980,
+      "label": "Mercedes Cla 180 2016"
+    },
+    {
+      "x": 101900,
+      "y": 15980,
+      "label": "Ford Kuga 2019"
+    },
+    {
+      "x": 72819,
+      "y": 13499,
+      "label": "Peugeot 208 2022"
+    },
+    {
+      "x": 75508,
+      "y": 12999,
+      "label": "Peugeot 3008 2017"
+    },
+    {
+      "x": 180000,
+      "y": 10490,
+      "label": "Peugeot 208 2020"
+    },
+    {
+      "x": 20179,
+      "y": 14590,
+      "label": "Toyota Aygo X 2023"
+    },
+    {
+      "x": 80750,
+      "y": 24900,
+      "label": "Mercedes C 180 2019"
+    },
+    {
+      "x": 62900,
+      "y": 22480,
+      "label": "Mercedes A 180 2022"
+    },
+    {
+      "x": 81990,
+      "y": 33900,
+      "label": "Land Rover Range Rover Evoque 2020"
+    },
+    {
+      "x": 46010,
+      "y": 28499,
+      "label": "Audi A4 2021"
+    },
+    {
+      "x": 89869,
+      "y": 23999,
+      "label": "Mercedes A 180 2022"
+    },
+    {
+      "x": 187000,
+      "y": 19990,
+      "label": "BMW X6 2011"
+    },
+    {
+      "x": 90338,
+      "y": 24499,
+      "label": "Mercedes Cla 180 2020"
+    },
+    {
+      "x": 33715,
+      "y": 25980,
+      "label": "Peugeot 3008 2018"
+    },
+    {
+      "x": 10,
+      "y": 31890,
+      "label": "Peugeot 308 2026"
+    },
+    {
+      "x": 105490,
+      "y": 18390,
+      "label": "Audi Q2 2017"
+    },
+    {
+      "x": 189000,
+      "y": 10490,
+      "label": "Ford Kuga 2019"
+    },
+    {
+      "x": 171000,
+      "y": 14490,
+      "label": "Alfa Romeo Giulia 2016"
+    },
+    {
+      "x": 15612,
+      "y": 32299,
+      "label": "Nissan Qashqai 2024"
+    },
+    {
+      "x": 82324,
+      "y": 21499,
+      "label": "Peugeot 308 2021"
+    },
+    {
+      "x": 84878,
+      "y": 15699,
+      "label": "Peugeot 2008 2021"
+    },
+    {
+      "x": 67393,
+      "y": 19990,
+      "label": "Mercedes C 200 2017"
+    },
+    {
+      "x": 77735,
+      "y": 16290,
+      "label": "Nissan Qashqai 2019"
+    },
+    {
+      "x": 44484,
+      "y": 22299,
+      "label": "Nissan Qashqai 2022"
+    },
+    {
+      "x": 173500,
+      "y": 13890,
+      "label": "Alfa Romeo Giulia 2016"
+    },
+    {
+      "x": 99800,
+      "y": 42990,
+      "label": "Mercedes Cls 2019"
+    },
+    {
+      "x": 64567,
+      "y": 34990,
+      "label": "Toyota Rav 4 2022"
+    },
+    {
+      "x": 19296,
+      "y": 29499,
+      "label": "Peugeot 3008 2025"
+    },
+    {
+      "x": 128292,
+      "y": 24990,
+      "label": "Toyota Rav 4 2022"
+    },
+    {
+      "x": 38500,
+      "y": 14900,
+      "label": "Ds Automobiles Ds 3 Crossback 2019"
+    },
+    {
+      "x": 25542,
+      "y": 25999,
+      "label": "Opel Grandland 2024"
+    },
+    {
+      "x": 130000,
+      "y": 36990,
+      "label": "Audi Rs3 2019"
+    },
+    {
+      "x": 89767,
+      "y": 10190,
+      "label": "Nissan Qashqai 2017"
+    },
+    {
+      "x": 93013,
+      "y": 14499,
+      "label": "Dacia Duster 2021"
+    },
+    {
+      "x": 81000,
+      "y": 17200,
+      "label": "Toyota C-Hr 2019"
+    },
+    {
+      "x": 57777,
+      "y": 17500,
+      "label": "Peugeot 208 2023"
+    },
+    {
+      "x": 100000,
+      "y": 11499,
+      "label": "Renault Captur 2018"
+    },
+    {
+      "x": 90094,
+      "y": 14699,
+      "label": "Dacia Duster 2021"
+    },
+    {
+      "x": 39000,
+      "y": 23980,
+      "label": "Jeep Compass 2024"
+    },
+    {
+      "x": 168861,
+      "y": 14490,
+      "label": "Seat Ateca 2018"
+    },
+    {
+      "x": 143000,
+      "y": 16990,
+      "label": "Volkswagen Touran 2018"
+    },
+    {
+      "x": 108113,
+      "y": 14650,
+      "label": "Volkswagen Tiguan 2016"
+    },
+    {
+      "x": 29841,
+      "y": 29980,
+      "label": "Audi A4 2023"
+    },
+    {
+      "x": 14200,
+      "y": 13990,
+      "label": "Fiat 500 2023"
+    },
+    {
+      "x": 50100,
+      "y": 10950,
+      "label": "Opel Adam 2018"
+    },
+    {
+      "x": 1923,
+      "y": 37203,
+      "label": "Mini Aceman 2025"
+    },
+    {
+      "x": 87607,
+      "y": 15990,
+      "label": "Volkswagen Golf 2021"
+    },
+    {
+      "x": 81690,
+      "y": 33450,
+      "label": "Volkswagen Passat Variant 2023"
+    },
+    {
+      "x": 211000,
+      "y": 34950,
+      "label": "Mercedes S 350 2018"
+    },
+    {
+      "x": 46990,
+      "y": 27490,
+      "label": "Peugeot 5008 2025"
+    },
+    {
+      "x": 59642,
+      "y": 33990,
+      "label": "Mercedes C 180 2023"
+    },
+    {
+      "x": 8900,
+      "y": 26490,
+      "label": "Ford Puma Gen-E 2026"
+    },
+    {
+      "x": 20109,
+      "y": 16990,
+      "label": "Hyundai Ioniq 2022"
+    },
+    {
+      "x": 19681,
+      "y": 18990,
+      "label": "Renault Zoe 2023"
+    },
+    {
+      "x": 107580,
+      "y": 14780,
+      "label": "Audi A1 2017"
+    },
+    {
+      "x": 25560,
+      "y": 24270,
+      "label": "Citroen C5 Aircross 2024"
+    },
+    {
+      "x": 18000,
+      "y": 34280,
+      "label": "Volkswagen Caddy 2024"
+    },
+    {
+      "x": 20900,
+      "y": 17740,
+      "label": "Citroen C3 Aircross 2023"
+    },
+    {
+      "x": 107717,
+      "y": 19950,
+      "label": "Mercedes Cla 180 2022"
+    },
+    {
+      "x": 67976,
+      "y": 17979,
+      "label": "Renault Kadjar 2022"
+    },
+    {
+      "x": 66270,
+      "y": 23500,
+      "label": "Volkswagen T-Roc 2022"
+    },
+    {
+      "x": 215000,
+      "y": 43990,
+      "label": "Porsche Taycan 2020"
+    },
+    {
+      "x": 17500,
+      "y": 32970,
+      "label": "Toyota Corolla Cross 2025"
+    },
+    {
+      "x": 87865,
+      "y": 25990,
+      "label": "Volkswagen Caddy 2022"
+    },
+    {
+      "x": 32820,
+      "y": 46990,
+      "label": "Volkswagen T7 Multivan 2025"
+    },
+    {
+      "x": 19746,
+      "y": 36490,
+      "label": "Genesis G80 2022"
+    },
+    {
+      "x": 30650,
+      "y": 29950,
+      "label": "Audi A3 2024"
+    },
+    {
+      "x": 15,
+      "y": 24490,
+      "label": "MG Zs 2026"
+    },
+    {
+      "x": 73028,
+      "y": 21740,
+      "label": "Volkswagen Golf 2023"
+    },
+    {
+      "x": 72600,
+      "y": 29945,
+      "label": "BMW X3 2018"
+    },
+    {
+      "x": 15,
+      "y": 37890,
+      "label": "Volkswagen T-Roc 2026"
+    },
+    {
+      "x": 61800,
+      "y": 23980,
+      "label": "Volkswagen Passat Variant 2020"
+    },
+    {
+      "x": 59874,
+      "y": 47990,
+      "label": "Mercedes C 63 Amg 2010"
+    },
+    {
+      "x": 58261,
+      "y": 15900,
+      "label": "Ford Puma 2021"
+    },
+    {
+      "x": 39000,
+      "y": 13990,
+      "label": "Volkswagen Polo 2021"
+    },
+    {
+      "x": 118514,
+      "y": 13990,
+      "label": "Ford Kuga 2018"
+    },
+    {
+      "x": 86980,
+      "y": 24700,
+      "label": "Volvo V60 2021"
+    },
+    {
+      "x": 66900,
+      "y": 14645,
+      "label": "Seat Arona 2022"
+    },
+    {
+      "x": 97468,
+      "y": 29950,
+      "label": "Volkswagen Tiguan 2022"
+    },
+    {
+      "x": 66500,
+      "y": 15400,
+      "label": "Volkswagen Golf 2019"
+    },
+    {
+      "x": 70000,
+      "y": 28990,
+      "label": "Audi A6 2021"
+    },
+    {
+      "x": 67990,
+      "y": 21980,
+      "label": "Audi Q3 2020"
+    },
+    {
+      "x": 134000,
+      "y": 14990,
+      "label": "Ford Mondeo 2022"
+    },
+    {
+      "x": 20862,
+      "y": 19490,
+      "label": "Toyota Mirai 2022"
+    },
+    {
+      "x": 62805,
+      "y": 23990,
+      "label": "Lexus Nx 200T 2017"
+    },
+    {
+      "x": 32970,
+      "y": 18970,
+      "label": "Seat Arona 2022"
+    },
+    {
+      "x": 96463,
+      "y": 19890,
+      "label": "Volkswagen Passat Variant 2020"
+    },
+    {
+      "x": 21938,
+      "y": 24580,
+      "label": "Volkswagen Taigo 2025"
+    },
+    {
+      "x": 35799,
+      "y": 42480,
+      "label": "Skoda Kodiaq 2024"
+    },
+    {
+      "x": 51500,
+      "y": 24940,
+      "label": "Cupra Formentor 2024"
+    },
+    {
+      "x": 27743,
+      "y": 21550,
+      "label": "Volkswagen Golf 2023"
+    },
+    {
+      "x": 44070,
+      "y": 30730,
+      "label": "Volkswagen Golf Variant 2025"
+    },
+    {
+      "x": 3535,
+      "y": 20950,
+      "label": "Opel Corsa 2025"
+    },
+    {
+      "x": 20251,
+      "y": 29880,
+      "label": "Kia Sportage 2025"
+    },
+    {
+      "x": 26650,
+      "y": 34990,
+      "label": "Hyundai Tucson 2022"
+    },
+    {
+      "x": 22650,
+      "y": 42990,
+      "label": "Hyundai Tucson 2024"
+    },
+    {
+      "x": 58000,
+      "y": 32900,
+      "label": "Volvo Xc60 2021"
+    },
+    {
+      "x": 17446,
+      "y": 18900,
+      "label": "Citroen C5 Aircross 2024"
+    },
+    {
+      "x": 3000,
+      "y": 49680,
+      "label": "Cupra Leon 2026"
+    },
+    {
+      "x": 5000,
+      "y": 33889,
+      "label": "Cupra Leon 2025"
+    },
+    {
+      "x": 91000,
+      "y": 27000,
+      "label": "Mini John Cooper Works Countryman 2019"
+    },
+    {
+      "x": 8500,
+      "y": 16990,
+      "label": "Kia Picanto 2025"
+    },
+    {
+      "x": 1120,
+      "y": 13950,
+      "label": "Dacia Spring 2024"
+    },
+    {
+      "x": 59464,
+      "y": 25990,
+      "label": "BMW X2 2021"
+    },
+    {
+      "x": 20907,
+      "y": 26550,
+      "label": "Nissan Qashqai 2025"
+    },
+    {
+      "x": 54972,
+      "y": 25990,
+      "label": "BMW X2 2021"
+    },
+    {
+      "x": 19890,
+      "y": 41950,
+      "label": "BMW 235 2023"
+    },
+    {
+      "x": 34065,
+      "y": 26950,
+      "label": "Volvo Xc40 2024"
+    },
+    {
+      "x": 20809,
+      "y": 38990,
+      "label": "BMW 135 2023"
+    },
+    {
+      "x": 77556,
+      "y": 36950,
+      "label": "BMW X3 2021"
+    },
+    {
+      "x": 97900,
+      "y": 40900,
+      "label": "Jeep Wrangler 2021"
+    },
+    {
+      "x": 11663,
+      "y": 28990,
+      "label": "Cupra Leon 2025"
+    },
+    {
+      "x": 13019,
+      "y": 28690,
+      "label": "Cupra Leon 2025"
+    },
+    {
+      "x": 28268,
+      "y": 41950,
+      "label": "Volvo Xc60 2024"
+    },
+    {
+      "x": 16158,
+      "y": 17950,
+      "label": "Nissan Juke 2024"
+    },
+    {
+      "x": 32907,
+      "y": 39990,
+      "label": "Volvo Xc60 2024"
+    },
+    {
+      "x": 58900,
+      "y": 16900,
+      "label": "Skoda Octavia 2018"
+    },
+    {
+      "x": 31468,
+      "y": 29950,
+      "label": "Volvo S60 2024"
+    },
+    {
+      "x": 28506,
+      "y": 26990,
+      "label": "Volvo S60 2024"
+    },
+    {
+      "x": 28959,
+      "y": 26990,
+      "label": "Volvo S60 2024"
+    },
+    {
+      "x": 31320,
+      "y": 26990,
+      "label": "Volvo S60 2024"
+    },
+    {
+      "x": 66547,
+      "y": 25490,
+      "label": "BMW X2 2021"
+    },
+    {
+      "x": 24413,
+      "y": 29950,
+      "label": "Ds Automobiles Ds 7 2024"
+    },
+    {
+      "x": 24600,
+      "y": 19990,
+      "label": "Ford Puma 2023"
+    },
+    {
+      "x": 17328,
+      "y": 22590,
+      "label": "Seat Leon 2024"
+    },
+    {
+      "x": 18807,
+      "y": 24090,
+      "label": "Nissan Qashqai 2025"
+    },
+    {
+      "x": 23871,
+      "y": 26990,
+      "label": "Volvo S60 2024"
+    },
+    {
+      "x": 31146,
+      "y": 39990,
+      "label": "Volvo Xc60 2024"
+    },
+    {
+      "x": 31438,
+      "y": 18490,
+      "label": "Fiat Tipo 2024"
+    },
+    {
+      "x": 21756,
+      "y": 24090,
+      "label": "Nissan Qashqai 2025"
+    },
+    {
+      "x": 47000,
+      "y": 43900,
+      "label": "Mercedes Glc 200 2020"
+    },
+    {
+      "x": 98000,
+      "y": 22900,
+      "label": "Volkswagen Beetle 2014"
+    },
+    {
+      "x": 34849,
+      "y": 19490,
+      "label": "Citroen C4 X 2024"
+    },
+    {
+      "x": 22207,
+      "y": 25290,
+      "label": "Audi Q2 2024"
+    },
+    {
+      "x": 56900,
+      "y": 42900,
+      "label": "Mercedes Gla 35 Amg 2021"
+    },
+    {
+      "x": 137900,
+      "y": 48900,
+      "label": "BMW X5 2021"
+    },
+    {
+      "x": 16900,
+      "y": 43900,
+      "label": "BMW 320 2025"
+    },
+    {
+      "x": 64396,
+      "y": 25490,
+      "label": "BMW X2 2021"
+    },
+    {
+      "x": 25340,
+      "y": 29990,
+      "label": "Audi Q2 2025"
+    },
+    {
+      "x": 14992,
+      "y": 29950,
+      "label": "Cupra Leon 2025"
+    },
+    {
+      "x": 19687,
+      "y": 29950,
+      "label": "Ds Automobiles Ds 7 2024"
+    },
     {
       "x": 135000,
       "y": 49990,
@@ -213,21 +1014,6 @@ const MARKET = {
       "label": "Audi Q2 2017"
     },
     {
-      "x": 43526,
-      "y": 53200,
-      "label": "Audi Q5 2023"
-    },
-    {
-      "x": 118000,
-      "y": 52990,
-      "label": "Audi Q8 2019"
-    },
-    {
-      "x": 48000,
-      "y": 68990,
-      "label": "Maserati Levante 2019"
-    },
-    {
       "x": 31329,
       "y": 20299,
       "label": "Dacia Duster 2023"
@@ -246,11 +1032,6 @@ const MARKET = {
       "x": 181000,
       "y": 25990,
       "label": "Volvo Xc90 2016"
-    },
-    {
-      "x": 10,
-      "y": 196900,
-      "label": "Land Rover Defender 2026"
     },
     {
       "x": 106247,
@@ -278,11 +1059,6 @@ const MARKET = {
       "label": "Alfa Romeo Stelvio 2024"
     },
     {
-      "x": 172000,
-      "y": 6990,
-      "label": "Mini Cooper Countryman 2014"
-    },
-    {
       "x": 66153,
       "y": 21990,
       "label": "Jeep Compass 2023"
@@ -296,11 +1072,6 @@ const MARKET = {
       "x": 6000,
       "y": 35290,
       "label": "Citroen C5 Aircross 2025"
-    },
-    {
-      "x": 201000,
-      "y": 7999,
-      "label": "Mini Cooper 2015"
     },
     {
       "x": 31442,
@@ -328,16 +1099,6 @@ const MARKET = {
       "label": "Ds Automobiles Ds 3 2022"
     },
     {
-      "x": 11950,
-      "y": 63990,
-      "label": "BMW 440 2022"
-    },
-    {
-      "x": 73500,
-      "y": 69900,
-      "label": "Land Rover Defender 2022"
-    },
-    {
       "x": 15700,
       "y": 19450,
       "label": "Dacia Jogger 2025"
@@ -348,887 +1109,40 @@ const MARKET = {
       "label": "Dacia Duster 2020"
     },
     {
-      "x": 109700,
-      "y": 51800,
-      "label": "Land Rover Range Rover 2019"
-    },
-    {
       "x": 44000,
       "y": 10490,
       "label": "Renault Clio 2022"
-    },
-    {
-      "x": 142081,
-      "y": 14990,
-      "label": "Renault Koleos 2018"
-    },
-    {
-      "x": 139920,
-      "y": 23990,
-      "label": "Cupra Ateca 2019"
-    },
-    {
-      "x": 131700,
-      "y": 10990,
-      "label": "Ford Puma 2021"
-    },
-    {
-      "x": 10000,
-      "y": 28990,
-      "label": "Toyota Yaris Cross 2026"
-    },
-    {
-      "x": 257000,
-      "y": 5490,
-      "label": "Renault Koleos 2011"
-    },
-    {
-      "x": 38500,
-      "y": 16900,
-      "label": "Fiat 500 2017"
-    },
-    {
-      "x": 10,
-      "y": 22637,
-      "label": "Citroen C4 2025"
-    },
-    {
-      "x": 76460,
-      "y": 20950,
-      "label": "Toyota C-Hr 2022"
-    },
-    {
-      "x": 26400,
-      "y": 25400,
-      "label": "Peugeot 408 2024"
-    },
-    {
-      "x": 225100,
-      "y": 8990,
-      "label": "Nissan Qashqai 2010"
-    },
-    {
-      "x": 114135,
-      "y": 11850,
-      "label": "Ford Ecosport 2020"
-    },
-    {
-      "x": 53000,
-      "y": 15987,
-      "label": "Seat Leon 2019"
-    },
-    {
-      "x": 62600,
-      "y": 17488,
-      "label": "Dacia Jogger 2023"
-    },
-    {
-      "x": 126297,
-      "y": 22690,
-      "label": "Volkswagen T-Roc 2022"
-    },
-    {
-      "x": 6000,
-      "y": 37490,
-      "label": "Opel Grandland 2025"
-    },
-    {
-      "x": 15235,
-      "y": 53980,
-      "label": "Audi Q5 2025"
-    },
-    {
-      "x": 10,
-      "y": 27706,
-      "label": "Citroen C3 Aircross 2026"
-    },
-    {
-      "x": 44903,
-      "y": 22499,
-      "label": "Toyota Yaris Cross 2023"
-    },
-    {
-      "x": 10,
-      "y": 29426,
-      "label": "Toyota Yaris Cross 2026"
-    },
-    {
-      "x": 23105,
-      "y": 24299,
-      "label": "Toyota C-Hr 2023"
-    },
-    {
-      "x": 100,
-      "y": 26990,
-      "label": "Suzuki S-Cross 2026"
-    },
-    {
-      "x": 1000,
-      "y": 24599,
-      "label": "Peugeot 208 2025"
-    },
-    {
-      "x": 16027,
-      "y": 22999,
-      "label": "Peugeot 2008 2025"
-    },
-    {
-      "x": 48720,
-      "y": 29880,
-      "label": "Volkswagen T-Roc 2022"
-    },
-    {
-      "x": 115100,
-      "y": 15990,
-      "label": "Mini Cooper Countryman 2015"
-    },
-    {
-      "x": 22446,
-      "y": 20999,
-      "label": "Peugeot 2008 2024"
-    },
-    {
-      "x": 16108,
-      "y": 15499,
-      "label": "Peugeot 208 2024"
-    },
-    {
-      "x": 33490,
-      "y": 16590,
-      "label": "Volkswagen Taigo 2024"
-    },
-    {
-      "x": 61876,
-      "y": 18799,
-      "label": "Dacia Duster 2022"
-    },
-    {
-      "x": 55926,
-      "y": 15699,
-      "label": "Renault Clio 2024"
-    },
-    {
-      "x": 63174,
-      "y": 13490,
-      "label": "Peugeot 208 2020"
-    },
-    {
-      "x": 71000,
-      "y": 13999,
-      "label": "Ford Puma 2021"
-    },
-    {
-      "x": 11574,
-      "y": 53440,
-      "label": "Mercedes E 220 2025"
-    },
-    {
-      "x": 139908,
-      "y": 30800,
-      "label": "Mercedes Glc 300 2021"
-    },
-    {
-      "x": 27985,
-      "y": 46840,
-      "label": "BMW 520 2025"
-    },
-    {
-      "x": 14600,
-      "y": 14980,
-      "label": "Toyota Yaris 2023"
-    },
-    {
-      "x": 23477,
-      "y": 12870,
-      "label": "Dacia Spring 2023"
-    },
-    {
-      "x": 64590,
-      "y": 26980,
-      "label": "Audi Q4 E-Tron 2022"
-    },
-    {
-      "x": 51003,
-      "y": 35999,
-      "label": "BMW X3 2022"
-    },
-    {
-      "x": 8311,
-      "y": 10890,
-      "label": "Dacia Spring 2023"
-    },
-    {
-      "x": 50,
-      "y": 30988,
-      "label": "Toyota C-Hr 2025"
-    },
-    {
-      "x": 13221,
-      "y": 428900,
-      "label": "Lamborghini Aventador 2015"
-    },
-    {
-      "x": 69999,
-      "y": 66490,
-      "label": "Mercedes Amg Gt 2020"
-    },
-    {
-      "x": 36182,
-      "y": 29450,
-      "label": "Volvo Xc40 2021"
-    },
-    {
-      "x": 196200,
-      "y": 6950,
-      "label": "Mercedes Clk 280 2006"
-    },
-    {
-      "x": 56786,
-      "y": 116999,
-      "label": "Aston Martin Dbx 2021"
-    },
-    {
-      "x": 108485,
-      "y": 15999,
-      "label": "Opel Zafira Tourer 2019"
-    },
-    {
-      "x": 106450,
-      "y": 20749,
-      "label": "Skoda Octavia 2022"
-    },
-    {
-      "x": 46556,
-      "y": 15999,
-      "label": "Volkswagen Id.3 2021"
-    },
-    {
-      "x": 58051,
-      "y": 54700,
-      "label": "Porsche Macan 2019"
-    },
-    {
-      "x": 14879,
-      "y": 26990,
-      "label": "Volkswagen T-Roc 2023"
-    },
-    {
-      "x": 9000,
-      "y": 37990,
-      "label": "Hyundai Tucson 2026"
-    },
-    {
-      "x": 118420,
-      "y": 6950,
-      "label": "Toyota Yaris 2012"
-    },
-    {
-      "x": 1862,
-      "y": 10950,
-      "label": "Sonstige Sonstige 2024"
-    },
-    {
-      "x": 59200,
-      "y": 37480,
-      "label": "Volkswagen Golf 2022"
-    },
-    {
-      "x": 26310,
-      "y": 37980,
-      "label": "Skoda Octavia 2025"
-    },
-    {
-      "x": 153515,
-      "y": 19985,
-      "label": "Volkswagen Touran 2020"
-    },
-    {
-      "x": 15861,
-      "y": 28428,
-      "label": "Skoda Elroq 2025"
-    },
-    {
-      "x": 129850,
-      "y": 24480,
-      "label": "Tesla Model 3 2021"
-    },
-    {
-      "x": 73185,
-      "y": 18990,
-      "label": "Volkswagen Polo 2022"
-    },
-    {
-      "x": 9971,
-      "y": 50880,
-      "label": "BMW 135 2025"
-    },
-    {
-      "x": 59800,
-      "y": 28850,
-      "label": "Mercedes Slc 200 2016"
-    },
-    {
-      "x": 8725,
-      "y": 55967,
-      "label": "Mercedes E 200 2025"
-    },
-    {
-      "x": 25000,
-      "y": 62900,
-      "label": "BMW 540 2024"
-    },
-    {
-      "x": 81164,
-      "y": 14490,
-      "label": "Hyundai Kona 2021"
-    },
-    {
-      "x": 6515,
-      "y": 16979,
-      "label": "Fiat 500E 2023"
-    },
-    {
-      "x": 12572,
-      "y": 17990,
-      "label": "Opel Corsa 2022"
-    },
-    {
-      "x": 22000,
-      "y": 21800,
-      "label": "Mazda Mx-30 2023"
-    },
-    {
-      "x": 20827,
-      "y": 16980,
-      "label": "Hyundai I20 2025"
-    },
-    {
-      "x": 25629,
-      "y": 80000,
-      "label": "Porsche Cayenne 2024"
-    },
-    {
-      "x": 7664,
-      "y": 86389,
-      "label": "BMW X5 2025"
-    },
-    {
-      "x": 108956,
-      "y": 21894,
-      "label": "BMW 220 2018"
-    },
-    {
-      "x": 8508,
-      "y": 48980,
-      "label": "Ford Ranger 2023"
-    },
-    {
-      "x": 35400,
-      "y": 37890,
-      "label": "Volkswagen Tiguan Allspace 2022"
-    },
-    {
-      "x": 20100,
-      "y": 23950,
-      "label": "Kia Xceed 2025"
-    },
-    {
-      "x": 83557,
-      "y": 34680,
-      "label": "BMW 530 2019"
-    },
-    {
-      "x": 94750,
-      "y": 19749,
-      "label": "Ford Mondeo 2022"
-    },
-    {
-      "x": 136200,
-      "y": 9490,
-      "label": "Skoda Fabia 2018"
-    },
-    {
-      "x": 149,
-      "y": 24690,
-      "label": "Opel Mokka 2026"
-    },
-    {
-      "x": 30000,
-      "y": 57495,
-      "label": "Volkswagen T6.1 California 2021"
-    },
-    {
-      "x": 45000,
-      "y": 9499,
-      "label": "Volkswagen Polo 2012"
-    },
-    {
-      "x": 89000,
-      "y": 31990,
-      "label": "Mercedes Cla 200 2022"
-    },
-    {
-      "x": 107553,
-      "y": 9699,
-      "label": "Opel Corsa 2020"
-    },
-    {
-      "x": 41869,
-      "y": 13739,
-      "label": "Renault Zoe 2021"
-    },
-    {
-      "x": 59999,
-      "y": 11940,
-      "label": "Skoda Fabia 2021"
-    },
-    {
-      "x": 50,
-      "y": 17990,
-      "label": "Opel Corsa 2026"
-    },
-    {
-      "x": 24500,
-      "y": 11400,
-      "label": "Opel Corsa 2022"
-    },
-    {
-      "x": 20993,
-      "y": 27990,
-      "label": "Peugeot Rifter 2022"
-    },
-    {
-      "x": 57900,
-      "y": 224900,
-      "label": "Lamborghini Urus 2019"
-    },
-    {
-      "x": 139279,
-      "y": 7990,
-      "label": "Mini Cooper 2012"
-    },
-    {
-      "x": 25000,
-      "y": 23500,
-      "label": "Peugeot 2008 2024"
-    },
-    {
-      "x": 22339,
-      "y": 58999,
-      "label": "BMW 420 2024"
-    },
-    {
-      "x": 57984,
-      "y": 24499,
-      "label": "Toyota C-Hr 2022"
-    },
-    {
-      "x": 7514,
-      "y": 61900,
-      "label": "Alpine A110 2021"
-    },
-    {
-      "x": 85073,
-      "y": 5990,
-      "label": "Peugeot 107 2014"
-    },
-    {
-      "x": 10,
-      "y": 28650,
-      "label": "Toyota Yaris Cross 2026"
-    },
-    {
-      "x": 25413,
-      "y": 23799,
-      "label": "Renault Symbioz 2025"
-    },
-    {
-      "x": 82344,
-      "y": 29900,
-      "label": "Audi A5 2023"
-    },
-    {
-      "x": 100000,
-      "y": 9590,
-      "label": "Peugeot 308 2018"
-    },
-    {
-      "x": 80551,
-      "y": 19990,
-      "label": "Toyota Proace City 2023"
-    },
-    {
-      "x": 12703,
-      "y": 23499,
-      "label": "Volkswagen T-Roc 2023"
-    },
-    {
-      "x": 87262,
-      "y": 16990,
-      "label": "Hyundai Tucson 2019"
-    },
-    {
-      "x": 162000,
-      "y": 13490,
-      "label": "Seat Ateca 2019"
-    },
-    {
-      "x": 131000,
-      "y": 13490,
-      "label": "Renault Koleos 2018"
-    },
-    {
-      "x": 87069,
-      "y": 64999,
-      "label": "Land Rover Range Rover 2021"
-    },
-    {
-      "x": 43182,
-      "y": 23499,
-      "label": "Toyota C-Hr 2023"
-    },
-    {
-      "x": 10,
-      "y": 21850,
-      "label": "Citroen C3 Aircross 2025"
-    },
-    {
-      "x": 30146,
-      "y": 10990,
-      "label": "Citroen C3 2021"
-    },
-    {
-      "x": 148086,
-      "y": 10990,
-      "label": "Ford Focus 2021"
-    },
-    {
-      "x": 2764,
-      "y": 29299,
-      "label": "Renault Captur 2025"
-    },
-    {
-      "x": 120252,
-      "y": 17900,
-      "label": "Volkswagen Polo 2019"
-    },
-    {
-      "x": 41000,
-      "y": 21490,
-      "label": "Peugeot 308 2022"
-    },
-    {
-      "x": 119500,
-      "y": 34970,
-      "label": "Ford Ranger 2020"
-    },
-    {
-      "x": 69900,
-      "y": 69900,
-      "label": "BMW X3 M 2022"
-    },
-    {
-      "x": 208350,
-      "y": 15800,
-      "label": "BMW X2 2018"
-    },
-    {
-      "x": 24897,
-      "y": 9999,
-      "label": "Dacia Sandero 2021"
-    },
-    {
-      "x": 66872,
-      "y": 34999,
-      "label": "Land Rover Range Rover Evoque 2022"
-    },
-    {
-      "x": 177952,
-      "y": 17990,
-      "label": "Mercedes Sl 350 2004"
-    },
-    {
-      "x": 74247,
-      "y": 17990,
-      "label": "Mazda Mx-5 2014"
-    },
-    {
-      "x": 123000,
-      "y": 27490,
-      "label": "Abarth 500 2009"
-    },
-    {
-      "x": 8203,
-      "y": 104900,
-      "label": "Alpine A110 2025"
-    },
-    {
-      "x": 56117,
-      "y": 13900,
-      "label": "Citroen C5 Aircross 2020"
-    },
-    {
-      "x": 10,
-      "y": 17999,
-      "label": "Citroen C3 2025"
-    },
-    {
-      "x": 21947,
-      "y": 13880,
-      "label": "Peugeot 208 2019"
-    },
-    {
-      "x": 35148,
-      "y": 26500,
-      "label": "Hyundai Tucson 2023"
-    },
-    {
-      "x": 29500,
-      "y": 26499,
-      "label": "Peugeot 3008 2024"
-    },
-    {
-      "x": 62822,
-      "y": 13799,
-      "label": "Dacia Duster 2021"
-    },
-    {
-      "x": 130253,
-      "y": 12990,
-      "label": "Seat Ibiza 2019"
-    },
-    {
-      "x": 10,
-      "y": 26106,
-      "label": "Volkswagen T-Cross 2026"
-    },
-    {
-      "x": 5000,
-      "y": 23599,
-      "label": "Peugeot 208 2025"
-    },
-    {
-      "x": 10,
-      "y": 19743,
-      "label": "Fiat Grande Panda 2025"
-    },
-    {
-      "x": 10,
-      "y": 25970,
-      "label": "Peugeot 2008 2026"
-    },
-    {
-      "x": 100000,
-      "y": 16990,
-      "label": "BMW 116 2020"
-    },
-    {
-      "x": 130000,
-      "y": 38480,
-      "label": "Porsche Cayenne 2016"
-    },
-    {
-      "x": 128900,
-      "y": 23980,
-      "label": "Jaguar E-Pace 2018"
-    },
-    {
-      "x": 171405,
-      "y": 4990,
-      "label": "Peugeot 308 2012"
-    },
-    {
-      "x": 153000,
-      "y": 8990,
-      "label": "Peugeot 308 2017"
-    },
-    {
-      "x": 10,
-      "y": 28950,
-      "label": "Peugeot 3008 2026"
-    },
-    {
-      "x": 27400,
-      "y": 53990,
-      "label": "BMW Z4 2020"
-    },
-    {
-      "x": 98101,
-      "y": 14990,
-      "label": "Toyota Yaris 2021"
-    },
-    {
-      "x": 66000,
-      "y": 19990,
-      "label": "Nissan Qashqai 2022"
-    },
-    {
-      "x": 35488,
-      "y": 18990,
-      "label": "Ford Fiesta 2022"
-    },
-    {
-      "x": 29981,
-      "y": 69999,
-      "label": "Porsche Cayenne 2023"
-    },
-    {
-      "x": 14700,
-      "y": 36980,
-      "label": "Volkswagen Id.3 2025"
-    },
-    {
-      "x": 21900,
-      "y": 23880,
-      "label": "Cupra Born 2024"
-    },
-    {
-      "x": 16215,
-      "y": 55950,
-      "label": "Audi Q5 2025"
-    },
-    {
-      "x": 18250,
-      "y": 31950,
-      "label": "BMW 330 2019"
-    },
-    {
-      "x": 20124,
-      "y": 29980,
-      "label": "Volkswagen T-Roc 2023"
-    },
-    {
-      "x": 120020,
-      "y": 15950,
-      "label": "Volkswagen Golf 2019"
-    },
-    {
-      "x": 22984,
-      "y": 28990,
-      "label": "Hyundai Tucson 2023"
-    },
-    {
-      "x": 54133,
-      "y": 67499,
-      "label": "BMW X6 2022"
-    },
-    {
-      "x": 33184,
-      "y": 9480,
-      "label": "Dacia Spring 2022"
-    },
-    {
-      "x": 88404,
-      "y": 3999,
-      "label": "Fiat 500 2014"
-    },
-    {
-      "x": 2157,
-      "y": 36608,
-      "label": "Mini Aceman 2025"
-    },
-    {
-      "x": 74000,
-      "y": 39950,
-      "label": "Ford Mustang 2020"
-    },
-    {
-      "x": 62595,
-      "y": 34994,
-      "label": "Mercedes C 400 2018"
-    },
-    {
-      "x": 21421,
-      "y": 45990,
-      "label": "Hyundai Staria 2025"
-    },
-    {
-      "x": 110000,
-      "y": 43990,
-      "label": "Mercedes Cls 400 2019"
-    },
-    {
-      "x": 54152,
-      "y": 19499,
-      "label": "Kia Xceed 2020"
-    },
-    {
-      "x": 67900,
-      "y": 16990,
-      "label": "Kia Niro 2020"
-    },
-    {
-      "x": 25094,
-      "y": 43798,
-      "label": "Mini Countryman Se All4 2025"
-    },
-    {
-      "x": 138000,
-      "y": 13999,
-      "label": "BMW 330 2010"
-    },
-    {
-      "x": 123546,
-      "y": 15999,
-      "label": "Mercedes Ml 300 2009"
-    },
-    {
-      "x": 29301,
-      "y": 14699,
-      "label": "Citroen C5 Aircross 2022"
-    },
-    {
-      "x": 9665,
-      "y": 12189,
-      "label": "Dacia Spring 2023"
-    },
-    {
-      "x": 51123,
-      "y": 30980,
-      "label": "Audi Q5 2020"
     }
   ],
   "depreciation": [
     {
-      "marque": "Volkswagen",
-      "modele": "T7 Multivan",
-      "nb_annonces": 6,
-      "annee_min": 2024,
-      "annee_max": 2026,
-      "prix_recent_median": 76990,
-      "prix_vieux_median": 51480,
-      "perte_pct_par_an": 16.6,
-      "perte_pct_par_10k_km": 0.0,
-      "perte_pct_total": 33.1
-    },
-    {
-      "marque": "Hyundai",
-      "modele": "Kona",
-      "nb_annonces": 12,
-      "annee_min": 2021,
-      "annee_max": 2025,
-      "prix_recent_median": 35990,
-      "prix_vieux_median": 14980,
-      "perte_pct_par_an": 14.6,
-      "perte_pct_par_10k_km": 4.8,
-      "perte_pct_total": 58.4
-    },
-    {
-      "marque": "Volkswagen",
-      "modele": "Id.3",
+      "marque": "Toyota",
+      "modele": "Aygo X",
       "nb_annonces": 5,
-      "annee_min": 2021,
+      "annee_min": 2022,
+      "annee_max": 2024,
+      "prix_recent_median": 17990,
+      "prix_vieux_median": 10790,
+      "perte_pct_par_an": 20.0,
+      "perte_pct_par_10k_km": 9.3,
+      "perte_pct_total": 40.0
+    },
+    {
+      "marque": "Citroen",
+      "modele": "C5 Aircross",
+      "nb_annonces": 5,
+      "annee_min": 2022,
       "annee_max": 2025,
-      "prix_recent_median": 36980,
-      "prix_vieux_median": 16830,
-      "perte_pct_par_an": 13.6,
-      "perte_pct_par_10k_km": 8.6,
-      "perte_pct_total": 54.5
+      "prix_recent_median": 35290,
+      "prix_vieux_median": 14699,
+      "perte_pct_par_an": 19.4,
+      "perte_pct_par_10k_km": 0.0,
+      "perte_pct_total": 58.3
     },
     {
       "marque": "Ford",
       "modele": "Puma",
-      "nb_annonces": 22,
+      "nb_annonces": 25,
       "annee_min": 2021,
       "annee_max": 2024,
       "prix_recent_median": 22990,
@@ -1240,7 +1154,7 @@ const MARKET = {
     {
       "marque": "Audi",
       "modele": "Q4 E-Tron",
-      "nb_annonces": 6,
+      "nb_annonces": 5,
       "annee_min": 2022,
       "annee_max": 2024,
       "prix_recent_median": 35990,
@@ -1250,105 +1164,117 @@ const MARKET = {
       "perte_pct_total": 25.0
     },
     {
-      "marque": "Volvo",
-      "modele": "Xc60",
-      "nb_annonces": 16,
-      "annee_min": 2023,
-      "annee_max": 2025,
-      "prix_recent_median": 48990,
-      "prix_vieux_median": 36990,
-      "perte_pct_par_an": 12.2,
-      "perte_pct_par_10k_km": 6.5,
-      "perte_pct_total": 24.5
+      "marque": "Cupra",
+      "modele": "Leon",
+      "nb_annonces": 10,
+      "annee_min": 2025,
+      "annee_max": 2026,
+      "prix_recent_median": 34199,
+      "prix_vieux_median": 29950,
+      "perte_pct_par_an": 12.4,
+      "perte_pct_par_10k_km": 0.0,
+      "perte_pct_total": 12.4
+    },
+    {
+      "marque": "Audi",
+      "modele": "A6",
+      "nb_annonces": 7,
+      "annee_min": 2021,
+      "annee_max": 2023,
+      "prix_recent_median": 38450,
+      "prix_vieux_median": 28990,
+      "perte_pct_par_an": 12.3,
+      "perte_pct_par_10k_km": 0.4,
+      "perte_pct_total": 24.6
     },
     {
       "marque": "BMW",
       "modele": "X2",
-      "nb_annonces": 5,
+      "nb_annonces": 8,
       "annee_min": 2018,
       "annee_max": 2022,
       "prix_recent_median": 29999,
       "prix_vieux_median": 15800,
       "perte_pct_par_an": 11.8,
-      "perte_pct_par_10k_km": 3.2,
+      "perte_pct_par_10k_km": 2.6,
       "perte_pct_total": 47.3
     },
     {
-      "marque": "Volkswagen",
-      "modele": "Taigo",
-      "nb_annonces": 10,
-      "annee_min": 2022,
-      "annee_max": 2025,
-      "prix_recent_median": 24990,
-      "prix_vieux_median": 16990,
-      "perte_pct_par_an": 10.7,
-      "perte_pct_par_10k_km": 2.6,
-      "perte_pct_total": 32.0
+      "marque": "MG",
+      "modele": "Zs",
+      "nb_annonces": 7,
+      "annee_min": 2024,
+      "annee_max": 2026,
+      "prix_recent_median": 24490,
+      "prix_vieux_median": 18990,
+      "perte_pct_par_an": 11.2,
+      "perte_pct_par_10k_km": 1.7,
+      "perte_pct_total": 22.5
     },
     {
-      "marque": "Citroen",
-      "modele": "C3",
-      "nb_annonces": 5,
+      "marque": "Hyundai",
+      "modele": "Kona",
+      "nb_annonces": 10,
       "annee_min": 2021,
       "annee_max": 2025,
-      "prix_recent_median": 17999,
-      "prix_vieux_median": 10990,
-      "perte_pct_par_an": 9.7,
-      "perte_pct_par_10k_km": 13.0,
-      "perte_pct_total": 38.9
-    },
-    {
-      "marque": "Ford",
-      "modele": "Fiesta",
-      "nb_annonces": 7,
-      "annee_min": 2016,
-      "annee_max": 2023,
-      "prix_recent_median": 17990,
-      "prix_vieux_median": 5910,
-      "perte_pct_par_an": 9.6,
-      "perte_pct_par_10k_km": 11.2,
-      "perte_pct_total": 67.1
-    },
-    {
-      "marque": "Skoda",
-      "modele": "Karoq",
-      "nb_annonces": 5,
-      "annee_min": 2019,
-      "annee_max": 2024,
-      "prix_recent_median": 31680,
-      "prix_vieux_median": 16549,
-      "perte_pct_par_an": 9.6,
-      "perte_pct_par_10k_km": 3.4,
-      "perte_pct_total": 47.8
+      "prix_recent_median": 35990,
+      "prix_vieux_median": 19990,
+      "perte_pct_par_an": 11.1,
+      "perte_pct_par_10k_km": 4.8,
+      "perte_pct_total": 44.5
     },
     {
       "marque": "Ford",
       "modele": "Ranger",
-      "nb_annonces": 7,
+      "nb_annonces": 6,
       "annee_min": 2018,
-      "annee_max": 2024,
-      "prix_recent_median": 52499,
+      "annee_max": 2023,
+      "prix_recent_median": 49840,
       "prix_vieux_median": 22750,
-      "perte_pct_par_an": 9.4,
-      "perte_pct_par_10k_km": 3.7,
-      "perte_pct_total": 56.7
+      "perte_pct_par_an": 10.9,
+      "perte_pct_par_10k_km": 5.1,
+      "perte_pct_total": 54.4
+    },
+    {
+      "marque": "Seat",
+      "modele": "Ibiza",
+      "nb_annonces": 7,
+      "annee_min": 2021,
+      "annee_max": 2025,
+      "prix_recent_median": 19690,
+      "prix_vieux_median": 11985,
+      "perte_pct_par_an": 9.8,
+      "perte_pct_par_10k_km": 13.0,
+      "perte_pct_total": 39.1
     },
     {
       "marque": "Volkswagen",
-      "modele": "Golf Gti",
-      "nb_annonces": 6,
+      "modele": "T-Roc",
+      "nb_annonces": 16,
+      "annee_min": 2021,
+      "annee_max": 2026,
+      "prix_recent_median": 37890,
+      "prix_vieux_median": 19799,
+      "perte_pct_par_an": 9.5,
+      "perte_pct_par_10k_km": 2.2,
+      "perte_pct_total": 47.7
+    },
+    {
+      "marque": "Skoda",
+      "modele": "Karoq",
+      "nb_annonces": 7,
       "annee_min": 2019,
       "annee_max": 2025,
-      "prix_recent_median": 47990,
-      "prix_vieux_median": 20900,
-      "perte_pct_par_an": 9.4,
-      "perte_pct_par_10k_km": 5.7,
-      "perte_pct_total": 56.4
+      "prix_recent_median": 37490,
+      "prix_vieux_median": 16549,
+      "perte_pct_par_an": 9.3,
+      "perte_pct_par_10k_km": 3.4,
+      "perte_pct_total": 55.9
     },
     {
       "marque": "Peugeot",
       "modele": "5008",
-      "nb_annonces": 5,
+      "nb_annonces": 7,
       "annee_min": 2020,
       "annee_max": 2025,
       "prix_recent_median": 34990,
@@ -1358,151 +1284,173 @@ const MARKET = {
       "perte_pct_total": 46.0
     },
     {
-      "marque": "Opel",
-      "modele": "Grandland",
-      "nb_annonces": 6,
+      "marque": "Peugeot",
+      "modele": "2008",
+      "nb_annonces": 9,
+      "annee_min": 2020,
+      "annee_max": 2026,
+      "prix_recent_median": 27980,
+      "prix_vieux_median": 12999,
+      "perte_pct_par_an": 8.9,
+      "perte_pct_par_10k_km": 6.6,
+      "perte_pct_total": 53.5
+    },
+    {
+      "marque": "Dacia",
+      "modele": "Duster",
+      "nb_annonces": 9,
+      "annee_min": 2018,
+      "annee_max": 2023,
+      "prix_recent_median": 21990,
+      "prix_vieux_median": 12299,
+      "perte_pct_par_an": 8.8,
+      "perte_pct_par_10k_km": 3.7,
+      "perte_pct_total": 44.1
+    },
+    {
+      "marque": "Mercedes",
+      "modele": "C 220",
+      "nb_annonces": 5,
+      "annee_min": 2014,
+      "annee_max": 2021,
+      "prix_recent_median": 35999,
+      "prix_vieux_median": 14870,
+      "perte_pct_par_an": 8.4,
+      "perte_pct_par_10k_km": 3.3,
+      "perte_pct_total": 58.7
+    },
+    {
+      "marque": "Volvo",
+      "modele": "Xc60",
+      "nb_annonces": 20,
       "annee_min": 2021,
       "annee_max": 2025,
-      "prix_recent_median": 37490,
-      "prix_vieux_median": 23999,
-      "perte_pct_par_an": 9.0,
-      "perte_pct_par_10k_km": 7.8,
-      "perte_pct_total": 36.0
+      "prix_recent_median": 48990,
+      "prix_vieux_median": 32900,
+      "perte_pct_par_an": 8.2,
+      "perte_pct_par_10k_km": 6.5,
+      "perte_pct_total": 32.8
     },
     {
-      "marque": "Opel",
-      "modele": "Astra",
-      "nb_annonces": 10,
-      "annee_min": 2015,
-      "annee_max": 2024,
-      "prix_recent_median": 21490,
-      "prix_vieux_median": 3999,
-      "perte_pct_par_an": 9.0,
-      "perte_pct_par_10k_km": 4.0,
-      "perte_pct_total": 81.4
-    },
-    {
-      "marque": "Audi",
-      "modele": "Q5",
-      "nb_annonces": 11,
+      "marque": "Mercedes",
+      "modele": "Cla 250",
+      "nb_annonces": 5,
       "annee_min": 2020,
       "annee_max": 2025,
-      "prix_recent_median": 55950,
-      "prix_vieux_median": 30980,
-      "perte_pct_par_an": 8.9,
-      "perte_pct_par_10k_km": 8.4,
-      "perte_pct_total": 44.6
+      "prix_recent_median": 45810,
+      "prix_vieux_median": 27990,
+      "perte_pct_par_an": 7.8,
+      "perte_pct_par_10k_km": 6.5,
+      "perte_pct_total": 38.9
     },
     {
-      "marque": "Mercedes",
-      "modele": "Cla 200",
-      "nb_annonces": 8,
-      "annee_min": 2021,
+      "marque": "Nissan",
+      "modele": "Qashqai",
+      "nb_annonces": 12,
+      "annee_min": 2017,
       "annee_max": 2025,
-      "prix_recent_median": 41490,
-      "prix_vieux_median": 26900,
-      "perte_pct_par_an": 8.8,
-      "perte_pct_par_10k_km": 2.9,
-      "perte_pct_total": 35.2
-    },
-    {
-      "marque": "Mercedes",
-      "modele": "Glc 300",
-      "nb_annonces": 8,
-      "annee_min": 2018,
-      "annee_max": 2025,
-      "prix_recent_median": 71690,
-      "prix_vieux_median": 28490,
-      "perte_pct_par_an": 8.6,
-      "perte_pct_par_10k_km": 4.8,
-      "perte_pct_total": 60.3
-    },
-    {
-      "marque": "Volkswagen",
-      "modele": "T-Roc",
-      "nb_annonces": 16,
-      "annee_min": 2021,
-      "annee_max": 2025,
-      "prix_recent_median": 29990,
-      "prix_vieux_median": 19799,
-      "perte_pct_par_an": 8.5,
-      "perte_pct_par_10k_km": 2.0,
-      "perte_pct_total": 34.0
+      "prix_recent_median": 26550,
+      "prix_vieux_median": 10190,
+      "perte_pct_par_an": 7.7,
+      "perte_pct_par_10k_km": 2.5,
+      "perte_pct_total": 61.6
     }
   ],
   "buyer_seller_index": [
     {
       "marque": "Hyundai",
       "modele": "Tucson",
-      "nb_annonces": 31,
-      "jours_moyen": 9.1,
-      "score": 7.3,
+      "nb_annonces": 33,
+      "jours_moyen": 9.4,
+      "score": 7.8,
       "label": "Acheteur",
       "stars": "★★★★☆",
       "color": "green",
-      "conseil": "31 annonces, 9j moy — négocie raisonnablement"
+      "conseil": "33 annonces, 9j moy — négocie raisonnablement"
     },
     {
       "marque": "Ford",
       "modele": "Puma",
-      "nb_annonces": 22,
-      "jours_moyen": 9.1,
-      "score": 5.5,
+      "nb_annonces": 25,
+      "jours_moyen": 8.9,
+      "score": 6.1,
       "label": "Neutre",
       "stars": "★★★☆☆",
       "color": "amber",
-      "conseil": "Offre limitée (22), 9j — sois réactif"
+      "conseil": "25 annonces, 9j moy — négocie raisonnablement"
     },
     {
       "marque": "Volkswagen",
       "modele": "Golf",
-      "nb_annonces": 22,
-      "jours_moyen": 6.9,
-      "score": 5.1,
+      "nb_annonces": 23,
+      "jours_moyen": 6.3,
+      "score": 5.2,
       "label": "Neutre",
       "stars": "★★★☆☆",
       "color": "amber",
-      "conseil": "Offre limitée (22), 7j — sois réactif"
+      "conseil": "Offre limitée (23), 6j — sois réactif"
     },
     {
       "marque": "Volkswagen",
       "modele": "Polo",
       "nb_annonces": 22,
-      "jours_moyen": 7.2,
-      "score": 5.2,
+      "jours_moyen": 7.7,
+      "score": 5.3,
       "label": "Neutre",
       "stars": "★★★☆☆",
       "color": "amber",
-      "conseil": "Offre limitée (22), 7j — sois réactif"
+      "conseil": "Offre limitée (22), 8j — sois réactif"
     },
     {
       "marque": "Kia",
       "modele": "Sportage",
-      "nb_annonces": 19,
-      "jours_moyen": 10.2,
-      "score": 5.1,
+      "nb_annonces": 21,
+      "jours_moyen": 10.1,
+      "score": 5.5,
       "label": "Neutre",
       "stars": "★★★☆☆",
       "color": "amber",
-      "conseil": "Offre limitée (19), 10j — sois réactif"
+      "conseil": "Offre limitée (21), 10j — sois réactif"
+    },
+    {
+      "marque": "Volvo",
+      "modele": "Xc60",
+      "nb_annonces": 20,
+      "jours_moyen": 5.2,
+      "score": 4.4,
+      "label": "Neutre",
+      "stars": "★★★☆☆",
+      "color": "amber",
+      "conseil": "Offre limitée (20), 5j — sois réactif"
     },
     {
       "marque": "Volkswagen",
       "modele": "Tiguan",
-      "nb_annonces": 18,
-      "jours_moyen": 6.3,
-      "score": 4.2,
+      "nb_annonces": 19,
+      "jours_moyen": 6.9,
+      "score": 4.5,
       "label": "Neutre",
       "stars": "★★★☆☆",
       "color": "amber",
-      "conseil": "Offre limitée (18), 6j — sois réactif"
+      "conseil": "Offre limitée (19), 7j — sois réactif"
+    },
+    {
+      "marque": "Audi",
+      "modele": "A3",
+      "nb_annonces": 18,
+      "jours_moyen": 7.7,
+      "score": 4.5,
+      "label": "Neutre",
+      "stars": "★★★☆☆",
+      "color": "amber",
+      "conseil": "Offre limitée (18), 8j — sois réactif"
     },
     {
       "marque": "Audi",
       "modele": "Q3",
       "nb_annonces": 18,
-      "jours_moyen": 9.6,
-      "score": 4.8,
+      "jours_moyen": 10.0,
+      "score": 4.9,
       "label": "Neutre",
       "stars": "★★★☆☆",
       "color": "amber",
@@ -1511,13 +1459,13 @@ const MARKET = {
     {
       "marque": "Volvo",
       "modele": "Xc40",
-      "nb_annonces": 17,
-      "jours_moyen": 3.9,
-      "score": 3.5,
+      "nb_annonces": 18,
+      "jours_moyen": 3.8,
+      "score": 3.7,
       "label": "Vendeur",
       "stars": "★★☆☆☆",
       "color": "red",
-      "conseil": "Rare (17 ann.), 4j en ligne — agis vite"
+      "conseil": "Rare (18 ann.), 4j en ligne — agis vite"
     },
     {
       "marque": "Volkswagen",
@@ -1531,98 +1479,87 @@ const MARKET = {
       "conseil": "Rare (16 ann.), 5j en ligne — agis vite"
     },
     {
-      "marque": "Audi",
-      "modele": "A3",
-      "nb_annonces": 16,
-      "jours_moyen": 7.7,
-      "score": 4.1,
-      "label": "Neutre",
-      "stars": "★★★☆☆",
-      "color": "amber",
-      "conseil": "Offre limitée (16), 8j — sois réactif"
-    },
-    {
-      "marque": "Volvo",
-      "modele": "Xc60",
-      "nb_annonces": 16,
-      "jours_moyen": 5.6,
-      "score": 3.7,
-      "label": "Vendeur",
-      "stars": "★★☆☆☆",
-      "color": "red",
-      "conseil": "Rare (16 ann.), 6j en ligne — agis vite"
-    },
-    {
-      "marque": "Cupra",
-      "modele": "Formentor",
+      "marque": "Peugeot",
+      "modele": "208",
       "nb_annonces": 15,
-      "jours_moyen": 6.3,
-      "score": 3.6,
+      "jours_moyen": 2.0,
+      "score": 2.8,
       "label": "Vendeur",
       "stars": "★★☆☆☆",
       "color": "red",
-      "conseil": "Rare (15 ann.), 6j en ligne — agis vite"
+      "conseil": "Rare (15 ann.), 2j en ligne — agis vite"
     },
     {
       "marque": "Skoda",
       "modele": "Kodiaq",
       "nb_annonces": 15,
-      "jours_moyen": 7.1,
-      "score": 3.7,
+      "jours_moyen": 7.3,
+      "score": 3.8,
       "label": "Vendeur",
       "stars": "★★☆☆☆",
       "color": "red",
       "conseil": "Rare (15 ann.), 7j en ligne — agis vite"
     },
     {
-      "marque": "Toyota",
-      "modele": "C-Hr",
+      "marque": "Volvo",
+      "modele": "S60",
       "nb_annonces": 14,
-      "jours_moyen": 1.4,
-      "score": 2.5,
+      "jours_moyen": 4.4,
+      "score": 3.0,
       "label": "Vendeur",
       "stars": "★★☆☆☆",
       "color": "red",
-      "conseil": "Rare (14 ann.), 1j en ligne — agis vite"
+      "conseil": "Rare (14 ann.), 4j en ligne — agis vite"
     },
     {
       "marque": "Ford",
       "modele": "Focus Clipper",
       "nb_annonces": 14,
-      "jours_moyen": 11.5,
-      "score": 4.4,
+      "jours_moyen": 12.4,
+      "score": 4.6,
       "label": "Neutre",
       "stars": "★★★☆☆",
       "color": "amber",
       "conseil": "Offre limitée (14), 12j — sois réactif"
     },
     {
-      "marque": "Peugeot",
-      "modele": "208",
-      "nb_annonces": 12,
-      "jours_moyen": 2.5,
-      "score": 2.3,
+      "marque": "Cupra",
+      "modele": "Formentor",
+      "nb_annonces": 13,
+      "jours_moyen": 6.9,
+      "score": 3.3,
       "label": "Vendeur",
       "stars": "★★☆☆☆",
       "color": "red",
-      "conseil": "Rare (12 ann.), 2j en ligne — agis vite"
+      "conseil": "Rare (13 ann.), 7j en ligne — agis vite"
     },
     {
-      "marque": "Hyundai",
-      "modele": "Kona",
-      "nb_annonces": 12,
-      "jours_moyen": 7.6,
-      "score": 3.2,
+      "marque": "Opel",
+      "modele": "Corsa",
+      "nb_annonces": 13,
+      "jours_moyen": 3.5,
+      "score": 2.7,
       "label": "Vendeur",
       "stars": "★★☆☆☆",
       "color": "red",
-      "conseil": "Rare (12 ann.), 8j en ligne — agis vite"
+      "conseil": "Rare (13 ann.), 4j en ligne — agis vite"
     },
     {
-      "marque": "Ford",
-      "modele": "Kuga",
+      "marque": "Skoda",
+      "modele": "Kamiq",
+      "nb_annonces": 13,
+      "jours_moyen": 8.7,
+      "score": 3.7,
+      "label": "Vendeur",
+      "stars": "★★☆☆☆",
+      "color": "red",
+      "conseil": "Rare (13 ann.), 9j en ligne — agis vite"
+    },
+    {
+      "marque": "Mercedes",
+      "modele": "A 180",
       "nb_annonces": 12,
-      "jours_moyen": 6.3,
+      "jours_moyen": 6.4,
       "score": 3.0,
       "label": "Vendeur",
       "stars": "★★☆☆☆",
@@ -1630,52 +1567,63 @@ const MARKET = {
       "conseil": "Rare (12 ann.), 6j en ligne — agis vite"
     },
     {
-      "marque": "MG",
-      "modele": "Mg4",
+      "marque": "Nissan",
+      "modele": "Qashqai",
       "nb_annonces": 12,
-      "jours_moyen": 11.2,
-      "score": 3.9,
+      "jours_moyen": 0.7,
+      "score": 1.9,
       "label": "Vendeur",
-      "stars": "★★☆☆☆",
+      "stars": "★☆☆☆☆",
       "color": "red",
-      "conseil": "Rare (12 ann.), 11j en ligne — agis vite"
+      "conseil": "Rare (12 ann.), 1j en ligne — agis vite"
     },
     {
-      "marque": "Audi",
-      "modele": "Q5",
-      "nb_annonces": 11,
-      "jours_moyen": 4.0,
-      "score": 2.4,
-      "label": "Vendeur",
-      "stars": "★★☆☆☆",
-      "color": "red",
-      "conseil": "Rare (11 ann.), 4j en ligne — agis vite"
-    },
-    {
-      "marque": "Opel",
-      "modele": "Corsa",
-      "nb_annonces": 11,
-      "jours_moyen": 2.7,
-      "score": 2.1,
-      "label": "Vendeur",
-      "stars": "★★☆☆☆",
-      "color": "red",
-      "conseil": "Rare (11 ann.), 3j en ligne — agis vite"
-    },
-    {
-      "marque": "Skoda",
-      "modele": "Octavia",
-      "nb_annonces": 11,
-      "jours_moyen": 4.7,
+      "marque": "Volkswagen",
+      "modele": "Taigo",
+      "nb_annonces": 12,
+      "jours_moyen": 3.9,
       "score": 2.5,
       "label": "Vendeur",
       "stars": "★★☆☆☆",
       "color": "red",
-      "conseil": "Rare (11 ann.), 5j en ligne — agis vite"
+      "conseil": "Rare (12 ann.), 4j en ligne — agis vite"
+    },
+    {
+      "marque": "Skoda",
+      "modele": "Octavia",
+      "nb_annonces": 12,
+      "jours_moyen": 3.8,
+      "score": 2.5,
+      "label": "Vendeur",
+      "stars": "★★☆☆☆",
+      "color": "red",
+      "conseil": "Rare (12 ann.), 4j en ligne — agis vite"
+    },
+    {
+      "marque": "MG",
+      "modele": "Mg4",
+      "nb_annonces": 12,
+      "jours_moyen": 12.2,
+      "score": 4.1,
+      "label": "Neutre",
+      "stars": "★★★☆☆",
+      "color": "amber",
+      "conseil": "Offre limitée (12), 12j — sois réactif"
+    },
+    {
+      "marque": "Ford",
+      "modele": "Kuga",
+      "nb_annonces": 11,
+      "jours_moyen": 5.6,
+      "score": 2.7,
+      "label": "Vendeur",
+      "stars": "★★☆☆☆",
+      "color": "red",
+      "conseil": "Rare (11 ann.), 6j en ligne — agis vite"
     },
     {
       "marque": "Audi",
-      "modele": "A1",
+      "modele": "Q2",
       "nb_annonces": 11,
       "jours_moyen": 6.7,
       "score": 2.9,
@@ -1683,40 +1631,18 @@ const MARKET = {
       "stars": "★★☆☆☆",
       "color": "red",
       "conseil": "Rare (11 ann.), 7j en ligne — agis vite"
-    },
-    {
-      "marque": "Skoda",
-      "modele": "Kamiq",
-      "nb_annonces": 11,
-      "jours_moyen": 8.8,
-      "score": 3.3,
-      "label": "Vendeur",
-      "stars": "★★☆☆☆",
-      "color": "red",
-      "conseil": "Rare (11 ann.), 9j en ligne — agis vite"
-    },
-    {
-      "marque": "Volkswagen",
-      "modele": "Taigo",
-      "nb_annonces": 10,
-      "jours_moyen": 3.9,
-      "score": 2.1,
-      "label": "Vendeur",
-      "stars": "★★☆☆☆",
-      "color": "red",
-      "conseil": "Rare (10 ann.), 4j en ligne — agis vite"
     }
   ],
   "tco_par_carburant": {
     "Essence": {
-      "nb_annonces": 802,
-      "prix_achat": 26106,
+      "nb_annonces": 731,
+      "prix_achat": 24990,
       "carburant_5ans": 8715,
       "entretien_5ans": 4250,
-      "depreciation_5ans": 12329,
-      "valeur_residuelle": 13777,
-      "total_5ans": 39071,
-      "cout_km": 0.521,
+      "depreciation_5ans": 11802,
+      "valeur_residuelle": 13188,
+      "total_5ans": 37955,
+      "cout_km": 0.506,
       "conso": 7.0,
       "unite": "L/100",
       "prix_litre": 1.66,
@@ -1724,14 +1650,14 @@ const MARKET = {
       "ans": 5
     },
     "Diesel": {
-      "nb_annonces": 340,
-      "prix_achat": 29490,
+      "nb_annonces": 322,
+      "prix_achat": 26880,
       "carburant_5ans": 6975,
       "entretien_5ans": 4750,
-      "depreciation_5ans": 15617,
-      "valeur_residuelle": 13873,
-      "total_5ans": 41215,
-      "cout_km": 0.55,
+      "depreciation_5ans": 14235,
+      "valeur_residuelle": 12645,
+      "total_5ans": 38605,
+      "cout_km": 0.515,
       "conso": 6.0,
       "unite": "L/100",
       "prix_litre": 1.55,
@@ -1739,14 +1665,14 @@ const MARKET = {
       "ans": 5
     },
     "Hybride": {
-      "nb_annonces": 136,
-      "prix_achat": 33490,
+      "nb_annonces": 121,
+      "prix_achat": 26990,
       "carburant_5ans": 6474,
       "entretien_5ans": 3500,
-      "depreciation_5ans": 13714,
-      "valeur_residuelle": 19776,
-      "total_5ans": 43464,
-      "cout_km": 0.58,
+      "depreciation_5ans": 11053,
+      "valeur_residuelle": 15937,
+      "total_5ans": 36964,
+      "cout_km": 0.493,
       "conso": 5.2,
       "unite": "L/100",
       "prix_litre": 1.66,
@@ -1754,14 +1680,14 @@ const MARKET = {
       "ans": 5
     },
     "Electrique": {
-      "nb_annonces": 134,
-      "prix_achat": 29490,
+      "nb_annonces": 126,
+      "prix_achat": 28950,
       "carburant_5ans": 3469,
       "entretien_5ans": 2500,
-      "depreciation_5ans": 17157,
-      "valeur_residuelle": 12333,
-      "total_5ans": 35459,
-      "cout_km": 0.473,
+      "depreciation_5ans": 16843,
+      "valeur_residuelle": 12107,
+      "total_5ans": 34919,
+      "cout_km": 0.466,
       "conso": 18.5,
       "unite": "kWh/100",
       "prix_litre": 0.25,
@@ -1772,14 +1698,26 @@ const MARKET = {
   "prix_suspects": {
     "surevalues": [
       {
+        "id": "00c437b08f3b520e",
+        "marque": "Volkswagen",
+        "modele": "Golf",
+        "annee": 2021,
+        "km": 89203,
+        "prix": 35990,
+        "median": 21740,
+        "ecart_pct": 65.5,
+        "url": "https://www.autoscout24.lu/offres/volkswagen-golf-r-dsg-4m-p-leder-akra-pano-essence-noir-c8bdce86-06e5-438c-969b-8c40645ff046",
+        "ville": "Esch-sur-Alzette"
+      },
+      {
         "id": "d05ddf7040168a4a",
         "marque": "Opel",
         "modele": "Astra",
         "annee": 2023,
         "km": 17600,
         "prix": 36990,
-        "median": 23905,
-        "ecart_pct": 54.7,
+        "median": 23990,
+        "ecart_pct": 54.2,
         "url": "https://www.autopolis.lu/stock/239088338-1-opel-astra-16-gse",
         "ville": "Luxembourg"
       },
@@ -1790,10 +1728,22 @@ const MARKET = {
         "annee": 2023,
         "km": 24100,
         "prix": 36990,
-        "median": 23905,
-        "ecart_pct": 54.7,
+        "median": 23990,
+        "ecart_pct": 54.2,
         "url": "https://www.autopolis.lu/stock/431863804-1-opel-astra-16-l-gse",
         "ville": "Luxembourg"
+      },
+      {
+        "id": "d934a83c71b7598c",
+        "marque": "Peugeot",
+        "modele": "208",
+        "annee": 2025,
+        "km": 1000,
+        "prix": 24599,
+        "median": 15980,
+        "ecart_pct": 53.9,
+        "url": "https://www.autoscout24.lu/offres/peugeot-208-1-2-hybrid-110ch-allure-e-dcs6-autres-bleu-3a687f6c-392d-4842-9e8d-c4b3a4320ada",
+        "ville": "CHARLEVILLE MEZIERES"
       },
       {
         "id": "03ad3b4877c11c2e",
@@ -1820,28 +1770,40 @@ const MARKET = {
         "ville": "Luxembourg"
       },
       {
-        "id": "d934a83c71b7598c",
+        "id": "6aa6ad00e18ebddf",
+        "marque": "Citroen",
+        "modele": "C5 Aircross",
+        "annee": 2025,
+        "km": 6000,
+        "prix": 35290,
+        "median": 23470,
+        "ecart_pct": 50.4,
+        "url": "https://www.autoscout24.lu/offres/citroen-c5-aircross-1-2-hybride-136ch-max-boite-automatique-electrique-essence-9b2de14f-6e38-42b3-b5f9-2eb65c0c9c3c",
+        "ville": "Champniers"
+      },
+      {
+        "id": "89d67841a09ced37",
+        "marque": "Audi",
+        "modele": "A3",
+        "annee": 2025,
+        "km": 9900,
+        "prix": 42378,
+        "median": 28369,
+        "ecart_pct": 49.4,
+        "url": "https://www.autoscout24.lu/offres/audi-a3-s-line-diesel-noir-50f32a21-30b1-43b4-a770-2adeb980b220",
+        "ville": "Esch-sur-Alzette"
+      },
+      {
+        "id": "e1919be738d0cd06",
         "marque": "Peugeot",
         "modele": "208",
         "annee": 2025,
-        "km": 1000,
-        "prix": 24599,
-        "median": 16499,
-        "ecart_pct": 49.1,
-        "url": "https://www.autoscout24.lu/offres/peugeot-208-1-2-hybrid-110ch-allure-e-dcs6-autres-bleu-3a687f6c-392d-4842-9e8d-c4b3a4320ada",
-        "ville": "CHARLEVILLE MEZIERES"
-      },
-      {
-        "id": "fa8d6258a38e2e11",
-        "marque": "Bentley",
-        "modele": "Bentayga",
-        "annee": 2025,
         "km": 5000,
-        "prix": 380270,
-        "median": 259900,
-        "ecart_pct": 46.3,
-        "url": "https://www.luxauto.lu/fr/car/bentley-bentayga-essence-2025-1779259",
-        "ville": "Luxembourg"
+        "prix": 23599,
+        "median": 15980,
+        "ecart_pct": 47.7,
+        "url": "https://www.autoscout24.lu/offres/peugeot-208-1-2-hybrid-110ch-envy-e-dcs6-autres-rouge-06cac6b5-b06a-4639-81e8-18b560f3cc0a",
+        "ville": "Reims"
       },
       {
         "id": "3470af1faa10b8c4",
@@ -1856,16 +1818,52 @@ const MARKET = {
         "ville": "Luxembourg"
       },
       {
-        "id": "e1919be738d0cd06",
-        "marque": "Peugeot",
-        "modele": "208",
+        "id": "f6cc50c452ab0a6f",
+        "marque": "Cupra",
+        "modele": "Leon",
+        "annee": 2026,
+        "km": 3000,
+        "prix": 49680,
+        "median": 34199,
+        "ecart_pct": 45.3,
+        "url": "https://www.autoscout24.lu/offres/cupra-leon-vz-essence-noir-17dfaa1a-e32d-4bb0-89bd-32cea75f8d5b",
+        "ville": "Roost"
+      },
+      {
+        "id": "f3c873ff52fc26b9",
+        "marque": "MG",
+        "modele": "Zs",
         "annee": 2025,
+        "km": 29050,
+        "prix": 28990,
+        "median": 19990,
+        "ecart_pct": 45.0,
+        "url": "https://www.autopolis.lu/stock/341548622-1-mg-zs-15-hybrid-luxury",
+        "ville": "Luxembourg"
+      },
+      {
+        "id": "01da47c9177c1196",
+        "marque": "Volkswagen",
+        "modele": "T-Cross",
+        "annee": 2026,
         "km": 5000,
-        "prix": 23599,
-        "median": 16499,
-        "ecart_pct": 43.0,
-        "url": "https://www.autoscout24.lu/offres/peugeot-208-1-2-hybrid-110ch-envy-e-dcs6-autres-rouge-06cac6b5-b06a-4639-81e8-18b560f3cc0a",
-        "ville": "Reims"
+        "prix": 34590,
+        "median": 23990,
+        "ecart_pct": 44.2,
+        "url": "https://www.autoscout24.de/angebote/volkswagen-t-cross-r-line-benzin-grau-abf18b19-5ae0-468c-81f1-836ee5733328",
+        "ville": "Herschbach"
+      },
+      {
+        "id": "eb609b4af8ed1ea7",
+        "marque": "Kia",
+        "modele": "Sportage",
+        "annee": 2025,
+        "km": 10,
+        "prix": 42850,
+        "median": 29880,
+        "ecart_pct": 43.4,
+        "url": "https://www.autoscout24.de/angebote/kia-sportage-1-6t-hev-awd-sd-gt-line-gd-drive-sound-elektro-benzin-silber-4a355e88-bbb1-4db0-b91f-0df15a5cf0ca",
+        "ville": "Schwabach"
       },
       {
         "id": "4241c8b33a4c3958",
@@ -1878,92 +1876,44 @@ const MARKET = {
         "ecart_pct": 42.8,
         "url": "https://www.autopolis.lu/stock/307962455-1-hyundai-tucson-16-shine-n-line-sensation",
         "ville": "Luxembourg"
-      },
-      {
-        "id": "89d67841a09ced37",
-        "marque": "Audi",
-        "modele": "A3",
-        "annee": 2025,
-        "km": 9900,
-        "prix": 42378,
-        "median": 29990,
-        "ecart_pct": 41.3,
-        "url": "https://www.autoscout24.lu/offres/audi-a3-s-line-diesel-noir-50f32a21-30b1-43b4-a770-2adeb980b220",
-        "ville": "Esch-sur-Alzette"
-      },
-      {
-        "id": "093807b6b2657933",
-        "marque": "Volkswagen",
-        "modele": "Tiguan",
-        "annee": 2024,
-        "km": 45065,
-        "prix": 40990,
-        "median": 30490,
-        "ecart_pct": 34.4,
-        "url": "https://www.autoscout24.lu/offres/volkswagen-tiguan-r-line-dsg-4m-black-style-ahk-diesel-blanc-54815615-8753-4f60-8d5c-f9e05f0b9b7c",
-        "ville": "Esch-sur-Alzette"
-      },
-      {
-        "id": "eb609b4af8ed1ea7",
-        "marque": "Kia",
-        "modele": "Sportage",
-        "annee": 2025,
-        "km": 10,
-        "prix": 42850,
-        "median": 31990,
-        "ecart_pct": 33.9,
-        "url": "https://www.autoscout24.de/angebote/kia-sportage-1-6t-hev-awd-sd-gt-line-gd-drive-sound-elektro-benzin-silber-4a355e88-bbb1-4db0-b91f-0df15a5cf0ca",
-        "ville": "Schwabach"
-      },
-      {
-        "id": "d52e87b05a437968",
-        "marque": "Opel",
-        "modele": "Corsa",
-        "annee": 2026,
-        "km": 25,
-        "prix": 23990,
-        "median": 17990,
-        "ecart_pct": 33.4,
-        "url": "https://www.autoscout24.de/angebote/opel-corsa-electric-edition-elektromotor-100kw-136-p-elektro-weiss-b50edd09-db2d-42e9-b90b-b9302733e9c3",
-        "ville": "Rüsselsheim am Main"
-      },
-      {
-        "id": "38b034ac8e5d39e0",
-        "marque": "Volkswagen",
-        "modele": "Tiguan",
-        "annee": 2022,
-        "km": 51893,
-        "prix": 39490,
-        "median": 30490,
-        "ecart_pct": 29.5,
-        "url": "https://www.autoscout24.lu/offres/volkswagen-tiguan-r-4m-dsg-ahk-navi-lm21-essence-bleu-a362ffe3-6ecc-4ded-839e-088ad82d40e2",
-        "ville": "Roost"
-      },
-      {
-        "id": "9fa2d7317c092c92",
-        "marque": "Opel",
-        "modele": "Corsa",
-        "annee": 2025,
-        "km": 10,
-        "prix": 23181,
-        "median": 17990,
-        "ecart_pct": 28.9,
-        "url": "https://www.autoscout24.lu/offres/opel-corsa-hybrid-145-ultimate-intellil-gps-essence-gris-b4bfee6d-2b5a-41e0-a168-1fd1d1e30e72",
-        "ville": "Paris"
       }
     ],
     "sous_evalues": [
       {
-        "id": "c0b9d24cd4ca67a7",
+        "id": "a00516f7bf2c6482",
         "marque": "Volkswagen",
-        "modele": "Polo",
-        "annee": 2009,
-        "km": 82990,
-        "prix": 3950,
-        "median": 18490,
-        "ecart_pct": -78.6,
-        "url": "https://www.autoscout24.de/angebote/volkswagen-polo-iv-trendline-radio-klima-benzin-silber-5f080c5c-33bd-460c-8698-15246b14fe27",
-        "ville": "Parkstetten"
+        "modele": "Golf",
+        "annee": 2022,
+        "km": 45039,
+        "prix": 17990,
+        "median": 32990,
+        "ecart_pct": -45.5,
+        "url": "https://www.autoscout24.de/angebote/volkswagen-golf-life-1-0-tsi-benzin-grau-70b72eee-67a9-40f8-8509-2f834b965b93",
+        "ville": "Schweinfurt"
+      },
+      {
+        "id": "0cfc553e62720220",
+        "marque": "Audi",
+        "modele": "Q3",
+        "annee": 2017,
+        "km": 36900,
+        "prix": 19940,
+        "median": 35990,
+        "ecart_pct": -44.6,
+        "url": "https://www.autoscout24.de/angebote/audi-q3-basis-quattro-benzin-grau-5ace0781-1e60-48be-9fa1-25c962727891",
+        "ville": "Chemnitz"
+      },
+      {
+        "id": "1ae95aebebd679f0",
+        "marque": "Opel",
+        "modele": "Corsa",
+        "annee": 2022,
+        "km": 24500,
+        "prix": 11400,
+        "median": 20488,
+        "ecart_pct": -44.4,
+        "url": "https://www.autoscout24.de/angebote/opel-corsa-f-1-2-edition-navi-pdc-alu16-tempomat-benzin-schwarz-159e1afb-2162-46c6-9ba1-bfd1d080c8cb",
+        "ville": "Schöningen"
       },
       {
         "id": "2b746398a4a77a7b",
@@ -1978,64 +1928,16 @@ const MARKET = {
         "ville": "Schweinfurt"
       },
       {
-        "id": "1ae95aebebd679f0",
-        "marque": "Opel",
-        "modele": "Corsa",
+        "id": "95c98d1621a9a35f",
+        "marque": "Citroen",
+        "modele": "C5 Aircross",
         "annee": 2022,
-        "km": 24500,
-        "prix": 11400,
-        "median": 17990,
-        "ecart_pct": -36.6,
-        "url": "https://www.autoscout24.de/angebote/opel-corsa-f-1-2-edition-navi-pdc-alu16-tempomat-benzin-schwarz-159e1afb-2162-46c6-9ba1-bfd1d080c8cb",
-        "ville": "Schöningen"
-      },
-      {
-        "id": "32d3411ba79349f0",
-        "marque": "Volkswagen",
-        "modele": "Golf",
-        "annee": 2022,
-        "km": 47349,
-        "prix": 20925,
-        "median": 32990,
-        "ecart_pct": -36.6,
-        "url": "https://www.autoscout24.de/angebote/volkswagen-golf-viii-1-5-tsi-life-3-99-navi-digitales-cockpit-led-benzin-weiss-2ddb9e9f-60f2-4140-94ee-6ee8544ef3fe",
-        "ville": "Bernau"
-      },
-      {
-        "id": "e9fbaf1aee411e4d",
-        "marque": "Hyundai",
-        "modele": "Tucson",
-        "annee": 2023,
-        "km": 22984,
-        "prix": 28990,
-        "median": 41990,
-        "ecart_pct": -31.0,
-        "url": "https://www.autoscout24.de/angebote/hyundai-tucson-tucson-1-6-turbo-48v-dct-prime-4wd-leder-panod-benzin-blau-be79a693-4a6b-45df-8647-764d1b56a58f",
-        "ville": "Bochum"
-      },
-      {
-        "id": "077a22cb8a4a05bc",
-        "marque": "Bentley",
-        "modele": "Bentayga",
-        "annee": 2019,
-        "km": 13500,
-        "prix": 179900,
-        "median": 259900,
-        "ecart_pct": -30.8,
-        "url": "https://www.luxauto.lu/fr/car/bentley-bentayga-essence-2019-1781921",
-        "ville": "Luxembourg"
-      },
-      {
-        "id": "8174297c670db807",
-        "marque": "Hyundai",
-        "modele": "Tucson",
-        "annee": 2023,
-        "km": 23930,
-        "prix": 29850,
-        "median": 41990,
-        "ecart_pct": -28.9,
-        "url": "https://www.autoscout24.de/angebote/hyundai-tucson-hybrid-prime-1-6-t-gdi-krell-led-cam-benzin-grau-b926d460-5070-4621-b53b-1ad0e54c7f86",
-        "ville": "Berlin"
+        "km": 29301,
+        "prix": 14699,
+        "median": 23470,
+        "ecart_pct": -37.4,
+        "url": "https://www.autoscout24.de/angebote/citroen-c5-aircross-feel-pack-benzin-weiss-23ee6c6a-96e4-4f36-849a-2250f16d13b3",
+        "ville": "Dortmund"
       },
       {
         "id": "00c21b549c1bad65",
@@ -2044,10 +1946,34 @@ const MARKET = {
         "annee": 2023,
         "km": 22600,
         "prix": 12900,
-        "median": 17990,
-        "ecart_pct": -28.3,
+        "median": 20488,
+        "ecart_pct": -37.0,
         "url": "https://www.autoscout24.de/angebote/opel-corsa-f-1-2-edition-sitzheiz-tempomat-spurhalte-benzin-weiss-4973e8c0-c04f-4e17-9b0b-b21c77d08935",
         "ville": "Homburg"
+      },
+      {
+        "id": "ff4282f9c8aa88aa",
+        "marque": "Volkswagen",
+        "modele": "Tiguan",
+        "annee": 2016,
+        "km": 108113,
+        "prix": 14650,
+        "median": 22890,
+        "ecart_pct": -36.0,
+        "url": "https://www.autoscout24.de/angebote/volkswagen-tiguan-1-4-tsi-lounge-sport-style-bmt-navi-xenon-cam-benzin-grau-2363a7ac-5a8e-434c-984a-964754bdef71",
+        "ville": "Berlin"
+      },
+      {
+        "id": "a61def70f604f21c",
+        "marque": "Volkswagen",
+        "modele": "Polo",
+        "annee": 2017,
+        "km": 55000,
+        "prix": 10950,
+        "median": 16990,
+        "ecart_pct": -35.6,
+        "url": "https://www.autoscout24.lu/offres/volkswagen-polo-tsi-bluemotion-essence-noir-eafa755a-84b1-4867-bf27-3c9c756e5eb0",
+        "ville": "Diekirch"
       },
       {
         "id": "6b93ce317661f16f",
@@ -2056,34 +1982,82 @@ const MARKET = {
         "annee": 2021,
         "km": 28400,
         "prix": 14390,
-        "median": 19970,
-        "ecart_pct": -27.9,
+        "median": 20950,
+        "ecart_pct": -31.3,
         "url": "https://www.autoscout24.de/angebote/seat-arona-1-0-style-tsi-bmt-radio-klima-alu-benzin-rot-e6341ae2-0e06-42dc-8698-2297e25640cb",
         "ville": "Vordorf"
       },
       {
-        "id": "7e46024360349dd6",
-        "marque": "Cupra",
-        "modele": "Formentor",
-        "annee": 2022,
-        "km": 28798,
-        "prix": 24499,
-        "median": 33990,
-        "ecart_pct": -27.9,
-        "url": "https://www.autoscout24.de/angebote/cupra-formentor-basis-e-hybrid-navi-led-acc-shz-rfk-elektro-benzin-schwarz-f0f41090-9303-4627-a34e-ab655d535029",
-        "ville": "Langenmosen"
+        "id": "3fe3a223244c1ba8",
+        "marque": "Volkswagen",
+        "modele": "Golf",
+        "annee": 2019,
+        "km": 66500,
+        "prix": 15400,
+        "median": 21740,
+        "ecart_pct": -29.2,
+        "url": "https://www.autoscout24.de/angebote/volkswagen-golf-vii-lim-iq-drive-kameracarplayaccpdc-benzin-rot-660e6490-e183-4e69-a9a9-903792481d5a",
+        "ville": "Xanten"
       },
       {
-        "id": "2b0a933034123c02",
-        "marque": "Volvo",
-        "modele": "Xc40",
-        "annee": 2024,
-        "km": 29585,
-        "prix": 26950,
-        "median": 35990,
-        "ecart_pct": -25.1,
-        "url": "https://www.autoscout24.lu/offres/volvo-xc40-39-t2-129cv-bva-gps-cam-led-hayon-elec-opts-essence-rouge-38e045bb-7045-4f45-bc06-3ca7bff4ffff",
-        "ville": "Schifflange - Foetz"
+        "id": "d7f35a15e3e698b3",
+        "marque": "Hyundai",
+        "modele": "Tucson",
+        "annee": 2026,
+        "km": 5,
+        "prix": 28699,
+        "median": 39990,
+        "ecart_pct": -28.2,
+        "url": "https://www.autoscout24.de/angebote/hyundai-tucson-1-6-t-gdi-dct-navi-kamera-keyless-sitzhz-benzin-schwarz-dabc2a51-f10b-46a4-8706-e15057b1607b",
+        "ville": "Hohenwarsleben"
+      },
+      {
+        "id": "0e957cc3f2aadac1",
+        "marque": "Skoda",
+        "modele": "Octavia",
+        "annee": 2025,
+        "km": 16700,
+        "prix": 26740,
+        "median": 36990,
+        "ecart_pct": -27.7,
+        "url": "https://www.autoscout24.de/angebote/skoda-octavia-combi-selection-2-0-tdi-dsg-matrix-acc-led-diesel-blau-8af850e0-ab36-4d32-935b-b80660dbeed6",
+        "ville": "Hagen"
+      },
+      {
+        "id": "e9fbaf1aee411e4d",
+        "marque": "Hyundai",
+        "modele": "Tucson",
+        "annee": 2023,
+        "km": 22984,
+        "prix": 28990,
+        "median": 39990,
+        "ecart_pct": -27.5,
+        "url": "https://www.autoscout24.de/angebote/hyundai-tucson-tucson-1-6-turbo-48v-dct-prime-4wd-leder-panod-benzin-blau-be79a693-4a6b-45df-8647-764d1b56a58f",
+        "ville": "Bochum"
+      },
+      {
+        "id": "9bdc3746463ba437",
+        "marque": "Volkswagen",
+        "modele": "Golf",
+        "annee": 2020,
+        "km": 58129,
+        "prix": 23950,
+        "median": 32990,
+        "ecart_pct": -27.4,
+        "url": "https://www.autoscout24.de/angebote/volkswagen-golf-vii-gti-performance-2-0-tsi-dsg-panorama-klima-benzin-weiss-9741c57d-ce97-4155-bd16-ffb937b3e08e",
+        "ville": "Mönchengladbach"
+      },
+      {
+        "id": "9098e6ed5128a495",
+        "marque": "Toyota",
+        "modele": "Yaris Cross",
+        "annee": 2023,
+        "km": 28700,
+        "prix": 20990,
+        "median": 28650,
+        "ecart_pct": -26.7,
+        "url": "https://www.autoscout24.de/angebote/toyota-yaris-cross-1-5-hybrid-team-d-digital-led-assistenten-elektro-benzin-rot-b6478cde-f450-4984-b434-03cad32c0cf3",
+        "ville": "Nassenheide ( bei Berlin )"
       }
     ]
   }

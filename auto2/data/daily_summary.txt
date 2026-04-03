@@ -1,32 +1,32 @@
 ═══════════════════════════════════════════════════════
   AUTO-BOT LUXEMBOURG — Résumé du 2026-04-03
 ═══════════════════════════════════════════════════════
-  Annonces actives    : 1,438
-  Nouvelles aujourd'hui: 362
-  Baisses de prix (7j) : 25
+  Annonces actives    : 1,326
+  Nouvelles aujourd'hui: 389
+  Baisses de prix (7j) : 17
 
   TOP 5 OPPORTUNITÉS DU JOUR
   ─────────────────────────────────────────────────────
-  1. Sonstige Sonstige 2024 — 1 862 km — 10 950 €
+  1. Volkswagen Golf 2023 — 27 743 km — 21 550 €
+     Score: opp=59 deal=85 nego=10 | Bad Salzuflen
+     https://www.autoscout24.de/angebote/volkswagen-golf-life-1-0-etsi-dsg-benzin-schwarz-d2ab1d3c-67e3-4f84-a472-bd5b76a33476
+
+  2. Sonstige Sonstige 2024 — 1 862 km — 10 950 €
      Score: opp=58 deal=83 nego=10 | Alsdorf
      https://www.autoscout24.de/angebote/sonstige-sonstige-microlino-pioneer-faltdach-90km-h-177km-led-elektro-weiss-4f3ec0a3-5399-4308-83d6-49aaa84088cc
 
-  2. Hyundai I20 2025 — 20 827 km — 16 980 €
-     Score: opp=57 deal=82 nego=10 | Bad Dürkheim
-     https://www.autoscout24.de/angebote/hyundai-i20-1-2-select-funktions-paket-navi-benzin-weiss-fdf11283-9842-4549-a5a3-c2e7a5db0f9e
+  3. Opel Corsa 2023 — 22 600 km — 12 900 €
+     Score: opp=58 deal=83 nego=10 | Homburg
+     https://www.autoscout24.de/angebote/opel-corsa-f-1-2-edition-sitzheiz-tempomat-spurhalte-benzin-weiss-4973e8c0-c04f-4e17-9b0b-b21c77d08935
 
-  3. Hyundai Bayon 2025 — 9 200 km — 16 300 €
+  4. Dacia Sandero 2025 — 11 km — 14 450 €
+     Score: opp=58 deal=83 nego=10 | Pirmasens
+     https://www.autoscout24.de/angebote/dacia-sandero-iii-1-0-tce-90-essential-led-link-nba-pdc-sha-benzin-schwarz-b8befc60-40af-4493-9ace-bc63c27b31bd
+
+  5. Hyundai Bayon 2025 — 9 200 km — 16 300 €
      Score: opp=57 deal=82 nego=10 | Arnstadt
      https://www.autoscout24.de/angebote/hyundai-bayon-1-0-t-gdi-select-benzin-grau-07a0017b-986c-4769-9b11-728a8f53310b
 
-  4. Fiat 500E 2023 — 6 515 km — 16 979 €
-     Score: opp=56 deal=81 nego=10 | Elsdorf
-     https://www.autoscout24.de/angebote/fiat-500e-42-kwh-style-paket-komfort-allwetter-kamera-sitz-elektro-grau-804a0950-7c46-463f-8641-70373e209555
-
-  5. Opel Grandland 2025 — 29 720 km — 24 890 €
-     Score: opp=55 deal=79 nego=10 | Neustadt a. d. Donau
-     https://www.autoscout24.de/angebote/opel-grandland-1-2-edition-neues-modell-navi-led-kamera-shz-benzin-schwarz-85caa293-63c4-4349-826d-3f96ca2bbecd
-
 ═══════════════════════════════════════════════════════
-  Généré : 2026-04-03 08:52 | python3.9 dashboard_generator.py
+  Généré : 2026-04-03 09:02 | python3.9 dashboard_generator.py
 ═══════════════════════════════════════════════════════
