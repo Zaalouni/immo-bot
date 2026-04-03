@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Auto-Bot LU — Vendeurs</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0d1117">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="AutoBot LU">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <meta name="description" content="Analyse et scoring des vendeurs — Auto-Bot Luxembourg">
+  <meta name="robots" content="noindex,nofollow">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0d1117; --surface: #161b22; --surface2: #21262d;
+      --border: #30363d; --border2: #3d444e;
+      --txt: #e6edf3; --txt2: #8b949e; --txt3: #6e7681;
+      --accent: #388bfd; --accent-dim: rgba(56,139,253,.15);
+      --green: #3fb950; --green-dim: rgba(63,185,80,.15);
+      --amber: #d29922; --amber-dim: rgba(210,153,34,.15);
+      --red: #f85149; --red-dim: rgba(248,81,73,.15);
+      --gold: #e3b341; --purple: #bc8cff;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { background: var(--bg); color: var(--txt); font-family: 'Barlow', sans-serif; font-size: 14px; margin: 0; }
+    ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+    /* Navbar */
+    .navbar { background: var(--surface) !important; border-bottom: 1px solid var(--border); padding: 0 1rem; }
+    .navbar-brand { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 1.2rem; color: var(--txt) !important; }
+    .navbar-brand span { color: var(--accent); }
+    .navbar-toggler { border: 1px solid var(--border) !important; padding: 4px 8px; }
+    .navbar-toggler-icon { filter: invert(1); }
+    .navbar-collapse { background: var(--surface); }
+    .nav-link { color: var(--txt2) !important; font-size: 13px; font-weight: 500; padding: 12px 14px !important; transition: color .15s; }
+    .nav-link:hover { color: var(--txt) !important; }
+    .nav-link.active { color: var(--accent) !important; }
+
+    /* KPI */
+    .kpi-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 18px; text-align: center; }
+    .kpi-val { font-family: 'DM Mono', monospace; font-size: 2rem; font-weight: 500; line-height: 1; }
+    .kpi-label { font-size: .7rem; color: var(--txt3); text-transform: uppercase; letter-spacing: .05em; margin-top: 5px; }
+
+    /* Filters */
+    .filter-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+    .fp { background: var(--surface2); border: 1px solid var(--border); color: var(--txt2); font-size: 12px;
+          padding: 4px 12px; border-radius: 20px; cursor: pointer; transition: all .15s; white-space: nowrap; }
+    .fp.active, .fp:hover { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+
+    /* Table */
+    .tbl { width: 100%; border-collapse: collapse; }
+    .tbl thead th { background: var(--surface2); color: var(--txt3); font-size: 11px; text-transform: uppercase;
+                    letter-spacing: .05em; padding: 9px 12px; border-bottom: 1px solid var(--border);
+                    font-weight: 600; cursor: pointer; white-space: nowrap; user-select: none; }
+    .tbl thead th:hover { color: var(--txt); }
+    .tbl thead th.sorted-asc::after  { content: ' ↑'; color: var(--accent); }
+    .tbl thead th.sorted-desc::after { content: ' ↓'; color: var(--accent); }
+    .tbl tbody td { padding: 9px 12px; border-bottom: 1px solid var(--border); color: var(--txt); font-size: 13px; vertical-align: middle; }
+    .tbl tbody tr:last-child td { border-bottom: none; }
+    .tbl tbody tr:hover td { background: var(--accent-dim); }
+
+    /* Score bar */
+    .score-wrap { display: flex; align-items: center; gap: 8px; }
+    .score-bar { height: 4px; background: var(--border2); border-radius: 2px; flex: 1; min-width: 60px; }
+    .score-fill { height: 100%; border-radius: 2px; }
+    .score-num { font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500; min-width: 28px; text-align: right; }
+
+    /* Badges */
+    .badge-v { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 600; white-space: nowrap; }
+    .badge-top    { background: rgba(227,179,65,.15); color: var(--gold);   border: 1px solid rgba(227,179,65,.3); }
+    .badge-fiable { background: var(--green-dim);     color: var(--green);  border: 1px solid rgba(63,185,80,.3); }
+    .badge-gonfl  { background: var(--amber-dim);     color: var(--amber);  border: 1px solid rgba(210,153,34,.3); }
+    .badge-data   { background: var(--surface2);      color: var(--txt3);   border: 1px solid var(--border); }
+    .badge-std    { background: var(--surface2);      color: var(--txt2);   border: 1px solid var(--border); }
+    .badge-site   { background: var(--surface2); color: var(--txt2); border: 1px solid var(--border); font-size: 10px; padding: 2px 6px; border-radius: 4px; }
+
+    /* Écart marché */
+    .ecart-pos { color: var(--red); }
+    .ecart-neg { color: var(--green); }
+    .ecart-neu { color: var(--txt3); }
+
+    /* Prix mono */
+    .mono { font-family: 'DM Mono', monospace; }
+
+    /* Link */
+    .link-filter { color: var(--accent); text-decoration: none; font-size: 11px; }
+    .link-filter:hover { text-decoration: underline; }
+
+    /* Version */
+    #version-bar { font-size: 11px; color: var(--txt3); text-align: center; padding: 10px; margin-top: 8px; }
+
+    /* Empty */
+    .empty-state { text-align: center; color: var(--txt3); padding: 60px 0; }
+
+    /* Search input */
+    .search-input { background: var(--surface2); border: 1px solid var(--border); color: var(--txt);
+                    padding: 6px 12px; border-radius: 6px; font-size: 13px; width: 220px; outline: none; }
+    .search-input::placeholder { color: var(--txt3); }
+    .search-input:focus { border-color: var(--accent); }
+
+    /* Rotation badge */
+    .rot-badge { font-size: 11px; color: var(--txt3); }
+
+    .page-header { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1.1rem; color: var(--txt); }
+    .card-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg px-3">
+  <a class="navbar-brand" href="index.html"><span>◈</span> AUTO-BOT LU</a>
+  <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Menu navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navMenu">
+    <ul class="navbar-nav ms-auto flex-wrap">
+      <li class="nav-item"><a class="nav-link" href="index.html">Annonces</a></li>
+      <li class="nav-item"><a class="nav-link" href="deals.html">Deals</a></li>
+      <li class="nav-item"><a class="nav-link" href="opportunities.html">Opportunités</a></li>
+      <li class="nav-item"><a class="nav-link" href="rapport.html">Rapport</a></li>
+      <li class="nav-item"><a class="nav-link" href="watchlist.html">Watchlist</a></li>
+      <li class="nav-item"><a class="nav-link" href="alerts.html">Alertes</a></li>
+      <li class="nav-item"><a class="nav-link" href="map.html">Carte</a></li>
+      <li class="nav-item"><a class="nav-link" href="reviews.html">Avis</a></li>
+      <li class="nav-item"><a class="nav-link" href="market.html">Marché</a></li>
+      <li class="nav-item"><a class="nav-link" href="suv-hybrid.html">SUV Auto</a></li>
+      <li class="nav-item"><a class="nav-link" href="compare.html">Comparer</a></li>
+      <li class="nav-item"><a class="nav-link" href="budget.html">Budget</a></li>
+      <li class="nav-item"><a class="nav-link" href="top-models.html">Top Modèles</a></li>
+      <li class="nav-item"><a class="nav-link active" href="vendors.html">Vendeurs</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container-fluid mt-3 px-3 px-md-4">
+
+  <!-- En-tête -->
+  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+    <div class="page-header">Score Vendeurs <span id="nb-badge" style="font-size:.85rem;color:var(--txt3);font-weight:400"></span></div>
+    <small class="txt3" style="color:var(--txt3)">Calculé le <span id="date-calcul">—</span></small>
+  </div>
+
+  <!-- KPIs -->
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+      <div class="kpi-card" style="border-top:2px solid var(--gold)">
+        <div class="kpi-val" id="kpi-top" style="color:var(--gold)">—</div>
+        <div class="kpi-label">🏆 Top Vendeurs</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="kpi-card" style="border-top:2px solid var(--green)">
+        <div class="kpi-val" id="kpi-fiable" style="color:var(--green)">—</div>
+        <div class="kpi-label">✓ Fiables</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="kpi-card" style="border-top:2px solid var(--amber)">
+        <div class="kpi-val" id="kpi-gonfl" style="color:var(--amber)">—</div>
+        <div class="kpi-label">⚠ Prix gonflés</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="kpi-card" style="border-top:2px solid var(--accent)">
+        <div class="kpi-val" id="kpi-pros" style="color:var(--accent)">—</div>
+        <div class="kpi-label">Professionnels</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filtres + recherche -->
+  <div class="d-flex flex-wrap align-items-center gap-3 mb-3">
+    <div class="filter-bar" style="margin-bottom:0">
+      <span class="fp active" data-filter="all"     onclick="setFilter(this)">Tous</span>
+      <span class="fp"        data-filter="top"     onclick="setFilter(this)">🏆 Top</span>
+      <span class="fp"        data-filter="fiable"  onclick="setFilter(this)">✓ Fiables</span>
+      <span class="fp"        data-filter="gonfl"   onclick="setFilter(this)">⚠ Prix gonflés</span>
+      <span class="fp"        data-filter="pro"     onclick="setFilter(this)">Pros</span>
+      <span class="fp"        data-filter="part"    onclick="setFilter(this)">Particuliers</span>
+    </div>
+    <input class="search-input" id="search-input" placeholder="Rechercher un vendeur…" oninput="applyFilters()" />
+  </div>
+
+  <!-- Tableau -->
+  <div class="card-wrap mb-4" style="overflow-x:auto">
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th onclick="sortBy('rank')"          data-col="rank">Rang</th>
+          <th onclick="sortBy('vendeur_nom')"   data-col="vendeur_nom">Vendeur</th>
+          <th onclick="sortBy('vendor_score')"  data-col="vendor_score">Score</th>
+          <th onclick="sortBy('nb_actives')"    data-col="nb_actives">Annonces</th>
+          <th onclick="sortBy('prix_moyen')"    data-col="prix_moyen">Prix moyen</th>
+          <th onclick="sortBy('ecart_marche_pct')" data-col="ecart_marche_pct">Écart marché</th>
+          <th onclick="sortBy('deal_score_moyen')"  data-col="deal_score_moyen">Deal score</th>
+          <th onclick="sortBy('nb_disparus_30j')"   data-col="nb_disparus_30j">Vendus 30j</th>
+          <th onclick="sortBy('nb_baisses_prix')"   data-col="nb_baisses_prix">Baisses prix</th>
+          <th>Site</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="vendors-body"></tbody>
+    </table>
+    <div id="vendors-empty" class="empty-state" style="display:none">
+      <div style="font-size:3rem;opacity:.2">🏬</div>
+      <p class="mt-2">Aucun vendeur ne correspond à ce filtre.</p>
+    </div>
+  </div>
+
+  <div id="version-bar">Génération : <span id="v-time">—</span></div>
+
+</div>
+
+<script src="data/vendors.js"></script>
+<script src="data/version.js"></script>
+<script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});</script>
+
+<script>
+const data    = (typeof VENDORS !== 'undefined') ? VENDORS : {};
+const vendors = data.vendors || [];
+
+// KPIs
+document.getElementById('date-calcul').textContent = data.date_calcul || '—';
+document.getElementById('kpi-top').textContent    = data.nb_top    || 0;
+document.getElementById('kpi-fiable').textContent = data.nb_fiable || 0;
+document.getElementById('kpi-gonfl').textContent  = data.nb_prix_gonfles || 0;
+document.getElementById('kpi-pros').textContent   = data.nb_pros   || 0;
+document.getElementById('nb-badge').textContent   = vendors.length ? `— ${vendors.length} vendeurs` : '';
+
+// Add original rank
+vendors.forEach((v, i) => { v._rank = i + 1; });
+
+// ── Scoring helpers ────────────────────────────────────────────────────────
+function scoreColor(s) {
+  if (s === null || s === undefined) return 'var(--txt3)';
+  if (s >= 70) return 'var(--gold)';
+  if (s >= 50) return 'var(--green)';
+  if (s >= 35) return 'var(--amber)';
+  return 'var(--red)';
+}
+
+function badgeHtml(v) {
+  const b = v.badge || '—', l = v.badge_label || '';
+  if (b === '🏆') return `<span class="badge-v badge-top">${b} ${l}</span>`;
+  if (b === '✓')  return `<span class="badge-v badge-fiable">${b} ${l}</span>`;
+  if (b === '⚠')  return `<span class="badge-v badge-gonfl">${b} ${l}</span>`;
+  if (b === '~')  return `<span class="badge-v badge-data">${b} ${l}</span>`;
+  return `<span class="badge-v badge-std">— ${l}</span>`;
+}
+
+function ecartHtml(pct) {
+  if (pct === null || pct === undefined) return '<span class="ecart-neu">—</span>';
+  const sign = pct > 0 ? '+' : '';
+  const cls  = pct > 5 ? 'ecart-pos' : pct < -5 ? 'ecart-neg' : 'ecart-neu';
+  return `<span class="${cls}">${sign}${pct.toFixed(1)}%</span>`;
+}
+
+function fmtPrix(p) { return p ? p.toLocaleString('fr') + '\u202f€' : '—'; }
+
+function scoreBarHtml(score, color) {
+  const w = Math.min(score || 0, 100);
+  return `<div class="score-wrap">
+    <div class="score-bar"><div class="score-fill" style="width:${w}%;background:${color}"></div></div>
+    <span class="score-num" style="color:${color}">${Math.round(score || 0)}</span>
+  </div>`;
+}
+
+// ── Sort ───────────────────────────────────────────────────────────────────
+let sortCol = 'rank', sortDir = 1;
+
+function sortBy(col) {
+  if (sortCol === col) { sortDir *= -1; }
+  else { sortCol = col; sortDir = col === 'rank' ? 1 : -1; }
+  document.querySelectorAll('.tbl thead th').forEach(th => {
+    th.classList.remove('sorted-asc', 'sorted-desc');
+    if (th.dataset.col === col) th.classList.add(sortDir === 1 ? 'sorted-asc' : 'sorted-desc');
+  });
+  applyFilters();
+}
+
+// ── Filters ────────────────────────────────────────────────────────────────
+let activeFilter = 'all';
+
+function setFilter(el) {
+  document.querySelectorAll('.fp').forEach(f => f.classList.remove('active'));
+  el.classList.add('active');
+  activeFilter = el.dataset.filter;
+  applyFilters();
+}
+
+function matchFilter(v) {
+  const q = (document.getElementById('search-input').value || '').toLowerCase();
+  if (q && !(v.vendeur_nom || '').toLowerCase().includes(q)) return false;
+  if (activeFilter === 'top')    return v.badge === '🏆';
+  if (activeFilter === 'fiable') return v.badge === '✓';
+  if (activeFilter === 'gonfl')  return v.badge === '⚠';
+  if (activeFilter === 'pro')    return ['pro','professionnel','concessionnaire'].includes((v.vendeur_type||'').toLowerCase());
+  if (activeFilter === 'part')   return (v.vendeur_type||'').toLowerCase() === 'particulier';
+  return true;
+}
+
+function applyFilters() {
+  const filtered = vendors.filter(matchFilter);
+
+  // Sort
+  filtered.sort((a, b) => {
+    let va = a[sortCol === 'rank' ? '_rank' : sortCol];
+    let vb = b[sortCol === 'rank' ? '_rank' : sortCol];
+    if (va === null || va === undefined) va = sortDir === 1 ? Infinity : -Infinity;
+    if (vb === null || vb === undefined) vb = sortDir === 1 ? Infinity : -Infinity;
+    return (va < vb ? -1 : va > vb ? 1 : 0) * sortDir;
+  });
+
+  renderTable(filtered);
+}
+
+function renderTable(list) {
+  const tbody = document.getElementById('vendors-body');
+  const empty = document.getElementById('vendors-empty');
+
+  if (!list.length) {
+    tbody.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  tbody.innerHTML = list.map(v => {
+    const sc     = v.vendor_score || 0;
+    const scCol  = scoreColor(sc);
+    const ds     = v.deal_score_moyen;
+    const dsCol  = scoreColor(ds);
+
+    // Rotation : annonces disparues / total visibles
+    const totalVu = (v.nb_actives || 0) + (v.nb_disparus_30j || 0);
+    const rotPct  = totalVu > 0 ? Math.round((v.nb_disparus_30j || 0) / totalVu * 100) : 0;
+    const rotHtml = v.nb_disparus_30j
+      ? `${v.nb_disparus_30j} <span class="rot-badge">(${rotPct}%)</span>`
+      : '<span style="color:var(--txt3)">0</span>';
+
+    // Lien filtrer index.html par vendeur
+    const filterUrl = `index.html#vendeur=${encodeURIComponent(v.vendeur_nom || '')}`;
+
+    return `<tr>
+      <td class="mono" style="color:var(--txt3);font-size:12px">#${v._rank}</td>
+      <td>
+        <div style="font-weight:600;font-size:13px">${v.vendeur_nom || '—'}</div>
+        <div style="margin-top:3px">${badgeHtml(v)}</div>
+      </td>
+      <td style="min-width:120px">${scoreBarHtml(sc, scCol)}</td>
+      <td class="mono">${v.nb_actives || 0}</td>
+      <td class="mono">${fmtPrix(v.prix_moyen)}</td>
+      <td>${ecartHtml(v.ecart_marche_pct)}</td>
+      <td>${ds !== null && ds !== undefined
+          ? scoreBarHtml(ds, dsCol)
+          : '<span style="color:var(--txt3)">—</span>'}</td>
+      <td>${rotHtml}</td>
+      <td class="mono">${v.nb_baisses_prix || 0}</td>
+      <td><span class="badge-site">${v.site || '—'}</span></td>
+      <td>
+        <a href="${filterUrl}" class="link-filter" title="Voir ses annonces">→ Annonces</a>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+// Init
+applyFilters();
+
+if (typeof VERSION !== 'undefined') {
+  document.getElementById('v-time').textContent = VERSION.generated_date + ' ' + VERSION.generated_time + ' · v' + VERSION.bot_version;
+}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

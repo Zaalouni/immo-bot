@@ -118,6 +118,7 @@
     <ul class="navbar-nav ms-auto flex-wrap">
       <li class="nav-item"><a class="nav-link" href="index.html">Annonces</a></li>
       <li class="nav-item"><a class="nav-link" href="deals.html">Deals</a></li>
+      <li class="nav-item"><a class="nav-link" href="opportunities.html">Opportunités</a></li>
       <li class="nav-item"><a class="nav-link" href="rapport.html">Rapport</a></li>
       <li class="nav-item"><a class="nav-link" href="watchlist.html">Watchlist</a></li>
       <li class="nav-item"><a class="nav-link" href="alerts.html">Alertes</a></li>
@@ -203,6 +204,27 @@
       </div>
     </div>
 
+    <!-- Avis modèles -->
+    <div class="row g-3 mb-4" id="reviews-section" style="display:none">
+      <div class="col-12">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem;text-transform:uppercase;letter-spacing:.04em;color:var(--txt2);margin-bottom:14px;">Avis & fiabilité des modèles</div>
+          <div class="row g-3" id="reviews-body"></div>
+          <div id="reviews-empty" style="display:none;font-size:13px;color:var(--txt3);padding:4px 0;">Aucun avis disponible pour ces modèles.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats vendeurs -->
+    <div class="row g-3 mb-4" id="vendors-section" style="display:none">
+      <div class="col-12">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem;text-transform:uppercase;letter-spacing:.04em;color:var(--txt2);margin-bottom:14px;">Score & fiabilité des vendeurs</div>
+          <div class="row g-3" id="vendors-compare-body"></div>
+        </div>
+      </div>
+    </div>
+
     <!-- Verdict -->
     <div class="verdict-card">
       <div class="verdict-title">Verdict</div>
@@ -225,6 +247,8 @@
 <script src="data/listings.js"></script>
 <script src="data/version.js"></script>
 <script src="data/price_history.js"></script>
+<script src="data/reviews.js"></script>
+<script src="data/vendors.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.0/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -261,6 +285,14 @@ function fillSelect(selId) {
 
 fillSelect('select-a');
 fillSelect('select-b');
+
+// Pré-remplir depuis URL params (?a=ID1&b=ID2)
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const idA = params.get('a'), idB = params.get('b');
+  if (idA) document.getElementById('select-a').value = idA;
+  if (idB) document.getElementById('select-b').value = idB;
+})();
 
 $(document).ready(function() {
   $('#select-a, #select-b').select2({ placeholder: '— Choisir une annonce —', allowClear: true });
@@ -380,6 +412,12 @@ function renderCompare() {
 
   // ── Sparkline historique prix ──────────────────────────────────────────────
   renderHistoryChart(idA, idB, titreA, titreB);
+
+  // ── Avis modèles ──────────────────────────────────────────────────────────
+  renderReviews(a, b);
+
+  // ── Stats vendeurs ────────────────────────────────────────────────────────
+  renderVendorCompare(a, b);
 }
 
 let _histChart = null;
@@ -435,6 +473,198 @@ function renderHistoryChart(idA, idB, titreA, titreB) {
       }
     }
   });
+}
+
+function renderReviews(a, b) {
+  const section   = document.getElementById('reviews-section');
+  const body      = document.getElementById('reviews-body');
+  const emptyEl   = document.getElementById('reviews-empty');
+  const allReviews = (typeof REVIEWS !== 'undefined') ? (REVIEWS.reviews || []) : [];
+
+  function findReview(listing) {
+    if (!listing) return null;
+    const m = (listing.marque_norm || listing.marque || '').toLowerCase();
+    const mo = (listing.modele_norm || listing.modele || '').toLowerCase();
+    return allReviews.find(r =>
+      r.marque.toLowerCase() === m &&
+      (r.modele.toLowerCase() === mo || mo.startsWith(r.modele.toLowerCase()))
+    ) || null;
+  }
+
+  const rA = findReview(a), rB = findReview(b);
+  section.style.display = 'block';
+
+  if (!rA && !rB) {
+    body.innerHTML = '';
+    emptyEl.style.display = 'block';
+    return;
+  }
+  emptyEl.style.display = 'none';
+
+  function noteColor(n) {
+    if (!n) return 'var(--txt3)';
+    if (n >= 8) return 'var(--green)';
+    if (n >= 6) return 'var(--amber)';
+    return 'var(--red)';
+  }
+
+  function reviewCard(r, titre) {
+    if (!r) return `
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:14px;height:100%">
+        <div style="font-size:12px;color:var(--txt3);font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px">${titre}</div>
+        <div style="color:var(--txt3);font-size:13px">Aucun avis disponible pour ce modèle.</div>
+      </div>`;
+
+    const nc = noteColor(r.note_globale);
+    const nf = noteColor(r.note_fiabilite);
+    const probs = (r.problemes_connus || []).slice(0,3).map(p => `<li style="margin-bottom:3px">${p}</li>`).join('');
+    const risks = (r.risques_achat || []).slice(0,2).map(p => `<li style="margin-bottom:3px">${p}</li>`).join('');
+    const forts = (r.points_forts || []).slice(0,2).map(p => `<li style="margin-bottom:3px">${p}</li>`).join('');
+    const coutColor = r.cout_entretien === 'Bas' ? 'var(--green)' : r.cout_entretien === 'Élevé' ? 'var(--red)' : 'var(--amber)';
+
+    return `
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:14px;height:100%">
+        <div style="font-size:12px;color:var(--txt3);font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px">${titre}</div>
+        <div style="font-weight:700;font-size:15px;margin-bottom:2px">${r.marque} ${r.modele}</div>
+        <div style="font-size:11px;color:var(--txt3);margin-bottom:12px">${r.annee_debut}–${r.annee_fin||'…'}</div>
+
+        <div class="d-flex gap-3 mb-10" style="margin-bottom:10px">
+          <div style="text-align:center">
+            <div style="font-size:1.6rem;font-family:'DM Mono',monospace;font-weight:500;color:${nc};line-height:1">${r.note_globale||'—'}</div>
+            <div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:.04em">Note globale</div>
+          </div>
+          <div style="text-align:center">
+            <div style="font-size:1.6rem;font-family:'DM Mono',monospace;font-weight:500;color:${nf};line-height:1">${r.note_fiabilite||'—'}</div>
+            <div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:.04em">Fiabilité</div>
+          </div>
+          <div style="text-align:center;flex:1">
+            <div style="font-size:.9rem;font-weight:600;color:${coutColor};line-height:1.2">${r.cout_entretien||'—'}</div>
+            <div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:.04em">Entretien</div>
+          </div>
+        </div>
+
+        ${r.fiabilite_resumee ? `<div style="font-size:12px;color:var(--txt2);font-style:italic;margin-bottom:10px;line-height:1.5">"${r.fiabilite_resumee}"</div>` : ''}
+
+        ${probs ? `<div style="font-size:11px;color:var(--txt3);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px">Problèmes connus</div>
+        <ul style="font-size:12px;color:var(--red);padding-left:18px;margin-bottom:10px">${probs}</ul>` : ''}
+
+        ${forts ? `<div style="font-size:11px;color:var(--txt3);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px">Points forts</div>
+        <ul style="font-size:12px;color:var(--green);padding-left:18px;margin-bottom:10px">${forts}</ul>` : ''}
+
+        ${risks ? `<div style="font-size:11px;color:var(--amber);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px">⚠ Risques à l'achat</div>
+        <ul style="font-size:12px;color:var(--amber);padding-left:18px;margin:0">${risks}</ul>` : ''}
+      </div>`;
+  }
+
+  const titreA = `${a.marque_norm||a.marque||'?'} ${a.modele_norm||a.modele||''}`.trim();
+  const titreB = `${b.marque_norm||b.marque||'?'} ${b.modele_norm||b.modele||''}`.trim();
+  body.innerHTML = `
+    <div class="col-md-6">${reviewCard(rA, titreA)}</div>
+    <div class="col-md-6">${reviewCard(rB, titreB)}</div>
+  `;
+}
+
+function renderVendorCompare(a, b) {
+  const section = document.getElementById('vendors-section');
+  const body    = document.getElementById('vendors-compare-body');
+  const allV    = (typeof VENDORS !== 'undefined') ? (VENDORS.vendors || []) : [];
+  const vmap    = {};
+  allV.forEach(v => { if (v.vendeur_nom) vmap[v.vendeur_nom] = v; });
+
+  const vA = a.vendeur_nom ? vmap[a.vendeur_nom] : null;
+  const vB = b.vendeur_nom ? vmap[b.vendeur_nom] : null;
+
+  section.style.display = 'block';
+
+  function scoreColor(s) {
+    if (!s && s !== 0) return 'var(--txt3)';
+    if (s >= 70) return 'var(--gold)';
+    if (s >= 50) return 'var(--green)';
+    if (s >= 35) return 'var(--amber)';
+    return 'var(--red)';
+  }
+
+  function badgeHtml(badge, label) {
+    const colors = { '🏆': 'var(--gold)', '✓': 'var(--green)', '⚠': 'var(--amber)' };
+    const col = colors[badge] || 'var(--txt3)';
+    return `<span style="font-size:12px;font-weight:600;color:${col}">${badge} ${label||''}</span>`;
+  }
+
+  function vendorCard(listing, v, titre) {
+    const nom  = listing.vendeur_nom || '—';
+    const type = listing.vendeur_type || '—';
+    if (!v) return `
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:14px;height:100%">
+        <div style="font-size:12px;color:var(--txt3);font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px">${titre}</div>
+        <div style="font-weight:600;margin-bottom:4px">${nom}</div>
+        <div style="font-size:12px;color:var(--txt3)">Type : ${type}</div>
+        <div style="font-size:12px;color:var(--txt3);margin-top:6px">Aucune donnée vendeur disponible.</div>
+      </div>`;
+
+    const sc    = v.vendor_score || 0;
+    const col   = scoreColor(sc);
+    const ecart = v.ecart_marche_pct;
+    const ecartStr = ecart !== null && ecart !== undefined
+      ? `<span style="color:${ecart > 5 ? 'var(--red)' : ecart < -5 ? 'var(--green)' : 'var(--txt3)'}">${ecart > 0 ? '+' : ''}${ecart.toFixed(1)}%</span>`
+      : '—';
+    const rotTot = (v.nb_actives||0) + (v.nb_disparus_30j||0);
+    const rotPct = rotTot > 0 ? Math.round((v.nb_disparus_30j||0) / rotTot * 100) : 0;
+
+    return `
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:14px;height:100%">
+        <div style="font-size:12px;color:var(--txt3);font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px">${titre}</div>
+        <div style="font-weight:700;font-size:14px;margin-bottom:2px">${nom}</div>
+        <div style="margin-bottom:10px">${badgeHtml(v.badge, v.badge_label)}</div>
+
+        <div class="d-flex gap-3 mb-2" style="margin-bottom:10px">
+          <div style="text-align:center">
+            <div style="font-size:1.5rem;font-family:'DM Mono',monospace;font-weight:500;color:${col};line-height:1">${Math.round(sc)}</div>
+            <div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:.04em">Score</div>
+          </div>
+          <div style="text-align:center">
+            <div style="font-size:1.2rem;font-family:'DM Mono',monospace;font-weight:500;line-height:1">${v.nb_actives||0}</div>
+            <div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:.04em">Annonces</div>
+          </div>
+          <div style="text-align:center">
+            <div style="font-size:1.2rem;font-family:'DM Mono',monospace;font-weight:500;line-height:1">${rotPct}%</div>
+            <div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:.04em">Rotation</div>
+          </div>
+        </div>
+
+        <table style="width:100%;font-size:12px;border-collapse:collapse">
+          <tr>
+            <td style="color:var(--txt3);padding:3px 0">Prix moyen</td>
+            <td style="font-family:'DM Mono',monospace;text-align:right">${v.prix_moyen ? v.prix_moyen.toLocaleString('fr')+'&nbsp;€' : '—'}</td>
+          </tr>
+          <tr>
+            <td style="color:var(--txt3);padding:3px 0">Écart marché</td>
+            <td style="text-align:right">${ecartStr}</td>
+          </tr>
+          <tr>
+            <td style="color:var(--txt3);padding:3px 0">Deal score moy.</td>
+            <td style="font-family:'DM Mono',monospace;text-align:right">${v.deal_score_moyen !== null && v.deal_score_moyen !== undefined ? v.deal_score_moyen : '—'}</td>
+          </tr>
+          <tr>
+            <td style="color:var(--txt3);padding:3px 0">Baisses de prix</td>
+            <td style="font-family:'DM Mono',monospace;text-align:right">${v.nb_baisses_prix||0}</td>
+          </tr>
+          <tr>
+            <td style="color:var(--txt3);padding:3px 0">Vendus 30j</td>
+            <td style="font-family:'DM Mono',monospace;text-align:right">${v.nb_disparus_30j||0}</td>
+          </tr>
+        </table>
+        <div style="margin-top:10px">
+          <a href="vendors.html" style="color:var(--accent);font-size:11px;text-decoration:none">→ Voir tous les vendeurs</a>
+        </div>
+      </div>`;
+  }
+
+  const titreA = `${a.marque_norm||a.marque||'?'} ${a.modele_norm||a.modele||''}`.trim();
+  const titreB = `${b.marque_norm||b.marque||'?'} ${b.modele_norm||b.modele||''}`.trim();
+  body.innerHTML = `
+    <div class="col-md-6">${vendorCard(a, vA, titreA)}</div>
+    <div class="col-md-6">${vendorCard(b, vB, titreB)}</div>
+  `;
 }
 
 if (typeof VERSION !== 'undefined') {

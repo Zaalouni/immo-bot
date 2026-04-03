@@ -114,6 +114,7 @@
     <ul class="navbar-nav ms-auto flex-wrap">
       <li class="nav-item"><a class="nav-link" href="index.html">Annonces</a></li>
       <li class="nav-item"><a class="nav-link" href="deals.html">Deals</a></li>
+      <li class="nav-item"><a class="nav-link" href="opportunities.html">Opportunités</a></li>
       <li class="nav-item"><a class="nav-link" href="rapport.html">Rapport</a></li>
       <li class="nav-item"><a class="nav-link active" href="watchlist.html">Watchlist</a></li>
       <li class="nav-item"><a class="nav-link" href="alerts.html">Alertes</a></li>
@@ -264,7 +265,10 @@
           <td><span class="badge-site-sm">${l.site || '—'}</span></td>
           <td>${dealBadge(l.deal_score)}</td>
           <td class="txt3 prix-mono" style="font-size:11px">${formatDate(l.date_premiere_vue)}</td>
-          <td><a href="${l.url || '#'}" target="_blank" class="btn-voir">→</a></td>
+          <td style="white-space:nowrap;">
+            <a href="${l.url || '#'}" target="_blank" class="btn-voir">→</a>
+            ${l.id ? `<a href="compare.html?a=${l.id}" title="Pré-remplir dans le comparateur" style="margin-left:4px;color:var(--txt3);font-size:11px;text-decoration:none;">⇌</a>` : ''}
+          </td>
         </tr>
       `;
     }).join('');

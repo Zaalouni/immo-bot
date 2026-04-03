@@ -136,6 +136,7 @@
     <ul class="navbar-nav ms-auto">
       <li class="nav-item"><a class="nav-link active" href="index.html">Annonces</a></li>
       <li class="nav-item"><a class="nav-link" href="deals.html">Deals</a></li>
+      <li class="nav-item"><a class="nav-link" href="opportunities.html">Opportunités</a></li>
       <li class="nav-item"><a class="nav-link" href="rapport.html">Rapport</a></li>
       <li class="nav-item"><a class="nav-link" href="watchlist.html">Watchlist</a></li>
       <li class="nav-item"><a class="nav-link" href="alerts.html">Alertes</a></li>
@@ -292,11 +293,50 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
 <script src="data/listings.js"></script>
+<script src="data/reviews.js"></script>
+<script src="data/vendors.js"></script>
 <script src="data/stats.js"></script>
 <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});</script>
 <script>
   const listings = typeof LISTINGS !== 'undefined' ? LISTINGS : [];
   const stats    = typeof STATS    !== 'undefined' ? STATS    : {};
+
+  // Index fiabilité : marque|modele → note_fiabilite (depuis reviews.js)
+  const reviewsMap = {};
+  if (typeof REVIEWS !== 'undefined') {
+    (REVIEWS.reviews || []).forEach(r => {
+      const key = `${(r.marque||'').toLowerCase()}|${(r.modele||'').toLowerCase()}`;
+      reviewsMap[key] = r.note_fiabilite;
+    });
+  }
+  // Index score vendeur : vendeur_nom → {vendor_score, badge, badge_label}
+  const vendorMap = {};
+  if (typeof VENDORS !== 'undefined') {
+    (VENDORS.vendors || []).forEach(v => {
+      if (v.vendeur_nom) vendorMap[v.vendeur_nom] = v;
+    });
+  }
+  function vendorBadge(l) {
+    const nom = l.vendeur_nom;
+    if (!nom) return l.vendeur_type === 'particulier'
+      ? `<span style="color:var(--amber);font-size:11px">Part.</span>`
+      : `<span style="color:var(--txt3);font-size:11px">Pro</span>`;
+    const v = vendorMap[nom];
+    if (!v) return `<span style="color:var(--txt3);font-size:11px" title="${nom}">${l.vendeur_type === 'particulier' ? 'Part.' : 'Pro'}</span>`;
+    const b = v.badge || '—';
+    const colors = { '🏆': 'var(--gold)', '✓': 'var(--green)', '⚠': 'var(--amber)', '~': 'var(--txt3)', '—': 'var(--txt3)' };
+    const col = colors[b] || 'var(--txt3)';
+    return `<a href="vendors.html" title="${nom} — ${v.badge_label||''} (score: ${Math.round(v.vendor_score||0)})"
+      style="color:${col};font-size:11px;text-decoration:none;white-space:nowrap">${b} ${nom.length > 18 ? nom.slice(0,16)+'…' : nom}</a>`;
+  }
+
+  function fiabBadge(l) {
+    const key = `${(l.marque_norm||l.marque||'').toLowerCase()}|${(l.modele_norm||l.modele||'').toLowerCase()}`;
+    const note = reviewsMap[key];
+    if (!note) return '';
+    const color = note >= 8 ? 'var(--green)' : note >= 6 ? 'var(--amber)' : 'var(--red)';
+    return `<span title="Fiabilité ${note}/10" style="margin-left:4px;font-size:9px;font-weight:700;color:${color};background:rgba(0,0,0,.3);padding:1px 4px;border-radius:4px;vertical-align:middle;">★${note}</span>`;
+  }
   let dtTable = null;
   const CHART_COLORS = ['#388bfd','#3fb950','#d29922','#f85149','#bc8cff','#e3b341','#0dcaf0','#fd7e14','#6ea8fe','#a3cfbb'];
 
@@ -402,12 +442,10 @@
       const ctBadge  = l.controle_technique
         ? `<span style="color:var(--green);font-family:'DM Mono',monospace;font-size:12px">${l.controle_technique}</span>`
         : `<span style="color:var(--border);font-size:11px">—</span>`;
-      const vBadge   = l.vendeur_type === 'particulier'
-        ? `<span style="color:var(--amber);font-size:11px">Part.</span>`
-        : `<span style="color:var(--muted);font-size:11px">Pro</span>`;
+      const vBadge = vendorBadge(l);
       tr.innerHTML = `
         <td>
-          <a href="${l.url||'#'}" target="_blank" class="listing-link">${l.marque_norm||l.marque||'—'} ${l.modele_norm||l.modele||''}</a>
+          <a href="${l.url||'#'}" target="_blank" class="listing-link">${l.marque_norm||l.marque||'—'} ${l.modele_norm||l.modele||''}</a>${fiabBadge(l)}
           <div class="version-norm">${l.version_norm||l.version||''}</div>
         </td>
         <td style="font-family:'DM Mono',monospace">${l.annee||'—'}</td>

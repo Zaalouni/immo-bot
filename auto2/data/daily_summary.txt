@@ -1,0 +1,32 @@
+═══════════════════════════════════════════════════════
+  AUTO-BOT LUXEMBOURG — Résumé du 2026-04-03
+═══════════════════════════════════════════════════════
+  Annonces actives    : 1,485
+  Nouvelles aujourd'hui: 216
+  Baisses de prix (7j) : 25
+
+  TOP 5 OPPORTUNITÉS DU JOUR
+  ─────────────────────────────────────────────────────
+  1. Dacia Spring 2023 — 18 484 km — 11 990 €
+     Score: opp=58 deal=83 nego=10 | Unterschleißheim
+     https://www.autoscout24.de/angebote/dacia-spring-electric-65-extreme-elektro-blau-be1c0ed9-78eb-486c-af57-8b3a065e4fdb
+
+  2. Hyundai Tucson 2025 — 13 000 km — 28 990 €
+     Score: opp=57 deal=82 nego=10 | Moers
+     https://www.autoscout24.de/angebote/hyundai-tucson-select-1-6-benzin-bluetooth-navi-led-klima-benzin-schwarz-0a7c4ac0-2d65-46fb-9334-68cd7b4b345f
+
+  3. Fiat Panda 2024 — 9 900 km — 12 290 €
+     Score: opp=57 deal=82 nego=10 | Aachen
+     https://www.autoscout24.de/angebote/fiat-panda-mild-hybrid-city-paket-cinema-schwarz-benzin-schwarz-e6d8d117-443e-42c2-9fc6-2c27a0bbee9e
+
+  4. Toyota Yaris Cross 2023 — 28 700 km — 20 990 €
+     Score: opp=56 deal=80 nego=10 | Nassenheide ( bei Berlin )
+     https://www.autoscout24.de/angebote/toyota-yaris-cross-1-5-hybrid-team-d-digital-led-assistenten-elektro-benzin-rot-b6478cde-f450-4984-b434-03cad32c0cf3
+
+  5. BYD Dolphin Surf 2025 — 2 219 km — 20 350 €
+     Score: opp=56 deal=80 nego=10 | Düsseldorf
+     https://www.autoscout24.de/angebote/byd-dolphin-surf-boost-navi-kamera-leder-elektro-weiss-d5b5edec-3f18-4809-858b-18c267ba7a59
+
+═══════════════════════════════════════════════════════
+  Généré : 2026-04-03 08:20 | python3.9 dashboard_generator.py
+═══════════════════════════════════════════════════════

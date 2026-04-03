@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Auto-Bot LU — Top Opportunités</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0d1117">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="AutoBot LU">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <meta name="description" content="Top Opportunités d'achat — Auto-Bot Luxembourg">
+  <meta name="robots" content="noindex,nofollow">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0d1117; --surface: #161b22; --surface2: #21262d;
+      --border: #30363d; --border2: #3d444e;
+      --txt: #e6edf3; --txt2: #8b949e; --txt3: #6e7681;
+      --accent: #388bfd; --accent-dim: rgba(56,139,253,.15);
+      --green: #3fb950; --green-dim: rgba(63,185,80,.15);
+      --amber: #d29922; --amber-dim: rgba(210,153,34,.15);
+      --red: #f85149; --red-dim: rgba(248,81,73,.15);
+      --purple: #bc8cff; --purple-dim: rgba(188,140,255,.15);
+      --gold: #e3b341;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--txt); font-family: 'Barlow', sans-serif; font-size: 14px; margin: 0; }
+    ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+    .navbar { background: var(--surface) !important; border-bottom: 1px solid var(--border); padding: 0 1rem; }
+    .navbar-brand { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 1.2rem; color: var(--txt) !important; }
+    .navbar-brand span { color: var(--accent); }
+    .navbar-toggler { border: 1px solid var(--border) !important; padding: 4px 8px; }
+    .navbar-toggler-icon { filter: invert(1); }
+    .navbar-collapse { background: var(--surface); }
+    .nav-link { color: var(--txt2) !important; font-size: 13px; font-weight: 500; padding: 12px 14px !important; transition: color .15s; }
+    .nav-link:hover { color: var(--txt) !important; }
+    .nav-link.active { color: var(--accent) !important; }
+
+    /* KPI */
+    .kpi-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 18px; text-align: center; }
+    .kpi-card.kpi-green  { border-top: 2px solid var(--green); }
+    .kpi-card.kpi-amber  { border-top: 2px solid var(--amber); }
+    .kpi-card.kpi-purple { border-top: 2px solid var(--purple); }
+    .kpi-card.kpi-accent { border-top: 2px solid var(--accent); }
+    .kpi-val   { font-family: 'DM Mono', monospace; font-size: 2rem; font-weight: 500; line-height: 1; }
+    .kpi-green  .kpi-val { color: var(--green); }
+    .kpi-amber  .kpi-val { color: var(--amber); }
+    .kpi-purple .kpi-val { color: var(--purple); }
+    .kpi-accent .kpi-val { color: var(--accent); }
+    .kpi-label { font-size: .72rem; color: var(--txt3); text-transform: uppercase; letter-spacing: .05em; margin-top: 5px; }
+
+    /* Section */
+    .section-header { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1rem; letter-spacing: .03em; color: var(--txt); border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 16px; text-transform: uppercase; }
+    .section-header span { font-size: .75rem; color: var(--txt3); font-family: 'Barlow', sans-serif; font-weight: 400; margin-left: 8px; text-transform: none; }
+
+    /* Opportunité card */
+    .opp-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+      padding: 16px 18px; margin-bottom: 12px; transition: border-color .15s;
+      position: relative; overflow: hidden;
+    }
+    .opp-card:hover { border-color: var(--border2); }
+    .opp-card.rank-1 { border-left: 3px solid var(--gold); }
+    .opp-card.rank-2 { border-left: 3px solid #9a9a9a; }
+    .opp-card.rank-3 { border-left: 3px solid #c97c37; }
+    .opp-card.is-new::after {
+      content: 'NOUVEAU';
+      position: absolute; top: 10px; right: 14px;
+      font-size: 9px; font-weight: 800; letter-spacing: .08em;
+      background: var(--green-dim); color: var(--green);
+      padding: 2px 7px; border-radius: 8px;
+    }
+    .opp-rank { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 2.2rem; color: var(--border2); line-height: 1; min-width: 36px; }
+    .opp-rank.gold   { color: var(--gold); }
+    .opp-rank.silver { color: #9a9a9a; }
+    .opp-rank.bronze { color: #c97c37; }
+    .opp-titre { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1.1rem; }
+    .opp-meta  { font-size: 12px; color: var(--txt2); margin-top: 2px; }
+    .opp-prix  { font-family: 'DM Mono', monospace; font-size: 1.3rem; font-weight: 500; color: var(--amber); }
+    .score-pill { display: inline-flex; flex-direction: column; align-items: center; padding: 4px 10px; border-radius: 8px; font-family: 'DM Mono', monospace; }
+    .score-pill .sp-val { font-size: 1rem; font-weight: 600; line-height: 1.1; }
+    .score-pill .sp-lbl { font-size: 9px; text-transform: uppercase; letter-spacing: .05em; margin-top: 1px; }
+    .sp-opp   { background: var(--accent-dim); color: var(--accent); }
+    .sp-deal  { background: var(--green-dim);  color: var(--green);  }
+    .sp-nego  { background: var(--amber-dim);  color: var(--amber);  }
+    .score-bar-wrap { flex: 1; padding: 0 4px; }
+    .score-bar { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; margin-top: 4px; }
+    .score-fill { height: 100%; border-radius: 2px; }
+    .btn-voir { color: var(--accent); text-decoration: none; font-size: 12px; font-weight: 600; padding: 4px 12px; border: 1px solid var(--accent-dim); border-radius: 6px; transition: all .15s; }
+    .btn-voir:hover { background: var(--accent-dim); }
+    .btn-compare { color: var(--txt2); text-decoration: none; font-size: 12px; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px; transition: all .15s; margin-left: 6px; }
+    .btn-compare:hover { color: var(--txt); border-color: var(--txt3); }
+    .badge-site { font-size: 10px; font-weight: 700; text-transform: uppercase; }
+    .badge-site.autoscout24 { color: #388bfd; }
+    .badge-site.autopolis   { color: #3fb950; }
+    .badge-site.luxauto     { color: #d29922; }
+
+    /* Filtre */
+    .filter-pill { padding: 4px 12px; border-radius: 14px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: var(--surface2); color: var(--txt2); transition: all .15s; }
+    .filter-pill.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .filter-pill:hover:not(.active) { border-color: var(--txt3); color: var(--txt); }
+
+    .version-footer { font-size: 11px; color: var(--txt3); text-align: center; padding: 20px 0 30px; font-family: 'DM Mono', monospace; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg">
+  <a class="navbar-brand" href="index.html"><span>◈</span> AUTO-BOT LU</a>
+  <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navMenu">
+    <ul class="navbar-nav ms-auto">
+      <li class="nav-item"><a class="nav-link" href="index.html">Annonces</a></li>
+      <li class="nav-item"><a class="nav-link" href="deals.html">Deals</a></li>
+      <li class="nav-item"><a class="nav-link active" href="opportunities.html">Opportunités</a></li>
+      <li class="nav-item"><a class="nav-link" href="rapport.html">Rapport</a></li>
+      <li class="nav-item"><a class="nav-link" href="watchlist.html">Watchlist</a></li>
+      <li class="nav-item"><a class="nav-link" href="alerts.html">Alertes</a></li>
+      <li class="nav-item"><a class="nav-link" href="map.html">Carte</a></li>
+      <li class="nav-item"><a class="nav-link" href="reviews.html">Avis</a></li>
+      <li class="nav-item"><a class="nav-link" href="market.html">Marché</a></li>
+      <li class="nav-item"><a class="nav-link" href="suv-hybrid.html">SUV Auto</a></li>
+      <li class="nav-item"><a class="nav-link" href="compare.html">Comparer</a></li>
+      <li class="nav-item"><a class="nav-link" href="budget.html">Budget</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container-fluid p-3" style="max-width:900px">
+
+  <!-- En-tête -->
+  <div class="d-flex align-items-start justify-content-between mb-3">
+    <div>
+      <h1 style="font-family:'Barlow Condensed',sans-serif;font-size:1.7rem;font-weight:800;margin:0;">
+        Top Opportunités d'achat
+      </h1>
+      <div style="font-size:13px;color:var(--txt2);margin-top:4px;">
+        Classées par score opportunité = deal×0.65 + négociation×0.35
+      </div>
+      <div id="date-label" style="font-size:12px;color:var(--txt3);margin-top:2px;"></div>
+    </div>
+    <div id="badge-nb" style="font-family:'DM Mono',monospace;font-size:1.8rem;font-weight:500;color:var(--accent);"></div>
+  </div>
+
+  <!-- KPI -->
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+      <div class="kpi-card kpi-accent">
+        <div class="kpi-val" id="kpi-total">—</div>
+        <div class="kpi-label">Annonces scorées</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="kpi-card kpi-green">
+        <div class="kpi-val" id="kpi-score-moy">—</div>
+        <div class="kpi-label">Score opp. moyen</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="kpi-card kpi-amber">
+        <div class="kpi-val" id="kpi-prix-med">—</div>
+        <div class="kpi-label">Prix médian top 30</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="kpi-card kpi-purple">
+        <div class="kpi-val" id="kpi-nouvelles">—</div>
+        <div class="kpi-label">Nouvelles ce jour</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filtres rapides -->
+  <div class="d-flex gap-2 flex-wrap mb-3">
+    <span class="filter-pill active" onclick="setFilter(this,'ALL')">Toutes</span>
+    <span class="filter-pill" onclick="setFilter(this,'new')">Nouvelles aujourd'hui</span>
+    <span class="filter-pill" onclick="setFilter(this,'deal70')">Deal ≥ 70</span>
+    <span class="filter-pill" onclick="setFilter(this,'nego30')">Négo ≥ 30</span>
+    <span class="filter-pill" onclick="setFilter(this,'u25k')">< 25 000 €</span>
+    <span class="filter-pill" onclick="setFilter(this,'u40k')">< 40 000 €</span>
+  </div>
+
+  <!-- Liste -->
+  <div class="section-header">Top 30 <span id="count-display"></span></div>
+  <div id="opp-list"></div>
+
+  <div class="version-footer" id="version-footer">Auto-Bot LU</div>
+</div>
+
+<script src="data/opportunities.js"></script>
+<script src="data/version.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const D    = OPPORTUNITIES;
+const top  = D.top30 || [];
+const today = (new Date()).toISOString().slice(0, 10);
+let activeFilter = 'ALL';
+
+// KPI
+document.getElementById('date-label').textContent = `Données au ${D.date_calcul || '—'}`;
+document.getElementById('badge-nb').textContent = 'TOP 30';
+document.getElementById('kpi-total').textContent = (D.nb_total || 0).toLocaleString('fr');
+document.getElementById('kpi-score-moy').textContent = D.opp_score_moyen || '—';
+document.getElementById('kpi-prix-med').textContent = D.prix_median_top
+  ? new Intl.NumberFormat('fr-LU',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(D.prix_median_top)
+  : '—';
+document.getElementById('kpi-nouvelles').textContent = D.nb_nouvelles_top || 0;
+
+function fmtPrix(v) {
+  if (!v) return '—';
+  return new Intl.NumberFormat('fr-LU',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v);
+}
+function fmtKm(v) {
+  if (!v) return '—';
+  return new Intl.NumberFormat('fr-LU').format(v) + ' km';
+}
+function rankClass(i) {
+  if (i === 1) return 'gold';
+  if (i === 2) return 'silver';
+  if (i === 3) return 'bronze';
+  return '';
+}
+function cardBorderClass(i) {
+  if (i === 1) return 'rank-1';
+  if (i === 2) return 'rank-2';
+  if (i === 3) return 'rank-3';
+  return '';
+}
+function siteClass(s) {
+  return s || '';
+}
+function scoreColor(n) {
+  return n >= 70 ? 'var(--green)' : n >= 50 ? 'var(--amber)' : n >= 30 ? 'var(--accent)' : 'var(--txt3)';
+}
+
+function matchFilter(l) {
+  if (activeFilter === 'ALL')    return true;
+  if (activeFilter === 'new')    return (l.date_premiere_vue || '').slice(0,10) === today;
+  if (activeFilter === 'deal70') return (l.deal_score || 0) >= 70;
+  if (activeFilter === 'nego30') return (l.nego_score || 0) >= 30;
+  if (activeFilter === 'u25k')   return (l.prix || 0) < 25000;
+  if (activeFilter === 'u40k')   return (l.prix || 0) < 40000;
+  return true;
+}
+
+function setFilter(el, f) {
+  document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  activeFilter = f;
+  renderList();
+}
+
+function renderList() {
+  const filtered = top.filter(matchFilter);
+  const container = document.getElementById('opp-list');
+  document.getElementById('count-display').textContent =
+    filtered.length < top.length ? `${filtered.length} affichées / ${top.length} total` : `${top.length} annonces`;
+
+  if (!filtered.length) {
+    container.innerHTML = '<div style="color:var(--txt3);padding:20px 0;text-align:center;">Aucune annonce correspondant aux filtres.</div>';
+    return;
+  }
+
+  container.innerHTML = filtered.map((l, idx) => {
+    const rank  = top.indexOf(l) + 1;
+    const isNew = (l.date_premiere_vue || '').slice(0,10) === today;
+    const opp   = Math.round(l.opportunity_score || 0);
+    const deal  = Math.round(l.deal_score || 0);
+    const nego  = Math.round(l.nego_score || 0);
+    const marque = l.marque_norm || l.marque || '?';
+    const modele = l.modele_norm || l.modele || '';
+    const jours  = l.nb_jours_visibles || 0;
+    const joursStr = jours > 0 ? `${jours}j en ligne` : 'Nouveau';
+
+    return `
+    <div class="opp-card ${cardBorderClass(rank)} ${isNew ? 'is-new' : ''}">
+      <div class="d-flex align-items-start gap-3">
+        <div class="opp-rank ${rankClass(rank)}">#${rank}</div>
+        <div style="flex:1;min-width:0;">
+          <div class="opp-titre">${marque} ${modele} ${l.annee || ''}</div>
+          <div class="opp-meta">${fmtKm(l.km)} · ${l.carburant || ''} · ${l.boite || ''} · <span class="badge-site ${siteClass(l.site)}">${l.site || '—'}</span> · ${l.ville || '—'} · ${joursStr}</div>
+        </div>
+        <div class="text-end" style="white-space:nowrap;">
+          <div class="opp-prix">${fmtPrix(l.prix)}</div>
+          ${l.prix_initial && l.prix_initial > l.prix
+            ? `<div style="font-size:11px;color:var(--green);">Était ${fmtPrix(l.prix_initial)}</div>`
+            : ''}
+        </div>
+      </div>
+
+      <!-- Scores -->
+      <div class="d-flex align-items-center gap-2 mt-3 flex-wrap">
+        <div class="score-pill sp-opp">
+          <span class="sp-val">${opp}</span>
+          <span class="sp-lbl">Opportunité</span>
+        </div>
+        <div class="score-pill sp-deal">
+          <span class="sp-val">${deal}</span>
+          <span class="sp-lbl">Deal</span>
+        </div>
+        <div class="score-pill sp-nego">
+          <span class="sp-val">${nego}</span>
+          <span class="sp-lbl">Négo</span>
+        </div>
+        <div class="score-bar-wrap">
+          <div style="font-size:10px;color:var(--txt3);">Score opportunité</div>
+          <div class="score-bar">
+            <div class="score-fill" style="width:${opp}%;background:${scoreColor(opp)};"></div>
+          </div>
+        </div>
+        <div class="ms-auto d-flex gap-2 flex-wrap">
+          ${l.url ? `<a href="${l.url}" target="_blank" rel="noopener" class="btn-voir">Voir →</a>` : ''}
+          ${l.id ? `<a href="compare.html?a=${l.id}" class="btn-compare">⇌ Comparer</a>` : ''}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+renderList();
+
+if (typeof VERSION !== 'undefined') {
+  document.getElementById('version-footer').textContent =
+    `Auto-Bot LU v${VERSION.bot_version} — généré le ${VERSION.generated_date} à ${VERSION.generated_time}`;
+}
+</script>
+</body>
+</html>
