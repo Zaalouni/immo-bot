@@ -297,6 +297,7 @@
 <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.bootstrap5.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+<script src="data/version.js"></script>
 <script src="data/listings.js"></script>
 <script src="data/reviews.js"></script>
 <script src="data/vendors.js"></script>
@@ -537,5 +538,24 @@
   }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<div id="version-bar" style="font-size:11px;color:var(--txt3);text-align:center;padding:8px 0 12px;border-top:1px solid var(--border);background:var(--surface);margin-top:16px">Auto-Bot LU</div>
+<script>
+if (typeof VERSION !== 'undefined') {
+  const v = VERSION;
+  const bar = document.getElementById('version-bar');
+  if (bar) {
+    const ann  = v.nb_listings  ? v.nb_listings.toLocaleString('fr') + ' ann.' : '';
+    const nouv = v.nb_new_today ? '+' + v.nb_new_today + ' nouvelles' : '';
+    const vend = v.nb_vendors   ? v.nb_vendors + ' vendeurs' : '';
+    const scr  = v.last_scraping && v.last_scraping !== '—' ? 'Scraping : ' + v.last_scraping : '';
+    const stats = [ann, nouv, vend].filter(Boolean).join(' · ');
+    bar.innerHTML = 'Auto-Bot LU <strong>v' + v.dashboard_version + '</strong>'
+      + ' — Deploy <strong>#' + v.deploy_count + '</strong>'
+      + ' — ' + v.generated_date + ' ' + v.generated_time
+      + (stats ? ' — ' + stats : '')
+      + (scr   ? ' | ' + scr   : '');
+  }
+}
+</script>
 </body>
 </html>

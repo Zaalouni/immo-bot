@@ -354,7 +354,23 @@
   });
 
   if (typeof VERSION !== 'undefined') {
-    document.getElementById('footer-date').textContent = 'Données du ' + VERSION.generated_date + ' à ' + VERSION.generated_time;
+    if (typeof VERSION !== 'undefined') {
+    const v = VERSION;
+    const bar = document.getElementById('version-bar') || document.getElementById('footer-date');
+    if (bar) {
+      const ann  = v.nb_listings   ? v.nb_listings.toLocaleString('fr') + ' ann.' : '';
+      const nouv = v.nb_new_today  ? '+' + v.nb_new_today + ' nouvelles' : '';
+      const vend = v.nb_vendors    ? v.nb_vendors + ' vendeurs' : '';
+      const scr  = v.last_scraping && v.last_scraping !== '—' ? 'Scraping : ' + v.last_scraping : '';
+      const stats = [ann, nouv, vend].filter(Boolean).join(' · ');
+      const right = scr;
+      bar.innerHTML = 'Auto-Bot LU <strong>v' + v.dashboard_version + '</strong>'
+        + ' — Deploy <strong>#' + v.deploy_count + '</strong>'
+        + ' — ' + v.generated_date + ' ' + v.generated_time
+        + (stats ? ' — ' + stats : '')
+        + (right  ? ' | ' + right  : '');
+    }
+  }
   }
   renderAll();
 </script>
