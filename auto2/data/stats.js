@@ -1,56 +1,56 @@
-// Généré automatiquement le 2026-04-03 10:01
+// Généré automatiquement le 2026-04-03 15:51
 const STATS = {
-  "total_actives": 1412,
-  "nouvelles_aujourd_hui": 421,
-  "prix_moyen": 27219,
-  "prix_min": 10750,
-  "prix_max": 49990,
-  "km_moyen": 48480,
+  "total_actives": 1500,
+  "nouvelles_aujourd_hui": 511,
+  "prix_moyen": 27200,
+  "prix_min": 10379,
+  "prix_max": 49998,
+  "km_moyen": 51625,
   "repartition_carburant": {
-    "Diesel": 341,
-    "Essence": 797,
-    "Electrique": 138,
-    "Autres": 8,
-    "GPL": 2,
+    "Diesel": 390,
+    "Essence": 830,
+    "Electrique": 143,
+    "Autres": 6,
+    "Hybride": 121,
     "Wasserstoff": 1,
-    "Hybride": 117,
     "Inconnu": 7,
-    "GNV": 1
+    "GNV": 1,
+    "GPL": 1
   },
   "repartition_marques": {
-    "Volkswagen": 167,
-    "Mercedes": 144,
-    "Audi": 115,
-    "BMW": 82,
-    "Ford": 80,
-    "Hyundai": 79,
-    "Skoda": 71,
-    "Volvo": 70,
-    "Opel": 58,
-    "Peugeot": 50
+    "Volkswagen": 199,
+    "Mercedes": 160,
+    "Audi": 131,
+    "BMW": 95,
+    "Ford": 93,
+    "Hyundai": 80,
+    "Volvo": 72,
+    "Skoda": 69,
+    "Opel": 61,
+    "Kia": 56
   },
   "repartition_pays": {
-    "France": 222,
-    "Allemagne": 510,
-    "Luxembourg": 680
+    "Luxembourg": 722,
+    "France": 232,
+    "Allemagne": 546
   },
   "repartition_vendeur": {
-    "pro": 1411,
+    "pro": 1499,
     "particulier": 1
   },
-  "nb_avec_ct": 27,
+  "nb_avec_ct": 32,
   "snapshots_30j": [
     {
-      "id": 17,
+      "id": 18,
       "date": "2026-04-03",
-      "run_id": "64b63aef-a1c",
-      "nb_annonces_total": 1412,
-      "nb_nouvelles": 421,
+      "run_id": "4e2f825a-a27",
+      "nb_annonces_total": 1500,
+      "nb_nouvelles": 511,
       "nb_disparues": 0,
       "nb_prix_baisse": 0,
       "nb_suspects": 0,
-      "prix_moyen_marche": 27219,
-      "meilleur_deal_id": "25a8d45a22c07bee"
+      "prix_moyen_marche": 27200,
+      "meilleur_deal_id": "3fe16bb8a29de3b5"
     },
     {
       "id": 10,
@@ -89,5 +89,5 @@ const STATS = {
       "meilleur_deal_id": "test_abc123"
     }
   ],
-  "date_calcul": "2026-04-03T10:01:07.833473"
+  "date_calcul": "2026-04-03T15:51:51.752736"
 };

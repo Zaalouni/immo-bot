@@ -189,6 +189,30 @@ function init() {
   buildSidebar(allReviews);
   buildFiches(allReviews);
 
+  // Event delegation : progress checklist + reset (scripts dans innerHTML ne s'exécutent pas)
+  document.getElementById('fiches-container').addEventListener('change', function(e) {
+    if (e.target.type !== 'checkbox') return;
+    const id = e.target.id; // "checkId-N"
+    const prefix = id.substring(0, id.lastIndexOf('-') + 1);
+    const progEl = document.querySelector('[id$="-progress"][id^="' + prefix.replace(/-\d+-$/, '-progress') + '"]');
+    // Recalcule le prefix depuis l'id du checkbox pour trouver le compteur
+    const parts = id.split('-');
+    parts.pop(); // retire l'index
+    const baseId = parts.join('-');
+    const total = document.querySelectorAll('[id^="' + baseId + '-"][type]').length;
+    const checked = document.querySelectorAll('[id^="' + baseId + '-"][type]:checked').length;
+    const el = document.getElementById(baseId + '-progress');
+    if (el) { el.textContent = checked + ' / ' + total; el.style.color = checked === total ? 'var(--green)' : 'var(--txt3)'; }
+  });
+  document.getElementById('fiches-container').addEventListener('click', function(e) {
+    const btn = e.target.closest('[data-reset]');
+    if (!btn) return;
+    const checkId = btn.dataset.reset;
+    document.querySelectorAll('[id^="' + checkId + '-"]').forEach(cb => { if (cb.type === 'checkbox') cb.checked = false; });
+    const el = document.getElementById(checkId + '-progress');
+    if (el) { el.textContent = '0 / ' + btn.dataset.total; el.style.color = 'var(--txt3)'; }
+  });
+
   // Ouvrir le premier par défaut
   if (allReviews.length > 0) showFiche(ficheId(allReviews[0]));
 }
@@ -313,26 +337,13 @@ function buildChecklist(r) {
       <div style="font-size:11px;color:var(--txt3);padding:6px 10px 4px;">Cochez chaque point validé lors de l'inspection ou de l'essai</div>
       ${rows}
       <div style="margin-top:10px;display:flex;gap:10px;">
-        <button onclick="document.querySelectorAll('[id^=\\'${checkId}-\\']').forEach(cb=>{ if(cb.type==='checkbox') { cb.checked=false; } }); updateProgress('${checkId}', ${items.length});"
+        <button data-reset="${checkId}" data-total="${items.length}"
           style="font-size:11px;color:var(--txt3);background:none;border:1px solid var(--border);border-radius:4px;padding:3px 10px;cursor:pointer;">Réinitialiser</button>
         <button onclick="window.print();"
           style="font-size:11px;color:var(--accent);background:none;border:1px solid var(--accent);border-radius:4px;padding:3px 10px;cursor:pointer;">🖨 Imprimer</button>
       </div>
     </div>
-  </details>
-  <script>
-  (function() {
-    const total = ${items.length};
-    const prefix = '${checkId}-';
-    function upd() {
-      let n = 0;
-      document.querySelectorAll('[id^="'+prefix+'"]').forEach(cb => { if(cb.type==='checkbox' && cb.checked) n++; });
-      const el = document.getElementById('${checkId}-progress');
-      if (el) { el.textContent = n + ' / ' + total; el.style.color = n===total ? 'var(--green)' : 'var(--txt3)'; }
-    }
-    document.querySelectorAll('[id^="'+prefix+'"]').forEach(cb => { if(cb.type==='checkbox') cb.addEventListener('change', upd); });
-  })();
-  <\/script>`;
+  </details>`;
 }
 
 function renderFiche(r) {
