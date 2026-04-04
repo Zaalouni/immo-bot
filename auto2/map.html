@@ -220,7 +220,7 @@ function renderClusters(clusters) {
       `<div style="border-top:1px solid #30363d;padding-top:6px;margin-top:6px;">
         <div style="font-weight:600;font-size:12px;">${a.titre}</div>
         <div class="popup-detail">${a.km ? a.km.toLocaleString('fr-FR') + ' km' : ''} ${a.prix ? '— ' + a.prix.toLocaleString('fr-FR') + ' €' : ''}</div>
-        ${a.url ? `<a href="${a.url}" target="_blank" class="popup-link">Voir</a>` : ''}
+        ${a.url ? `<a href="${a.url}" target="_blank" rel="noopener noreferrer" class="popup-link">Voir</a>` : ''}
       </div>`
     ).join('');
 
@@ -256,7 +256,7 @@ function renderPoints(points) {
           <div>
             <div class="popup-titre">${p.marque} ${p.modele} ${p.annee || ''}</div>
             <div class="popup-detail">${km} — ${prix}</div>
-            ${p.url ? `<a href="${p.url}" target="_blank" class="popup-link">Voir l'annonce</a>` : ''}
+            ${p.url ? `<a href="${p.url}" target="_blank" rel="noopener noreferrer" class="popup-link">Voir l'annonce</a>` : ''}
           </div>
         `);
         dot.addTo(markersLayer);

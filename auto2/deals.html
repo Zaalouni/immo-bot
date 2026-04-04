@@ -388,8 +388,8 @@
 
             <!-- Title -->
             <div class="mb-1">
-              <a href="${d.url||'#'}" target="_blank" class="car-title">
-                ${d.marque_norm||d.marque||'—'} ${d.modele_norm||d.modele||''}
+              <a href="${d.url||'#'}" target="_blank" rel="noopener noreferrer" class="car-title">
+                ${escapeHtml(d.marque_norm||d.marque||'—')} ${escapeHtml(d.modele_norm||d.modele||'')}
               </a>
             </div>
             <div class="car-subtitle mb-3">${d.version_norm||d.version||'&nbsp;'}</div>
@@ -446,7 +446,7 @@
             </div>
             <div class="d-flex justify-content-between align-items-center">
               <span class="meta-txt">${d.ville||'—'} · ${formatDate(d.date_premiere_vue)}</span>
-              <a href="${d.url||'#'}" target="_blank" class="btn-voir">Voir →</a>
+              <a href="${d.url||'#'}" target="_blank" rel="noopener noreferrer" class="btn-voir">Voir →</a>
             </div>
           </div>
         </div>
@@ -476,7 +476,7 @@
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 14px;border-left:3px solid var(--purple);">
           <div style="display:flex;justify-content:space-between;align-items:flex-start;">
             <div>
-              <div style="font-weight:700;font-size:13px;">${l.marque_norm||l.marque||''} ${l.modele_norm||l.modele||''} ${l.annee||''}</div>
+              <div style="font-weight:700;font-size:13px;">${escapeHtml(l.marque_norm||l.marque||'')} ${escapeHtml(l.modele_norm||l.modele||'')} ${l.annee||''}</div>
               <div style="font-size:12px;color:var(--txt2);">${l.km ? Math.round(l.km/1000)+'k km' : '—'} · ${l.carburant||'—'} · ${l.ville||'—'}</div>
             </div>
             <div style="text-align:right;">
@@ -489,7 +489,7 @@
             <span style="font-size:11px;color:var(--txt3);">Deal <span style="color:var(--green);font-weight:700;">${deal}</span></span>
             <span style="font-size:11px;color:var(--txt3);">Négo <span style="color:var(--amber);font-weight:700;">${nego}</span></span>
             <div style="margin-left:auto;display:flex;gap:6px;">
-              ${l.url ? `<a href="${l.url}" target="_blank" rel="noopener" class="btn-voir" style="font-size:11px;padding:3px 10px;">Voir →</a>` : ''}
+              ${l.url ? `<a href="${l.url}" target="_blank" rel="noopener noreferrer" rel="noopener" class="btn-voir" style="font-size:11px;padding:3px 10px;">Voir →</a>` : ''}
               ${l.id  ? `<a href="compare.html?a=${l.id}" style="font-size:11px;padding:3px 10px;color:var(--txt2);border:1px solid var(--border);border-radius:6px;text-decoration:none;">⇌</a>` : ''}
             </div>
           </div>

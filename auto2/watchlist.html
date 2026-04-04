@@ -260,7 +260,7 @@
         <tr>
           <td>
             ${isNew ? '<span class="badge-nou-sm">NOUVEAU</span>' : ''}
-            <a href="${l.url || '#'}" target="_blank" class="link-accent">${l.marque_norm || l.marque || '—'} ${l.modele_norm || l.modele || ''}</a>
+            <a href="${l.url || '#'}" target="_blank" rel="noopener noreferrer" class="link-accent">${escapeHtml(l.marque_norm || l.marque || '—')} ${escapeHtml(l.modele_norm || l.modele || '')}</a>
             <br><span class="txt3" style="font-size:11px">${l.version_norm || l.version || ''}</span>
           </td>
           <td>${l.annee || '—'}</td>
@@ -273,7 +273,7 @@
           <td>${dealBadge(l.deal_score)}</td>
           <td class="txt3 prix-mono" style="font-size:11px">${formatDate(l.date_premiere_vue)}</td>
           <td style="white-space:nowrap;">
-            <a href="${l.url || '#'}" target="_blank" class="btn-voir">→</a>
+            <a href="${l.url || '#'}" target="_blank" rel="noopener noreferrer" class="btn-voir">→</a>
             ${l.id ? `<a href="compare.html?a=${l.id}" title="Pré-remplir dans le comparateur" style="margin-left:4px;color:var(--txt3);font-size:11px;text-decoration:none;">⇌</a>` : ''}
           </td>
         </tr>

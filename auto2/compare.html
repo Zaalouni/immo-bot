@@ -363,8 +363,8 @@ function renderCompare() {
     { label: 'Deal Score',  a: a.deal_score,  b: b.deal_score,  lower: false, fmt: v => v ? v+'/100' : '—' },
     { label: 'Risk Score',  a: a.risk_score,  b: b.risk_score,  lower: true,  fmt: v => v ? v+'/100' : '—' },
     { label: 'Annonce',     a: a.url,         b: b.url,         lower: null,
-      fmtA: () => `<a href="${a.url}" target="_blank" class="btn-voir">Voir →</a>`,
-      fmtB: () => `<a href="${b.url}" target="_blank" class="btn-voir">Voir →</a>` },
+      fmtA: () => `<a href="${a.url}" target="_blank" rel="noopener noreferrer" class="btn-voir">Voir →</a>`,
+      fmtB: () => `<a href="${b.url}" target="_blank" rel="noopener noreferrer" class="btn-voir">Voir →</a>` },
   ];
 
   let pts_a = 0, pts_b = 0;

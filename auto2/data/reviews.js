@@ -1,6 +1,6 @@
-// Généré automatiquement le 2026-04-03 21:16
+// Généré automatiquement le 2026-04-04 09:50
 const REVIEWS = {
-  "date_calcul": "2026-04-03",
+  "date_calcul": "2026-04-04",
   "nb_modeles": 24,
   "note_moyenne_globale": 7.8,
   "marques_index": {
@@ -92,7 +92,7 @@ const REVIEWS = {
         "Attention aux frais de garantie hors réseau Audi"
       ],
       "sources": "TÜV Report 2023, ADAC 2022, L'Argus",
-      "derniere_maj": "2026-04-03",
+      "derniere_maj": "2026-04-04",
       "points_faibles": [
         "Coût d'entretien significativement plus élevé que VW/Skoda",
         "Même habitacle que la Golf pour un prix supérieur",
@@ -131,7 +131,7 @@ const REVIEWS = {
         "Vérifier consommation d'huile avant achat"
       ],
       "sources": "TÜV Report 2023, ADAC 2023, Bimmerforums",
-      "derniere_maj": "2026-04-03",
+      "derniere_maj": "2026-04-04",
       "points_faibles": [
         "Fiabilité inférieure aux marques japonaises",
         "Consommation réelle élevée",
@@ -169,7 +169,7 @@ const REVIEWS = {
         "Vérifier entretien de la courroie de distribution"
       ],
       "sources": "TÜV Report 2023, ADAC 2022, Quechoisir",
-      "derniere_maj": "2026-04-03",
+      "derniere_maj": "2026-04-04",
       "points_faibles": [
         "Finition intérieure basique",
         "Confort limité sur mauvaise route",
@@ -206,7 +206,7 @@ const REVIEWS = {
         "Vérifier absence de surchauffe (joint de culasse)"
       ],
       "sources": "TÜV Report 2022, ADAC, WhatCar",
-      "derniere_maj": "2026-04-03",
+      "derniere_maj": "2026-04-04",
       "points_faibles": [
         "Boîte automatique PowerShift à éviter (fiabilité problématique)",
         "Consommation réelle EcoBoost souvent supérieure à l'annoncé"
@@ -241,7 +241,7 @@ const REVIEWS = {
         "Préférer les modèles avec historique mixte ville/route"
       ],
       "sources": "Auto Express, What Car 2023, ADAC",
-      "derniere_maj": "2026-04-03",
+      "derniere_maj": "2026-04-04",
       "points_faibles": [
         "Habitabilité arrière en retrait vs concurrents",
         "Moteur 3 cylindres perceptible à l'accélération"
@@ -277,7 +277,7 @@ const REVIEWS = {
         "Carnet entretien Honda complet souhaitable"
       ],
       "sources": "Consumer Reports, ADAC 2022",
-      "derniere_maj": "2026-04-03",
+      "derniere_maj": "2026-04-04",
       "points_faibles": [
         "Réseau Honda moins dense en Luxembourg",
         "Interface multimédia datée sur premières années",
@@ -313,7 +313,7 @@ const REVIEWS = {
         "Tester le multimédia (mises à jour disponibles)"
       ],
       "sources": "TÜV Report 2023, Auto Plus, Caradisiac",
-      "derniere_maj": "2026-04-03",
+      "derniere_maj": "2026-04-04",
       "points_faibles": [
         "Consommation réelle au-dessus de l'annoncé sur autoroute",
         "Système multimédia parfois lent",
@@ -348,7 +348,7 @@ const REVIEWS = {
         "Tester la boîte DCT en usage urbain"
       ],
       "sources": "Auto Bild, Caradisiac 2023",
-      "derniere_maj": "2026-04-03",
+      "derniere_maj": "2026-04-04",
       "points_faibles": [
         "Peu de recul fiabilité sur cette génération (2022+)",
         "Boîte DCT 6 à surveiller sur gros kilométrages"
@@ -383,7 +383,7 @@ const REVIEWS = {
         "Carnet entretien Mazda recommandé"
       ],
       "sources": "TÜV Report 2023, ADAC 2022, Consumer Reports",
-      "derniere_maj": "2026-04-03",
+      "derniere_maj": "2026-04-04",
       "points_faibles": [
         "Pas de motorisation hybride/électrique disponible",
         "Légèrement énergivore sur autoroute vs concurrents hybrides",
@@ -421,7 +421,7 @@ const REVIEWS = {
         "Vérifier l'état de la garantie constructeur ou extension"
       ],
       "sources": "TÜV Report 2023, ADAC 2023, Auto Motor Sport",
-      "derniere_maj": "2026-04-03",
+      "derniere_maj": "2026-04-04",
       "points_faibles": [
         "Fiabilité électronique inférieure aux marques japonaises",
         "Coût d'entretien très élevé (huiles spéciales, pièces d'origine)",
@@ -457,7 +457,7 @@ const REVIEWS = {
         "Vérifier entretien Nissan officiel"
       ],
       "sources": "TÜV Report 2023, What Car, Auto Bild",
-      "derniere_maj": "2026-04-03",
+      "derniere_maj": "2026-04-04",
       "points_faibles": [
         "Boîte CVT sur certaines versions peu sportive",
         "Consommation e-Power décevante sur autoroute"
@@ -491,7 +491,7 @@ const REVIEWS = {
         "Peu de recul disponible — préférer si sous garantie constructeur"
       ],
       "sources": "Auto Bild 2023, Caradisiac",
-      "derniere_maj": "2026-04-03",
+      "derniere_maj": "2026-04-04",
       "points_faibles": [
         "Partage le moteur PureTech de Peugeot — mêmes problèmes potentiels",
         "Peu de recul sur la fiabilité long terme (nouveau depuis 2022)"
@@ -527,7 +527,7 @@ const REVIEWS = {
         "Vérifier historique en réseau Peugeot agréé"
       ],
       "sources": "ADAC 2023, Quechoisir, 60 Millions de Consommateurs",
-      "derniere_maj": "2026-04-03",
+      "derniere_maj": "2026-04-04",
       "points_faibles": [
         "PureTech 1.2 : chaîne de distribution fragile sur premières années",
         "Fiabilité électronique perfectible",
@@ -564,7 +564,7 @@ const REVIEWS = {
         "Tester la boîte EDC en conditions stop-and-go"
       ],
       "sources": "ADAC 2022, TÜV Report 2023, Caradisiac",
-      "derniere_maj": "2026-04-03",
+      "derniere_maj": "2026-04-04",
       "points_faibles": [
         "Boîte EDC (double embrayage) moins fiable que la manuelle",
         "Multimédia Easy Link parfois lent",
@@ -599,7 +599,7 @@ const REVIEWS = {
         "Vérifier rappels VW/Seat effectués"
       ],
       "sources": "TÜV Report 2023, ADAC 2022",
-      "derniere_maj": "2026-04-03",
+      "derniere_maj": "2026-04-04",
       "points_faibles": [
         "Mêmes bugs logiciels que Golf Mk8",
         "Moins valorisé à la revente que VW"
@@ -638,7 +638,7 @@ const REVIEWS = {
         "Préférer les versions 2020+ pour la DSG améliorée"
       ],
       "sources": "TÜV Report 2023, Fiabilité-Auto.com, ADAC 2022, forums Skoda France",
-      "derniere_maj": "2026-04-03",
+      "derniere_maj": "2026-04-04",
       "points_faibles": [
         "Boîte DSG 7 rapports parfois capricieuse sur les 2017–2019",
         "Fiabilité inférieure aux Toyota/Mazda",
@@ -675,7 +675,7 @@ const REVIEWS = {
         "Préférer version avec entretien officiel Skoda"
       ],
       "sources": "TÜV Report 2023, ADAC 2023",
-      "derniere_maj": "2026-04-03",
+      "derniere_maj": "2026-04-04",
       "points_faibles": [
         "Dessin intérieur un peu terne",
         "Moteur 1.5 TSI peut consommer plus que prévu"
@@ -710,7 +710,7 @@ const REVIEWS = {
         "Vérifier l'état de la batterie hybride si >150 000 km"
       ],
       "sources": "TÜV Report 2023, ADAC 2023, JD Power Europe 2022",
-      "derniere_maj": "2026-04-03",
+      "derniere_maj": "2026-04-04",
       "points_faibles": [
         "Boîte CVT bruyante à haut régime sur autoroute",
         "Insonorisation perfectible",
@@ -748,7 +748,7 @@ const REVIEWS = {
         "Inspecter la carrosserie : véhicule très demandé, prix parfois gonflés"
       ],
       "sources": "TÜV Report 2023, ADAC 2023, What Car? 2023, Fiabilité Toyota France",
-      "derniere_maj": "2026-04-03",
+      "derniere_maj": "2026-04-04",
       "points_faibles": [
         "Insonorisation inférieure aux BMW/Volvo de même gamme",
         "Boîte CVT peu sportive",
@@ -784,7 +784,7 @@ const REVIEWS = {
         "Historique entretien obligatoire"
       ],
       "sources": "TÜV Report 2023, ADAC 2022, Caradisiac",
-      "derniere_maj": "2026-04-03",
+      "derniere_maj": "2026-04-04",
       "points_faibles": [
         "Habitabilité arrière limitée",
         "Pas idéale pour longs trajets autoroute",
@@ -822,7 +822,7 @@ const REVIEWS = {
         "Tester le multimédia et la climatisation avant achat"
       ],
       "sources": "TÜV Report 2023, ADAC 2023, Auto Motor Sport",
-      "derniere_maj": "2026-04-03",
+      "derniere_maj": "2026-04-04",
       "points_faibles": [
         "Bugs logiciels fréquents sur modèles 2020–2021",
         "Interface tactile peu intuitive",
@@ -857,7 +857,7 @@ const REVIEWS = {
         "Vérifier l'entretien de la chaîne de distribution"
       ],
       "sources": "TÜV Report 2023, ADAC 2022",
-      "derniere_maj": "2026-04-03",
+      "derniere_maj": "2026-04-04",
       "points_faibles": [
         "Moteur 1.0 TSI 95ch un peu juste sur autoroute",
         "Insonorisation moyenne"
@@ -896,7 +896,7 @@ const REVIEWS = {
         "Préférer les versions 2020+ (mises à jour DSG et logiciel)"
       ],
       "sources": "TÜV Report 2023, ADAC 2023, Fiabilité-Auto.com, Auto Bild",
-      "derniere_maj": "2026-04-03",
+      "derniere_maj": "2026-04-04",
       "points_faibles": [
         "Boîte DSG 7 : même problématique que Skoda (pré-2020)",
         "Fiabilité électronique inférieure aux Toyota/Mazda",
@@ -938,7 +938,7 @@ const REVIEWS = {
         "Préférer les 2021+ avec le nouveau système Google Android Automotive"
       ],
       "sources": "Euro NCAP 2022, TÜV Report 2023, ADAC 2023, What Car? Awards",
-      "derniere_maj": "2026-04-03",
+      "derniere_maj": "2026-04-04",
       "points_faibles": [
         "Coût d'entretien Volvo élevé hors réseau agréé",
         "Moteurs T3/T4 essence parfois gourmands en réalité",

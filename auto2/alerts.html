@@ -241,7 +241,7 @@ function renderAlerts(alerts) {
 
   container.innerHTML = alerts.map(a => {
     const label = TYPE_LABELS[a.type] || a.type;
-    const url   = a.url ? `<a href="${a.url}" target="_blank" class="btn-voir">Voir l'annonce</a>` : '';
+    const url   = a.url ? `<a href="${a.url}" target="_blank" rel="noopener noreferrer" class="btn-voir">Voir l'annonce</a>` : '';
 
     let extra = '';
     if (a.type === 'WATCHLIST_DROP' && a.baisse_eur) {
