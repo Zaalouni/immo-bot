@@ -182,14 +182,6 @@
 
   <script src="engine.js"></script>
   <script src="ui.js"></script>
-  <script>
-    // Enregistrement du Service Worker (PWA)
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js')
-          .catch(() => {}) // Silencieux si échec (ouverture fichier local)
-      })
-    }
-  </script>
+  <script src="pwa.js"></script>
 </body>
 </html>

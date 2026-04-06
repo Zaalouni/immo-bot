@@ -11,7 +11,10 @@ const ASSETS = [
   './style.css',
   './engine.js',
   './ui.js',
+  './pwa.js',
   './manifest.json',
+  './icons/icon-192.png',
+  './icons/icon-512.png',
 ]
 
 // ── INSTALL : mise en cache des ressources ─────────────────
