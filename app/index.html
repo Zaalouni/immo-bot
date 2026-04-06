@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Générateur de descriptions et tags YouTube optimisés SEO — 100% offline, gratuit" />
+  <meta name="theme-color" content="#ff0000" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="YT SEO" />
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; font-src 'self';" />
+
+  <title>🎬 Générateur YouTube SEO</title>
+
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icons/icon-192.png" type="image/png" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ══ HEADER ══════════════════════════════════════════ -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">▶</span>
+        YouTube <span class="logo-thin">Générateur SEO</span>
+      </div>
+      <div class="header-actions-top">
+        <span class="offline-badge" id="offlineBadge" title="Mode hors-ligne actif">⚡ Offline</span>
+        <button class="theme-toggle" id="themeToggle" title="Basculer le thème" aria-label="Basculer thème">🌙</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ══ MAIN ════════════════════════════════════════════ -->
+  <main class="main" role="main">
+
+    <!-- FORMULAIRE -->
+    <section class="card" aria-label="Formulaire de génération">
+      <h1 class="card-title">📝 Informations de ta vidéo</h1>
+
+      <div class="field-group">
+        <label class="field-label" for="sujetInput">
+          Titre ou sujet de ta vidéo <span class="required" aria-label="requis">*</span>
+        </label>
+        <input
+          id="sujetInput" name="sujet" class="field-input" type="text"
+          placeholder="Ex : Comment faire du SEO YouTube en 2024"
+          maxlength="150" autocomplete="off" spellcheck="true"
+          aria-required="true" aria-describedby="charCount"
+        />
+        <span class="char-count" id="charCount" aria-live="polite">0 / 150</span>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Mots-clés cibles <span class="muted-tip">(jusqu'à 3 — vérification densité SEO)</span></label>
+        <div class="keywords-row">
+          <input id="kw1" class="field-input kw-input" type="text" placeholder="Mot-clé 1" maxlength="50" />
+          <input id="kw2" class="field-input kw-input" type="text" placeholder="Mot-clé 2" maxlength="50" />
+          <input id="kw3" class="field-input kw-input" type="text" placeholder="Mot-clé 3" maxlength="50" />
+        </div>
+      </div>
+
+      <div class="options-row">
+        <div class="field-group flex-1">
+          <label class="field-label" for="tonSelect">🎭 Ton</label>
+          <select id="tonSelect" class="field-select" aria-label="Sélectionner le ton">
+            <option value="professionnel">Professionnel</option>
+            <option value="decontracte">Décontracté</option>
+            <option value="humoristique">Humoristique</option>
+          </select>
+        </div>
+        <div class="field-group flex-1">
+          <label class="field-label" for="langueSelect">🌍 Langue</label>
+          <select id="langueSelect" class="field-select" aria-label="Sélectionner la langue">
+            <option value="fr">Français</option>
+            <option value="en">English</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- SECTIONS -->
+      <div class="sections-box" role="group" aria-labelledby="sectionsLabel">
+        <p class="field-label" id="sectionsLabel">📌 Sections à inclure dans la description</p>
+        <div class="checks-grid">
+          <label class="check-label"><input type="checkbox" id="secAbout" checked /> À propos de la vidéo</label>
+          <label class="check-label"><input type="checkbox" id="secTimestamps" /> Timestamps</label>
+          <label class="check-label"><input type="checkbox" id="secChaine" /> À propos de la chaîne</label>
+          <label class="check-label"><input type="checkbox" id="secProduits" /> Produits / Services</label>
+          <label class="check-label"><input type="checkbox" id="secCTA" checked /> Call-to-action</label>
+          <label class="check-label"><input type="checkbox" id="secLinks" /> Liens utiles</label>
+        </div>
+      </div>
+
+      <button class="btn-generate" id="generateBtn" aria-label="Générer le contenu YouTube">
+        <span id="btnIcon" aria-hidden="true">🔄</span>
+        <span id="btnText">Générer</span>
+      </button>
+    </section>
+
+    <!-- RÉSULTATS -->
+    <div id="resultsWrap" class="results-wrap hidden" aria-live="polite" aria-label="Résultats générés">
+
+      <!-- TITRES CHOCS -->
+      <section class="card" aria-label="Titres accrocheurs">
+        <div class="card-header">
+          <h2 class="card-title">💥 Titres accrocheurs</h2>
+          <span class="badge">5 suggestions</span>
+        </div>
+        <div id="titresBox" class="titres-list" role="list"></div>
+      </section>
+
+      <!-- DESCRIPTION -->
+      <section class="card" aria-label="Description optimisée">
+        <div class="card-header">
+          <h2 class="card-title">📄 Description optimisée SEO</h2>
+          <div class="header-right">
+            <span class="word-count" id="descWC" aria-live="polite"></span>
+            <button class="btn-copy-main" id="copyDesc" aria-label="Copier la description">📋 Copier la description</button>
+          </div>
+        </div>
+        <textarea
+          id="descBox" class="desc-textarea" rows="18"
+          spellcheck="false" aria-label="Description générée — modifiable"
+        ></textarea>
+        <div class="density-box" id="densityBox" aria-label="Densité des mots-clés" role="list"></div>
+      </section>
+
+      <!-- TAGS + HASHTAGS -->
+      <div class="two-cols">
+        <section class="card" aria-label="Tags suggérés">
+          <div class="card-header">
+            <h2 class="card-title">🏷️ Tags <span class="count-badge" id="tagsCount"></span></h2>
+            <button class="btn-copy-sec" id="copyTags" aria-label="Copier tous les tags">📋 Copier tout</button>
+          </div>
+          <div id="tagsChips" class="chips-wrap" role="list"></div>
+          <p class="tags-plain hidden" id="tagsPlain" aria-hidden="true"></p>
+        </section>
+
+        <section class="card" aria-label="Hashtags tendance">
+          <div class="card-header">
+            <h2 class="card-title">#️⃣ Hashtags <span class="count-badge" id="hashCount"></span></h2>
+            <button class="btn-copy-sec" id="copyHashtags" aria-label="Copier tous les hashtags">📋 Copier tout</button>
+          </div>
+          <div id="hashtagsChips" class="chips-wrap" role="list"></div>
+          <p class="tags-plain hidden" id="hashtagsPlain" aria-hidden="true"></p>
+        </section>
+      </div>
+
+      <!-- ACTIONS -->
+      <div class="actions-row">
+        <button class="btn-export" id="exportBtn" aria-label="Exporter en JSON">⬇️ Exporter JSON</button>
+        <button class="btn-reset" id="resetBtn" aria-label="Nouvelle génération">✨ Nouvelle génération</button>
+      </div>
+
+    </div>
+
+    <!-- HISTORIQUE -->
+    <section class="card history-card hidden" id="historyCard" aria-label="Historique des générations">
+      <h2 class="card-title">🕒 Historique <span class="muted-tip">(5 dernières)</span></h2>
+      <ul class="history-list" id="historyList" role="list"></ul>
+    </section>
+
+  </main>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast" role="status" aria-live="assertive">✅ Copié !</div>
+
+  <!-- PWA INSTALL BANNER -->
+  <div class="install-banner hidden" id="installBanner">
+    <span>📲 Installer l'application</span>
+    <button class="btn-install" id="installBtn">Installer</button>
+    <button class="btn-dismiss" id="dismissBtn" aria-label="Fermer">✕</button>
+  </div>
+
+  <footer class="footer">
+    <p>🎬 Générateur YouTube SEO &nbsp;·&nbsp; 100% offline &nbsp;·&nbsp; Aucune donnée envoyée</p>
+  </footer>
+
+  <script src="engine.js"></script>
+  <script src="ui.js"></script>
+  <script>
+    // Enregistrement du Service Worker (PWA)
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .catch(() => {}) // Silencieux si échec (ouverture fichier local)
+      })
+    }
+  </script>
+</body>
+</html>
