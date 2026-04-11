@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUX-BOT — Commune de Mamer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .card { transition: transform 0.15s; }
+        .card:hover { transform: translateY(-3px); }
+        .badge { display: inline-block; padding: 0.2rem 0.65rem; border-radius: 9999px; font-size: 0.7rem; font-weight: 600; }
+        .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-green-600 to-teal-700 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-5 flex items-center justify-between">
+            <div>
+                <a href="index.html" class="text-green-200 text-sm hover:underline">← LUX-BOT</a>
+                <h1 class="text-2xl font-bold mt-1">🏘️ Commune de Mamer</h1>
+                <p class="text-green-100 text-sm">Activités, événements &amp; cours — Luxembourg</p>
+            </div>
+            <nav class="flex gap-4 text-sm font-medium">
+                <a href="activites.html" class="text-white hover:text-green-200">🎭 Toutes activités</a>
+                <a href="deals.html" class="text-white hover:text-green-200">🏷️ Deals</a>
+                <a href="stats.html" class="text-white hover:text-green-200">📊 Stats</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 py-6">
+
+        <!-- Stats Mamer -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6" id="mamer-stats"></div>
+
+        <!-- Liens officiels -->
+        <div class="bg-white rounded-xl shadow p-4 mb-6">
+            <h2 class="text-sm font-bold text-gray-500 uppercase tracking-wide mb-3">🔗 Liens officiels</h2>
+            <div class="flex flex-wrap gap-2">
+                <a href="https://www.mamer.lu" target="_blank" rel="noopener"
+                   class="badge bg-green-100 text-green-800 hover:bg-green-200 px-3 py-1.5 text-sm">
+                    🌐 mamer.lu
+                </a>
+                <a href="https://activites.mamer.lu" target="_blank" rel="noopener"
+                   class="badge bg-teal-100 text-teal-800 hover:bg-teal-200 px-3 py-1.5 text-sm">
+                    🏊 activites.mamer.lu
+                </a>
+                <a href="https://mamer.lu/en/social-life/events/all-events/" target="_blank" rel="noopener"
+                   class="badge bg-blue-100 text-blue-800 hover:bg-blue-200 px-3 py-1.5 text-sm">
+                    📅 Agenda Mamer
+                </a>
+                <a href="https://jeparticipe.bertrange.lu/" target="_blank" rel="noopener"
+                   class="badge bg-orange-100 text-orange-800 hover:bg-orange-200 px-3 py-1.5 text-sm">
+                    🗳️ Budget participatif Bertrange
+                </a>
+            </div>
+        </div>
+
+        <!-- Filtres -->
+        <div class="bg-white rounded-xl shadow p-4 mb-4 flex flex-wrap gap-3 items-center">
+            <input id="search" type="text" placeholder="Rechercher activité, cours, événement..."
+                class="flex-1 min-w-48 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-green-400"
+                oninput="applyFilter()">
+            <select id="filter-source" class="border border-gray-200 rounded-lg px-3 py-2 text-sm" onchange="applyFilter()">
+                <option value="">Toutes sources</option>
+                <option value="activites.mamer.lu">Activités (cours)</option>
+                <option value="mamer.lu/agenda">Agenda (événements)</option>
+            </select>
+            <select id="filter-cat" class="border border-gray-200 rounded-lg px-3 py-2 text-sm" onchange="applyFilter()">
+                <option value="">Toutes catégories</option>
+            </select>
+            <span id="count" class="text-sm text-gray-400 whitespace-nowrap"></span>
+        </div>
+
+        <!-- Tabs -->
+        <div class="flex gap-2 mb-4">
+            <button onclick="setView('all')" id="btn-all"
+                class="view-btn px-4 py-2 rounded-lg text-sm font-semibold bg-green-600 text-white">
+                Tout
+            </button>
+            <button onclick="setView('cours')" id="btn-cours"
+                class="view-btn px-4 py-2 rounded-lg text-sm font-semibold bg-white text-gray-600 border hover:bg-gray-50">
+                🏊 Cours &amp; sport
+            </button>
+            <button onclick="setView('agenda')" id="btn-agenda"
+                class="view-btn px-4 py-2 rounded-lg text-sm font-semibold bg-white text-gray-600 border hover:bg-gray-50">
+                📅 Événements
+            </button>
+        </div>
+
+        <!-- Liste -->
+        <div id="mamer-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="col-span-full text-center py-20 text-gray-300">Chargement...</div>
+        </div>
+    </div>
+
+    <footer class="mt-12 py-6 text-center text-gray-400 text-sm">
+        LUX-BOT Mamer — <span id="footer-update"></span>
+    </footer>
+
+    <script>
+    let allMamer = [];
+    let currentView = 'all';
+
+    async function loadData() {
+        const [activites, stats] = await Promise.all([
+            fetch('data/activites.json').then(r => r.json()),
+            fetch('data/stats.json').then(r => r.json())
+        ]);
+
+        // Filtrer sources Mamer
+        allMamer = activites.filter(a =>
+            a.source === 'activites.mamer.lu' || a.source === 'mamer.lu/agenda'
+        );
+
+        // Footer
+        const d = new Date(stats.last_update);
+        document.getElementById('footer-update').textContent =
+            'Mis à jour le ' + d.toLocaleDateString('fr-FR') + ' à ' +
+            d.toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit'});
+
+        // Stats
+        const cours = allMamer.filter(a => a.source === 'activites.mamer.lu');
+        const agenda = allMamer.filter(a => a.source === 'mamer.lu/agenda');
+        const gratuits = allMamer.filter(a => a.price === 0);
+        const avecDate = allMamer.filter(a => a.date_event);
+        document.getElementById('mamer-stats').innerHTML = [
+            ['🏊 Cours & sport', cours.length, 'teal'],
+            ['📅 Événements', agenda.length, 'blue'],
+            ['🆓 Gratuits', gratuits.length, 'green'],
+            ['📆 Avec date', avecDate.length, 'purple'],
+        ].map(([label, val, color]) => `
+            <div class="bg-white rounded-xl shadow p-4">
+                <div class="text-gray-400 text-xs font-semibold uppercase">${label}</div>
+                <div class="text-2xl font-bold text-${color}-600 mt-1">${val}</div>
+            </div>`).join('');
+
+        // Catégories depuis descriptions
+        const cats = [...new Set(allMamer.map(a => a.description).filter(Boolean))].sort();
+        const csel = document.getElementById('filter-cat');
+        cats.forEach(c => {
+            const o = document.createElement('option');
+            o.value = c; o.textContent = c;
+            csel.appendChild(o);
+        });
+
+        applyFilter();
+    }
+
+    function setView(v) {
+        currentView = v;
+        document.querySelectorAll('.view-btn').forEach(b => {
+            b.className = 'view-btn px-4 py-2 rounded-lg text-sm font-semibold bg-white text-gray-600 border hover:bg-gray-50';
+        });
+        document.getElementById(`btn-${v}`).className =
+            'view-btn px-4 py-2 rounded-lg text-sm font-semibold bg-green-600 text-white';
+        applyFilter();
+    }
+
+    function applyFilter() {
+        const q = document.getElementById('search').value.toLowerCase();
+        const src = document.getElementById('filter-source').value;
+        const cat = document.getElementById('filter-cat').value;
+
+        let filtered = allMamer.filter(a => {
+            if (currentView === 'cours' && a.source !== 'activites.mamer.lu') return false;
+            if (currentView === 'agenda' && a.source !== 'mamer.lu/agenda') return false;
+            if (src && a.source !== src) return false;
+            if (cat && a.description !== cat) return false;
+            if (q && !a.title.toLowerCase().includes(q)) return false;
+            return true;
+        });
+
+        // Tri : avec date d'abord
+        filtered.sort((a, b) => {
+            const ad = a.date_event || '';
+            const bd = b.date_event || '';
+            if (ad && !bd) return -1;
+            if (!ad && bd) return 1;
+            return ad.localeCompare(bd);
+        });
+
+        document.getElementById('count').textContent = `${filtered.length} résultat(s)`;
+        render(filtered);
+    }
+
+    const SRC_STYLES = {
+        'activites.mamer.lu': { badge: 'bg-teal-100 text-teal-700', btn: 'bg-teal-600', icon: '🏊' },
+        'mamer.lu/agenda':    { badge: 'bg-blue-100 text-blue-700',  btn: 'bg-blue-600',  icon: '📅' },
+    };
+
+    function render(items) {
+        const c = document.getElementById('mamer-list');
+        if (!items.length) {
+            c.innerHTML = '<div class="col-span-full text-center py-20 text-gray-300">Aucun résultat</div>';
+            return;
+        }
+        c.innerHTML = items.map(a => {
+            const style = SRC_STYLES[a.source] || { badge: 'bg-gray-100 text-gray-700', btn: 'bg-gray-600', icon: '📌' };
+            return `
+            <div class="card bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md p-4">
+                <div class="flex items-start justify-between gap-2 mb-2">
+                    <h3 class="font-semibold text-gray-800 text-sm line-clamp-2 flex-1">${esc(a.title)}</h3>
+                    ${a.price === 0 ? '<span class="badge bg-green-100 text-green-700 shrink-0">Gratuit</span>'
+                      : a.price ? `<span class="badge bg-amber-100 text-amber-700 shrink-0">${a.price}€</span>` : ''}
+                </div>
+
+                <div class="space-y-1 text-xs text-gray-600 mb-3">
+                    ${a.date_event ? `<div class="font-medium text-green-700">📅 ${esc(a.date_event)}</div>` :
+                      '<div class="text-gray-400 italic">Date à confirmer</div>'}
+                    ${a.description && a.source === 'activites.mamer.lu' ?
+                      `<div>🏷️ ${esc(a.description)}</div>` : ''}
+                    ${a.description && a.source === 'mamer.lu/agenda' ?
+                      `<div>📍 ${esc(a.description)}</div>` : ''}
+                    ${a.age_min && a.age_max ? `<div>👥 ${a.age_min}-${a.age_max} ans</div>` : ''}
+                    ${a.organizer ? `<div>🎪 ${esc(a.organizer)}</div>` : ''}
+                </div>
+
+                <div class="mb-3">
+                    <span class="badge ${style.badge}">${style.icon} ${esc(a.source)}</span>
+                </div>
+
+                <a href="${esc(a.url)}" target="_blank" rel="noopener"
+                   class="block w-full text-center ${style.btn} text-white px-3 py-2 rounded-lg hover:opacity-90 text-sm font-semibold">
+                    Plus d'infos →
+                </a>
+                <div class="text-xs text-gray-400 mt-2">${timeAgo(a.scraped_at)}</div>
+            </div>`;
+        }).join('');
+    }
+
+    function esc(s) {
+        if (!s && s !== 0) return '';
+        const d = document.createElement('div'); d.textContent = String(s); return d.innerHTML;
+    }
+    function timeAgo(dt) {
+        if (!dt) return '';
+        const diff = Math.floor((Date.now() - new Date(dt)) / 60000);
+        if (diff < 60) return `Il y a ${diff} min`;
+        if (diff < 1440) return `Il y a ${Math.floor(diff/60)}h`;
+        return `Il y a ${Math.floor(diff/1440)}j`;
+    }
+
+    loadData();
+    </script>
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUX-BOT — Dashboard Luxembourg</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .card { transition: transform 0.15s; }
+        .card:hover { transform: translateY(-3px); }
+        .badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 9999px; font-size: 0.7rem; font-weight: 600; }
+        .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-5 flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl font-bold">LUX-BOT</h1>
+                <p class="text-blue-100 text-sm mt-0.5">Deals &amp; Activités Luxembourg — Famille Mamer/Bertrange</p>
+            </div>
+            <nav class="flex gap-4 text-sm font-medium">
+                <a href="mamer.html" class="text-white hover:text-blue-200">🏘️ Mamer</a>
+                <a href="deals.html" class="text-white hover:text-blue-200">🏷️ Deals</a>
+                <a href="activites.html" class="text-white hover:text-blue-200">🎭 Activités</a>
+                <a href="stats.html" class="text-white hover:text-blue-200">📊 Stats</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Stats -->
+    <div class="container mx-auto px-4 py-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div class="bg-white rounded-xl shadow p-5">
+                <div class="text-gray-400 text-xs font-semibold uppercase tracking-wide">🏷️ Deals</div>
+                <div class="text-3xl font-bold text-blue-600 mt-1" id="stat-deals">—</div>
+                <div class="text-xs text-gray-400 mt-1">Promotions en base</div>
+            </div>
+            <div class="bg-white rounded-xl shadow p-5">
+                <div class="text-gray-400 text-xs font-semibold uppercase tracking-wide">🎭 Activités</div>
+                <div class="text-3xl font-bold text-purple-600 mt-1" id="stat-activites">—</div>
+                <div class="text-xs text-gray-400 mt-1">Événements 13-17 ans</div>
+            </div>
+            <div class="bg-white rounded-xl shadow p-5">
+                <div class="text-gray-400 text-xs font-semibold uppercase tracking-wide">🕐 Dernière MAJ</div>
+                <div class="text-lg font-semibold text-gray-700 mt-1" id="stat-update">—</div>
+                <div class="text-xs text-gray-400 mt-1">Auto-refresh toutes les heures</div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="bg-white rounded-xl shadow">
+            <div class="border-b px-2">
+                <nav class="flex">
+                    <button onclick="showTab('deals')" id="tab-deals"
+                        class="tab-btn px-6 py-3 font-semibold text-blue-600 border-b-2 border-blue-600">
+                        🏷️ Deals récents
+                    </button>
+                    <button onclick="showTab('activites')" id="tab-activites"
+                        class="tab-btn px-6 py-3 font-semibold text-gray-400 hover:text-purple-600">
+                        🎭 Activités récentes
+                    </button>
+                </nav>
+            </div>
+
+            <!-- Search bar -->
+            <div class="p-4 border-b bg-gray-50 flex gap-3 items-center">
+                <input id="search-input" type="text" placeholder="Rechercher..."
+                    class="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-400"
+                    oninput="applyFilter()">
+                <select id="filter-store" class="border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none hidden"
+                    onchange="applyFilter()">
+                    <option value="">Toutes enseignes</option>
+                </select>
+                <select id="filter-source" class="border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none hidden"
+                    onchange="applyFilter()">
+                    <option value="">Toutes sources</option>
+                </select>
+                <span id="result-count" class="text-sm text-gray-400 whitespace-nowrap"></span>
+            </div>
+
+            <!-- Deals Tab -->
+            <div id="content-deals" class="p-4">
+                <div id="deals-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="col-span-full text-center py-12 text-gray-300">Chargement...</div>
+                </div>
+            </div>
+
+            <!-- Activités Tab -->
+            <div id="content-activites" class="p-4 hidden">
+                <div id="activites-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="col-span-full text-center py-12 text-gray-300">Chargement...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-12 py-6 text-center text-gray-400 text-sm">
+        LUX-BOT — Bot multi-services Luxembourg •
+        <a href="stats.html" class="hover:underline">Santé scrapers</a>
+    </footer>
+
+    <script>
+    let allDeals = [], allActivites = [], currentTab = 'deals';
+
+    async function loadData() {
+        try {
+            const [deals, activites, stats] = await Promise.all([
+                fetch('data/deals.json').then(r => r.json()),
+                fetch('data/activites.json').then(r => r.json()),
+                fetch('data/stats.json').then(r => r.json())
+            ]);
+            allDeals = deals.sort((a, b) => b.id - a.id);
+            allActivites = activites.sort((a, b) => b.id - a.id);
+
+            // Stats
+            document.getElementById('stat-deals').textContent = stats.totals.deals;
+            document.getElementById('stat-activites').textContent = stats.totals.activites;
+            const d = new Date(stats.last_update);
+            document.getElementById('stat-update').textContent =
+                d.toLocaleDateString('fr-FR') + ' ' + d.toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit'});
+
+            // Populate store filter
+            const stores = [...new Set(deals.map(d => d.store).filter(Boolean))].sort();
+            const storeSelect = document.getElementById('filter-store');
+            stores.forEach(s => {
+                const o = document.createElement('option'); o.value = s; o.textContent = s;
+                storeSelect.appendChild(o);
+            });
+
+            // Populate source filter
+            const sources = [...new Set(activites.map(a => a.source).filter(Boolean))].sort();
+            const sourceSelect = document.getElementById('filter-source');
+            sources.forEach(s => {
+                const o = document.createElement('option'); o.value = s; o.textContent = s;
+                sourceSelect.appendChild(o);
+            });
+
+            applyFilter();
+        } catch(e) {
+            console.error('Erreur chargement:', e);
+        }
+    }
+
+    function applyFilter() {
+        const q = document.getElementById('search-input').value.toLowerCase();
+        const store = document.getElementById('filter-store').value;
+        const source = document.getElementById('filter-source').value;
+
+        if (currentTab === 'deals') {
+            let filtered = allDeals.filter(d =>
+                (!q || d.title.toLowerCase().includes(q)) &&
+                (!store || d.store === store)
+            );
+            document.getElementById('result-count').textContent = `${filtered.length} résultat(s)`;
+            renderDeals(filtered.slice(0, 60));
+        } else {
+            let filtered = allActivites.filter(a =>
+                (!q || a.title.toLowerCase().includes(q)) &&
+                (!source || a.source === source)
+            );
+            document.getElementById('result-count').textContent = `${filtered.length} résultat(s)`;
+            renderActivites(filtered.slice(0, 60));
+        }
+    }
+
+    function renderDeals(deals) {
+        const c = document.getElementById('deals-list');
+        if (!deals.length) {
+            c.innerHTML = '<div class="col-span-full text-center py-12 text-gray-300">Aucun deal</div>';
+            return;
+        }
+        c.innerHTML = deals.map(d => `
+            <div class="card bg-white border border-gray-100 rounded-xl p-4 shadow-sm hover:shadow-md">
+                <div class="flex justify-between items-start mb-2 gap-2">
+                    <h3 class="font-semibold text-gray-800 text-sm flex-1 line-clamp-2">${esc(d.title)}</h3>
+                    ${d.discount_percent ? `<span class="badge bg-red-100 text-red-600 shrink-0">-${d.discount_percent}%</span>` : ''}
+                </div>
+                ${d.price ? `<div class="text-xl font-bold text-blue-600 mb-2">${d.price}€${d.old_price ? `<span class="text-sm text-gray-400 line-through ml-2">${d.old_price}€</span>` : ''}</div>` : ''}
+                <div class="flex flex-wrap gap-1 mb-3">
+                    <span class="badge bg-blue-50 text-blue-700">${esc(d.store || d.source)}</span>
+                    ${d.category ? `<span class="badge bg-gray-100 text-gray-600">${esc(d.category)}</span>` : ''}
+                </div>
+                <a href="${esc(d.url)}" target="_blank" rel="noopener"
+                   class="block w-full text-center bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-blue-700 text-sm font-semibold">
+                    Voir l'offre →
+                </a>
+                <div class="text-xs text-gray-400 mt-2">${timeAgo(d.scraped_at)}</div>
+            </div>`).join('');
+    }
+
+    function renderActivites(acts) {
+        const c = document.getElementById('activites-list');
+        if (!acts.length) {
+            c.innerHTML = '<div class="col-span-full text-center py-12 text-gray-300">Aucune activité</div>';
+            return;
+        }
+        c.innerHTML = acts.map(a => `
+            <div class="card bg-white border border-gray-100 rounded-xl p-4 shadow-sm hover:shadow-md">
+                <h3 class="font-semibold text-gray-800 text-sm mb-2 line-clamp-2">${esc(a.title)}</h3>
+                ${a.description ? `<p class="text-xs text-gray-500 mb-2 line-clamp-2">${esc(a.description)}</p>` : ''}
+                <div class="space-y-0.5 text-xs text-gray-600 mb-3">
+                    ${a.date_event ? `<div>📅 ${esc(a.date_event)}</div>` : ''}
+                    ${a.location ? `<div>📍 ${esc(a.location)}</div>` : ''}
+                    ${a.age_min && a.age_max ? `<div>👥 ${a.age_min}-${a.age_max} ans</div>` : ''}
+                    ${a.price !== null && a.price !== undefined ? `<div>💰 ${a.price === 0 ? 'Gratuit' : a.price + '€'}</div>` : ''}
+                </div>
+                <div class="flex flex-wrap gap-1 mb-3">
+                    <span class="badge bg-purple-50 text-purple-700">${esc(a.source)}</span>
+                    ${a.organizer ? `<span class="badge bg-gray-100 text-gray-600">${esc(a.organizer)}</span>` : ''}
+                </div>
+                <a href="${esc(a.url)}" target="_blank" rel="noopener"
+                   class="block w-full text-center bg-purple-600 text-white px-3 py-2 rounded-lg hover:bg-purple-700 text-sm font-semibold">
+                    Plus d'infos →
+                </a>
+                <div class="text-xs text-gray-400 mt-2">${timeAgo(a.scraped_at)}</div>
+            </div>`).join('');
+    }
+
+    function showTab(tab) {
+        currentTab = tab;
+        document.getElementById('content-deals').classList.toggle('hidden', tab !== 'deals');
+        document.getElementById('content-activites').classList.toggle('hidden', tab !== 'activites');
+        document.getElementById('filter-store').classList.toggle('hidden', tab !== 'deals');
+        document.getElementById('filter-source').classList.toggle('hidden', tab !== 'activites');
+        document.querySelectorAll('.tab-btn').forEach(b => {
+            b.classList.remove('text-blue-600','text-purple-600','border-b-2','border-blue-600','border-purple-600');
+            b.classList.add('text-gray-400');
+        });
+        const activeBtn = document.getElementById(`tab-${tab}`);
+        activeBtn.classList.remove('text-gray-400');
+        if (tab === 'deals') activeBtn.classList.add('text-blue-600','border-b-2','border-blue-600');
+        else activeBtn.classList.add('text-purple-600','border-b-2','border-purple-600');
+        applyFilter();
+    }
+
+    function esc(s) {
+        if (!s && s !== 0) return '';
+        const d = document.createElement('div'); d.textContent = String(s); return d.innerHTML;
+    }
+
+    function timeAgo(dt) {
+        if (!dt) return '';
+        const diff = Math.floor((Date.now() - new Date(dt)) / 60000);
+        if (diff < 60) return `Il y a ${diff} min`;
+        if (diff < 1440) return `Il y a ${Math.floor(diff/60)}h`;
+        return `Il y a ${Math.floor(diff/1440)}j`;
+    }
+
+    loadData();
+    setInterval(loadData, 5 * 60 * 1000);
+    </script>
+</body>
+</html>

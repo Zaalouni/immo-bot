@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUX-BOT — Statistiques scrapers</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 9999px; font-size: 0.7rem; font-weight: 600; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+    <header class="bg-gradient-to-r from-gray-700 to-gray-900 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-5 flex items-center justify-between">
+            <div>
+                <a href="index.html" class="text-gray-300 text-sm hover:underline">← LUX-BOT</a>
+                <h1 class="text-2xl font-bold mt-1">📊 Statistiques scrapers</h1>
+            </div>
+            <nav class="flex gap-4 text-sm font-medium">
+                <a href="deals.html" class="text-white hover:text-gray-300">🏷️ Deals</a>
+                <a href="activites.html" class="text-white hover:text-gray-300">🎭 Activités</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 py-6">
+
+        <!-- Totaux -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6" id="totals"></div>
+
+        <!-- Deals scrapers -->
+        <div class="bg-white rounded-xl shadow mb-6">
+            <div class="px-6 py-4 border-b">
+                <h2 class="text-lg font-bold text-gray-800">🏷️ Scrapers Deals</h2>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead class="bg-gray-50 text-gray-500 text-xs uppercase">
+                        <tr>
+                            <th class="px-6 py-3 text-left">Source</th>
+                            <th class="px-6 py-3 text-right">Runs</th>
+                            <th class="px-6 py-3 text-right">Total trouvés</th>
+                            <th class="px-6 py-3 text-right">Nouveaux</th>
+                            <th class="px-6 py-3 text-left">Dernière exécution</th>
+                            <th class="px-6 py-3 text-center">Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody id="deals-table" class="divide-y divide-gray-100"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Activités scrapers -->
+        <div class="bg-white rounded-xl shadow mb-6">
+            <div class="px-6 py-4 border-b">
+                <h2 class="text-lg font-bold text-gray-800">🎭 Scrapers Activités</h2>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead class="bg-gray-50 text-gray-500 text-xs uppercase">
+                        <tr>
+                            <th class="px-6 py-3 text-left">Source</th>
+                            <th class="px-6 py-3 text-right">Runs</th>
+                            <th class="px-6 py-3 text-right">Total trouvés</th>
+                            <th class="px-6 py-3 text-right">Nouveaux</th>
+                            <th class="px-6 py-3 text-left">Dernière exécution</th>
+                            <th class="px-6 py-3 text-center">Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody id="activites-table" class="divide-y divide-gray-100"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Scrapers bloqués -->
+        <div class="bg-white rounded-xl shadow">
+            <div class="px-6 py-4 border-b">
+                <h2 class="text-lg font-bold text-gray-800">🚫 Scrapers bloqués / désactivés</h2>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div class="border border-red-100 rounded-lg p-3 bg-red-50">
+                        <div class="font-semibold text-red-700 text-sm">cactus.lu</div>
+                        <div class="text-xs text-gray-500 mt-1">F5 anti-bot — JavaScript requis (Selenium P5)</div>
+                    </div>
+                    <div class="border border-red-100 rounded-lg p-3 bg-red-50">
+                        <div class="font-semibold text-red-700 text-sm">delhaize.lu</div>
+                        <div class="text-xs text-gray-500 mt-1">Rendu JS côté client uniquement</div>
+                    </div>
+                    <div class="border border-red-100 rounded-lg p-3 bg-red-50">
+                        <div class="font-semibold text-red-700 text-sm">deals.lu</div>
+                        <div class="text-xs text-gray-500 mt-1">Domaine expiré / redirigé</div>
+                    </div>
+                    <div class="border border-orange-100 rounded-lg p-3 bg-orange-50">
+                        <div class="font-semibold text-orange-700 text-sm">rotondes.lu / kulturfabrik.lu</div>
+                        <div class="text-xs text-gray-500 mt-1">Contenu chargé dynamiquement (JS)</div>
+                    </div>
+                    <div class="border border-gray-100 rounded-lg p-3 bg-gray-50">
+                        <div class="font-semibold text-gray-600 text-sm">Module Emploi (emploi/*)</div>
+                        <div class="text-xs text-gray-500 mt-1">Désactivé — LinkedIn/Indeed bloquent sans Selenium (P5)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="mt-12 py-6 text-center text-gray-400 text-sm">
+        LUX-BOT — <span id="footer-update"></span>
+    </footer>
+
+    <script>
+    async function loadData() {
+        const stats = await fetch('data/stats.json').then(r => r.json());
+
+        // Footer
+        const d = new Date(stats.last_update);
+        document.getElementById('footer-update').textContent =
+            'Mis à jour le ' + d.toLocaleDateString('fr-FR') + ' à ' +
+            d.toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit'});
+
+        // Totaux
+        const tot = stats.totals;
+        document.getElementById('totals').innerHTML = [
+            ['🏷️ Deals', tot.deals, 'blue'],
+            ['🎭 Activités', tot.activites, 'purple'],
+            ['💼 Emploi', tot.emploi, 'gray'],
+            ['📡 Sources actives', stats.by_source.filter(s => s.total_items > 0).length, 'green'],
+        ].map(([label, val, color]) => `
+            <div class="bg-white rounded-xl shadow p-5">
+                <div class="text-gray-400 text-xs font-semibold uppercase">${label}</div>
+                <div class="text-3xl font-bold text-${color}-600 mt-1">${val}</div>
+            </div>`).join('');
+
+        // Tables
+        const dealsRows = stats.by_source.filter(s => s.module === 'deals');
+        const actsRows = stats.by_source.filter(s => s.module === 'activites');
+
+        document.getElementById('deals-table').innerHTML = renderRows(dealsRows);
+        document.getElementById('activites-table').innerHTML = renderRows(actsRows);
+    }
+
+    function renderRows(rows) {
+        if (!rows.length) return '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-400">Aucune donnée</td></tr>';
+        return rows.map(r => {
+            const lastRun = r.last_run ? new Date(r.last_run) : null;
+            const hoursAgo = lastRun ? Math.floor((Date.now() - lastRun) / 3600000) : 999;
+            const ok = r.total_items > 0;
+            const statusBadge = ok
+                ? '<span class="badge bg-green-100 text-green-700">✓ OK</span>'
+                : '<span class="badge bg-red-100 text-red-600">✗ Vide</span>';
+            const timeStr = lastRun
+                ? lastRun.toLocaleDateString('fr-FR') + ' ' + lastRun.toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit'})
+                : '—';
+            return `<tr class="hover:bg-gray-50">
+                <td class="px-6 py-3 font-medium text-gray-800">${esc(r.source)}</td>
+                <td class="px-6 py-3 text-right text-gray-600">${r.runs}</td>
+                <td class="px-6 py-3 text-right text-gray-600">${r.total_items}</td>
+                <td class="px-6 py-3 text-right font-semibold text-green-600">${r.new_items}</td>
+                <td class="px-6 py-3 text-gray-500 text-xs">${timeStr}</td>
+                <td class="px-6 py-3 text-center">${statusBadge}</td>
+            </tr>`;
+        }).join('');
+    }
+
+    function esc(s) {
+        if (!s) return '';
+        const d = document.createElement('div'); d.textContent = String(s); return d.innerHTML;
+    }
+
+    loadData();
+    </script>
+</body>
+</html>
