@@ -145,57 +145,76 @@
     }
 
     async function loadData() {
-        const [deals, stats] = await Promise.all([
-            fetch('data/deals.json').then(r => r.json()),
-            fetch('data/stats.json').then(r => r.json())
-        ]);
-        all = deals;
+        try {
+            const [deals, stats] = await Promise.all([
+                fetch('data/deals.json').then(r => { if (!r.ok) throw new Error('deals.json ' + r.status); return r.json(); }),
+                fetch('data/stats.json').then(r => { if (!r.ok) throw new Error('stats.json ' + r.status); return r.json(); })
+            ]);
+            all = deals;
 
-        // Footer
-        const d = new Date(stats.last_update);
-        document.getElementById('footer-update').textContent =
-            'Mis à jour le ' + d.toLocaleDateString('fr-FR') + ' à ' +
-            d.toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit'});
+            // Footer
+            const upd = new Date(stats.last_update);
+            document.getElementById('footer-update').textContent =
+                'Mis à jour le ' + upd.toLocaleDateString('fr-FR') + ' à ' +
+                upd.toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit'});
 
-        // Stats rapides
-        const withDiscount = deals.filter(d => d.discount_percent > 0);
-        const hot = deals.filter(d => (d.discount_percent||0) >= 30);
-        const withSaving = deals.filter(d => d.old_price && d.price);
-        const fresh = deals.filter(d => {
-            if (!d.scraped_at) return false;
-            return (Date.now() - new Date(d.scraped_at)) < 86400000;
-        });
-        document.getElementById('deal-stats').innerHTML = [
-            ['🏷️ Total deals', deals.length, 'blue'],
-            ['🔥 Chauds (+30%)', hot.length, 'red'],
-            ['💰 Avec promo prix', withSaving.length, 'orange'],
-            ['⚡ Dernières 24h', fresh.length, 'green'],
-        ].map(([label, val, color]) => `
-            <div class="bg-white rounded-xl shadow p-4">
-                <div class="text-gray-400 text-xs font-semibold uppercase">${label}</div>
-                <div class="text-2xl font-bold text-${color}-600 mt-1">${val}</div>
-            </div>`).join('');
+            // Stats rapides — classes Tailwind statiques (pas de classes dynamiques)
+            const hot      = deals.filter(x => (x.discount_percent||0) >= 30);
+            const withSaving = deals.filter(x => x.old_price && x.price);
+            const fresh    = deals.filter(x => x.scraped_at && (Date.now() - new Date(x.scraped_at)) < 86400000);
+            document.getElementById('deal-stats').innerHTML = `
+                <div class="bg-white rounded-xl shadow p-4">
+                    <div class="text-gray-400 text-xs font-semibold uppercase">🏷️ Total deals</div>
+                    <div class="text-2xl font-bold text-blue-600 mt-1">${deals.length}</div>
+                </div>
+                <div class="bg-white rounded-xl shadow p-4">
+                    <div class="text-gray-400 text-xs font-semibold uppercase">🔥 Chauds (+30%)</div>
+                    <div class="text-2xl font-bold text-red-600 mt-1">${hot.length}</div>
+                </div>
+                <div class="bg-white rounded-xl shadow p-4">
+                    <div class="text-gray-400 text-xs font-semibold uppercase">💰 Avec promo prix</div>
+                    <div class="text-2xl font-bold text-orange-500 mt-1">${withSaving.length}</div>
+                </div>
+                <div class="bg-white rounded-xl shadow p-4">
+                    <div class="text-gray-400 text-xs font-semibold uppercase">⚡ Dernières 24h</div>
+                    <div class="text-2xl font-bold text-green-600 mt-1">${fresh.length}</div>
+                </div>`;
 
-        // Store filter
-        const stores = [...new Set(deals.map(d => d.store).filter(Boolean))].sort();
-        const sel = document.getElementById('filter-store');
-        stores.forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; sel.appendChild(o); });
+            // Store filter
+            const stores = [...new Set(deals.map(x => x.store).filter(Boolean))].sort();
+            const sel = document.getElementById('filter-store');
+            stores.forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; sel.appendChild(o); });
 
-        // Category filter
-        const cats = [...new Set(deals.map(d => d.category).filter(Boolean))].sort();
-        const csel = document.getElementById('filter-cat');
-        cats.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = c; csel.appendChild(o); });
+            // Category filter
+            const cats = [...new Set(deals.map(x => x.category).filter(Boolean))].sort();
+            const csel = document.getElementById('filter-cat');
+            cats.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = c; csel.appendChild(o); });
 
-        // Source badges (cliquables pour filtrer)
-        const srcCounts = {};
-        deals.forEach(d => { srcCounts[d.source] = (srcCounts[d.source]||0)+1; });
-        document.getElementById('source-badges').innerHTML = Object.entries(srcCounts)
-            .sort((a,b) => b[1]-a[1])
-            .map(([src, cnt]) => `<span class="badge bg-blue-100 text-blue-700 cursor-pointer hover:bg-blue-200"
-                onclick="filterBySource('${esc(src)}')">${esc(src)} <b>${cnt}</b></span>`)
-            .join('');
+            // Source badges
+            const srcCounts = {};
+            deals.forEach(x => { srcCounts[x.source] = (srcCounts[x.source]||0)+1; });
+            const badgesEl = document.getElementById('source-badges');
+            badgesEl.innerHTML = '';
+            Object.entries(srcCounts).sort((a,b) => b[1]-a[1]).forEach(([src, cnt]) => {
+                const span = document.createElement('span');
+                span.className = 'badge bg-blue-100 text-blue-700 cursor-pointer hover:bg-blue-200';
+                span.textContent = src + ' ';
+                const b = document.createElement('b');
+                b.textContent = cnt;
+                span.appendChild(b);
+                span.onclick = () => filterBySource(src);
+                badgesEl.appendChild(span);
+            });
 
-        applyFilter();
+            applyFilter();
+
+        } catch(e) {
+            console.error('Erreur chargement deals:', e);
+            document.getElementById('deals-list').innerHTML =
+                '<div class="col-span-full text-center py-20 text-red-400">⚠️ Erreur de chargement — ' + e.message + '</div>';
+            document.getElementById('deal-stats').innerHTML =
+                '<div class="col-span-full text-red-400 text-sm py-4">Données indisponibles</div>';
+        }
     }
 
     function filterBySource(src) {

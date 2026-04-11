@@ -1,5 +1,5 @@
 {
-  "last_update": "2026-04-11T19:43:02.850448",
+  "last_update": "2026-04-11T19:49:31.204119",
   "totals": {
     "deals": 190,
     "activites": 79,
@@ -9,50 +9,50 @@
     {
       "module": "activites",
       "source": "activites.mamer.lu",
-      "runs": 33,
-      "total_items": 364,
+      "runs": 34,
+      "total_items": 370,
       "new_items": 36,
-      "last_run": "2026-04-11 17:42:56"
+      "last_run": "2026-04-11 17:49:24"
     },
     {
       "module": "activites",
       "source": "bertrange.lu",
-      "runs": 16,
-      "total_items": 400,
+      "runs": 17,
+      "total_items": 425,
       "new_items": 50,
-      "last_run": "2026-04-11 17:43:01"
+      "last_run": "2026-04-11 17:49:29"
     },
     {
       "module": "activites",
       "source": "mamer.lu/agenda",
-      "runs": 16,
-      "total_items": 165,
+      "runs": 17,
+      "total_items": 176,
       "new_items": 22,
-      "last_run": "2026-04-11 17:42:59"
+      "last_run": "2026-04-11 17:49:28"
     },
     {
       "module": "activites",
       "source": "snj.lu",
-      "runs": 33,
-      "total_items": 192,
+      "runs": 34,
+      "total_items": 198,
       "new_items": 12,
-      "last_run": "2026-04-11 17:43:00"
+      "last_run": "2026-04-11 17:49:28"
     },
     {
       "module": "activites",
       "source": "vdl.lu",
-      "runs": 16,
-      "total_items": 160,
+      "runs": 17,
+      "total_items": 170,
       "new_items": 18,
-      "last_run": "2026-04-11 17:43:02"
+      "last_run": "2026-04-11 17:49:31"
     },
     {
       "module": "deals",
       "source": "auchan.lu",
-      "runs": 35,
-      "total_items": 612,
+      "runs": 36,
+      "total_items": 622,
       "new_items": 44,
-      "last_run": "2026-04-11 17:42:53"
+      "last_run": "2026-04-11 17:49:21"
     },
     {
       "module": "deals",
@@ -73,18 +73,18 @@
     {
       "module": "deals",
       "source": "mediamarkt.lu",
-      "runs": 19,
-      "total_items": 1430,
+      "runs": 20,
+      "total_items": 1440,
       "new_items": 160,
-      "last_run": "2026-04-11 17:42:54"
+      "last_run": "2026-04-11 17:49:22"
     },
     {
       "module": "deals",
       "source": "mydealz.de",
-      "runs": 34,
-      "total_items": 85,
+      "runs": 35,
+      "total_items": 90,
       "new_items": 10,
-      "last_run": "2026-04-11 17:42:54"
+      "last_run": "2026-04-11 17:49:21"
     }
   ]
 }
