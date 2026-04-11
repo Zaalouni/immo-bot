@@ -1,58 +1,82 @@
 {
-  "last_update": "2026-04-11T19:49:31.204119",
+  "last_update": "2026-04-11T20:05:23.117211",
   "totals": {
     "deals": 190,
-    "activites": 79,
+    "activites": 132,
     "emploi": 0
   },
   "by_source": [
     {
       "module": "activites",
       "source": "activites.mamer.lu",
-      "runs": 34,
-      "total_items": 370,
+      "runs": 38,
+      "total_items": 394,
       "new_items": 36,
-      "last_run": "2026-04-11 17:49:24"
+      "last_run": "2026-04-11 18:05:12"
     },
     {
       "module": "activites",
       "source": "bertrange.lu",
-      "runs": 17,
-      "total_items": 425,
+      "runs": 21,
+      "total_items": 525,
       "new_items": 50,
-      "last_run": "2026-04-11 17:49:29"
+      "last_run": "2026-04-11 18:05:17"
+    },
+    {
+      "module": "activites",
+      "source": "eventbrite.lu",
+      "runs": 4,
+      "total_items": 49,
+      "new_items": 31,
+      "last_run": "2026-04-11 18:05:22"
+    },
+    {
+      "module": "activites",
+      "source": "kulturfabrik.lu",
+      "runs": 4,
+      "total_items": 62,
+      "new_items": 62,
+      "last_run": "2026-04-11 18:05:20"
     },
     {
       "module": "activites",
       "source": "mamer.lu/agenda",
-      "runs": 17,
-      "total_items": 176,
+      "runs": 21,
+      "total_items": 220,
       "new_items": 22,
-      "last_run": "2026-04-11 17:49:28"
+      "last_run": "2026-04-11 18:05:16"
+    },
+    {
+      "module": "activites",
+      "source": "rotondes.lu",
+      "runs": 2,
+      "total_items": 0,
+      "new_items": 0,
+      "last_run": "2026-04-11 18:03:36"
     },
     {
       "module": "activites",
       "source": "snj.lu",
-      "runs": 34,
-      "total_items": 198,
+      "runs": 38,
+      "total_items": 222,
       "new_items": 12,
-      "last_run": "2026-04-11 17:49:28"
+      "last_run": "2026-04-11 18:05:16"
     },
     {
       "module": "activites",
       "source": "vdl.lu",
-      "runs": 17,
-      "total_items": 170,
+      "runs": 21,
+      "total_items": 210,
       "new_items": 18,
-      "last_run": "2026-04-11 17:49:31"
+      "last_run": "2026-04-11 18:05:19"
     },
     {
       "module": "deals",
       "source": "auchan.lu",
-      "runs": 36,
-      "total_items": 622,
+      "runs": 39,
+      "total_items": 652,
       "new_items": 44,
-      "last_run": "2026-04-11 17:49:21"
+      "last_run": "2026-04-11 18:05:09"
     },
     {
       "module": "deals",
@@ -73,18 +97,18 @@
     {
       "module": "deals",
       "source": "mediamarkt.lu",
-      "runs": 20,
-      "total_items": 1440,
+      "runs": 23,
+      "total_items": 1470,
       "new_items": 160,
-      "last_run": "2026-04-11 17:49:22"
+      "last_run": "2026-04-11 18:05:11"
     },
     {
       "module": "deals",
       "source": "mydealz.de",
-      "runs": 35,
-      "total_items": 90,
+      "runs": 38,
+      "total_items": 105,
       "new_items": 10,
-      "last_run": "2026-04-11 17:49:21"
+      "last_run": "2026-04-11 18:05:10"
     }
   ]
 }
