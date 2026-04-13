@@ -26,13 +26,27 @@
     <p>Promotions et bons plans — Auchan · MediaMarkt · Mydealz</p>
   </div>
 
-  <!-- Stat bar -->
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:2rem">
-    <div class="stat-card"><div class="stat-label">Total</div><div class="stat-value text-accent" id="st-total">—</div></div>
-    <div class="stat-card"><div class="stat-label">Avec réduction</div><div class="stat-value" style="color:#f87171" id="st-reduc">—</div></div>
-    <div class="stat-card"><div class="stat-label">Top deals 🔥</div><div class="stat-value" style="color:#4ade80" id="st-hot">—</div></div>
-    <div class="stat-card"><div class="stat-label">Sources</div><div class="stat-value" style="color:#7dd3fc" id="st-src">—</div></div>
+  <!-- Stats globales -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1rem">
+    <div class="stat-card">
+      <div class="stat-label">Total</div>
+      <div class="stat-value text-accent" id="st-total">—</div>
+      <div class="stat-sub">toutes sources</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Avec réduction</div>
+      <div class="stat-value" style="color:#f87171" id="st-reduc">—</div>
+      <div class="stat-sub">prix baissé</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Top deals 🔥</div>
+      <div class="stat-value" style="color:#4ade80" id="st-hot">—</div>
+      <div class="stat-sub">score ≥ 70</div>
+    </div>
   </div>
+
+  <!-- Stats par source (générées dynamiquement) -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:2rem" id="src-stats"></div>
 
   <div id="error-msg" style="display:none;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:0.75rem;padding:1rem;margin-bottom:1.5rem;color:#fca5a5;font-size:0.875rem;"></div>
 
@@ -45,18 +59,18 @@
   <div class="filters" style="background:var(--surface);border:1px solid var(--border);border-top:none">
     <input class="input" id="q" placeholder="🔍 Rechercher un produit..." oninput="applyFilter()" style="flex:1;min-width:200px">
     <select class="select" id="sort" onchange="applyFilter()">
-      <option value="score">Meilleurs deals</option>
       <option value="date">Plus récents</option>
+      <option value="score">Meilleurs deals</option>
       <option value="price-asc">Prix croissant</option>
       <option value="price-desc">Prix décroissant</option>
       <option value="pct">% réduction</option>
     </select>
     <select class="select" id="price-max" onchange="applyFilter()">
       <option value="">Tous les prix</option>
-      <option value="10">Moins de 10€</option>
-      <option value="50">Moins de 50€</option>
-      <option value="100">Moins de 100€</option>
-      <option value="500">Moins de 500€</option>
+      <option value="10">&lt; 10€</option>
+      <option value="50">&lt; 50€</option>
+      <option value="100">&lt; 100€</option>
+      <option value="500">&lt; 500€</option>
     </select>
     <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:var(--muted);cursor:pointer;white-space:nowrap">
       <input type="checkbox" id="only-reduc" onchange="applyFilter()"> Avec réduction
@@ -76,15 +90,43 @@
 <footer><div class="container">LUX-BOT — <a href="index.html">Accueil</a> · <a href="stats.html">Stats</a></div></footer>
 
 <script>
+const SRC_COLORS = {
+  'auchan.lu':     '#22c55e',
+  'mediamarkt.lu': '#ef4444',
+  'mydealz.de':    '#f59e0b',
+  'deals.lu':      '#38bdf8',
+};
+const SRC_LABELS = {
+  'auchan.lu':     '🟢 Auchan',
+  'mediamarkt.lu': '🔴 MediaMarkt',
+  'mydealz.de':    '🟡 Mydealz',
+  'deals.lu':      '🔵 Deals.lu',
+};
+function srcColor(s) { return SRC_COLORS[s] || '#94a3b8'; }
+
 let all = [], filtered = [], activeSrc = '', PAGE = 20, page = 1;
 
 function esc(s) { if (s == null) return ''; const d = document.createElement('div'); d.textContent = String(s); return d.innerHTML; }
+
 function timeAgo(dt) {
   if (!dt) return '';
   const m = Math.floor((Date.now() - new Date(dt)) / 60000);
   if (m < 2) return 'À l\'instant'; if (m < 60) return `${m} min`; if (m < 1440) return `${Math.floor(m/60)}h`; return `${Math.floor(m/1440)}j`;
 }
+
+function formatValidUntil(s) {
+  if (!s) return null;
+  const d = new Date(s);
+  if (isNaN(d) || d < new Date()) return null;
+  return 'Jusqu\'au ' + d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' });
+}
+
+function hasDiscount(d) {
+  return (d.discount_percent > 0) || (d.old_price != null && d.price != null && d.old_price > d.price);
+}
+
 function dealScore(d) {
+  if (!hasDiscount(d)) return 0;
   let s = 0;
   if (d.discount_percent >= 50) s += 40; else if (d.discount_percent >= 20) s += 25; else if (d.discount_percent > 0) s += 10;
   if (d.old_price && d.price) { const sv = d.old_price - d.price; if (sv >= 100) s += 30; else if (sv >= 20) s += 20; else if (sv >= 5) s += 10; }
@@ -100,12 +142,16 @@ function render(items) {
   if (!items.length) { g.innerHTML = '<div class="empty"><div class="empty-icon">🔍</div><p>Aucun deal pour ces critères</p></div>'; return; }
   g.innerHTML = items.map(d => {
     const sc = dealScore(d);
-    const badge = sc >= 70 ? '<span class="badge badge-red">🔥 Top deal</span>'
-                : sc >= 40 ? '<span class="badge badge-green">⚡ Bon deal</span>'
-                : d.discount_percent > 0 ? '<span class="badge badge-slate">🏷️ En promo</span>' : '';
-    const savings = d.old_price && d.price ? `<span class="text-xs" style="color:var(--good)">Économie: ${(d.old_price - d.price).toFixed(0)}€</span>` : '';
+    const hasD = hasDiscount(d);
+    const badge = hasD && sc >= 70 ? '<span class="badge badge-red">🔥 Top deal</span>'
+                : hasD && sc >= 40 ? '<span class="badge badge-green">⚡ Bon deal</span>'
+                : hasD             ? '<span class="badge badge-slate">🏷️ En promo</span>' : '';
+    const savings = d.old_price && d.price && d.old_price > d.price
+      ? `<span class="text-xs" style="color:var(--good)">−${(d.old_price - d.price).toFixed(0)}€</span>` : '';
+    const validUntil = formatValidUntil(d.valid_until);
+    const c = srcColor(d.source);
     return `<a href="${esc(d.url)}" target="_blank" rel="noopener" style="text-decoration:none">
-      <div class="card" style="height:100%;display:flex;flex-direction:column;gap:0.6rem">
+      <div class="card" style="height:100%;display:flex;flex-direction:column;gap:0.6rem;border-left:3px solid ${c}">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:0.5rem">
           <h3 class="clamp2 font-bold" style="font-size:0.875rem;flex:1">${esc(d.title)}</h3>
           ${d.discount_percent ? `<span class="badge badge-red" style="flex-shrink:0">-${d.discount_percent}%</span>` : ''}
@@ -117,12 +163,13 @@ function render(items) {
         </div>
         <div style="display:flex;flex-wrap:wrap;gap:0.35rem">
           ${badge}
-          <span class="badge badge-amber">${esc(d.store || d.source)}</span>
+          <span class="badge" style="background:${c}22;color:${c}">${esc(d.store || d.source)}</span>
           ${d.category ? `<span class="badge badge-slate">${esc(d.category)}</span>` : ''}
         </div>
-        <div class="score-bar" style="margin-top:auto"><div class="score-fill ${scoreClass(sc)}" style="width:${sc}%"></div></div>
-        <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:var(--muted)">
-          <span>Score: ${sc}/100</span><span>${timeAgo(d.scraped_at)}</span>
+        ${hasD ? `<div class="score-bar"><div class="score-fill ${scoreClass(sc)}" style="width:${sc}%"></div></div>` : ''}
+        <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:var(--muted);margin-top:auto">
+          ${validUntil ? `<span style="color:var(--accent)">${esc(validUntil)}</span>` : (hasD ? `<span>Score: ${sc}/100</span>` : '<span></span>')}
+          <span>${timeAgo(d.scraped_at)}</span>
         </div>
       </div>
     </a>`;
@@ -143,7 +190,7 @@ function renderPagination(total) {
   p.innerHTML = html;
 }
 
-function goPage(n) { page = n; window.scrollTo(0,0); const slice = filtered.slice((page-1)*PAGE, page*PAGE); render(slice); renderPagination(filtered.length); }
+function goPage(n) { page = n; window.scrollTo(0, 0); render(filtered.slice((page-1)*PAGE, page*PAGE)); renderPagination(filtered.length); }
 
 function applyFilter() {
   page = 1;
@@ -154,16 +201,16 @@ function applyFilter() {
 
   filtered = all.filter(d =>
     (!activeSrc || d.source === activeSrc) &&
-    (!q || d.title.toLowerCase().includes(q) || (d.store||'').toLowerCase().includes(q)) &&
+    (!q || (d.title||'').toLowerCase().includes(q) || (d.store||'').toLowerCase().includes(q)) &&
     (d.price == null || d.price <= maxP) &&
-    (!onlyR || d.discount_percent > 0)
+    (!onlyR || hasDiscount(d))
   );
 
-  if (sort === 'score') filtered.sort((a,b) => dealScore(b) - dealScore(a));
-  else if (sort === 'date') filtered.sort((a,b) => new Date(b.scraped_at) - new Date(a.scraped_at));
-  else if (sort === 'price-asc') filtered.sort((a,b) => (a.price||0) - (b.price||0));
-  else if (sort === 'price-desc') filtered.sort((a,b) => (b.price||0) - (a.price||0));
-  else if (sort === 'pct') filtered.sort((a,b) => (b.discount_percent||0) - (a.discount_percent||0));
+  if (sort === 'score') filtered.sort((a, b) => dealScore(b) - dealScore(a));
+  else if (sort === 'date') filtered.sort((a, b) => new Date(b.scraped_at) - new Date(a.scraped_at));
+  else if (sort === 'price-asc') filtered.sort((a, b) => (a.price || 0) - (b.price || 0));
+  else if (sort === 'price-desc') filtered.sort((a, b) => (b.price || 0) - (a.price || 0));
+  else if (sort === 'pct') filtered.sort((a, b) => (b.discount_percent || 0) - (a.discount_percent || 0));
 
   document.getElementById('cnt').textContent = `${filtered.length} résultat(s)`;
   goPage(1);
@@ -181,22 +228,41 @@ async function loadData() {
     all = deals;
 
     document.getElementById('st-total').textContent = all.length;
-    document.getElementById('st-reduc').textContent = all.filter(d => d.discount_percent > 0).length;
+    document.getElementById('st-reduc').textContent = all.filter(d => hasDiscount(d)).length;
     document.getElementById('st-hot').textContent = all.filter(d => dealScore(d) >= 70).length;
-    const sources = [...new Set(all.map(d => d.source).filter(Boolean))];
-    document.getElementById('st-src').textContent = sources.length;
 
+    // Stats par source
+    const sources = [...new Set(all.map(d => d.source).filter(Boolean))];
+    const srcGrid = document.getElementById('src-stats');
+    sources.forEach(src => {
+      const c = srcColor(src);
+      const count = all.filter(d => d.source === src).length;
+      const withReduc = all.filter(d => d.source === src && hasDiscount(d)).length;
+      const div = document.createElement('div');
+      div.className = 'stat-card';
+      div.style.borderLeft = `3px solid ${c}`;
+      div.innerHTML = `<div class="stat-label" style="color:${c}">${esc(SRC_LABELS[src] || src)}</div>
+        <div class="stat-value" style="color:${c}">${count}</div>
+        <div class="stat-sub">${withReduc > 0 ? withReduc + ' avec réduction' : 'prix catalogue'}</div>`;
+      srcGrid.appendChild(div);
+    });
+
+    // Source tabs
     const tabs = document.getElementById('source-tabs');
     sources.forEach(src => {
+      const c = srcColor(src);
       const b = document.createElement('button');
-      b.className = 'tab-btn'; b.dataset.src = src; b.textContent = src;
+      b.className = 'tab-btn';
+      b.dataset.src = src;
+      b.style.borderLeft = `3px solid ${c}`;
+      b.textContent = SRC_LABELS[src] || src;
       b.onclick = () => setSource(src);
       tabs.appendChild(b);
     });
     tabs.querySelector('[data-src=""]').onclick = () => setSource('');
 
     applyFilter();
-  } catch(e) {
+  } catch (e) {
     const err = document.getElementById('error-msg');
     err.style.display = 'block';
     err.textContent = '⚠️ Impossible de charger deals.json : ' + e.message;

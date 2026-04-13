@@ -45,6 +45,9 @@
   </div>
 
   <div id="error-msg" style="display:none;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:0.75rem;padding:1rem;margin-bottom:1.5rem;color:#fca5a5;font-size:0.875rem;"></div>
+  <div id="tr-banner" style="display:none;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-radius:0.75rem;padding:0.75rem 1rem;margin-bottom:1rem;color:#fbbf24;font-size:0.8rem;">
+    🌐 Traduction EN→FR en cours…
+  </div>
 
   <div class="tabs" style="background:var(--surface);border-radius:0.875rem 0.875rem 0 0;border:1px solid var(--border);border-bottom:none">
     <button class="tab-btn active" id="tab-all"   onclick="setTab('all',this)">Toutes</button>
@@ -83,6 +86,7 @@
 const SRC_COURS  = 'activites.mamer.lu';
 const SRC_AGENDA = 'mamer.lu/agenda';
 const MAMER_SOURCES = [SRC_COURS, SRC_AGENDA];
+const CACHE_KEY = 'lux_tr_cache';
 let all = [], activeTab = 'all';
 
 function esc(s) { if (s==null) return ''; const d=document.createElement('div'); d.textContent=String(s); return d.innerHTML; }
@@ -110,6 +114,60 @@ function timeAgo(dt) {
   if (m<60) return m+'min'; if (m<1440) return Math.floor(m/60)+'h'; return Math.floor(m/1440)+'j';
 }
 function srcColor(src) { return src===SRC_COURS ? '#2dd4bf' : '#38bdf8'; }
+
+/* ── Traduction automatique EN→FR (MyMemory, sans clé API) ── */
+const FR_WORDS = new Set(['le','la','les','de','du','des','et','en','un','une','pour','avec',
+  'sur','par','dans','au','aux','ce','se','qui','que','est','sont','au','ou']);
+
+function needsTranslation(text) {
+  if (!text || text.length < 4) return false;
+  const words = text.toLowerCase().match(/\b\w+\b/g) || [];
+  const frCount = words.filter(w => FR_WORDS.has(w)).length;
+  return frCount < 2;
+}
+
+function loadCache() {
+  try { return JSON.parse(localStorage.getItem(CACHE_KEY) || '{}'); } catch { return {}; }
+}
+function saveCache(c) {
+  try { localStorage.setItem(CACHE_KEY, JSON.stringify(c)); } catch {}
+}
+
+async function translateText(text, cache) {
+  if (!text || !needsTranslation(text)) return text;
+  if (cache[text]) return cache[text];
+  try {
+    const r = await fetch(
+      'https://api.mymemory.translated.net/get?q=' + encodeURIComponent(text) + '&langpair=en|fr'
+    );
+    const data = await r.json();
+    if (data.responseStatus === 200 && data.responseData.translatedText) {
+      const tr = data.responseData.translatedText;
+      cache[text] = tr;
+      return tr;
+    }
+  } catch {}
+  return text;
+}
+
+async function translateAgendaItems(items) {
+  const agendaItems = items.filter(a => a.source === SRC_AGENDA && needsTranslation(a.title));
+  if (!agendaItems.length) return items;
+
+  const banner = document.getElementById('tr-banner');
+  if (banner) banner.style.display = 'block';
+
+  const cache = loadCache();
+  for (const item of agendaItems) {
+    item.title       = await translateText(item.title, cache);
+    item.description = item.description ? await translateText(item.description, cache) : item.description;
+  }
+  saveCache(cache);
+
+  if (banner) banner.style.display = 'none';
+  return items;
+}
+/* ─────────────────────────────────────────────────────────── */
 
 function render(items) {
   const g=document.getElementById('cards-grid');
@@ -180,6 +238,9 @@ async function loadData() {
     document.getElementById('nb-total').textContent=all.length;
     document.getElementById('nb-cours').textContent=all.filter(a=>a.source===SRC_COURS).length;
     document.getElementById('nb-agenda').textContent=all.filter(a=>a.source===SRC_AGENDA).length;
+    // Affichage immédiat, puis traduction en arrière-plan
+    applyFilter();
+    all = await translateAgendaItems(all);
     applyFilter();
   } catch(e) {
     const err=document.getElementById('error-msg');
