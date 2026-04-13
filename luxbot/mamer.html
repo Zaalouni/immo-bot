@@ -59,7 +59,7 @@
     <input class="input" id="q" placeholder="🔍 Rechercher..." oninput="applyFilter()" style="flex:1;min-width:180px">
     <select class="select" id="period" onchange="applyFilter()">
       <option value="">Toutes dates</option>
-      <option value="future">À venir</option>
+      <option value="future" selected>À venir</option>
       <option value="week">Cette semaine</option>
       <option value="month">Ce mois</option>
     </select>
@@ -90,23 +90,38 @@ const CACHE_KEY = 'lux_tr_cache';
 let all = [], activeTab = 'all';
 
 function esc(s) { if (s==null) return ''; const d=document.createElement('div'); d.textContent=String(s); return d.innerHTML; }
-function isPast(s) { if (!s) return false; const d=new Date(s); return !isNaN(d) && d<new Date(); }
+
+/* ── Parseur dates FR ("15 avril 2026 19:00") ── */
+const FR_MONTHS = {janvier:0,février:1,mars:2,avril:3,mai:4,juin:5,
+  juillet:6,août:7,septembre:8,octobre:9,novembre:10,décembre:11};
+function parseDate(s) {
+  if (!s) return null;
+  const d = new Date(s);
+  if (!isNaN(d)) return d;
+  const m = String(s).match(/(\d{1,2})\s+([a-zéûôàèù]+)\s+(\d{4})(?:\s+(\d{1,2}):(\d{2}))?/i);
+  if (m) { const mo = FR_MONTHS[m[2].toLowerCase()]; if (mo !== undefined) return new Date(+m[3], mo, +m[1], m[4]?+m[4]:0, m[5]?+m[5]:0); }
+  return null;
+}
+
+function isPast(s) { const d=parseDate(s); return d ? d<new Date() : false; }
 function isThisWeek(s) {
-  if (!s) return false; const d=new Date(s); if (isNaN(d)) return false;
+  const d=parseDate(s); if (!d) return false;
   const now=new Date(), day=now.getDay();
   const mon=new Date(now); mon.setDate(now.getDate()-(day===0?6:day-1)); mon.setHours(0,0,0,0);
   const sun=new Date(mon); sun.setDate(mon.getDate()+6); sun.setHours(23,59,59,999);
   return d>=mon && d<=sun;
 }
 function isThisMonth(s) {
-  if (!s) return false; const d=new Date(s); if (isNaN(d)) return false;
+  const d=parseDate(s); if (!d) return false;
   const now=new Date(); return d.getFullYear()===now.getFullYear() && d.getMonth()===now.getMonth();
 }
 function formatDate(s) {
   if (!s) return null;
-  const d=new Date(s);
-  if (!isNaN(d) && s.includes('-')) return d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-  return s;
+  const d=parseDate(s);
+  if (!d) return s;
+  const base=d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  const hasTime=String(s).includes(':');
+  return hasTime ? base+' à '+d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}) : base;
 }
 function timeAgo(dt) {
   if (!dt) return '';
@@ -221,9 +236,9 @@ function applyFilter() {
   filtered.sort((a,b) => {
     const pa=isPast(a.date_event), pb=isPast(b.date_event);
     if (pa!==pb) return pa?1:-1;
-    const da=new Date(a.date_event||'9999'), db=new Date(b.date_event||'9999');
-    if (isNaN(da)&&isNaN(db)) return 0;
-    if (isNaN(da)) return 1; if (isNaN(db)) return -1;
+    const da=parseDate(a.date_event), db=parseDate(b.date_event);
+    if (!da&&!db) return 0;
+    if (!da) return 1; if (!db) return -1;
     return da-db;
   });
 

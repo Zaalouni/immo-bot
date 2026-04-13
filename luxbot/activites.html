@@ -28,10 +28,10 @@
 
   <!-- Stat bar -->
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:2rem">
-    <div class="stat-card"><div class="stat-label">Total</div><div class="stat-value" style="color:#a78bfa" id="st-total">—</div></div>
-    <div class="stat-card"><div class="stat-label">Cette semaine</div><div class="stat-value text-accent" id="st-week">—</div></div>
-    <div class="stat-card"><div class="stat-label">Gratuits</div><div class="stat-value" style="color:#4ade80" id="st-free">—</div></div>
-    <div class="stat-card"><div class="stat-label">Sources</div><div class="stat-value" style="color:#7dd3fc" id="st-src">—</div></div>
+    <div class="stat-card"><div class="stat-label">À venir</div><div class="stat-value" style="color:#a78bfa" id="st-total">—</div><div class="stat-sub">événements futurs</div></div>
+    <div class="stat-card"><div class="stat-label">Cette semaine</div><div class="stat-value text-accent" id="st-week">—</div><div class="stat-sub">7 prochains jours</div></div>
+    <div class="stat-card"><div class="stat-label">Gratuits</div><div class="stat-value" style="color:#4ade80" id="st-free">—</div><div class="stat-sub">prix gratuit / libre</div></div>
+    <div class="stat-card"><div class="stat-label">Sources</div><div class="stat-value" style="color:#7dd3fc" id="st-src">—</div><div class="stat-sub">scrapers actifs</div></div>
   </div>
 
   <div id="error-msg" style="display:none;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:0.75rem;padding:1rem;margin-bottom:1.5rem;color:#fca5a5;font-size:0.875rem;"></div>
@@ -46,9 +46,9 @@
     <input class="input" id="q" placeholder="🔍 Rechercher..." oninput="applyFilter()" style="flex:1;min-width:180px">
     <select class="select" id="period" onchange="applyFilter()">
       <option value="">Toutes les dates</option>
+      <option value="future" selected>À venir</option>
       <option value="week">Cette semaine</option>
       <option value="month">Ce mois</option>
-      <option value="future">À venir</option>
     </select>
     <select class="select" id="sort" onchange="applyFilter()">
       <option value="date">Ordre chronologique</option>
@@ -89,38 +89,52 @@ function timeAgo(dt) {
   const m = Math.floor((Date.now() - new Date(dt)) / 60000);
   if (m < 60) return `Il y a ${m} min`; if (m < 1440) return `Il y a ${Math.floor(m/60)}h`; return `Il y a ${Math.floor(m/1440)}j`;
 }
+
+/* ── Parseur de dates FR ("15 avril 2026 19:00") ── */
+const FR_MONTHS = {janvier:0,février:1,mars:2,avril:3,mai:4,juin:5,
+  juillet:6,août:7,septembre:8,octobre:9,novembre:10,décembre:11};
+
+function parseDate(s) {
+  if (!s) return null;
+  // ISO ou format standard
+  const d = new Date(s);
+  if (!isNaN(d)) return d;
+  // "15 avril 2026" ou "15 avril 2026 19:00"
+  const m = String(s).match(/(\d{1,2})\s+([a-zéûôàèù]+)\s+(\d{4})(?:\s+(\d{1,2}):(\d{2}))?/i);
+  if (m) {
+    const mo = FR_MONTHS[m[2].toLowerCase()];
+    if (mo !== undefined) {
+      return new Date(+m[3], mo, +m[1], m[4] ? +m[4] : 0, m[5] ? +m[5] : 0);
+    }
+  }
+  return null;
+}
+
 function formatDate(s) {
   if (!s) return null;
-  // Try ISO parse
-  const iso = new Date(s);
-  if (!isNaN(iso)) {
-    const opts = {weekday:'long', day:'numeric', month:'long', year:'numeric'};
-    const str = iso.toLocaleDateString('fr-FR', opts);
-    const hour = iso.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
-    const isUTC = s.includes('T') && (s.endsWith('Z') || s.includes('+'));
-    return isUTC ? str : str + (s.includes('T') ? ' à ' + hour : '');
-  }
-  // Already textual (e.g. "15 avril 2026")
-  return s;
+  const d = parseDate(s);
+  if (!d) return s;
+  const opts = {weekday:'long', day:'numeric', month:'long', year:'numeric'};
+  const base = d.toLocaleDateString('fr-FR', opts);
+  const hasTime = String(s).includes(':') || (String(s).includes('T') && !String(s).endsWith('T00:00:00'));
+  return hasTime ? base + ' à ' + d.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}) : base;
 }
+
 function isPast(dateStr) {
-  if (!dateStr) return false;
-  const d = new Date(dateStr);
-  return !isNaN(d) && d < new Date();
+  const d = parseDate(dateStr);
+  return d ? d < new Date() : false;
 }
 function isThisWeek(dateStr) {
-  if (!dateStr) return false;
-  const d = new Date(dateStr);
-  if (isNaN(d)) return false;
+  const d = parseDate(dateStr);
+  if (!d) return false;
   const now = new Date(), day = now.getDay();
   const mon = new Date(now); mon.setDate(now.getDate() - (day === 0 ? 6 : day - 1)); mon.setHours(0,0,0,0);
   const sun = new Date(mon); sun.setDate(mon.getDate() + 6); sun.setHours(23,59,59,999);
   return d >= mon && d <= sun;
 }
 function isThisMonth(dateStr) {
-  if (!dateStr) return false;
-  const d = new Date(dateStr);
-  if (isNaN(d)) return false;
+  const d = parseDate(dateStr);
+  if (!d) return false;
   const now = new Date();
   return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
 }
@@ -192,7 +206,7 @@ function applyFilter() {
   filtered = all.filter(a =>
     (!activeSrc || a.source === activeSrc) &&
     (!q || (a.title||'').toLowerCase().includes(q) || (a.description||'').toLowerCase().includes(q) || (a.location||'').toLowerCase().includes(q)) &&
-    (!onlyFree || a.price === 0) &&
+    (!onlyFree || a.price === 0 || a.price == null) &&
     (period === '' || (period === 'week' && isThisWeek(a.date_event)) ||
      (period === 'month' && isThisMonth(a.date_event)) ||
      (period === 'future' && !isPast(a.date_event)))
@@ -200,9 +214,9 @@ function applyFilter() {
 
   if (sort === 'date') {
     filtered.sort((a,b) => {
-      const da = new Date(a.date_event||'9999'), db = new Date(b.date_event||'9999');
-      if (isNaN(da) && isNaN(db)) return 0;
-      if (isNaN(da)) return 1; if (isNaN(db)) return -1;
+      const da = parseDate(a.date_event), db = parseDate(b.date_event);
+      if (!da && !db) return 0;
+      if (!da) return 1; if (!db) return -1;
       return da - db;
     });
   } else {
@@ -236,9 +250,9 @@ async function loadData() {
     const now = new Date();
     const weekEnd = new Date(now); weekEnd.setDate(now.getDate() + 7);
 
-    document.getElementById('st-total').textContent = all.length;
-    document.getElementById('st-week').textContent = all.filter(a => { const d = new Date(a.date_event); return !isNaN(d) && d >= now && d <= weekEnd; }).length;
-    document.getElementById('st-free').textContent = all.filter(a => a.price === 0).length;
+    document.getElementById('st-total').textContent = all.filter(a => !isPast(a.date_event)).length;
+    document.getElementById('st-week').textContent = all.filter(a => { const d = parseDate(a.date_event); return d && d >= now && d <= weekEnd; }).length;
+    document.getElementById('st-free').textContent = all.filter(a => a.price === 0 || a.price == null).length;
     const sources = [...new Set(all.map(a => a.source).filter(Boolean))];
     document.getElementById('st-src').textContent = sources.length;
 

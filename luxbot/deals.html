@@ -96,6 +96,43 @@ const SRC_COLORS = {
   'mydealz.de':    '#f59e0b',
   'deals.lu':      '#38bdf8',
 };
+let priceHistory = {}; // hash → {title, points:[{price,recorded_at}]}
+
+/* ── Sparkline SVG inline ── */
+function sparkline(points, color) {
+  if (!points || points.length < 2) return '';
+  const prices = points.map(p => p.price);
+  const minP = Math.min(...prices), maxP = Math.max(...prices);
+  const W = 80, H = 24, pad = 2;
+  const range = maxP - minP || 1;
+  const xs = points.map((_, i) => pad + i * (W - pad*2) / (points.length - 1));
+  const ys = prices.map(p => pad + (1 - (p - minP) / range) * (H - pad*2));
+  const d = xs.map((x, i) => `${i===0?'M':'L'}${x.toFixed(1)},${ys[i].toFixed(1)}`).join(' ');
+  const hasDrop = minP < maxP;
+  const lineColor = hasDrop ? '#4ade80' : color;
+  return `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" style="display:block">
+    <polyline fill="none" stroke="${lineColor}" stroke-width="1.5" stroke-linejoin="round"
+      points="${xs.map((x,i)=>`${x.toFixed(1)},${ys[i].toFixed(1)}`).join(' ')}"/>
+    <circle cx="${xs[xs.length-1].toFixed(1)}" cy="${ys[ys.length-1].toFixed(1)}" r="2" fill="${lineColor}"/>
+  </svg>`;
+}
+
+function priceHistoryBadge(hash, color) {
+  const h = priceHistory[hash];
+  if (!h || h.points.length < 2) return '';
+  const prices = h.points.map(p => p.price);
+  const minP = Math.min(...prices), maxP = Math.max(...prices);
+  const hasDrop = minP < maxP;
+  const label = hasDrop
+    ? `<span style="color:#4ade80;font-size:0.68rem;font-weight:700">↘ min ${minP}€</span>`
+    : `<span style="color:var(--muted);font-size:0.68rem">${h.points.length}× observé</span>`;
+  return `<div style="display:flex;align-items:center;gap:0.5rem;margin-top:0.25rem;padding:0.4rem 0.5rem;background:rgba(0,0,0,0.2);border-radius:0.4rem">
+    ${sparkline(h.points, color)}
+    <div style="display:flex;flex-direction:column;gap:0.1rem">${label}
+      <span style="color:var(--muted);font-size:0.65rem">${h.points[0].recorded_at.slice(0,10)} → aujourd'hui</span>
+    </div>
+  </div>`;
+}
 const SRC_LABELS = {
   'auchan.lu':     '🟢 Auchan',
   'mediamarkt.lu': '🔴 MediaMarkt',
@@ -167,6 +204,7 @@ function render(items) {
           ${d.category ? `<span class="badge badge-slate">${esc(d.category)}</span>` : ''}
         </div>
         ${hasD ? `<div class="score-bar"><div class="score-fill ${scoreClass(sc)}" style="width:${sc}%"></div></div>` : ''}
+        ${priceHistoryBadge(d.hash, c)}
         <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:var(--muted);margin-top:auto">
           ${validUntil ? `<span style="color:var(--accent)">${esc(validUntil)}</span>` : (hasD ? `<span>Score: ${sc}/100</span>` : '<span></span>')}
           <span>${timeAgo(d.scraped_at)}</span>
@@ -227,7 +265,11 @@ async function fetchJSON(path) {
 }
 
 async function loadData() {
-  const deals = await fetchJSON('data/deals.json');
+  const [deals, ph] = await Promise.all([
+    fetchJSON('data/deals.json'),
+    fetchJSON('data/price_history.json'),
+  ]);
+  if (ph) priceHistory = ph;
   if (!deals) {
     document.getElementById('error-msg').style.display = 'block';
     document.getElementById('error-msg').textContent = '⚠️ deals.json introuvable — lancez le bot une fois pour générer les données.';

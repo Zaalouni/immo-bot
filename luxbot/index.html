@@ -39,7 +39,7 @@
     <div class="stat-card">
       <div class="stat-label">🎭 Activités</div>
       <div class="stat-value" style="color:#a78bfa" id="nb-activites">—</div>
-      <div class="stat-sub">Événements 13-17 ans</div>
+      <div class="stat-sub">Événements locaux scrapés</div>
     </div>
     <div class="stat-card">
       <div class="stat-label">🕐 Dernière mise à jour</div>
@@ -122,10 +122,19 @@ function dealBadge(d) {
   if (sc >= 40) return '<span class="badge badge-green">⚡ Bon deal</span>';
   return '<span class="badge badge-slate">🏷️ En promo</span>';
 }
+const FR_MONTHS_IDX = {janvier:0,février:1,mars:2,avril:3,mai:4,juin:5,
+  juillet:6,août:7,septembre:8,octobre:9,novembre:10,décembre:11};
+function parseDate(s) {
+  if (!s) return null;
+  const d = new Date(s); if (!isNaN(d)) return d;
+  const m = String(s).match(/(\d{1,2})\s+([a-zéûôàèù]+)\s+(\d{4})(?:\s+(\d{1,2}):(\d{2}))?/i);
+  if (m) { const mo = FR_MONTHS_IDX[m[2].toLowerCase()]; if (mo !== undefined) return new Date(+m[3], mo, +m[1], m[4]?+m[4]:0, m[5]?+m[5]:0); }
+  return null;
+}
 function formatDate(dt) {
   if (!dt) return '';
-  const d = new Date(dt);
-  if (isNaN(d)) return dt;
+  const d = parseDate(dt);
+  if (!d) return dt;
   return d.toLocaleDateString('fr-FR', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
 }
 
@@ -227,8 +236,8 @@ async function loadData() {
   if (acts && acts.length) {
     const now = new Date();
     const upcoming = [...acts]
-      .filter(a => !a.date_event || new Date(a.date_event) >= now)
-      .sort((a, b) => new Date(a.date_event || '9999') - new Date(b.date_event || '9999'))
+      .filter(a => { const d = parseDate(a.date_event); return !d || d >= now; })
+      .sort((a, b) => { const da = parseDate(a.date_event), db = parseDate(b.date_event); return (!da ? 1 : !db ? -1 : da - db); })
       .slice(0, 6);
     const toShow = upcoming.length ? upcoming : [...acts].sort((a, b) => b.id - a.id).slice(0, 6);
     ap.innerHTML = toShow.map(actCard).join('');
