@@ -177,52 +177,63 @@ function actCard(a) {
   </a>`;
 }
 
-async function loadData() {
+async function fetchJSON(path) {
   try {
-    const [deals, acts, stats] = await Promise.all([
-      fetch('data/deals.json').then(r => { if (!r.ok) throw new Error('deals.json ' + r.status); return r.json(); }),
-      fetch('data/activites.json').then(r => { if (!r.ok) throw new Error('activites.json ' + r.status); return r.json(); }),
-      fetch('data/stats.json').then(r => { if (!r.ok) throw new Error('stats.json ' + r.status); return r.json(); })
-    ]);
+    const r = await fetch(path);
+    if (!r.ok) return null;
+    return await r.json();
+  } catch { return null; }
+}
 
-    document.getElementById('nb-deals').textContent = stats.totals.deals;
-    document.getElementById('nb-activites').textContent = stats.totals.activites;
+async function loadData() {
+  // Chargement indépendant : un fichier manquant ne bloque pas les autres
+  const [deals, acts, stats] = await Promise.all([
+    fetchJSON('data/deals.json'),
+    fetchJSON('data/activites.json'),
+    fetchJSON('data/stats.json'),
+  ]);
+
+  // Stats globales (depuis stats.json)
+  if (stats) {
+    document.getElementById('nb-deals').textContent = stats.totals?.deals ?? '—';
+    document.getElementById('nb-activites').textContent = stats.totals?.activites ?? '—';
     const upd = new Date(stats.last_update);
     document.getElementById('last-update').textContent = isNaN(upd) ? '—' :
       upd.toLocaleDateString('fr-FR') + ' ' + upd.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
-    const activeSrc = (stats.by_source || []).filter(s => s.runs > 0);
-    document.getElementById('nb-scrapers').textContent = activeSrc.length;
+    document.getElementById('nb-scrapers').textContent =
+      (stats.by_source || []).filter(s => s.runs > 0).length;
+  } else {
+    // Calculer depuis les données brutes si stats.json absent
+    if (deals) document.getElementById('nb-deals').textContent = deals.length;
+    if (acts)  document.getElementById('nb-activites').textContent = acts.length;
+  }
 
-    // Preview deals : d'abord ceux avec remise (par score), puis les plus récents
+  // Preview deals
+  const dp = document.getElementById('deals-preview');
+  if (deals && deals.length) {
     const topDeals = [...deals].sort((a, b) => {
       const ha = hasDiscount(a), hb = hasDiscount(b);
       if (ha !== hb) return ha ? -1 : 1;
       if (ha && hb) return dealScore(b) - dealScore(a);
       return new Date(b.scraped_at) - new Date(a.scraped_at);
     }).slice(0, 6);
-    const dp = document.getElementById('deals-preview');
-    if (topDeals.length) dp.innerHTML = topDeals.map(dealCard).join('');
-    else dp.innerHTML = '<div class="empty"><div class="empty-icon">🔍</div><p>Aucun deal pour l\'instant</p></div>';
+    dp.innerHTML = topDeals.map(dealCard).join('');
+  } else {
+    dp.innerHTML = '<div class="empty"><div class="empty-icon">🏷️</div><p>Aucun deal disponible</p></div>';
+  }
 
-    // Preview activites : prochains 6 événements chronologiques
+  // Preview activités
+  const ap = document.getElementById('activites-preview');
+  if (acts && acts.length) {
     const now = new Date();
     const upcoming = [...acts]
       .filter(a => !a.date_event || new Date(a.date_event) >= now)
       .sort((a, b) => new Date(a.date_event || '9999') - new Date(b.date_event || '9999'))
       .slice(0, 6);
-    const ap = document.getElementById('activites-preview');
-    if (upcoming.length) ap.innerHTML = upcoming.map(actCard).join('');
-    else {
-      const recent = [...acts].sort((a,b) => b.id - a.id).slice(0, 6);
-      ap.innerHTML = recent.length ? recent.map(actCard).join('') :
-        '<div class="empty"><div class="empty-icon">🎭</div><p>Aucune activité pour l\'instant</p></div>';
-    }
-  } catch(e) {
-    const err = document.getElementById('error-msg');
-    err.style.display = 'block';
-    err.textContent = '⚠️ Erreur de chargement : ' + e.message + ' — Vérifiez que le bot a été lancé au moins une fois (python3.11 main.py).';
-    document.getElementById('deals-preview').innerHTML = '<div class="empty"><div class="empty-icon">❌</div><p>Données non disponibles</p></div>';
-    document.getElementById('activites-preview').innerHTML = '<div class="empty"><div class="empty-icon">❌</div><p>Données non disponibles</p></div>';
+    const toShow = upcoming.length ? upcoming : [...acts].sort((a, b) => b.id - a.id).slice(0, 6);
+    ap.innerHTML = toShow.map(actCard).join('');
+  } else {
+    ap.innerHTML = '<div class="empty"><div class="empty-icon">🎭</div><p>Aucune activité disponible</p></div>';
   }
 }
 

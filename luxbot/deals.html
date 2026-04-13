@@ -222,9 +222,19 @@ function setSource(src) {
   applyFilter();
 }
 
+async function fetchJSON(path) {
+  try { const r = await fetch(path); return r.ok ? await r.json() : null; } catch { return null; }
+}
+
 async function loadData() {
+  const deals = await fetchJSON('data/deals.json');
+  if (!deals) {
+    document.getElementById('error-msg').style.display = 'block';
+    document.getElementById('error-msg').textContent = '⚠️ deals.json introuvable — lancez le bot une fois pour générer les données.';
+    document.getElementById('deals-grid').innerHTML = '<div class="empty"><div class="empty-icon">🏷️</div><p>Aucune donnée disponible</p></div>';
+    return;
+  }
   try {
-    const deals = await fetch('data/deals.json').then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); });
     all = deals;
 
     document.getElementById('st-total').textContent = all.length;
@@ -263,10 +273,7 @@ async function loadData() {
 
     applyFilter();
   } catch (e) {
-    const err = document.getElementById('error-msg');
-    err.style.display = 'block';
-    err.textContent = '⚠️ Impossible de charger deals.json : ' + e.message;
-    document.getElementById('deals-grid').innerHTML = '<div class="empty"><div class="empty-icon">❌</div><p>Données non disponibles. Lancez le bot d\'abord.</p></div>';
+    document.getElementById('deals-grid').innerHTML = '<div class="empty"><div class="empty-icon">❌</div><p>Erreur inattendue : ' + e.message + '</p></div>';
   }
 }
 

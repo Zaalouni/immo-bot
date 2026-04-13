@@ -151,9 +151,22 @@ function buildChart(allRows) {
     }).join('') + '</div>';
 }
 
+async function fetchJSON(path) {
+  try { const r = await fetch(path); return r.ok ? await r.json() : null; } catch { return null; }
+}
+
 async function loadData() {
+  const stats = await fetchJSON('data/stats.json');
+  if (!stats) {
+    document.getElementById('error-msg').style.display = 'block';
+    document.getElementById('error-msg').textContent = '⚠️ stats.json introuvable — lancez le bot une fois pour générer les données.';
+    ['tb-deals','tb-acts'].forEach(id =>
+      document.getElementById(id).innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:2rem">Aucune donnée — bot non encore lancé</td></tr>'
+    );
+    document.getElementById('chart-container').innerHTML = '<div style="color:var(--muted);text-align:center;padding:2rem">Aucune donnée disponible</div>';
+    return;
+  }
   try {
-    const stats = await fetch('data/stats.json').then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); });
 
     document.getElementById('st-deals').textContent = stats.totals.deals || 0;
     document.getElementById('st-acts').textContent = stats.totals.activites || 0;
@@ -167,13 +180,7 @@ async function loadData() {
     buildTable('tb-acts', actsRows);
     buildChart(stats.by_source || []);
   } catch(e) {
-    const err = document.getElementById('error-msg');
-    err.style.display = 'block';
-    err.textContent = '⚠️ Impossible de charger stats.json : ' + e.message + ' — Le bot doit être lancé au moins une fois.';
-    ['tb-deals','tb-acts'].forEach(id => {
-      document.getElementById(id).innerHTML = '<tr><td colspan="6" style="text-align:center;color:#fca5a5;padding:2rem">Données non disponibles</td></tr>';
-    });
-    document.getElementById('chart-container').innerHTML = '<div style="color:var(--muted);text-align:center;padding:1rem">Aucune donnée disponible</div>';
+    document.getElementById('chart-container').innerHTML = '<div style="color:var(--muted);text-align:center;padding:1rem">Erreur inattendue : ' + e.message + '</div>';
   }
 }
 
