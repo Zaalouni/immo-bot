@@ -67,6 +67,15 @@
     </div>
     <div class="pagination" id="pagination"></div>
   </div>
+
+  <!-- Export iCal -->
+  <div style="margin-top:1.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
+    <a id="ical-link" href="data/activites.ics" download="lux-bot-activites.ics"
+       class="btn btn-ghost btn-sm" style="display:none">
+      📅 Exporter vers Google Calendar / iPhone (.ics)
+    </a>
+    <span id="ical-hint" class="text-xs text-muted"></span>
+  </div>
 </div>
 
 <footer><div class="container">LUX-BOT — <a href="index.html">Accueil</a> · <a href="stats.html">Stats</a></div></footer>
@@ -235,6 +244,19 @@ async function loadData() {
     tabs.querySelector('[data-src=""]').onclick = () => setSource('');
 
     applyFilter();
+
+    // Bouton iCal : visible si le fichier .ics existe
+    fetch('data/activites.ics', { method: 'HEAD' })
+      .then(r => {
+        const link = document.getElementById('ical-link');
+        const hint = document.getElementById('ical-hint');
+        if (r.ok) {
+          link.style.display = 'inline-flex';
+          const withDate = all.filter(a => a.date_event).length;
+          hint.textContent = `${withDate} événements avec date exportés`;
+        }
+      }).catch(() => {});
+
   } catch(e) {
     const err = document.getElementById('error-msg');
     err.style.display = 'block';

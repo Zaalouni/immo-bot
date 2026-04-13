@@ -44,9 +44,9 @@
     <div class="table-wrap">
       <table class="table">
         <thead><tr>
-          <th>État</th><th>Source</th><th>Runs (7j)</th><th>Items trouvés</th><th>Nouveaux</th><th>Dernière exécution</th>
+          <th>État</th><th>Source</th><th>Runs (7j)</th><th>Taux succès</th><th>Items trouvés</th><th>Nouveaux</th><th>Dernière exécution</th>
         </tr></thead>
-        <tbody id="tb-deals"><tr><td colspan="6" style="text-align:center;color:var(--muted);padding:2rem">Chargement…</td></tr></tbody>
+        <tbody id="tb-deals"><tr><td colspan="7" style="text-align:center;color:var(--muted);padding:2rem">Chargement…</td></tr></tbody>
       </table>
     </div>
   </div>
@@ -59,9 +59,9 @@
     <div class="table-wrap">
       <table class="table">
         <thead><tr>
-          <th>État</th><th>Source</th><th>Runs (7j)</th><th>Items trouvés</th><th>Nouveaux</th><th>Dernière exécution</th>
+          <th>État</th><th>Source</th><th>Runs (7j)</th><th>Taux succès</th><th>Items trouvés</th><th>Nouveaux</th><th>Dernière exécution</th>
         </tr></thead>
-        <tbody id="tb-acts"><tr><td colspan="6" style="text-align:center;color:var(--muted);padding:2rem">Chargement…</td></tr></tbody>
+        <tbody id="tb-acts"><tr><td colspan="7" style="text-align:center;color:var(--muted);padding:2rem">Chargement…</td></tr></tbody>
       </table>
     </div>
   </div>
@@ -106,16 +106,25 @@ function healthLabel(src) {
   return '<span class="badge badge-red">✗ Inactif</span>';
 }
 
+function successBadge(rate) {
+  if (rate == null) return '<span class="badge badge-slate">—</span>';
+  const r = Math.round(rate);
+  if (r >= 90) return `<span class="badge badge-green">✓ ${r}%</span>`;
+  if (r >= 60) return `<span class="badge badge-amber">⚠ ${r}%</span>`;
+  return `<span class="badge badge-red">✗ ${r}%</span>`;
+}
+
 function buildTable(tbodyId, rows) {
   const tb = document.getElementById(tbodyId);
   if (!rows.length) {
-    tb.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:2rem">Aucune donnée — lancez le bot une fois</td></tr>';
+    tb.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:2rem">Aucune donnée — lancez le bot une fois</td></tr>';
     return;
   }
   tb.innerHTML = rows.map(r => `<tr>
     <td style="display:flex;align-items:center;gap:0.5rem">${healthDot(r)} ${healthLabel(r)}</td>
     <td><span style="font-weight:600">${esc(r.source)}</span></td>
     <td>${r.runs || 0}</td>
+    <td>${successBadge(r.success_rate)}</td>
     <td>${r.total_items || 0}</td>
     <td style="color:var(--good)">${r.new_items || 0}</td>
     <td style="color:var(--muted);font-size:0.8rem">${fmtDate(r.last_run)}<br><span style="font-size:0.72rem">${timeAgo(r.last_run)} ago</span></td>

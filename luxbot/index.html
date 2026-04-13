@@ -101,7 +101,11 @@ function timeAgo(dt) {
   if (m < 1440) return `Il y a ${Math.floor(m/60)}h`;
   return `Il y a ${Math.floor(m/1440)}j`;
 }
+function hasDiscount(d) {
+  return (d.discount_percent > 0) || (d.old_price != null && d.price != null && d.old_price > d.price);
+}
 function dealScore(d) {
+  if (!hasDiscount(d)) return 0;
   let s = 0;
   if (d.discount_percent >= 50) s += 40; else if (d.discount_percent >= 20) s += 25; else if (d.discount_percent > 0) s += 10;
   if (d.old_price && d.price) { const sv = d.old_price - d.price; if (sv >= 100) s += 30; else if (sv >= 20) s += 20; else if (sv >= 5) s += 10; }
@@ -112,11 +116,11 @@ function dealScore(d) {
 }
 function scoreClass(sc) { return sc >= 70 ? 'score-hot' : sc >= 40 ? 'score-good' : sc >= 20 ? 'score-ok' : 'score-low'; }
 function dealBadge(d) {
+  if (!hasDiscount(d)) return '';
   const sc = dealScore(d);
   if (sc >= 70) return '<span class="badge badge-red">🔥 Top deal</span>';
   if (sc >= 40) return '<span class="badge badge-green">⚡ Bon deal</span>';
-  if (d.discount_percent > 0) return '<span class="badge badge-slate">🏷️ En promo</span>';
-  return '';
+  return '<span class="badge badge-slate">🏷️ En promo</span>';
 }
 function formatDate(dt) {
   if (!dt) return '';
@@ -125,10 +129,15 @@ function formatDate(dt) {
   return d.toLocaleDateString('fr-FR', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
 }
 
+const SRC_COLORS = {'auchan.lu':'#22c55e','mediamarkt.lu':'#ef4444','mydealz.de':'#f59e0b','deals.lu':'#38bdf8'};
+function srcColor(s) { return SRC_COLORS[s] || '#94a3b8'; }
+
 function dealCard(d) {
   const sc = dealScore(d);
+  const hasD = hasDiscount(d);
+  const c = srcColor(d.source);
   return `<a href="${esc(d.url)}" target="_blank" rel="noopener" style="text-decoration:none">
-    <div class="card" style="height:100%;display:flex;flex-direction:column;gap:0.75rem">
+    <div class="card" style="height:100%;display:flex;flex-direction:column;gap:0.75rem;border-left:3px solid ${c}">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:0.5rem">
         <h3 class="clamp2 text-sm font-bold" style="flex:1">${esc(d.title)}</h3>
         ${d.discount_percent ? `<span class="badge badge-red" style="flex-shrink:0">-${d.discount_percent}%</span>` : ''}
@@ -136,10 +145,10 @@ function dealCard(d) {
       ${d.price != null ? `<div><span class="price">${d.price}€</span>${d.old_price ? `<span class="price-old">${d.old_price}€</span>` : ''}</div>` : ''}
       <div style="display:flex;flex-wrap:wrap;gap:0.35rem;align-items:center">
         ${dealBadge(d)}
-        <span class="badge badge-amber">${esc(d.store || d.source)}</span>
+        <span class="badge" style="background:${c}22;color:${c}">${esc(d.store || d.source)}</span>
       </div>
-      <div class="score-bar" style="margin-top:auto"><div class="score-fill ${scoreClass(sc)}" style="width:${sc}%"></div></div>
-      <div class="text-xs text-muted">${timeAgo(d.scraped_at)}</div>
+      ${hasD ? `<div class="score-bar" style="margin-top:auto"><div class="score-fill ${scoreClass(sc)}" style="width:${sc}%"></div></div>` : ''}
+      <div class="text-xs text-muted" style="margin-top:auto">${timeAgo(d.scraped_at)}</div>
     </div>
   </a>`;
 }
@@ -184,8 +193,13 @@ async function loadData() {
     const activeSrc = (stats.by_source || []).filter(s => s.runs > 0);
     document.getElementById('nb-scrapers').textContent = activeSrc.length;
 
-    // Preview deals : top 6 by score
-    const topDeals = [...deals].sort((a, b) => dealScore(b) - dealScore(a)).slice(0, 6);
+    // Preview deals : d'abord ceux avec remise (par score), puis les plus récents
+    const topDeals = [...deals].sort((a, b) => {
+      const ha = hasDiscount(a), hb = hasDiscount(b);
+      if (ha !== hb) return ha ? -1 : 1;
+      if (ha && hb) return dealScore(b) - dealScore(a);
+      return new Date(b.scraped_at) - new Date(a.scraped_at);
+    }).slice(0, 6);
     const dp = document.getElementById('deals-preview');
     if (topDeals.length) dp.innerHTML = topDeals.map(dealCard).join('');
     else dp.innerHTML = '<div class="empty"><div class="empty-icon">🔍</div><p>Aucun deal pour l\'instant</p></div>';
