@@ -1,298 +1,196 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LUX-BOT — Commune de Mamer</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .card { transition: transform 0.15s; }
-        .card:hover { transform: translateY(-3px); }
-        .badge { display: inline-block; padding: 0.2rem 0.65rem; border-radius: 9999px; font-size: 0.7rem; font-weight: 600; }
-        .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LUX-BOT — Activités Mamer</title>
+  <meta name="theme-color" content="#f59e0b">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="assets/style.css">
 </head>
-<body class="bg-gray-50 min-h-screen">
+<body>
 
-    <!-- Header -->
-    <header class="bg-gradient-to-r from-green-600 to-teal-700 text-white shadow-lg">
-        <div class="container mx-auto px-4 py-5 flex items-center justify-between">
-            <div>
-                <a href="index.html" class="text-green-200 text-sm hover:underline">← LUX-BOT</a>
-                <h1 class="text-2xl font-bold mt-1">🏘️ Commune de Mamer</h1>
-                <p class="text-green-100 text-sm">Activités, événements &amp; cours — Luxembourg</p>
-            </div>
-            <nav class="flex gap-4 text-sm font-medium">
-                <a href="activites.html" class="text-white hover:text-green-200">🎭 Toutes activités</a>
-                <a href="deals.html" class="text-white hover:text-green-200">🏷️ Deals</a>
-                <a href="stats.html" class="text-white hover:text-green-200">📊 Stats</a>
-            </nav>
-        </div>
-    </header>
+<nav class="nav">
+  <a class="nav-logo" href="index.html">⚡ LUX-BOT</a>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">🏠 <span class="label">Accueil</span></a>
+    <a class="nav-link" href="deals.html">🏷️ <span class="label">Deals</span></a>
+    <a class="nav-link active" href="activites.html">🎭 <span class="label">Activités</span></a>
+    <a class="nav-link" href="stats.html">📊 <span class="label">Stats</span></a>
+  </div>
+</nav>
 
-    <div class="container mx-auto px-4 py-6">
+<div class="container page-body">
+  <div class="hero">
+    <h1>🏘️ Activités <span class="hi">Mamer</span></h1>
+    <p>Cours, événements et agenda — Commune de Mamer</p>
+  </div>
 
-        <!-- Stats Mamer -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6" id="mamer-stats"></div>
-
-        <!-- Liens officiels -->
-        <div class="bg-white rounded-xl shadow p-4 mb-6">
-            <h2 class="text-sm font-bold text-gray-500 uppercase tracking-wide mb-3">🔗 Liens officiels</h2>
-            <div class="flex flex-wrap gap-2">
-                <a href="https://www.mamer.lu" target="_blank" rel="noopener"
-                   class="badge bg-green-100 text-green-800 hover:bg-green-200 px-3 py-1.5 text-sm">
-                    🌐 mamer.lu
-                </a>
-                <a href="https://activites.mamer.lu" target="_blank" rel="noopener"
-                   class="badge bg-teal-100 text-teal-800 hover:bg-teal-200 px-3 py-1.5 text-sm">
-                    🏊 activites.mamer.lu
-                </a>
-                <a href="https://mamer.lu/en/social-life/events/all-events/" target="_blank" rel="noopener"
-                   class="badge bg-blue-100 text-blue-800 hover:bg-blue-200 px-3 py-1.5 text-sm">
-                    📅 Agenda Mamer
-                </a>
-                <a href="https://jeparticipe.bertrange.lu/" target="_blank" rel="noopener"
-                   class="badge bg-orange-100 text-orange-800 hover:bg-orange-200 px-3 py-1.5 text-sm">
-                    🗳️ Budget participatif Bertrange
-                </a>
-            </div>
-        </div>
-
-        <!-- Filtres -->
-        <div class="bg-white rounded-xl shadow p-4 mb-4 flex flex-wrap gap-3 items-center">
-            <input id="search" type="text" placeholder="Rechercher activité, cours, événement..."
-                class="flex-1 min-w-48 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-green-400"
-                oninput="applyFilter()">
-            <select id="filter-source" class="border border-gray-200 rounded-lg px-3 py-2 text-sm" onchange="applyFilter()">
-                <option value="">Toutes sources</option>
-                <option value="activites.mamer.lu">Activités (cours)</option>
-                <option value="mamer.lu/agenda">Agenda (événements)</option>
-            </select>
-            <select id="filter-cat" class="border border-gray-200 rounded-lg px-3 py-2 text-sm" onchange="applyFilter()">
-                <option value="">Toutes catégories</option>
-            </select>
-            <span id="count" class="text-sm text-gray-400 whitespace-nowrap"></span>
-        </div>
-
-        <!-- Tabs -->
-        <div class="flex gap-2 mb-4">
-            <button onclick="setView('all')" id="btn-all"
-                class="view-btn px-4 py-2 rounded-lg text-sm font-semibold bg-green-600 text-white">
-                Tout
-            </button>
-            <button onclick="setView('cours')" id="btn-cours"
-                class="view-btn px-4 py-2 rounded-lg text-sm font-semibold bg-white text-gray-600 border hover:bg-gray-50">
-                🏊 Cours &amp; sport
-            </button>
-            <button onclick="setView('agenda')" id="btn-agenda"
-                class="view-btn px-4 py-2 rounded-lg text-sm font-semibold bg-white text-gray-600 border hover:bg-gray-50">
-                📅 Événements
-            </button>
-        </div>
-
-        <!-- Liste -->
-        <div id="mamer-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div class="col-span-full text-center py-20 text-gray-300">Chargement...</div>
-        </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-bottom:2rem">
+    <div class="stat-card" style="border-left:3px solid #2dd4bf">
+      <div class="stat-label" style="color:#2dd4bf">activites.mamer.lu</div>
+      <div class="stat-value" style="color:#2dd4bf" id="nb-cours">—</div>
+      <div class="stat-sub">Cours &amp; manifestations</div>
     </div>
+    <div class="stat-card" style="border-left:3px solid #38bdf8">
+      <div class="stat-label" style="color:#38bdf8">mamer.lu/agenda</div>
+      <div class="stat-value" style="color:#38bdf8" id="nb-agenda">—</div>
+      <div class="stat-sub">Agenda commune</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Total Mamer</div>
+      <div class="stat-value text-accent" id="nb-total">—</div>
+      <div class="stat-sub">Toutes activités</div>
+    </div>
+  </div>
 
-    <footer class="mt-12 py-6 text-center text-gray-400 text-sm">
-        LUX-BOT Mamer — <span id="footer-update"></span>
-    </footer>
+  <div id="error-msg" style="display:none;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:0.75rem;padding:1rem;margin-bottom:1.5rem;color:#fca5a5;font-size:0.875rem;"></div>
 
-    <script>
-    let allMamer = [];
-    let currentView = 'all';
+  <div class="tabs" style="background:var(--surface);border-radius:0.875rem 0.875rem 0 0;border:1px solid var(--border);border-bottom:none">
+    <button class="tab-btn active" id="tab-all"   onclick="setTab('all',this)">Toutes</button>
+    <button class="tab-btn"        id="tab-cours"  onclick="setTab('cours',this)" style="border-left:3px solid #2dd4bf">📚 Cours</button>
+    <button class="tab-btn"        id="tab-agenda" onclick="setTab('agenda',this)" style="border-left:3px solid #38bdf8">📅 Agenda</button>
+  </div>
 
-    // Traductions termes fréquents EN/LU → FR
-    const TRANSLATIONS = {
-        'january':'janvier','february':'février','march':'mars','april':'avril',
-        'may':'mai','june':'juin','july':'juillet','august':'août',
-        'september':'septembre','october':'octobre','november':'novembre','december':'décembre',
-        'free':'gratuit','kids':'enfants','youth':'jeunes','teen':'ado',
-        'workshop':'atelier','exhibition':'exposition',
-        'sports':'sport','swimming':'natation','dance':'danse','music':'musique',
-        'theater':'théâtre','cinema':'cinéma','library':'bibliothèque',
-        'open':'ouvert','closed':'fermé','cancelled':'annulé',
-        'market':'marché','spring':'printemps','summer':'été','autumn':'automne','winter':'hiver',
-        'day':'jour','week':'semaine','month':'mois','evening':'soirée','morning':'matin',
-        'children':'enfants','family':'famille','adult':'adulte','senior':'senior',
-        'registration':'inscription','info':'info','contact':'contact',
-    };
+  <div class="filters" style="background:var(--surface);border:1px solid var(--border);border-top:none">
+    <input class="input" id="q" placeholder="🔍 Rechercher..." oninput="applyFilter()" style="flex:1;min-width:180px">
+    <select class="select" id="period" onchange="applyFilter()">
+      <option value="">Toutes dates</option>
+      <option value="future">À venir</option>
+      <option value="week">Cette semaine</option>
+      <option value="month">Ce mois</option>
+    </select>
+    <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:var(--muted);cursor:pointer">
+      <input type="checkbox" id="only-free" onchange="applyFilter()"> Gratuits
+    </label>
+    <span id="cnt" class="text-xs text-muted" style="white-space:nowrap"></span>
+  </div>
 
-    function translateFR(text) {
-        if (!text) return text;
-        let result = text;
-        for (const [en, fr] of Object.entries(TRANSLATIONS)) {
-            // Échappe les caractères spéciaux regex dans la clé
-            const escaped = en.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-            try {
-                const re = new RegExp('(?<![\\w\\u00C0-\\u024F])' + escaped + '(?![\\w\\u00C0-\\u024F])', 'gi');
-                result = result.replace(re, fr);
-            } catch(e) { /* skip si regex invalide */ }
-        }
-        return result.charAt(0).toUpperCase() + result.slice(1);
-    }
+  <div style="background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 0.875rem 0.875rem;padding:1.25rem">
+    <div class="grid-cards" id="cards-grid">
+      <div class="empty"><div class="empty-icon">⏳</div><p>Chargement...</p></div>
+    </div>
+  </div>
 
-    async function loadData() {
-        try {
-            const [activites, stats] = await Promise.all([
-                fetch('data/activites.json').then(r => { if(!r.ok) throw new Error('activites.json ' + r.status); return r.json(); }),
-                fetch('data/stats.json').then(r => { if(!r.ok) throw new Error('stats.json ' + r.status); return r.json(); })
-            ]);
+  <div style="margin-top:1.5rem;text-align:center">
+    <a href="activites.html" class="btn btn-ghost">🎭 Voir toutes les activités Luxembourg →</a>
+  </div>
+</div>
 
-            // Filtrer sources Mamer
-            allMamer = activites.filter(a =>
-                a.source === 'activites.mamer.lu' || a.source === 'mamer.lu/agenda'
-            );
+<footer><div class="container">LUX-BOT — <a href="index.html">Accueil</a> · <a href="activites.html">Activités</a> · <a href="stats.html">Stats</a></div></footer>
 
-            // Footer
-            const d = new Date(stats.last_update);
-            document.getElementById('footer-update').textContent =
-                'Mis à jour le ' + d.toLocaleDateString('fr-FR') + ' à ' +
-                d.toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit'});
+<script>
+const SRC_COURS  = 'activites.mamer.lu';
+const SRC_AGENDA = 'mamer.lu/agenda';
+const MAMER_SOURCES = [SRC_COURS, SRC_AGENDA];
+let all = [], activeTab = 'all';
 
-            // Stats — classes Tailwind prédéfinies (pas de classes dynamiques)
-            const cours   = allMamer.filter(a => a.source === 'activites.mamer.lu');
-            const agenda  = allMamer.filter(a => a.source === 'mamer.lu/agenda');
-            const gratuits = allMamer.filter(a => a.price === 0);
-            const avecDate = allMamer.filter(a => a.date_event);
-            document.getElementById('mamer-stats').innerHTML = `
-                <div class="bg-white rounded-xl shadow p-4">
-                    <div class="text-gray-400 text-xs font-semibold uppercase">🏊 Cours &amp; sport</div>
-                    <div class="text-2xl font-bold text-teal-600 mt-1">${cours.length}</div>
-                </div>
-                <div class="bg-white rounded-xl shadow p-4">
-                    <div class="text-gray-400 text-xs font-semibold uppercase">📅 Événements</div>
-                    <div class="text-2xl font-bold text-blue-600 mt-1">${agenda.length}</div>
-                </div>
-                <div class="bg-white rounded-xl shadow p-4">
-                    <div class="text-gray-400 text-xs font-semibold uppercase">🆓 Gratuits</div>
-                    <div class="text-2xl font-bold text-green-600 mt-1">${gratuits.length}</div>
-                </div>
-                <div class="bg-white rounded-xl shadow p-4">
-                    <div class="text-gray-400 text-xs font-semibold uppercase">📆 Avec date</div>
-                    <div class="text-2xl font-bold text-purple-600 mt-1">${avecDate.length}</div>
-                </div>`;
+function esc(s) { if (s==null) return ''; const d=document.createElement('div'); d.textContent=String(s); return d.innerHTML; }
+function isPast(s) { if (!s) return false; const d=new Date(s); return !isNaN(d) && d<new Date(); }
+function isThisWeek(s) {
+  if (!s) return false; const d=new Date(s); if (isNaN(d)) return false;
+  const now=new Date(), day=now.getDay();
+  const mon=new Date(now); mon.setDate(now.getDate()-(day===0?6:day-1)); mon.setHours(0,0,0,0);
+  const sun=new Date(mon); sun.setDate(mon.getDate()+6); sun.setHours(23,59,59,999);
+  return d>=mon && d<=sun;
+}
+function isThisMonth(s) {
+  if (!s) return false; const d=new Date(s); if (isNaN(d)) return false;
+  const now=new Date(); return d.getFullYear()===now.getFullYear() && d.getMonth()===now.getMonth();
+}
+function formatDate(s) {
+  if (!s) return null;
+  const d=new Date(s);
+  if (!isNaN(d) && s.includes('-')) return d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  return s;
+}
+function timeAgo(dt) {
+  if (!dt) return '';
+  const m=Math.floor((Date.now()-new Date(dt))/60000);
+  if (m<60) return m+'min'; if (m<1440) return Math.floor(m/60)+'h'; return Math.floor(m/1440)+'j';
+}
+function srcColor(src) { return src===SRC_COURS ? '#2dd4bf' : '#38bdf8'; }
 
-            // Catégories depuis descriptions
-            const cats = [...new Set(allMamer.map(a => a.description).filter(Boolean))].sort();
-            const csel = document.getElementById('filter-cat');
-            cats.forEach(c => {
-                const o = document.createElement('option');
-                o.value = c; o.textContent = c;
-                csel.appendChild(o);
-            });
+function render(items) {
+  const g=document.getElementById('cards-grid');
+  if (!items.length) { g.innerHTML='<div class="empty"><div class="empty-icon">🔍</div><p>Aucune activité pour ces critères</p></div>'; return; }
+  g.innerHTML=items.map(a => {
+    const past=isPast(a.date_event), color=srcColor(a.source), fmtDate=formatDate(a.date_event);
+    return `<a href="${esc(a.url)}" target="_blank" rel="noopener" style="text-decoration:none">
+      <div class="card" style="height:100%;display:flex;flex-direction:column;gap:0.6rem;${past?'opacity:0.5':''};border-left:3px solid ${color}">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:0.5rem">
+          <h3 class="clamp2 font-bold" style="font-size:0.875rem;flex:1">${esc(a.title)}</h3>
+          ${a.price===0?'<span class="badge badge-green" style="flex-shrink:0">Gratuit</span>':a.price?`<span class="badge badge-amber" style="flex-shrink:0">${a.price}€</span>`:''}
+        </div>
+        ${a.description?`<p class="clamp2 text-xs text-muted">${esc(a.description)}</p>`:''}
+        <div style="font-size:0.8rem;display:flex;flex-direction:column;gap:0.25rem">
+          ${fmtDate?`<div>📅 <span style="color:${past?'var(--muted)':'var(--accent)'};font-weight:600">${esc(fmtDate)}</span>${past?' <span class="badge badge-slate" style="font-size:0.65rem">Passé</span>':''}</div>`:''}
+          ${a.location?`<div style="color:var(--muted)">📍 ${esc(a.location)}</div>`:''}
+          ${a.age_min&&a.age_max?`<div style="color:var(--muted)">👥 ${a.age_min}–${a.age_max} ans</div>`:''}
+          ${a.organizer?`<div style="color:var(--muted)">🏛️ ${esc(a.organizer)}</div>`:''}
+        </div>
+        <div style="margin-top:auto;padding-top:0.5rem;display:flex;align-items:center;justify-content:space-between">
+          <span class="badge" style="background:${color}22;color:${color}">${esc(a.source)}</span>
+          <span class="text-xs text-muted">${timeAgo(a.scraped_at)}</span>
+        </div>
+      </div></a>`;
+  }).join('');
+}
 
-            applyFilter();
+function setTab(tab, btn) {
+  activeTab=tab;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilter();
+}
 
-        } catch(e) {
-            console.error('Erreur chargement mamer:', e);
-            document.getElementById('mamer-list').innerHTML =
-                `<div class="col-span-full text-center py-20 text-red-400">
-                    ⚠️ Erreur de chargement des données<br>
-                    <span class="text-sm text-gray-400">${e.message}</span>
-                </div>`;
-            document.getElementById('mamer-stats').innerHTML =
-                '<div class="col-span-full text-red-400 text-sm">Données indisponibles</div>';
-        }
-    }
+function applyFilter() {
+  const q=document.getElementById('q').value.toLowerCase();
+  const period=document.getElementById('period').value;
+  const onlyFree=document.getElementById('only-free').checked;
 
-    function setView(v) {
-        currentView = v;
-        document.querySelectorAll('.view-btn').forEach(b => {
-            b.className = 'view-btn px-4 py-2 rounded-lg text-sm font-semibold bg-white text-gray-600 border hover:bg-gray-50';
-        });
-        document.getElementById(`btn-${v}`).className =
-            'view-btn px-4 py-2 rounded-lg text-sm font-semibold bg-green-600 text-white';
-        applyFilter();
-    }
+  let filtered=all.filter(a => {
+    if (activeTab==='cours'  && a.source!==SRC_COURS)  return false;
+    if (activeTab==='agenda' && a.source!==SRC_AGENDA) return false;
+    if (q && !(a.title||'').toLowerCase().includes(q) && !(a.description||'').toLowerCase().includes(q)) return false;
+    if (onlyFree && a.price!==0) return false;
+    if (period==='future' && isPast(a.date_event)) return false;
+    if (period==='week'   && !isThisWeek(a.date_event))  return false;
+    if (period==='month'  && !isThisMonth(a.date_event)) return false;
+    return true;
+  });
 
-    function applyFilter() {
-        const q = document.getElementById('search').value.toLowerCase();
-        const src = document.getElementById('filter-source').value;
-        const cat = document.getElementById('filter-cat').value;
+  filtered.sort((a,b) => {
+    const pa=isPast(a.date_event), pb=isPast(b.date_event);
+    if (pa!==pb) return pa?1:-1;
+    const da=new Date(a.date_event||'9999'), db=new Date(b.date_event||'9999');
+    if (isNaN(da)&&isNaN(db)) return 0;
+    if (isNaN(da)) return 1; if (isNaN(db)) return -1;
+    return da-db;
+  });
 
-        let filtered = allMamer.filter(a => {
-            if (currentView === 'cours' && a.source !== 'activites.mamer.lu') return false;
-            if (currentView === 'agenda' && a.source !== 'mamer.lu/agenda') return false;
-            if (src && a.source !== src) return false;
-            if (cat && a.description !== cat) return false;
-            if (q && !a.title.toLowerCase().includes(q)) return false;
-            return true;
-        });
+  document.getElementById('cnt').textContent=filtered.length+' résultat(s)';
+  render(filtered);
+}
 
-        // Tri : avec date d'abord
-        filtered.sort((a, b) => {
-            const ad = a.date_event || '';
-            const bd = b.date_event || '';
-            if (ad && !bd) return -1;
-            if (!ad && bd) return 1;
-            return ad.localeCompare(bd);
-        });
+async function loadData() {
+  try {
+    const acts=await fetch('data/activites.json').then(r=>{ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); });
+    all=acts.filter(a=>MAMER_SOURCES.includes(a.source));
+    document.getElementById('nb-total').textContent=all.length;
+    document.getElementById('nb-cours').textContent=all.filter(a=>a.source===SRC_COURS).length;
+    document.getElementById('nb-agenda').textContent=all.filter(a=>a.source===SRC_AGENDA).length;
+    applyFilter();
+  } catch(e) {
+    const err=document.getElementById('error-msg');
+    err.style.display='block';
+    err.textContent='⚠️ Impossible de charger activites.json : '+e.message;
+    document.getElementById('cards-grid').innerHTML='<div class="empty"><div class="empty-icon">❌</div><p>Données non disponibles.</p></div>';
+  }
+}
 
-        document.getElementById('count').textContent = `${filtered.length} résultat(s)`;
-        render(filtered);
-    }
-
-    const SRC_STYLES = {
-        'activites.mamer.lu': { badge: 'bg-teal-100 text-teal-700', btn: 'bg-teal-600', icon: '🏊' },
-        'mamer.lu/agenda':    { badge: 'bg-blue-100 text-blue-700',  btn: 'bg-blue-600',  icon: '📅' },
-    };
-
-    function render(items) {
-        const c = document.getElementById('mamer-list');
-        if (!items.length) {
-            c.innerHTML = '<div class="col-span-full text-center py-20 text-gray-300">Aucun résultat</div>';
-            return;
-        }
-        c.innerHTML = items.map(a => {
-            const style = SRC_STYLES[a.source] || { badge: 'bg-gray-100 text-gray-700', btn: 'bg-gray-600', icon: '📌' };
-            return `
-            <div class="card bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md p-4">
-                <div class="flex items-start justify-between gap-2 mb-2">
-                    <h3 class="font-semibold text-gray-800 text-sm line-clamp-2 flex-1">${esc(translateFR(a.title))}</h3>
-                    ${a.price === 0 ? '<span class="badge bg-green-100 text-green-700 shrink-0">Gratuit</span>'
-                      : a.price ? `<span class="badge bg-amber-100 text-amber-700 shrink-0">${a.price}€</span>` : ''}
-                </div>
-
-                <div class="space-y-1 text-xs text-gray-600 mb-3">
-                    ${a.date_event ? `<div class="font-medium text-green-700">📅 ${esc(translateFR(a.date_event))}</div>` :
-                      '<div class="text-gray-400 italic">Date à confirmer</div>'}
-                    ${a.description && a.source === 'activites.mamer.lu' ?
-                      `<div>🏷️ ${esc(translateFR(a.description))}</div>` : ''}
-                    ${a.description && a.source === 'mamer.lu/agenda' ?
-                      `<div>📍 ${esc(translateFR(a.description))}</div>` : ''}
-                    ${a.age_min && a.age_max ? `<div>👥 ${a.age_min}-${a.age_max} ans</div>` : ''}
-                    ${a.organizer ? `<div>🎪 ${esc(a.organizer)}</div>` : ''}
-                </div>
-
-                <div class="mb-3">
-                    <span class="badge ${style.badge}">${style.icon} ${esc(a.source)}</span>
-                </div>
-
-                <a href="${esc(a.url)}" target="_blank" rel="noopener"
-                   class="block w-full text-center ${style.btn} text-white px-3 py-2 rounded-lg hover:opacity-90 text-sm font-semibold">
-                    Plus d'infos →
-                </a>
-                <div class="text-xs text-gray-400 mt-2">${timeAgo(a.scraped_at)}</div>
-            </div>`;
-        }).join('');
-    }
-
-    function esc(s) {
-        if (!s && s !== 0) return '';
-        const d = document.createElement('div'); d.textContent = String(s); return d.innerHTML;
-    }
-    function timeAgo(dt) {
-        if (!dt) return '';
-        const diff = Math.floor((Date.now() - new Date(dt)) / 60000);
-        if (diff < 60) return `Il y a ${diff} min`;
-        if (diff < 1440) return `Il y a ${Math.floor(diff/60)}h`;
-        return `Il y a ${Math.floor(diff/1440)}j`;
-    }
-
-    loadData();
-    </script>
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
+loadData();
+</script>
 </body>
 </html>

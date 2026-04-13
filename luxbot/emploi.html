@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LUX-BOT — Offres d'emploi</title>
+  <meta name="theme-color" content="#f59e0b">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-logo" href="index.html">⚡ LUX-BOT</a>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">🏠 <span class="label">Accueil</span></a>
+    <a class="nav-link" href="deals.html">🏷️ <span class="label">Deals</span></a>
+    <a class="nav-link" href="activites.html">🎭 <span class="label">Activités</span></a>
+    <a class="nav-link" href="stats.html">📊 <span class="label">Stats</span></a>
+  </div>
+</nav>
+
+<div class="container page-body">
+  <div class="hero">
+    <h1>💼 Offres d'<span class="hi">emploi</span></h1>
+    <p>Recherche d'offres FR — Luxembourg · Mamer · Bertrange</p>
+  </div>
+
+  <div style="max-width:600px;margin:0 auto;text-align:center">
+    <div class="card" style="padding:3rem 2rem">
+      <div style="font-size:4rem;margin-bottom:1.5rem">🚧</div>
+      <h2 style="font-size:1.5rem;font-weight:700;margin-bottom:1rem">Module en développement</h2>
+      <p style="color:var(--muted);line-height:1.8;margin-bottom:1.5rem">
+        Le module emploi est en cours d'intégration.<br>
+        Les sites cibles (LinkedIn, Indeed, ADEM) nécessitent<br>
+        une API dédiée ou Selenium pour le scraping.
+      </p>
+      <div style="display:flex;flex-direction:column;gap:0.75rem;font-size:0.875rem;color:var(--muted);text-align:left;background:var(--surface2);border-radius:0.75rem;padding:1.25rem;margin-bottom:1.5rem">
+        <div style="display:flex;align-items:center;gap:0.75rem"><span style="color:var(--good)">✓</span> <span>jobs.lu — scraper HTML en cours</span></div>
+        <div style="display:flex;align-items:center;gap:0.75rem"><span style="color:var(--good)">✓</span> <span>moovijob.com — scraper HTML en cours</span></div>
+        <div style="display:flex;align-items:center;gap:0.75rem"><span style="color:#f97316">⏳</span> <span>indeed.lu — bloqué (anti-bot)</span></div>
+        <div style="display:flex;align-items:center;gap:0.75rem"><span style="color:#f97316">⏳</span> <span>linkedin.com — nécessite Selenium</span></div>
+        <div style="display:flex;align-items:center;gap:0.75rem"><span style="color:#f97316">⏳</span> <span>adem.lu — en cours d'analyse</span></div>
+      </div>
+      <a href="index.html" class="btn btn-amber" style="margin-right:0.5rem">← Retour accueil</a>
+      <a href="stats.html" class="btn btn-ghost">📊 Voir les stats</a>
+    </div>
+  </div>
+</div>
+
+<footer><div class="container">LUX-BOT — <a href="index.html">Accueil</a> · <a href="deals.html">Deals</a> · <a href="activites.html">Activités</a></div></footer>
+
+<script>
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script>
+</body>
+</html>

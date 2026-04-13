@@ -1,174 +1,175 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LUX-BOT — Statistiques scrapers</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 9999px; font-size: 0.7rem; font-weight: 600; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LUX-BOT — Statistiques scrapers</title>
+  <meta name="theme-color" content="#f59e0b">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="assets/style.css">
 </head>
-<body class="bg-gray-50 min-h-screen">
+<body>
 
-    <header class="bg-gradient-to-r from-gray-700 to-gray-900 text-white shadow-lg">
-        <div class="container mx-auto px-4 py-5 flex items-center justify-between">
-            <div>
-                <a href="index.html" class="text-gray-300 text-sm hover:underline">← LUX-BOT</a>
-                <h1 class="text-2xl font-bold mt-1">📊 Statistiques scrapers</h1>
-            </div>
-            <nav class="flex gap-4 text-sm font-medium">
-                <a href="deals.html" class="text-white hover:text-gray-300">🏷️ Deals</a>
-                <a href="activites.html" class="text-white hover:text-gray-300">🎭 Activités</a>
-            </nav>
-        </div>
-    </header>
+<nav class="nav">
+  <a class="nav-logo" href="index.html">⚡ LUX-BOT</a>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">🏠 <span class="label">Accueil</span></a>
+    <a class="nav-link" href="deals.html">🏷️ <span class="label">Deals</span></a>
+    <a class="nav-link" href="activites.html">🎭 <span class="label">Activités</span></a>
+    <a class="nav-link active" href="stats.html">📊 <span class="label">Stats</span></a>
+  </div>
+</nav>
 
-    <div class="container mx-auto px-4 py-6">
+<div class="container page-body">
+  <div class="hero">
+    <h1>📊 <span class="hi">Santé</span> des scrapers</h1>
+    <p>Monitoring temps réel — performances et état des sources</p>
+  </div>
 
-        <!-- Totaux -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6" id="totals"></div>
+  <div id="error-msg" style="display:none;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:0.75rem;padding:1rem;margin-bottom:1.5rem;color:#fca5a5;font-size:0.875rem;"></div>
 
-        <!-- Deals scrapers -->
-        <div class="bg-white rounded-xl shadow mb-6">
-            <div class="px-6 py-4 border-b">
-                <h2 class="text-lg font-bold text-gray-800">🏷️ Scrapers Deals</h2>
-            </div>
-            <div class="overflow-x-auto">
-                <table class="w-full text-sm">
-                    <thead class="bg-gray-50 text-gray-500 text-xs uppercase">
-                        <tr>
-                            <th class="px-6 py-3 text-left">Source</th>
-                            <th class="px-6 py-3 text-right">Runs</th>
-                            <th class="px-6 py-3 text-right">Total trouvés</th>
-                            <th class="px-6 py-3 text-right">Nouveaux</th>
-                            <th class="px-6 py-3 text-left">Dernière exécution</th>
-                            <th class="px-6 py-3 text-center">Statut</th>
-                        </tr>
-                    </thead>
-                    <tbody id="deals-table" class="divide-y divide-gray-100"></tbody>
-                </table>
-            </div>
-        </div>
+  <!-- Global stats -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:2rem">
+    <div class="stat-card"><div class="stat-label">Deals en base</div><div class="stat-value text-accent" id="st-deals">—</div></div>
+    <div class="stat-card"><div class="stat-label">Activités en base</div><div class="stat-value" style="color:#a78bfa" id="st-acts">—</div></div>
+    <div class="stat-card"><div class="stat-label">Sources actives</div><div class="stat-value" style="color:#4ade80" id="st-active">—</div></div>
+    <div class="stat-card"><div class="stat-label">Dernière MAJ</div><div class="stat-value" style="font-size:0.875rem;margin-top:0.6rem;line-height:1.3" id="st-update">—</div></div>
+  </div>
 
-        <!-- Activités scrapers -->
-        <div class="bg-white rounded-xl shadow mb-6">
-            <div class="px-6 py-4 border-b">
-                <h2 class="text-lg font-bold text-gray-800">🎭 Scrapers Activités</h2>
-            </div>
-            <div class="overflow-x-auto">
-                <table class="w-full text-sm">
-                    <thead class="bg-gray-50 text-gray-500 text-xs uppercase">
-                        <tr>
-                            <th class="px-6 py-3 text-left">Source</th>
-                            <th class="px-6 py-3 text-right">Runs</th>
-                            <th class="px-6 py-3 text-right">Total trouvés</th>
-                            <th class="px-6 py-3 text-right">Nouveaux</th>
-                            <th class="px-6 py-3 text-left">Dernière exécution</th>
-                            <th class="px-6 py-3 text-center">Statut</th>
-                        </tr>
-                    </thead>
-                    <tbody id="activites-table" class="divide-y divide-gray-100"></tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Scrapers bloqués -->
-        <div class="bg-white rounded-xl shadow">
-            <div class="px-6 py-4 border-b">
-                <h2 class="text-lg font-bold text-gray-800">🚫 Scrapers bloqués / désactivés</h2>
-            </div>
-            <div class="p-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <div class="border border-red-100 rounded-lg p-3 bg-red-50">
-                        <div class="font-semibold text-red-700 text-sm">cactus.lu</div>
-                        <div class="text-xs text-gray-500 mt-1">F5 anti-bot — JavaScript requis (Selenium P5)</div>
-                    </div>
-                    <div class="border border-red-100 rounded-lg p-3 bg-red-50">
-                        <div class="font-semibold text-red-700 text-sm">delhaize.lu</div>
-                        <div class="text-xs text-gray-500 mt-1">Rendu JS côté client uniquement</div>
-                    </div>
-                    <div class="border border-red-100 rounded-lg p-3 bg-red-50">
-                        <div class="font-semibold text-red-700 text-sm">deals.lu</div>
-                        <div class="text-xs text-gray-500 mt-1">Domaine expiré / redirigé</div>
-                    </div>
-                    <div class="border border-orange-100 rounded-lg p-3 bg-orange-50">
-                        <div class="font-semibold text-orange-700 text-sm">rotondes.lu / kulturfabrik.lu</div>
-                        <div class="text-xs text-gray-500 mt-1">Contenu chargé dynamiquement (JS)</div>
-                    </div>
-                    <div class="border border-gray-100 rounded-lg p-3 bg-gray-50">
-                        <div class="font-semibold text-gray-600 text-sm">Module Emploi (emploi/*)</div>
-                        <div class="text-xs text-gray-500 mt-1">Désactivé — LinkedIn/Indeed bloquent sans Selenium (P5)</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <!-- Deals scrapers -->
+  <div style="margin-bottom:2rem">
+    <div class="section-header" style="margin-bottom:0.75rem">
+      <div class="section-title">🏷️ Scrapers Deals</div>
     </div>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr>
+          <th>État</th><th>Source</th><th>Runs (7j)</th><th>Items trouvés</th><th>Nouveaux</th><th>Dernière exécution</th>
+        </tr></thead>
+        <tbody id="tb-deals"><tr><td colspan="6" style="text-align:center;color:var(--muted);padding:2rem">Chargement…</td></tr></tbody>
+      </table>
+    </div>
+  </div>
 
-    <footer class="mt-12 py-6 text-center text-gray-400 text-sm">
-        LUX-BOT — <span id="footer-update"></span>
-    </footer>
+  <!-- Activités scrapers -->
+  <div style="margin-bottom:2rem">
+    <div class="section-header" style="margin-bottom:0.75rem">
+      <div class="section-title">🎭 Scrapers Activités</div>
+    </div>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr>
+          <th>État</th><th>Source</th><th>Runs (7j)</th><th>Items trouvés</th><th>Nouveaux</th><th>Dernière exécution</th>
+        </tr></thead>
+        <tbody id="tb-acts"><tr><td colspan="6" style="text-align:center;color:var(--muted);padding:2rem">Chargement…</td></tr></tbody>
+      </table>
+    </div>
+  </div>
 
-    <script>
-    async function loadData() {
-        const stats = await fetch('data/stats.json').then(r => r.json());
+  <!-- Volume chart -->
+  <div>
+    <div class="section-header" style="margin-bottom:0.75rem">
+      <div class="section-title">📈 Volume par source</div>
+    </div>
+    <div class="card" id="chart-container">
+      <div style="color:var(--muted);text-align:center;padding:1rem">Chargement…</div>
+    </div>
+  </div>
+</div>
 
-        // Footer
-        const d = new Date(stats.last_update);
-        document.getElementById('footer-update').textContent =
-            'Mis à jour le ' + d.toLocaleDateString('fr-FR') + ' à ' +
-            d.toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit'});
+<footer><div class="container">LUX-BOT — <a href="index.html">Accueil</a> · <a href="deals.html">Deals</a> · <a href="activites.html">Activités</a></div></footer>
 
-        // Totaux
-        const tot = stats.totals;
-        document.getElementById('totals').innerHTML = [
-            ['🏷️ Deals', tot.deals, 'blue'],
-            ['🎭 Activités', tot.activites, 'purple'],
-            ['💼 Emploi', tot.emploi, 'gray'],
-            ['📡 Sources actives', stats.by_source.filter(s => s.total_items > 0).length, 'green'],
-        ].map(([label, val, color]) => `
-            <div class="bg-white rounded-xl shadow p-5">
-                <div class="text-gray-400 text-xs font-semibold uppercase">${label}</div>
-                <div class="text-3xl font-bold text-${color}-600 mt-1">${val}</div>
-            </div>`).join('');
+<script>
+function esc(s) { if (s == null) return ''; const d = document.createElement('div'); d.textContent = String(s); return d.innerHTML; }
+function fmtDate(dt) {
+  if (!dt) return '—';
+  const d = new Date(dt); if (isNaN(d)) return esc(dt);
+  return d.toLocaleDateString('fr-FR') + ' ' + d.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
+}
+function timeAgo(dt) {
+  if (!dt) return '—';
+  const m = Math.floor((Date.now() - new Date(dt)) / 60000);
+  if (m < 2) return 'À l\'instant'; if (m < 60) return `${m} min`; if (m < 1440) return `${Math.floor(m/60)}h`; return `${Math.floor(m/1440)}j`;
+}
+function healthDot(src) {
+  if (!src.last_run) return '<span class="dot dot-gray"></span>';
+  const hrs = (Date.now() - new Date(src.last_run)) / 3600000;
+  if (hrs < 3) return '<span class="dot dot-green"></span>';
+  if (hrs < 12) return '<span class="dot dot-orange"></span>';
+  return '<span class="dot dot-red"></span>';
+}
+function healthLabel(src) {
+  if (!src.last_run) return '<span class="badge badge-slate">Jamais</span>';
+  const hrs = (Date.now() - new Date(src.last_run)) / 3600000;
+  if (hrs < 3) return '<span class="badge badge-green">✓ OK</span>';
+  if (hrs < 12) return '<span class="badge badge-amber">⚠ Ancien</span>';
+  return '<span class="badge badge-red">✗ Inactif</span>';
+}
 
-        // Tables
-        const dealsRows = stats.by_source.filter(s => s.module === 'deals');
-        const actsRows = stats.by_source.filter(s => s.module === 'activites');
+function buildTable(tbodyId, rows) {
+  const tb = document.getElementById(tbodyId);
+  if (!rows.length) {
+    tb.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:2rem">Aucune donnée — lancez le bot une fois</td></tr>';
+    return;
+  }
+  tb.innerHTML = rows.map(r => `<tr>
+    <td style="display:flex;align-items:center;gap:0.5rem">${healthDot(r)} ${healthLabel(r)}</td>
+    <td><span style="font-weight:600">${esc(r.source)}</span></td>
+    <td>${r.runs || 0}</td>
+    <td>${r.total_items || 0}</td>
+    <td style="color:var(--good)">${r.new_items || 0}</td>
+    <td style="color:var(--muted);font-size:0.8rem">${fmtDate(r.last_run)}<br><span style="font-size:0.72rem">${timeAgo(r.last_run)} ago</span></td>
+  </tr>`).join('');
+}
 
-        document.getElementById('deals-table').innerHTML = renderRows(dealsRows);
-        document.getElementById('activites-table').innerHTML = renderRows(actsRows);
-    }
+function buildChart(allRows) {
+  const container = document.getElementById('chart-container');
+  if (!allRows.length) { container.innerHTML = '<div style="color:var(--muted);text-align:center;padding:1rem">Pas encore de données</div>'; return; }
+  const maxItems = Math.max(...allRows.map(r => r.total_items || 0), 1);
+  container.innerHTML = '<div style="display:flex;flex-direction:column;gap:0.75rem">' +
+    allRows.map(r => {
+      const pct = Math.round(((r.total_items || 0) / maxItems) * 100);
+      const color = r.module === 'deals' ? 'var(--accent)' : '#a78bfa';
+      return `<div>
+        <div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:0.3rem">
+          <span style="color:var(--muted)">${esc(r.source)}</span>
+          <span style="font-weight:600">${r.total_items || 0} items</span>
+        </div>
+        <div style="height:10px;background:var(--border);border-radius:9999px;overflow:hidden">
+          <div style="height:100%;width:${pct}%;background:${color};border-radius:9999px;transition:width 0.6s"></div>
+        </div>
+      </div>`;
+    }).join('') + '</div>';
+}
 
-    function renderRows(rows) {
-        if (!rows.length) return '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-400">Aucune donnée</td></tr>';
-        return rows.map(r => {
-            const lastRun = r.last_run ? new Date(r.last_run) : null;
-            const hoursAgo = lastRun ? Math.floor((Date.now() - lastRun) / 3600000) : 999;
-            const ok = r.total_items > 0;
-            const statusBadge = ok
-                ? '<span class="badge bg-green-100 text-green-700">✓ OK</span>'
-                : '<span class="badge bg-red-100 text-red-600">✗ Vide</span>';
-            const timeStr = lastRun
-                ? lastRun.toLocaleDateString('fr-FR') + ' ' + lastRun.toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit'})
-                : '—';
-            return `<tr class="hover:bg-gray-50">
-                <td class="px-6 py-3 font-medium text-gray-800">${esc(r.source)}</td>
-                <td class="px-6 py-3 text-right text-gray-600">${r.runs}</td>
-                <td class="px-6 py-3 text-right text-gray-600">${r.total_items}</td>
-                <td class="px-6 py-3 text-right font-semibold text-green-600">${r.new_items}</td>
-                <td class="px-6 py-3 text-gray-500 text-xs">${timeStr}</td>
-                <td class="px-6 py-3 text-center">${statusBadge}</td>
-            </tr>`;
-        }).join('');
-    }
+async function loadData() {
+  try {
+    const stats = await fetch('data/stats.json').then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); });
 
-    function esc(s) {
-        if (!s) return '';
-        const d = document.createElement('div'); d.textContent = String(s); return d.innerHTML;
-    }
+    document.getElementById('st-deals').textContent = stats.totals.deals || 0;
+    document.getElementById('st-acts').textContent = stats.totals.activites || 0;
+    const active = (stats.by_source || []).filter(s => s.runs > 0);
+    document.getElementById('st-active').textContent = active.length;
+    document.getElementById('st-update').textContent = fmtDate(stats.last_update);
 
-    loadData();
-    </script>
+    const dealsRows = (stats.by_source || []).filter(r => r.module === 'deals');
+    const actsRows  = (stats.by_source || []).filter(r => r.module === 'activites');
+    buildTable('tb-deals', dealsRows);
+    buildTable('tb-acts', actsRows);
+    buildChart(stats.by_source || []);
+  } catch(e) {
+    const err = document.getElementById('error-msg');
+    err.style.display = 'block';
+    err.textContent = '⚠️ Impossible de charger stats.json : ' + e.message + ' — Le bot doit être lancé au moins une fois.';
+    ['tb-deals','tb-acts'].forEach(id => {
+      document.getElementById(id).innerHTML = '<tr><td colspan="6" style="text-align:center;color:#fca5a5;padding:2rem">Données non disponibles</td></tr>';
+    });
+    document.getElementById('chart-container').innerHTML = '<div style="color:var(--muted);text-align:center;padding:1rem">Aucune donnée disponible</div>';
+  }
+}
+
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+loadData();
+</script>
 </body>
 </html>

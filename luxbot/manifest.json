@@ -1,0 +1,14 @@
+{
+  "name": "LUX-BOT Dashboard",
+  "short_name": "LuxBot",
+  "description": "Deals & Activités Luxembourg — Famille Mamer/Bertrange",
+  "start_url": "/immo-bot/luxbot/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#f59e0b",
+  "orientation": "any",
+  "icons": [
+    { "src": "assets/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

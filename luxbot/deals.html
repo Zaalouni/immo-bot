@@ -1,347 +1,211 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LUX-BOT — Deals Luxembourg</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .card { transition: transform 0.15s, box-shadow 0.15s; }
-        .card:hover { transform: translateY(-3px); }
-        .badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 9999px; font-size: 0.7rem; font-weight: 600; }
-        .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        .deal-hot    { border-left: 4px solid #ef4444; }
-        .deal-good   { border-left: 4px solid #f97316; }
-        .deal-normal { border-left: 4px solid #3b82f6; }
-        .deal-plain  { border-left: 4px solid #e5e7eb; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LUX-BOT — Deals Luxembourg</title>
+  <meta name="theme-color" content="#f59e0b">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="assets/style.css">
 </head>
-<body class="bg-gray-50 min-h-screen">
+<body>
 
-    <header class="bg-gradient-to-r from-blue-600 to-blue-800 text-white shadow-lg">
-        <div class="container mx-auto px-4 py-5 flex items-center justify-between">
-            <div>
-                <a href="index.html" class="text-blue-200 text-sm hover:underline">← LUX-BOT</a>
-                <h1 class="text-2xl font-bold mt-1">🏷️ Deals Luxembourg</h1>
-                <p class="text-blue-100 text-sm">Promotions &amp; soldes — Luxemburg</p>
-            </div>
-            <nav class="flex gap-4 text-sm font-medium">
-                <a href="activites.html" class="text-white hover:text-blue-200">🎭 Activités</a>
-                <a href="stats.html" class="text-white hover:text-blue-200">📊 Stats</a>
-            </nav>
-        </div>
-    </header>
+<nav class="nav">
+  <a class="nav-logo" href="index.html">⚡ LUX-BOT</a>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">🏠 <span class="label">Accueil</span></a>
+    <a class="nav-link active" href="deals.html">🏷️ <span class="label">Deals</span></a>
+    <a class="nav-link" href="activites.html">🎭 <span class="label">Activités</span></a>
+    <a class="nav-link" href="stats.html">📊 <span class="label">Stats</span></a>
+  </div>
+</nav>
 
-    <div class="container mx-auto px-4 py-6">
+<div class="container page-body">
+  <div class="hero">
+    <h1>🏷️ <span class="hi">Deals</span> Luxembourg</h1>
+    <p>Promotions et bons plans — Auchan · MediaMarkt · Mydealz</p>
+  </div>
 
-        <!-- Stats rapides -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6" id="deal-stats"></div>
+  <!-- Stat bar -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:2rem">
+    <div class="stat-card"><div class="stat-label">Total</div><div class="stat-value text-accent" id="st-total">—</div></div>
+    <div class="stat-card"><div class="stat-label">Avec réduction</div><div class="stat-value" style="color:#f87171" id="st-reduc">—</div></div>
+    <div class="stat-card"><div class="stat-label">Top deals 🔥</div><div class="stat-value" style="color:#4ade80" id="st-hot">—</div></div>
+    <div class="stat-card"><div class="stat-label">Sources</div><div class="stat-value" style="color:#7dd3fc" id="st-src">—</div></div>
+  </div>
 
-        <!-- Filtres -->
-        <div class="bg-white rounded-xl shadow p-4 mb-4 flex flex-wrap gap-3 items-center">
-            <input id="search" type="text" placeholder="Rechercher un produit..."
-                class="flex-1 min-w-48 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-400"
-                oninput="applyFilter()">
-            <select id="filter-store" class="border border-gray-200 rounded-lg px-3 py-2 text-sm" onchange="applyFilter()">
-                <option value="">Toutes enseignes</option>
-            </select>
-            <select id="filter-cat" class="border border-gray-200 rounded-lg px-3 py-2 text-sm" onchange="applyFilter()">
-                <option value="">Toutes catégories</option>
-            </select>
-            <select id="sort" class="border border-gray-200 rounded-lg px-3 py-2 text-sm" onchange="applyFilter()">
-                <option value="score">🔥 Meilleurs deals</option>
-                <option value="recent">🕐 Plus récents</option>
-                <option value="discount">% Réduction ↓</option>
-                <option value="price-asc">Prix ↑</option>
-                <option value="price-desc">Prix ↓</option>
-                <option value="saving">💰 Économie ↓</option>
-            </select>
-            <span id="count" class="text-sm text-gray-400 whitespace-nowrap"></span>
-        </div>
+  <div id="error-msg" style="display:none;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:0.75rem;padding:1rem;margin-bottom:1.5rem;color:#fca5a5;font-size:0.875rem;"></div>
 
-        <!-- Filtres rapides par type de deal -->
-        <div class="flex flex-wrap gap-2 mb-4">
-            <button onclick="setDealType('all')" id="type-all"
-                class="type-btn px-4 py-2 rounded-lg text-sm font-semibold bg-blue-600 text-white">
-                Tous
-            </button>
-            <button onclick="setDealType('hot')" id="type-hot"
-                class="type-btn px-4 py-2 rounded-lg text-sm font-semibold bg-white text-gray-600 border hover:bg-red-50">
-                🔥 Chauds (&gt;30%)
-            </button>
-            <button onclick="setDealType('promo')" id="type-promo"
-                class="type-btn px-4 py-2 rounded-lg text-sm font-semibold bg-white text-gray-600 border hover:bg-orange-50">
-                🏷️ Vraies promos
-            </button>
-            <button onclick="setDealType('new')" id="type-new"
-                class="type-btn px-4 py-2 rounded-lg text-sm font-semibold bg-white text-gray-600 border hover:bg-green-50">
-                ⚡ Nouveaux &lt;24h
-            </button>
-        </div>
+  <!-- Source tabs -->
+  <div class="tabs" id="source-tabs" style="background:var(--surface);border-radius:0.875rem 0.875rem 0 0;border:1px solid var(--border);border-bottom:none">
+    <button class="tab-btn active" data-src="">Toutes</button>
+  </div>
 
-        <!-- Source badges -->
-        <div id="source-badges" class="flex flex-wrap gap-2 mb-4"></div>
+  <!-- Filters -->
+  <div class="filters" style="background:var(--surface);border:1px solid var(--border);border-top:none">
+    <input class="input" id="q" placeholder="🔍 Rechercher un produit..." oninput="applyFilter()" style="flex:1;min-width:200px">
+    <select class="select" id="sort" onchange="applyFilter()">
+      <option value="score">Meilleurs deals</option>
+      <option value="date">Plus récents</option>
+      <option value="price-asc">Prix croissant</option>
+      <option value="price-desc">Prix décroissant</option>
+      <option value="pct">% réduction</option>
+    </select>
+    <select class="select" id="price-max" onchange="applyFilter()">
+      <option value="">Tous les prix</option>
+      <option value="10">Moins de 10€</option>
+      <option value="50">Moins de 50€</option>
+      <option value="100">Moins de 100€</option>
+      <option value="500">Moins de 500€</option>
+    </select>
+    <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:var(--muted);cursor:pointer;white-space:nowrap">
+      <input type="checkbox" id="only-reduc" onchange="applyFilter()"> Avec réduction
+    </label>
+    <span id="cnt" class="text-xs text-muted" style="white-space:nowrap"></span>
+  </div>
 
-        <!-- Liste deals -->
-        <div id="deals-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            <div class="col-span-full text-center py-20 text-gray-300">Chargement...</div>
-        </div>
+  <!-- Cards -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 0.875rem 0.875rem;padding:1.25rem">
+    <div class="grid-cards" id="deals-grid">
+      <div class="empty"><div class="empty-icon">⏳</div><p>Chargement...</p></div>
     </div>
+    <div class="pagination" id="pagination"></div>
+  </div>
+</div>
 
-    <footer class="mt-12 py-6 text-center text-gray-400 text-sm">
-        LUX-BOT — <span id="footer-update"></span>
-    </footer>
+<footer><div class="container">LUX-BOT — <a href="index.html">Accueil</a> · <a href="stats.html">Stats</a></div></footer>
 
-    <script>
-    let all = [];
-    let dealType = 'all';
+<script>
+let all = [], filtered = [], activeSrc = '', PAGE = 20, page = 1;
 
-    // Score de deal : 0-100 selon remise, économie, ancienneté
-    function dealScore(d) {
-        let score = 0;
-        const pct = d.discount_percent || 0;
-        const saving = (d.old_price && d.price) ? (d.old_price - d.price) : 0;
-        const ageMin = d.scraped_at ? Math.floor((Date.now() - new Date(d.scraped_at)) / 60000) : 9999;
+function esc(s) { if (s == null) return ''; const d = document.createElement('div'); d.textContent = String(s); return d.innerHTML; }
+function timeAgo(dt) {
+  if (!dt) return '';
+  const m = Math.floor((Date.now() - new Date(dt)) / 60000);
+  if (m < 2) return 'À l\'instant'; if (m < 60) return `${m} min`; if (m < 1440) return `${Math.floor(m/60)}h`; return `${Math.floor(m/1440)}j`;
+}
+function dealScore(d) {
+  let s = 0;
+  if (d.discount_percent >= 50) s += 40; else if (d.discount_percent >= 20) s += 25; else if (d.discount_percent > 0) s += 10;
+  if (d.old_price && d.price) { const sv = d.old_price - d.price; if (sv >= 100) s += 30; else if (sv >= 20) s += 20; else if (sv >= 5) s += 10; }
+  if (d.old_price && d.price) s += 20;
+  const hrs = (Date.now() - new Date(d.scraped_at)) / 3600000;
+  if (hrs < 6) s += 10; else if (hrs < 24) s += 5;
+  return Math.min(s, 100);
+}
+function scoreClass(sc) { return sc >= 70 ? 'score-hot' : sc >= 40 ? 'score-good' : sc >= 20 ? 'score-ok' : 'score-low'; }
 
-        // Remise % : 40 pts max
-        if (pct >= 50) score += 40;
-        else if (pct >= 30) score += 30;
-        else if (pct >= 15) score += 20;
-        else if (pct >= 5)  score += 10;
+function render(items) {
+  const g = document.getElementById('deals-grid');
+  if (!items.length) { g.innerHTML = '<div class="empty"><div class="empty-icon">🔍</div><p>Aucun deal pour ces critères</p></div>'; return; }
+  g.innerHTML = items.map(d => {
+    const sc = dealScore(d);
+    const badge = sc >= 70 ? '<span class="badge badge-red">🔥 Top deal</span>'
+                : sc >= 40 ? '<span class="badge badge-green">⚡ Bon deal</span>'
+                : d.discount_percent > 0 ? '<span class="badge badge-slate">🏷️ En promo</span>' : '';
+    const savings = d.old_price && d.price ? `<span class="text-xs" style="color:var(--good)">Économie: ${(d.old_price - d.price).toFixed(0)}€</span>` : '';
+    return `<a href="${esc(d.url)}" target="_blank" rel="noopener" style="text-decoration:none">
+      <div class="card" style="height:100%;display:flex;flex-direction:column;gap:0.6rem">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:0.5rem">
+          <h3 class="clamp2 font-bold" style="font-size:0.875rem;flex:1">${esc(d.title)}</h3>
+          ${d.discount_percent ? `<span class="badge badge-red" style="flex-shrink:0">-${d.discount_percent}%</span>` : ''}
+        </div>
+        <div style="display:flex;align-items:baseline;gap:0.5rem;flex-wrap:wrap">
+          ${d.price != null ? `<span class="price">${d.price}€</span>` : ''}
+          ${d.old_price ? `<span class="price-old">${d.old_price}€</span>` : ''}
+          ${savings}
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:0.35rem">
+          ${badge}
+          <span class="badge badge-amber">${esc(d.store || d.source)}</span>
+          ${d.category ? `<span class="badge badge-slate">${esc(d.category)}</span>` : ''}
+        </div>
+        <div class="score-bar" style="margin-top:auto"><div class="score-fill ${scoreClass(sc)}" style="width:${sc}%"></div></div>
+        <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:var(--muted)">
+          <span>Score: ${sc}/100</span><span>${timeAgo(d.scraped_at)}</span>
+        </div>
+      </div>
+    </a>`;
+  }).join('');
+}
 
-        // Économie en € : 30 pts max
-        if (saving >= 100) score += 30;
-        else if (saving >= 50) score += 22;
-        else if (saving >= 20) score += 15;
-        else if (saving >= 5)  score += 8;
-        else if (saving > 0)   score += 3;
+function renderPagination(total) {
+  const pages = Math.ceil(total / PAGE);
+  const p = document.getElementById('pagination');
+  if (pages <= 1) { p.innerHTML = ''; return; }
+  let html = '';
+  if (page > 1) html += `<button class="page-btn" onclick="goPage(${page-1})">← Préc.</button>`;
+  const start = Math.max(1, page - 2), end = Math.min(pages, page + 2);
+  if (start > 1) html += `<button class="page-btn" onclick="goPage(1)">1</button>${start > 2 ? '<span style="padding:0 0.25rem;color:var(--muted)">…</span>' : ''}`;
+  for (let i = start; i <= end; i++) html += `<button class="page-btn ${i === page ? 'active' : ''}" onclick="goPage(${i})">${i}</button>`;
+  if (end < pages) html += `${end < pages - 1 ? '<span style="padding:0 0.25rem;color:var(--muted)">…</span>' : ''}<button class="page-btn" onclick="goPage(${pages})">${pages}</button>`;
+  if (page < pages) html += `<button class="page-btn" onclick="goPage(${page+1})">Suiv. →</button>`;
+  p.innerHTML = html;
+}
 
-        // Prix affiché (promo confirmée si old_price présent) : 20 pts
-        if (d.old_price && d.price) score += 20;
-        else if (pct > 0)           score += 10;
+function goPage(n) { page = n; window.scrollTo(0,0); const slice = filtered.slice((page-1)*PAGE, page*PAGE); render(slice); renderPagination(filtered.length); }
 
-        // Fraîcheur : 10 pts max
-        if (ageMin < 60)   score += 10;
-        else if (ageMin < 360)  score += 7;
-        else if (ageMin < 1440) score += 4;
+function applyFilter() {
+  page = 1;
+  const q = document.getElementById('q').value.toLowerCase();
+  const sort = document.getElementById('sort').value;
+  const maxP = parseFloat(document.getElementById('price-max').value) || Infinity;
+  const onlyR = document.getElementById('only-reduc').checked;
 
-        return score;
-    }
+  filtered = all.filter(d =>
+    (!activeSrc || d.source === activeSrc) &&
+    (!q || d.title.toLowerCase().includes(q) || (d.store||'').toLowerCase().includes(q)) &&
+    (d.price == null || d.price <= maxP) &&
+    (!onlyR || d.discount_percent > 0)
+  );
 
-    function dealClass(score) {
-        if (score >= 70) return 'deal-hot';
-        if (score >= 45) return 'deal-good';
-        if (score >= 20) return 'deal-normal';
-        return 'deal-plain';
-    }
+  if (sort === 'score') filtered.sort((a,b) => dealScore(b) - dealScore(a));
+  else if (sort === 'date') filtered.sort((a,b) => new Date(b.scraped_at) - new Date(a.scraped_at));
+  else if (sort === 'price-asc') filtered.sort((a,b) => (a.price||0) - (b.price||0));
+  else if (sort === 'price-desc') filtered.sort((a,b) => (b.price||0) - (a.price||0));
+  else if (sort === 'pct') filtered.sort((a,b) => (b.discount_percent||0) - (a.discount_percent||0));
 
-    function dealLabel(d) {
-        const score = dealScore(d);
-        const pct = d.discount_percent || 0;
-        if (score >= 70 || pct >= 30) return { icon: '🔥', label: 'Très bon deal', cls: 'bg-red-100 text-red-700' };
-        if (score >= 45 || pct >= 15) return { icon: '⚡', label: 'Bon deal',      cls: 'bg-orange-100 text-orange-700' };
-        if (d.old_price && d.price)   return { icon: '🏷️', label: 'En promo',      cls: 'bg-blue-100 text-blue-700' };
-        return null;
-    }
+  document.getElementById('cnt').textContent = `${filtered.length} résultat(s)`;
+  goPage(1);
+}
 
-    async function loadData() {
-        try {
-            const [deals, stats] = await Promise.all([
-                fetch('data/deals.json').then(r => { if (!r.ok) throw new Error('deals.json ' + r.status); return r.json(); }),
-                fetch('data/stats.json').then(r => { if (!r.ok) throw new Error('stats.json ' + r.status); return r.json(); })
-            ]);
-            all = deals;
+function setSource(src) {
+  activeSrc = src;
+  document.querySelectorAll('#source-tabs .tab-btn').forEach(b => b.classList.toggle('active', b.dataset.src === src));
+  applyFilter();
+}
 
-            // Footer
-            const upd = new Date(stats.last_update);
-            document.getElementById('footer-update').textContent =
-                'Mis à jour le ' + upd.toLocaleDateString('fr-FR') + ' à ' +
-                upd.toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit'});
+async function loadData() {
+  try {
+    const deals = await fetch('data/deals.json').then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); });
+    all = deals;
 
-            // Stats rapides — classes Tailwind statiques (pas de classes dynamiques)
-            const hot      = deals.filter(x => (x.discount_percent||0) >= 30);
-            const withSaving = deals.filter(x => x.old_price && x.price);
-            const fresh    = deals.filter(x => x.scraped_at && (Date.now() - new Date(x.scraped_at)) < 86400000);
-            document.getElementById('deal-stats').innerHTML = `
-                <div class="bg-white rounded-xl shadow p-4">
-                    <div class="text-gray-400 text-xs font-semibold uppercase">🏷️ Total deals</div>
-                    <div class="text-2xl font-bold text-blue-600 mt-1">${deals.length}</div>
-                </div>
-                <div class="bg-white rounded-xl shadow p-4">
-                    <div class="text-gray-400 text-xs font-semibold uppercase">🔥 Chauds (+30%)</div>
-                    <div class="text-2xl font-bold text-red-600 mt-1">${hot.length}</div>
-                </div>
-                <div class="bg-white rounded-xl shadow p-4">
-                    <div class="text-gray-400 text-xs font-semibold uppercase">💰 Avec promo prix</div>
-                    <div class="text-2xl font-bold text-orange-500 mt-1">${withSaving.length}</div>
-                </div>
-                <div class="bg-white rounded-xl shadow p-4">
-                    <div class="text-gray-400 text-xs font-semibold uppercase">⚡ Dernières 24h</div>
-                    <div class="text-2xl font-bold text-green-600 mt-1">${fresh.length}</div>
-                </div>`;
+    document.getElementById('st-total').textContent = all.length;
+    document.getElementById('st-reduc').textContent = all.filter(d => d.discount_percent > 0).length;
+    document.getElementById('st-hot').textContent = all.filter(d => dealScore(d) >= 70).length;
+    const sources = [...new Set(all.map(d => d.source).filter(Boolean))];
+    document.getElementById('st-src').textContent = sources.length;
 
-            // Store filter
-            const stores = [...new Set(deals.map(x => x.store).filter(Boolean))].sort();
-            const sel = document.getElementById('filter-store');
-            stores.forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; sel.appendChild(o); });
+    const tabs = document.getElementById('source-tabs');
+    sources.forEach(src => {
+      const b = document.createElement('button');
+      b.className = 'tab-btn'; b.dataset.src = src; b.textContent = src;
+      b.onclick = () => setSource(src);
+      tabs.appendChild(b);
+    });
+    tabs.querySelector('[data-src=""]').onclick = () => setSource('');
 
-            // Category filter
-            const cats = [...new Set(deals.map(x => x.category).filter(Boolean))].sort();
-            const csel = document.getElementById('filter-cat');
-            cats.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = c; csel.appendChild(o); });
+    applyFilter();
+  } catch(e) {
+    const err = document.getElementById('error-msg');
+    err.style.display = 'block';
+    err.textContent = '⚠️ Impossible de charger deals.json : ' + e.message;
+    document.getElementById('deals-grid').innerHTML = '<div class="empty"><div class="empty-icon">❌</div><p>Données non disponibles. Lancez le bot d\'abord.</p></div>';
+  }
+}
 
-            // Source badges
-            const srcCounts = {};
-            deals.forEach(x => { srcCounts[x.source] = (srcCounts[x.source]||0)+1; });
-            const badgesEl = document.getElementById('source-badges');
-            badgesEl.innerHTML = '';
-            Object.entries(srcCounts).sort((a,b) => b[1]-a[1]).forEach(([src, cnt]) => {
-                const span = document.createElement('span');
-                span.className = 'badge bg-blue-100 text-blue-700 cursor-pointer hover:bg-blue-200';
-                span.textContent = src + ' ';
-                const b = document.createElement('b');
-                b.textContent = cnt;
-                span.appendChild(b);
-                span.onclick = () => filterBySource(src);
-                badgesEl.appendChild(span);
-            });
-
-            applyFilter();
-
-        } catch(e) {
-            console.error('Erreur chargement deals:', e);
-            document.getElementById('deals-list').innerHTML =
-                '<div class="col-span-full text-center py-20 text-red-400">⚠️ Erreur de chargement — ' + e.message + '</div>';
-            document.getElementById('deal-stats').innerHTML =
-                '<div class="col-span-full text-red-400 text-sm py-4">Données indisponibles</div>';
-        }
-    }
-
-    function filterBySource(src) {
-        document.getElementById('filter-store').value = src;
-        applyFilter();
-    }
-
-    function setDealType(type) {
-        dealType = type;
-        document.querySelectorAll('.type-btn').forEach(b => {
-            b.className = 'type-btn px-4 py-2 rounded-lg text-sm font-semibold bg-white text-gray-600 border hover:bg-gray-50';
-        });
-        const colors = { all:'bg-blue-600', hot:'bg-red-600', promo:'bg-orange-500', new:'bg-green-600' };
-        document.getElementById(`type-${type}`).className =
-            `type-btn px-4 py-2 rounded-lg text-sm font-semibold ${colors[type]} text-white`;
-        applyFilter();
-    }
-
-    function applyFilter() {
-        const q = document.getElementById('search').value.toLowerCase();
-        const store = document.getElementById('filter-store').value;
-        const cat = document.getElementById('filter-cat').value;
-        const sort = document.getElementById('sort').value;
-
-        let filtered = all.filter(d => {
-            if (q && !d.title.toLowerCase().includes(q)) return false;
-            if (store && d.store !== store && d.source !== store) return false;
-            if (cat && d.category !== cat) return false;
-            // Type filter
-            if (dealType === 'hot')   return (d.discount_percent||0) >= 30;
-            if (dealType === 'promo') return d.old_price && d.price;
-            if (dealType === 'new') {
-                if (!d.scraped_at) return false;
-                return (Date.now() - new Date(d.scraped_at)) < 86400000;
-            }
-            return true;
-        });
-
-        // Tri
-        if (sort === 'score')      filtered.sort((a,b) => dealScore(b) - dealScore(a));
-        else if (sort === 'recent') filtered.sort((a,b) => b.id - a.id);
-        else if (sort === 'discount') filtered.sort((a,b) => (b.discount_percent||0) - (a.discount_percent||0));
-        else if (sort === 'price-asc') filtered.sort((a,b) => (a.price||999999) - (b.price||999999));
-        else if (sort === 'price-desc') filtered.sort((a,b) => (b.price||0) - (a.price||0));
-        else if (sort === 'saving') {
-            filtered.sort((a,b) => {
-                const sa = (a.old_price && a.price) ? (a.old_price - a.price) : 0;
-                const sb = (b.old_price && b.price) ? (b.old_price - b.price) : 0;
-                return sb - sa;
-            });
-        }
-
-        document.getElementById('count').textContent = `${filtered.length} résultat(s)`;
-        render(filtered);
-    }
-
-    function render(deals) {
-        const c = document.getElementById('deals-list');
-        if (!deals.length) {
-            c.innerHTML = '<div class="col-span-full text-center py-20 text-gray-300">Aucun deal pour ces critères</div>';
-            return;
-        }
-        const now = Date.now();
-        c.innerHTML = deals.slice(0, 120).map(d => {
-            const score  = dealScore(d);
-            const cls    = dealClass(score);
-            const label  = dealLabel(d);
-            const saving = (d.old_price && d.price) ? Math.round(d.old_price - d.price) : 0;
-            const isNew  = d.scraped_at && (now - new Date(d.scraped_at)) < 86400000;
-            const pct    = d.discount_percent || 0;
-
-            return `
-            <div class="card bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md overflow-hidden ${cls}">
-                <div class="p-4">
-                    <!-- Badges en haut -->
-                    <div class="flex flex-wrap gap-1 mb-2">
-                        ${label ? `<span class="badge ${label.cls}">${label.icon} ${label.label}</span>` : ''}
-                        ${isNew ? '<span class="badge bg-green-100 text-green-700">⚡ Nouveau</span>' : ''}
-                    </div>
-
-                    <!-- Titre + remise % -->
-                    <div class="flex justify-between items-start gap-2 mb-2">
-                        <h3 class="font-semibold text-gray-800 text-sm line-clamp-2 flex-1">${esc(d.title)}</h3>
-                        ${pct >= 30 ? `<span class="badge bg-red-500 text-white shrink-0 text-base px-2 py-1">-${pct}%</span>`
-                          : pct > 0 ? `<span class="badge bg-red-100 text-red-600 shrink-0">-${pct}%</span>` : ''}
-                    </div>
-
-                    <!-- Bloc prix -->
-                    ${d.price != null ? `
-                    <div class="flex items-baseline gap-2 mb-1">
-                        <span class="text-2xl font-bold text-blue-600">${d.price}€</span>
-                        ${d.old_price ? `<span class="text-sm text-gray-400 line-through">${d.old_price}€</span>` : ''}
-                    </div>
-                    ${saving > 0 ? `<div class="text-xs font-semibold text-green-600 mb-2">💰 Vous économisez ${saving}€</div>` : '<div class="mb-2"></div>'}
-                    ` : '<div class="mb-3"></div>'}
-
-                    <!-- Enseigne + catégorie -->
-                    <div class="flex flex-wrap gap-1 mb-3">
-                        <span class="badge bg-blue-50 text-blue-700">${esc(d.store || d.source)}</span>
-                        ${d.category ? `<span class="badge bg-gray-100 text-gray-500">${esc(d.category)}</span>` : ''}
-                    </div>
-
-                    ${d.valid_until ? `<div class="text-xs text-amber-600 mb-2">⏰ Jusqu'au ${esc(d.valid_until)}</div>` : ''}
-
-                    <a href="${esc(d.url)}" target="_blank" rel="noopener"
-                       class="block w-full text-center bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-blue-700 text-sm font-semibold">
-                        Voir l'offre →
-                    </a>
-                    <div class="text-xs text-gray-400 mt-2">${timeAgo(d.scraped_at)}</div>
-                </div>
-            </div>`;
-        }).join('');
-    }
-
-    function esc(s) {
-        if (!s && s !== 0) return '';
-        const d = document.createElement('div'); d.textContent = String(s); return d.innerHTML;
-    }
-    function timeAgo(dt) {
-        if (!dt) return '';
-        const diff = Math.floor((Date.now() - new Date(dt)) / 60000);
-        if (diff < 60) return `Il y a ${diff} min`;
-        if (diff < 1440) return `Il y a ${Math.floor(diff/60)}h`;
-        return `Il y a ${Math.floor(diff/1440)}j`;
-    }
-
-    loadData();
-    </script>
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+loadData();
+</script>
 </body>
 </html>
