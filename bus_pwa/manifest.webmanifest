@@ -1,0 +1,42 @@
+{
+  "name": "Bus Offline — Horaires RGTR et AVL",
+  "short_name": "Bus Offline",
+  "description": "Horaires bus offline — arrêts ciblés RGTR et AVL 10, Luxembourg.",
+  "start_url": "/immo-bot/bus_pwa/index.html?utm_source=pwa",
+  "scope": "/immo-bot/bus_pwa/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0a0f1e",
+  "theme_color": "#0a0f1e",
+  "prefer_related_applications": false,
+  "categories": ["travel", "transportation", "utilities"],
+  "icons": [
+    { "src": "assets/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    {
+      "name": "Prochains bus",
+      "short_name": "Prochains",
+      "description": "Bus dans les ±5 prochaines minutes",
+      "url": "/immo-bot/bus_pwa/index.html?tab=now",
+      "icons": [{ "src": "assets/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Alerte matin",
+      "short_name": "Matin",
+      "description": "Horaires 07:15 – 08:15",
+      "url": "/immo-bot/bus_pwa/index.html?tab=morning",
+      "icons": [{ "src": "assets/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Alerte soir",
+      "short_name": "Soir",
+      "description": "Horaires 17:40 – 19:00",
+      "url": "/immo-bot/bus_pwa/index.html?tab=evening",
+      "icons": [{ "src": "assets/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
