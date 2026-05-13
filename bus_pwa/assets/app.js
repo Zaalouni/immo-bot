@@ -671,7 +671,32 @@
           }
         });
       });
+      /* Enregistrer le sync periodique apres que le SW est pret */
+      navigator.serviceWorker.ready.then(r => registerPeriodicSync(r));
     }).catch(() => {});
+
+    /* Message du SW : ouvrir un onglet specifique */
+    navigator.serviceWorker.addEventListener('message', ev => {
+      if (ev.data?.type === 'OPEN_TAB' && ev.data.tab) {
+        state.tab = ev.data.tab;
+        document.querySelectorAll('.tab').forEach(b => {
+          const active = b.dataset.tab === state.tab;
+          b.classList.toggle('active', active);
+          b.setAttribute('aria-selected', String(active));
+        });
+        saveState(); applyFilters();
+      }
+    });
+  }
+
+  async function registerPeriodicSync(reg) {
+    if (!('periodicSync' in reg)) return;
+    try {
+      const perm = await navigator.permissions.query({ name: 'periodic-background-sync' });
+      if (perm.state !== 'granted') return;
+      /* Enregistrer seulement si la permission est accordee (PWA installee sur Android) */
+      await reg.periodicSync.register('bus-alert', { minInterval: 15 * 60 * 1000 });
+    } catch (_) {}
   }
 
   /* ===== PWA Install ===== */
