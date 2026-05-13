@@ -266,6 +266,8 @@ details > summary::-webkit-details-marker { display:none; }
 .live-stop-chip { flex-shrink:0; background:var(--surface); border:1.5px solid var(--border); color:var(--text2); border-radius:999px; padding:6px 13px; font-size:.76rem; font-weight:600; min-height:36px; white-space:nowrap; transition:color 200ms,border-color 200ms,background 200ms; }
 .live-stop-chip:hover  { border-color:var(--border2); color:var(--text); }
 .live-stop-chip.active { background:var(--accent-dim); border-color:var(--accent); color:var(--accent); }
+.live-gps-btn { border-color:var(--green); color:var(--green); background:var(--green-dim); }
+.live-gps-btn:hover { background:var(--green); color:#fff; }
 
 .live-tol-row { display:flex; gap:7px; }
 .live-tol-btn { background:var(--surface); border:1.5px solid var(--border); color:var(--text2); border-radius:var(--radius-sm); padding:5px 15px; font-size:.8rem; font-weight:700; min-height:36px; transition:color 200ms,border-color 200ms,background 200ms; }

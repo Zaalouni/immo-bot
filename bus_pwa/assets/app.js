@@ -55,6 +55,45 @@
   const isCityBound  = dir => CITY_RE.test(dest(dir));
   const isMamerBound = dir => MAMER_RE.test(dest(dir));
 
+  /* ===== Coordonnees GPS des arrets ===== */
+  const STOP_COORDS = {
+    'MAMER, Gare':                    [49.6228, 6.0211],
+    'MAMER, Mambra':                  [49.6258, 6.0253],
+    'MAMER, Eglantiers':              [49.6268, 6.0198],
+    'BERTRANGE, Belle-Etoile':        [49.6088, 6.1163],
+    'Bertrange, Belle Étoile Quai 1': [49.6088, 6.1163],
+    'Strassen, Bourmicht Quai 1':     [49.6150, 6.0870],
+    'Gare Centrale Quai 1':           [49.5997, 6.1347],
+    'Hamilius Quai 1':                [49.6110, 6.1297],
+    'FINDEL, Aéroport Quai 4':        [49.6333, 6.2044],
+    'LUXEMBOURG, Gare Centrale':      [49.5997, 6.1347],
+  };
+
+  function geoDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371000, rad = Math.PI / 180;
+    const dLat = (lat2 - lat1) * rad, dLon = (lon2 - lon1) * rad;
+    const a = Math.sin(dLat/2)**2 + Math.cos(lat1*rad)*Math.cos(lat2*rad)*Math.sin(dLon/2)**2;
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  }
+
+  function detectNearestStop() {
+    if (!('geolocation' in navigator)) { showToast('GPS non disponible'); return; }
+    navigator.geolocation.getCurrentPosition(pos => {
+      const { latitude: lat, longitude: lon } = pos.coords;
+      let nearest = '', minDist = Infinity;
+      for (const [stop, [slat, slon]] of Object.entries(STOP_COORDS)) {
+        const d = geoDistance(lat, lon, slat, slon);
+        if (d < minDist) { minDist = d; nearest = stop; }
+      }
+      if (nearest) {
+        state.liveStop = nearest;
+        const dist = minDist < 1000 ? Math.round(minDist) + '\xa0m' : (minDist/1000).toFixed(1) + '\xa0km';
+        showToast('\u{1F4CD} ' + nearest + ' (' + dist + ')');
+        applyFilters();
+      }
+    }, () => showToast('Position non disponible'), { timeout: 6000, maximumAge: 30000 });
+  }
+
   /* Sous-ensembles d'arrets par role */
   const STOP_MAMER       = ['MAMER, Mambra', 'MAMER, Eglantiers'];
   const STOP_BELLE_AVL   = ['Bertrange, Belle Étoile Quai 1'];
@@ -326,7 +365,7 @@
       const active = state.liveStop === s;
       const label  = s || 'Tous les arrêts';
       return `<button class="live-stop-chip${active ? ' active' : ''}" data-action="live-stop" data-stop="${escapeHtml(s)}" type="button">${escapeHtml(label)}</button>`;
-    }).join('');
+    }).join('') + `<button class="live-stop-chip live-gps-btn" data-action="live-gps" type="button" title="Détecter l'arrêt le plus proche">\u{1F4CD} GPS</button>`;
 
     /* Boutons tolerance */
     const tolBtns = [5, 10, 30].map(t =>
@@ -715,7 +754,9 @@
       btn.addEventListener('click', () => {
         state.tab = btn.dataset.tab;
         document.querySelectorAll('.tab').forEach(b => { b.classList.toggle('active', b === btn); b.setAttribute('aria-selected', String(b === btn)); });
-        saveState(); applyFilters();
+        saveState();
+        if (state.tab === 'live') detectNearestStop();
+        else applyFilters();
       });
     });
 
@@ -774,6 +815,9 @@
       if (btn.dataset.action === 'live-tol') {
         state.liveTol = Number(btn.dataset.tol);
         saveState(); applyFilters();
+      }
+      if (btn.dataset.action === 'live-gps') {
+        detectNearestStop();
       }
     });
 
