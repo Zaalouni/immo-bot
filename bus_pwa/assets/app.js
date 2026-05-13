@@ -56,10 +56,12 @@
   const isMamerBound = dir => MAMER_RE.test(dest(dir));
 
   /* Sous-ensembles d'arrets par role */
-  const STOP_MAMER      = ['MAMER, Mambra', 'MAMER, Eglantiers'];
-  const STOP_BELLE_AVL  = ['Bertrange, Belle Étoile Quai 1'];
-  const STOP_CITY_AVL   = ['Strassen, Bourmicht Quai 1', 'Gare Centrale Quai 1', 'Hamilius Quai 1'];
-  const STOP_BELLE_RGTR = ['BERTRANGE, Belle-Etoile'];
+  const STOP_MAMER       = ['MAMER, Mambra', 'MAMER, Eglantiers'];
+  const STOP_BELLE_AVL   = ['Bertrange, Belle Étoile Quai 1'];
+  const STOP_CITY_AVL    = ['Strassen, Bourmicht Quai 1', 'Gare Centrale Quai 1', 'Hamilius Quai 1'];
+  const STOP_BELLE_RGTR  = ['BERTRANGE, Belle-Etoile'];
+  const STOP_MAMER_TRAIN = ['MAMER, Gare'];
+  const STOP_LUX_TRAIN   = ['LUXEMBOURG, Gare Centrale'];
 
   /* Pre-calculs */
   const morningAll = ALL.filter(r => r.time_minutes >= MORNING_START && r.time_minutes <= MORNING_END);
@@ -69,6 +71,7 @@
   const state = {
     tab: 'now', stop: '', line: '', direction: '', service: '',
     timeTarget: '', timeTol: 5, search: '',
+    liveStop: '', liveTol: 10,
     favorites: [],  /* [{key, line, target_stop, direction, network}] */
     history: [],
     filtered: [],
@@ -78,17 +81,18 @@
   function loadState() {
     try {
       const s = JSON.parse(localStorage.getItem('bus-pwa') || '{}');
-      if (s.tab && ['now','morning','evening','favorites','all'].includes(s.tab)) state.tab = s.tab;
-      if (s.stop)                     state.stop      = s.stop;
+      if (s.tab && ['now','morning','evening','favorites','all','live'].includes(s.tab)) state.tab = s.tab;
+      if (s.stop)                                 state.stop    = s.stop;
+      if (s.liveTol && [5,10,30].includes(+s.liveTol)) state.liveTol = +s.liveTol;
       if (Array.isArray(s.favorites)) state.favorites = s.favorites;
       if (Array.isArray(s.history))   state.history   = s.history.slice(0, 5);
     } catch (_) {}
     const urlTab = new URLSearchParams(location.search).get('tab');
-    if (urlTab && ['now','morning','evening','favorites','all'].includes(urlTab)) state.tab = urlTab;
+    if (urlTab && ['now','morning','evening','favorites','all','live'].includes(urlTab)) state.tab = urlTab;
   }
 
   function saveState() {
-    try { localStorage.setItem('bus-pwa', JSON.stringify({ tab: state.tab, stop: state.stop, favorites: state.favorites, history: state.history })); } catch (_) {}
+    try { localStorage.setItem('bus-pwa', JSON.stringify({ tab: state.tab, stop: state.stop, liveTol: state.liveTol, favorites: state.favorites, history: state.history })); } catch (_) {}
   }
 
   /* ===== Theme ===== */
@@ -191,7 +195,7 @@
     }
     const next = pool.reduce((a, b) => Math.abs(b.time_minutes - n) < Math.abs(a.time_minutes - n) ? b : a);
     const { text: cdText } = countdown(next.time_minutes - n);
-    const lineCls = next.network === 'AVL' ? 'badge-avl' : 'badge-rgtr';
+    const lineCls = next.network === 'AVL' ? 'badge-avl' : next.network === 'CFL' ? 'badge-cfl' : 'badge-rgtr';
     card.classList.add('has-bus');
     body.innerHTML =
       `<span class="nb-time">${escapeHtml(next.time)}</span>` +
@@ -243,7 +247,7 @@
     renderResults(rows, n);
     updateTabCounts(n);
     updateNextBus();
-    const tabLabels = { now: 'Prochains \xB15 min', morning: 'Matin 07:15–08:15', evening: 'Soir 17:40–19:00', favorites: 'Favoris', all: 'Tous les horaires' };
+    const tabLabels = { now: 'Prochains \xB15 min', morning: 'Matin 07:15–08:15', evening: 'Soir 17:40–19:00', favorites: 'Favoris', all: 'Tous les horaires', live: 'Live \xB1' + state.liveTol + ' min' };
     $('resultInfo').textContent = `${rows.length} passage(s) — ${tabLabels[state.tab] || ''}`;
   }
 
@@ -260,7 +264,8 @@
   function renderResults(rows, n) {
     if (!rows.length) { $('results').innerHTML = emptyForTab(state.tab, n); return; }
 
-    if (state.tab === 'favorites') { $('results').innerHTML = renderFavorites(n); return; }
+    if (state.tab === 'live')      { $('results').innerHTML = renderLiveBoard(n);        return; }
+    if (state.tab === 'favorites') { $('results').innerHTML = renderFavorites(n);         return; }
 
     if (state.tab === 'morning') { $('results').innerHTML = renderMorningJourney(rows, n); return; }
     if (state.tab === 'evening') { $('results').innerHTML = renderEveningJourney(rows, n); return; }
@@ -271,39 +276,120 @@
     $('results').innerHTML = [...groups.entries()].map(([stop, list]) => renderStopGroup(stop, list, n)).join('');
   }
 
-  /* ===== Onglet Matin — sections Aller + Connexion + Autres ===== */
+  /* ===== Onglet Matin — sections Train + Aller + Connexion + Autres ===== */
   function renderMorningJourney(rows, n) {
+    /* Train L50 : Mamer Gare => Luxembourg Gare Centrale */
+    const train = rows.filter(r => r.network === 'CFL' && STOP_MAMER_TRAIN.includes(r.target_stop));
     /* Aller : Mamer => vers la ville */
     const aller = rows.filter(r => STOP_MAMER.includes(r.target_stop) && isCityBound(r.direction));
     /* Connexion : Belle-Etoile AVL 10 => vers Bourmicht/Gare/Hamilius */
     const connexion = rows.filter(r => STOP_BELLE_AVL.includes(r.target_stop) && r.line === '10');
     /* Autres : tout le reste */
-    const autresSet = new Set([...aller, ...connexion]);
+    const autresSet = new Set([...train, ...aller, ...connexion]);
     const autres = rows.filter(r => !autresSet.has(r));
 
     let html = '';
-    if (aller.length) html += journeySection('aller', '🔵 Aller — Mamer → Ville', aller, n);
-    if (connexion.length) html += journeySection('connexion', '🔗 Connexion — Belle-Étoile → Bourmicht / Gare', connexion, n);
+    if (train.length) html += journeySection('train', '\u{1F686} Train L50 — Mamer → Luxembourg Gare Centrale', train, n);
+    if (aller.length) html += journeySection('aller', '\u{1F535} Aller — Mamer → Ville (bus)', aller, n);
+    if (connexion.length) html += journeySection('connexion', '\u{1F517} Connexion — Belle-Étoile → Bourmicht / Gare', connexion, n);
     if (autres.length) html += journeySection('autres', 'Autres passages matin', autres, n);
     if (!html) html = emptyForTab('morning', n);
     return html;
   }
 
-  /* ===== Onglet Soir — sections Depart + Retour + Autres ===== */
+  /* ===== Onglet Soir — sections Train + Depart + Retour + Autres ===== */
   function renderEveningJourney(rows, n) {
+    /* Train L50 : Luxembourg Gare Centrale => Mamer */
+    const train = rows.filter(r => r.network === 'CFL' && STOP_LUX_TRAIN.includes(r.target_stop));
     /* Depart : Bourmicht/Gare/Hamilius (AVL 10 vers Belle-Etoile) */
     const depart = rows.filter(r => STOP_CITY_AVL.includes(r.target_stop) && r.line === '10');
     /* Retour : Belle-Etoile RGTR => vers Mamer */
     const retour = rows.filter(r => STOP_BELLE_RGTR.includes(r.target_stop) && isMamerBound(r.direction));
-    const autresSet = new Set([...depart, ...retour]);
+    const autresSet = new Set([...train, ...depart, ...retour]);
     const autres = rows.filter(r => !autresSet.has(r));
 
     let html = '';
-    if (depart.length) html += journeySection('connexion', '🔵 Départ — Ville → Belle-Étoile (AVL 10)', depart, n);
-    if (retour.length) html += journeySection('retour', '🔗 Retour — Belle-Étoile → Mamer', retour, n);
+    if (train.length) html += journeySection('train', '\u{1F686} Train L50 — Luxembourg Gare Centrale → Mamer', train, n);
+    if (depart.length) html += journeySection('connexion', '\u{1F535} Départ — Ville → Belle-Étoile (AVL 10)', depart, n);
+    if (retour.length) html += journeySection('retour', '\u{1F517} Retour — Belle-Étoile → Mamer', retour, n);
     if (autres.length) html += journeySection('autres', 'Autres passages soir', autres, n);
     if (!html) html = emptyForTab('evening', n);
     return html;
+  }
+
+  /* ===== Onglet Live — tableau de départ temps réel ===== */
+  function renderLiveBoard(n) {
+    const stops = unique(ALL.map(r => r.target_stop));
+
+    /* Chips d'arrets */
+    const stopChips = ['', ...stops].map(s => {
+      const active = state.liveStop === s;
+      const label  = s || 'Tous les arrêts';
+      return `<button class="live-stop-chip${active ? ' active' : ''}" data-action="live-stop" data-stop="${escapeHtml(s)}" type="button">${escapeHtml(label)}</button>`;
+    }).join('');
+
+    /* Boutons tolerance */
+    const tolBtns = [5, 10, 30].map(t =>
+      `<button class="live-tol-btn${state.liveTol === t ? ' active' : ''}" data-action="live-tol" data-tol="${t}" type="button">\xB1${t} min</button>`
+    ).join('');
+
+    /* Filtrage */
+    const rows = ALL.filter(r => {
+      if (state.liveStop && r.target_stop !== state.liveStop) return false;
+      return inRange(r.time_minutes, n, state.liveTol);
+    });
+
+    /* Tri : a venir en premier (ordre chrono), passes en fin */
+    const upcoming = rows.filter(r => r.time_minutes >= n - 2).sort((a, b) => a.time_minutes - b.time_minutes);
+    const past     = rows.filter(r => r.time_minutes  < n - 2).sort((a, b) => b.time_minutes - a.time_minutes);
+    const sorted   = [...upcoming, ...past];
+
+    /* Lignes du tableau */
+    const boardRows = sorted.map(r => {
+      const diff   = r.time_minutes - n;
+      const isNow  = Math.abs(diff) <= 2;
+      const isSoon = diff > 2 && diff <= state.liveTol;
+      const isPast = diff < -2;
+      const rowCls = isNow ? 'live-row is-now' : isSoon ? 'live-row is-soon' : isPast ? 'live-row is-past' : 'live-row';
+      const { text: cdText, cls: cdCls } = countdown(diff);
+      const lineCls = r.network === 'AVL' ? 'badge-avl' : r.network === 'CFL' ? 'badge-cfl' : 'badge-rgtr';
+      const meta = !state.liveStop
+        ? escapeHtml(r.target_stop) + (r.course ? ' \xB7 ' + escapeHtml(r.course) : '')
+        : r.course ? escapeHtml(r.course) : escapeHtml(r.service_label || '');
+
+      return `<div class="${rowCls}" data-minutes="${r.time_minutes}">
+        <div class="live-row-time">
+          <span class="live-time-val">${escapeHtml(r.time)}</span>
+          <span class="live-countdown ${cdCls}">${escapeHtml(cdText)}</span>
+        </div>
+        <div class="live-row-info">
+          <div class="live-row-top">
+            <span class="badge ${lineCls}">${escapeHtml(r.network)} ${escapeHtml(r.line)}</span>
+            <span class="live-direction">${escapeHtml(r.direction)}</span>
+          </div>
+          ${meta ? `<div class="live-meta">${meta}</div>` : ''}
+        </div>
+      </div>`;
+    }).join('');
+
+    const stopName = state.liveStop || 'Tous les arrêts';
+    const countLabel = sorted.length
+      ? `${upcoming.length} \xE0 venir${past.length ? ', ' + past.length + ' pass\xE9(s)' : ''}`
+      : `Aucun d\xE9part dans \xB1${state.liveTol}\xa0min`;
+
+    return `<div class="live-board">
+      <div class="live-controls">
+        <div class="live-stops-scroll">${stopChips}</div>
+        <div class="live-tol-row">${tolBtns}</div>
+      </div>
+      <div class="live-board-header">
+        <span class="live-board-title">\u{1F4CD} ${escapeHtml(stopName)}</span>
+        <span class="live-board-count">${escapeHtml(countLabel)}</span>
+      </div>
+      <div class="live-table" id="liveTable">
+        ${boardRows || '<div class="live-empty">Aucun passage dans cette fen\xEAtre horaire.<br>Essayez \xB130 min.</div>'}
+      </div>
+    </div>`;
   }
 
   function journeySection(type, title, rows, n) {
@@ -347,7 +433,7 @@
       </div>`;
     }).join('');
 
-    const lineCls = fav.network === 'AVL' ? 'badge-avl' : 'badge-rgtr';
+    const lineCls = fav.network === 'AVL' ? 'badge-avl' : fav.network === 'CFL' ? 'badge-cfl' : 'badge-rgtr';
     return `<div class="fav-route-card" data-favkey="${escapeHtml(fav.key)}">
       <div class="fav-route-header">
         <div class="fav-route-info">
@@ -383,7 +469,7 @@
     const isSoon = Math.abs(diff) <= 5 && !isNow;
     const cls    = isNow ? 'is-now' : isSoon ? 'is-soon' : '';
     const { text: cdText, cls: cdCls } = countdown(diff);
-    const lineCls = r.network === 'AVL' ? 'badge-avl' : 'badge-rgtr';
+    const lineCls = r.network === 'AVL' ? 'badge-avl' : r.network === 'CFL' ? 'badge-cfl' : 'badge-rgtr';
     const fav     = isFav(r);
     const key     = favKey(r);
 
@@ -406,7 +492,7 @@
           ${periodBadge}
         </div>
         <div class="card-direction">${escapeHtml(r.direction)}</div>
-        <div class="card-meta">${escapeHtml(r.stop)} · ${escapeHtml(r.service_label || 'Selon PDF')}</div>
+        <div class="card-meta">${escapeHtml(r.stop)}${r.course ? ' · ' + escapeHtml(r.course) : ''} · ${escapeHtml(r.service_label || 'Selon PDF')}</div>
       </div>
       <div class="card-actions">
         <button class="fav-btn${fav ? ' is-fav' : ''}" data-action="fav" aria-label="${fav ? 'Retirer' : 'Ajouter aux favoris'}" title="Favori" type="button">${fav ? '★' : '☆'}</button>
@@ -424,6 +510,16 @@
       if (cdEl) { const { text, cls } = countdown(diff); cdEl.textContent = text; cdEl.className = `card-countdown ${cls}`; }
       card.classList.toggle('is-now',  Math.abs(diff) <= 2);
       card.classList.toggle('is-soon', Math.abs(diff) <= 5 && Math.abs(diff) > 2);
+    });
+    /* Live board rows */
+    document.querySelectorAll('.live-row[data-minutes]').forEach(row => {
+      const m = Number(row.dataset.minutes), diff = m - n;
+      const { text, cls } = countdown(diff);
+      const cdEl = row.querySelector('.live-countdown');
+      if (cdEl) { cdEl.textContent = text; cdEl.className = `live-countdown ${cls}`; }
+      row.classList.toggle('is-now',  Math.abs(diff) <= 2);
+      row.classList.toggle('is-soon', diff > 2 && diff <= state.liveTol);
+      row.classList.toggle('is-past', diff < -2);
     });
     /* Chips favoris */
     document.querySelectorAll('.fav-time-chip[title]').forEach(chip => {
@@ -449,7 +545,7 @@
     if (n !== lastMin) {
       lastMin = n;
       checkNotifications(n);
-      if (state.tab === 'now') applyFilters();
+      if (state.tab === 'now' || state.tab === 'live') applyFilters();
       else updateNextBus();
     }
   }
@@ -612,6 +708,7 @@
 
     /* Onglets */
     document.querySelectorAll('.tab').forEach(btn => {
+      if (!btn.dataset.tab) return;
       const active = btn.dataset.tab === state.tab;
       btn.classList.toggle('active', active);
       btn.setAttribute('aria-selected', String(active));
@@ -669,6 +766,14 @@
         const key = btn.dataset.key;
         const idx = state.favorites.findIndex(f => f.key === key);
         if (idx >= 0) { state.favorites.splice(idx, 1); saveState(); updateFavCount(); applyFilters(); }
+      }
+      if (btn.dataset.action === 'live-stop') {
+        state.liveStop = state.liveStop === btn.dataset.stop ? '' : btn.dataset.stop;
+        applyFilters();
+      }
+      if (btn.dataset.action === 'live-tol') {
+        state.liveTol = Number(btn.dataset.tol);
+        saveState(); applyFilters();
       }
     });
 
