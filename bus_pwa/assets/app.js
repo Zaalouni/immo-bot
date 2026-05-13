@@ -110,7 +110,7 @@
   const state = {
     tab: 'now', stop: '', line: '', direction: '', service: '',
     timeTarget: '', timeTol: 5, search: '',
-    liveStop: '', liveTol: 10,
+    liveStop: '', liveTol: 10, ttLine: '',
     favorites: [],  /* [{key, line, target_stop, direction, network}] */
     history: [],
     filtered: [],
@@ -746,6 +746,80 @@
     panel.hidden = false;
   }
 
+  /* ===== Panel Horaires par ligne ===== */
+  function openTimetablePanel() {
+    if (!state.ttLine) state.ttLine = unique(ALL.map(r => r.line))[0];
+    renderTimetableContent();
+    $('schedulesPanel').hidden = false;
+  }
+
+  function renderTimetableContent() {
+    const lines = unique(ALL.map(r => r.line));
+
+    /* Chips de ligne */
+    const lineChips = lines.map(l => {
+      const net = ALL.find(r => r.line === l)?.network || '';
+      const cls = net === 'AVL' ? 'badge-avl' : net === 'CFL' ? 'badge-cfl' : 'badge-rgtr';
+      const active = state.ttLine === l;
+      return `<button class="tt-chip${active ? ' active' : ''} ${cls}" data-action="tt-line" data-ttline="${escapeHtml(l)}" type="button">${escapeHtml(l)}</button>`;
+    }).join('');
+
+    /* Donnees de la ligne selectionnee */
+    const rows = ALL.filter(r => r.line === state.ttLine);
+    const stops = unique(rows.map(r => r.target_stop));
+    const network = rows[0]?.network || '';
+    const netLabel = network === 'CFL' ? 'Train CFL' : network;
+
+    const stopSections = stops.map(stop => {
+      const stopRows = rows.filter(r => r.target_stop === stop);
+      /* Grouper par direction puis par service */
+      const dirs = unique(stopRows.map(r => r.direction));
+
+      const dirBlocks = dirs.map(dir => {
+        /* Destination courte = partie apres la derniere fleche */
+        const dest = (dir || '').split(/→|->/).pop().trim();
+        const services = unique(stopRows.filter(r => r.direction === dir).map(r => r.service_label));
+
+        const svcBlocks = services.map(svc => {
+          const times = stopRows
+            .filter(r => r.direction === dir && r.service_label === svc)
+            .sort((a, b) => a.time_minutes - b.time_minutes)
+            .map(r => r.time);
+          const svcIcon = /samedi/i.test(svc) ? '\u{1F7E1}' : /dimanche|f.ri/i.test(svc) ? '\u{1F535}' : '\u{1F7E2}';
+          return `<div class="tt-svc-row">
+            <span class="tt-svc-label">${svcIcon} ${escapeHtml(svc || 'Tous jours')}</span>
+            <div class="tt-times">${times.map(t => `<span class="tt-time">${escapeHtml(t)}</span>`).join('')}</div>
+          </div>`;
+        }).join('');
+
+        return `<div class="tt-dir-block">
+          <div class="tt-dir-label">→ ${escapeHtml(dest)}</div>
+          ${svcBlocks}
+        </div>`;
+      }).join('');
+
+      return `<div class="tt-stop-section">
+        <div class="tt-stop-header">
+          <span class="tt-stop-icon">\u{1F4CD}</span>
+          <span class="tt-stop-name">${escapeHtml(stop)}</span>
+          <span class="tt-stop-count">${stopRows.length} dep.</span>
+        </div>
+        ${dirBlocks}
+      </div>`;
+    }).join('');
+
+    const totalDeps = rows.length;
+    $('schedulesPanelBody').innerHTML =
+      `<div class="tt-line-bar">${lineChips}</div>
+       <div class="tt-summary">${escapeHtml(netLabel)} · Ligne ${escapeHtml(state.ttLine)} · ${totalDeps} passages · ${stops.length} arr\xEAt(s)</div>
+       <div class="tt-sections">${stopSections}</div>`;
+
+    /* Clicks sur les chips de ligne */
+    $('schedulesPanelBody').querySelectorAll('[data-action="tt-line"]').forEach(btn => {
+      btn.addEventListener('click', () => { state.ttLine = btn.dataset.ttline; renderTimetableContent(); });
+    });
+  }
+
   function closePanel(id) { $(id).hidden = true; }
 
   /* ===== Etats vides ===== */
@@ -809,7 +883,7 @@
     $('timeTolerance').addEventListener('change', e => { state.timeTol = Number(e.target.value); applyFilters(); });
     $('resetBtn').addEventListener('click', resetFilters);
     $('stopsBtn').addEventListener('click', openStopsPanel);
-    $('schedulesBtn').addEventListener('click', () => $('schedulesPanel').hidden = false);
+    $('schedulesBtn').addEventListener('click', () => openTimetablePanel());
     $('stopsPanelClose').addEventListener('click', () => closePanel('stopsPanel'));
     $('schedulesPanelClose').addEventListener('click', () => closePanel('schedulesPanel'));
     /* Fermer overlay en cliquant le fond */

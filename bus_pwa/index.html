@@ -110,7 +110,7 @@
         <div class="filter-actions">
           <button id="resetBtn"   class="btn-ghost" type="button">Réinitialiser</button>
           <button id="stopsBtn"   class="btn-ghost" type="button">📍 Voir les arrêts</button>
-          <button id="schedulesBtn" class="btn-ghost" type="button">🗓 Horaires PDF</button>
+          <button id="schedulesBtn" class="btn-ghost" type="button">📋 Horaires</button>
         </div>
       </div>
     </details>
@@ -137,42 +137,14 @@
     </div>
   </div>
 
-  <!-- Panel Horaires PDF -->
+  <!-- Panel Horaires par ligne -->
   <div class="overlay-panel" id="schedulesPanel" hidden>
     <div class="overlay-box">
       <div class="overlay-header">
-        <h2>Horaires officiels (PDF)</h2>
+        <h2>📋 Horaires par ligne</h2>
         <button class="overlay-close" id="schedulesPanelClose" type="button" aria-label="Fermer">✕</button>
       </div>
-      <div class="overlay-body">
-        <p class="overlay-note">Liens vers les fiches horaires Mobiliteit.lu — nécessite une connexion internet.</p>
-        <div class="pdf-section">
-          <h3>RGTR</h3>
-          <div class="pdf-links">
-            <a href="https://www.mobiliteit.lu/wp-content/uploads/horaires-new/rgtr//801.pdf" target="_blank" rel="noopener" class="pdf-link">Ligne 801</a>
-            <a href="https://www.mobiliteit.lu/wp-content/uploads/horaires-new/rgtr//802.pdf" target="_blank" rel="noopener" class="pdf-link">Ligne 802</a>
-            <a href="https://www.mobiliteit.lu/wp-content/uploads/horaires-new/rgtr//811.pdf" target="_blank" rel="noopener" class="pdf-link">Ligne 811</a>
-            <a href="https://www.mobiliteit.lu/wp-content/uploads/horaires-new/rgtr//812.pdf" target="_blank" rel="noopener" class="pdf-link">Ligne 812</a>
-            <a href="https://www.mobiliteit.lu/wp-content/uploads/horaires-new/rgtr//822.pdf" target="_blank" rel="noopener" class="pdf-link">Ligne 822</a>
-            <a href="https://www.mobiliteit.lu/wp-content/uploads/horaires-new/rgtr//823.pdf" target="_blank" rel="noopener" class="pdf-link">Ligne 823</a>
-            <a href="https://www.mobiliteit.lu/wp-content/uploads/horaires-new/rgtr//824.pdf" target="_blank" rel="noopener" class="pdf-link">Ligne 824</a>
-            <a href="https://www.mobiliteit.lu/wp-content/uploads/horaires-new/rgtr//850.pdf" target="_blank" rel="noopener" class="pdf-link">Ligne 850</a>
-            <a href="https://www.mobiliteit.lu/wp-content/uploads/horaires-new/rgtr//904.pdf" target="_blank" rel="noopener" class="pdf-link">Ligne 904</a>
-          </div>
-        </div>
-        <div class="pdf-section">
-          <h3>AVL</h3>
-          <div class="pdf-links">
-            <a href="https://www.mobiliteit.lu/wp-content/uploads/horaires-new/avl//10.pdf" target="_blank" rel="noopener" class="pdf-link">Ligne 10</a>
-          </div>
-        </div>
-        <div class="pdf-section">
-          <h3>CFL Train</h3>
-          <div class="pdf-links">
-            <a href="https://www.cfl.lu/fr-fr/horaires" target="_blank" rel="noopener" class="pdf-link">L50 Luxembourg – Mamer – Arlon</a>
-          </div>
-        </div>
-      </div>
+      <div class="overlay-body" id="schedulesPanelBody"></div>
     </div>
   </div>
 
