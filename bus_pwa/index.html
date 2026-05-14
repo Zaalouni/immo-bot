@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="fr" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0a0f1e" id="metaThemeColor">
+  <meta name="description" content="Horaires bus offline — arrêts ciblés RGTR et AVL 10, Luxembourg.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Bus Offline">
+  <meta name="msapplication-TileColor" content="#0a0f1e">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="assets/icon-192.png">
+  <link rel="icon" href="assets/icon-192.png" type="image/png">
+  <link rel="stylesheet" href="assets/app.css">
+  <title>Bus Offline — Horaires RGTR et AVL</title>
+</head>
+<body>
+
+  <!-- Barre statut -->
+  <div class="status-bar" id="statusBar" hidden>
+    <span id="statusBarMsg"></span>
+    <button id="updateBtn" class="status-bar-btn" hidden type="button">Recharger</button>
+  </div>
+
+  <!-- Header -->
+  <header class="app-header">
+    <div class="header-brand">
+      <h1>Bus Offline</h1>
+      <p class="header-sub">RGTR · AVL 10 · Luxembourg</p>
+    </div>
+    <div class="header-right">
+      <div class="header-clock-wrap">
+        <span id="clock" class="clock">--:--:--</span>
+        <span id="nowChip" class="now-chip">…</span>
+      </div>
+      <button id="gpsBtn" class="icon-btn" aria-label="Détecter l'arrêt le plus proche" type="button" title="GPS — arrêt le plus proche">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/>
+          <circle cx="12" cy="12" r="8" stroke-dasharray="3 2"/>
+        </svg>
+      </button>
+      <button id="notifBtn" class="icon-btn" aria-label="Activer les notifications" type="button" title="Notifications" aria-pressed="false">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+      </button>
+      <button id="themeToggle" class="icon-btn" aria-label="Thème clair/sombre" type="button" title="Thème">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- Prochain bus -->
+    <section class="next-bus-section">
+      <div class="next-bus-card" id="nextBusCard">
+        <span class="next-bus-label">Prochain bus</span>
+        <div class="next-bus-body" id="nextBusBody">—</div>
+        <div class="next-bus-walk" id="nextBusWalk" hidden>
+          <span class="walk-icon">🚶</span>
+          <span class="walk-depart-label">Partir à</span>
+          <span id="walkDepartTime" class="walk-depart-time">—</span>
+          <span id="walkDepartIn" class="walk-depart-in"></span>
+          <div class="walk-controls">
+            <button id="walkMinus" class="walk-btn" type="button" aria-label="Moins">−</button>
+            <span id="walkVal" class="walk-val">5 min</span>
+            <button id="walkPlus"  class="walk-btn" type="button" aria-label="Plus">+</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Recherche -->
+    <div class="search-wrap">
+      <label class="sr-only" for="globalSearch">Recherche</label>
+      <input id="globalSearch" type="search" class="search-input"
+             placeholder="Rechercher arrêt, ligne, direction…"
+             autocomplete="off" spellcheck="false" aria-label="Recherche globale">
+      <div id="searchHistory" class="search-history" role="listbox" hidden></div>
+    </div>
+
+    <!-- Onglets -->
+    <nav class="tab-nav" role="tablist" aria-label="Filtrer par période">
+      <button class="tab"        data-tab="live"      role="tab" aria-selected="false" type="button">🔴 Live</button>
+      <button class="tab"        data-tab="now"       role="tab" aria-selected="false" type="button">Prochains <span class="tab-count" id="tabCountNow"></span></button>
+      <button class="tab"        data-tab="morning"   role="tab" aria-selected="false" type="button">🌅 Matin  <span class="tab-count" id="tabCountMorning"></span></button>
+      <button class="tab"        data-tab="evening"   role="tab" aria-selected="false" type="button">🌆 Soir   <span class="tab-count" id="tabCountEvening"></span></button>
+      <button class="tab"        data-tab="favorites" role="tab" aria-selected="false" type="button">★ Favoris <span class="tab-count" id="tabCountFavorites"></span></button>
+      <button class="tab"        data-tab="all"       role="tab" aria-selected="false" type="button">Tout</button>
+    </nav>
+
+    <!-- Indicateur du jour + filtre service -->
+    <div class="day-bar">
+      <span id="dayChip" class="day-chip"></span>
+      <div class="day-filter-chips" id="dayFilterChips"></div>
+    </div>
+
+    <!-- Raccourcis horaires par ligne -->
+    <section class="lines-shortcuts" id="linesShortcuts" aria-label="Accès rapide aux horaires par ligne">
+      <div class="lines-shortcuts-label">📋 Horaires par ligne</div>
+      <div class="lines-shortcuts-chips" id="linesShortcutsChips"></div>
+    </section>
+
+    <!-- Filtres avancés -->
+    <details class="advanced-filters" id="advancedFilters">
+      <summary class="filters-summary">
+        <svg class="chevron" width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Filtres avancés
+      </summary>
+      <div class="filters-body">
+        <div class="filter-grid">
+          <label>Arrêt     <select id="stopFilter"></select></label>
+          <label>Ligne     <select id="lineFilter"></select></label>
+          <label>Direction <input id="directionFilter" type="search" placeholder="ex. Kirchberg…"></label>
+          <label>Service   <select id="serviceFilter"></select></label>
+          <label>Heure     <input id="timeFilter" type="time" step="60"></label>
+          <label>Tolérance
+            <select id="timeTolerance">
+              <option value="0">Exacte</option>
+              <option value="5" selected>±5 min</option>
+              <option value="10">±10 min</option>
+              <option value="15">±15 min</option>
+              <option value="30">±30 min</option>
+            </select>
+          </label>
+        </div>
+        <div class="filter-actions">
+          <button id="resetBtn"   class="btn-ghost" type="button">Réinitialiser</button>
+          <button id="stopsBtn"   class="btn-ghost" type="button">📍 Voir les arrêts</button>
+          <button id="schedulesBtn" class="btn-ghost" type="button">📋 Horaires</button>
+        </div>
+      </div>
+    </details>
+
+    <!-- Barre résultats -->
+    <div class="result-bar">
+      <span id="resultInfo" class="result-info">Chargement…</span>
+      <div style="display:flex;gap:6px;align-items:center;flex-shrink:0">
+        <button id="updateDataBtn" class="btn-ghost" type="button" title="Vérifier les mises à jour des horaires" style="padding:4px 8px;font-size:.8rem">🔄</button>
+        <button id="installBtn" class="btn-primary" hidden type="button">⬇ Installer</button>
+      </div>
+    </div>
+
+    <!-- Résultats -->
+    <div id="results" class="results" role="region" aria-live="polite" aria-label="Horaires de bus"></div>
+
+  </main>
+
+  <!-- Panel Arrêts couverts -->
+  <div class="overlay-panel" id="stopsPanel" hidden>
+    <div class="overlay-box">
+      <div class="overlay-header">
+        <h2>Arrêts couverts</h2>
+        <button class="overlay-close" id="stopsPanelClose" type="button" aria-label="Fermer">✕</button>
+      </div>
+      <div id="stopsPanelBody" class="overlay-body"></div>
+    </div>
+  </div>
+
+  <!-- Panel Horaires par ligne -->
+  <div class="overlay-panel" id="schedulesPanel" hidden>
+    <div class="overlay-box">
+      <div class="overlay-header">
+        <h2>📋 Horaires par ligne</h2>
+        <button class="overlay-close" id="schedulesPanelClose" type="button" aria-label="Fermer">✕</button>
+      </div>
+      <div class="overlay-body" id="schedulesPanelBody"></div>
+    </div>
+  </div>
+
+  <footer class="app-footer">
+    <p>Mode offline · Données embarquées · 1919 horaires</p>
+    <p>Lignes RGTR : 801 802 811 812 822 823 824 850 904 · AVL : 10 · CFL Train : L50</p>
+  </footer>
+
+  <noscript><p style="padding:2rem;text-align:center;color:#94a3b8">JavaScript requis.</p></noscript>
+
+  <script defer src="data/bus-schedules.js"></script>
+  <script defer src="assets/app.js"></script>
+</body>
+</html>
