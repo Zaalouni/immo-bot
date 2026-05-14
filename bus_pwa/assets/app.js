@@ -88,6 +88,8 @@
     return `https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}&travelmode=walking`;
   }
 
+  let gpsWatchId = null;
+
   function detectNearestStop(opts = {}) {
     if (!('geolocation' in navigator)) {
       if (!opts.silent) showToast('GPS non disponible');
@@ -95,22 +97,37 @@
     }
     const btn = $('gpsBtn');
     if (btn) btn.classList.add('gps-detecting');
+    function onPos(pos, isWatch) {
+      if (!isWatch && btn) btn.classList.remove('gps-detecting');
+      const { latitude: lat, longitude: lon } = pos.coords;
+      let nearest = '', minDist = Infinity;
+      for (const [stop, [slat, slon]] of Object.entries(STOP_COORDS)) {
+        const d = geoDistance(lat, lon, slat, slon);
+        if (d < minDist) { minDist = d; nearest = stop; }
+      }
+      if (nearest && nearest !== state.liveStop) {
+        state.liveStop = nearest;
+        const dist = minDist < 1000 ? Math.round(minDist) + '\xa0m' : (minDist/1000).toFixed(1) + '\xa0km';
+        showToast('\u{1F4CD} ' + nearest + ' (' + dist + ')');
+        applyFilters();
+      } else if (nearest && !isWatch) {
+        const dist = minDist < 1000 ? Math.round(minDist) + '\xa0m' : (minDist/1000).toFixed(1) + '\xa0km';
+        showToast('\u{1F4CD} ' + nearest + ' (' + dist + ')');
+      }
+    }
+
+    if (opts.watch) {
+      if (gpsWatchId !== null) return;
+      gpsWatchId = navigator.geolocation.watchPosition(
+        pos => onPos(pos, true),
+        () => {},
+        { timeout: 10000, maximumAge: 30000, enableHighAccuracy: false }
+      );
+      return;
+    }
+
     navigator.geolocation.getCurrentPosition(
-      pos => {
-        if (btn) btn.classList.remove('gps-detecting');
-        const { latitude: lat, longitude: lon } = pos.coords;
-        let nearest = '', minDist = Infinity;
-        for (const [stop, [slat, slon]] of Object.entries(STOP_COORDS)) {
-          const d = geoDistance(lat, lon, slat, slon);
-          if (d < minDist) { minDist = d; nearest = stop; }
-        }
-        if (nearest) {
-          state.liveStop = nearest;
-          const dist = minDist < 1000 ? Math.round(minDist) + '\xa0m' : (minDist/1000).toFixed(1) + '\xa0km';
-          showToast('\u{1F4CD} ' + nearest + ' (' + dist + ')');
-          applyFilters();
-        }
-      },
+      pos => onPos(pos, false),
       () => {
         if (btn) btn.classList.remove('gps-detecting');
         if (!opts.silent) showToast('Position non disponible');
@@ -395,6 +412,20 @@
       `</div>` +
       `<div class="nb-direction">${escapeHtml(next.direction)}</div>` +
       `<div class="nb-meta">${escapeHtml(next.target_stop)}</div>`;
+
+    /* Barre de progression */
+    const progressEl = $('nbProgress'), fillEl = $('nbProgressFill');
+    if (progressEl && fillEl) {
+      const pct = diffNext >= 0 && diffNext <= 90 ? Math.max(2, diffNext / 90 * 100) : 0;
+      if (diffNext >= 0 && diffNext <= 90) {
+        fillEl.style.width = pct + '%';
+        progressEl.hidden = false;
+        $('nextBusCard').classList.toggle('nb-urgent', diffNext <= 5);
+      } else {
+        progressEl.hidden = true;
+        $('nextBusCard').classList.remove('nb-urgent');
+      }
+    }
 
     const walkDiv  = $('nextBusWalk');
     const diffNext = next.time_minutes - n;
@@ -1251,8 +1282,35 @@
     const _fl = document.querySelector('.app-footer p:last-child');
     if (_fs) _fs.textContent = `Mode offline \u00B7 Donn\u00E9es embarqu\u00E9es \u00B7 ${ALL.length} horaires \u00B7 ${_stops} arr\u00EAts`;
     if (_fl) _fl.textContent = (_rgtr ? `Lignes RGTR : ${_rgtr}` : '') + (_avl ? ` \u00B7 AVL : ${_avl}` : '') + (_cfl ? ` \u00B7 CFL Train : ${_cfl}` : '');
+    /* ===== Swipe gauche/droite pour changer d'onglet ===== */
+    const TAB_ORDER = ['live', 'now', 'morning', 'evening', 'favorites', 'all'];
+    let swipeX0 = 0, swipeY0 = 0;
+    document.querySelector('main').addEventListener('touchstart', e => {
+      swipeX0 = e.touches[0].clientX;
+      swipeY0 = e.touches[0].clientY;
+    }, { passive: true });
+    document.querySelector('main').addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].clientX - swipeX0;
+      const dy = e.changedTouches[0].clientY - swipeY0;
+      if (Math.abs(dx) < 50 || Math.abs(dy) > Math.abs(dx) * 0.75) return;
+      const idx = TAB_ORDER.indexOf(state.tab);
+      const next = dx < 0
+        ? TAB_ORDER[Math.min(idx + 1, TAB_ORDER.length - 1)]
+        : TAB_ORDER[Math.max(idx - 1, 0)];
+      if (next === state.tab) return;
+      haptic([15]);
+      state.tab = next;
+      document.querySelectorAll('.tab').forEach(b => {
+        const active = b.dataset.tab === state.tab;
+        b.classList.toggle('active', active);
+        b.setAttribute('aria-selected', String(active));
+      });
+      saveState();
+      applyFilters();
+    }, { passive: true });
+
     applyFilters();
-    detectNearestStop({ silent: true });
+    detectNearestStop({ silent: true, watch: true });
     tick();
     setInterval(tick, 1000);
   }
