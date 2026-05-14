@@ -86,6 +86,7 @@ details > summary::-webkit-details-marker { display:none; }
 /* ===== Header ===== */
 .app-header { position:sticky; top:0; z-index:80; background:var(--bg); border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:16px; padding-top:max(16px,env(safe-area-inset-top,16px)); padding-bottom:14px; transition:background 300ms; }
 .app-header h1 { font-size:1.3rem; font-weight:800; letter-spacing:-.025em; }
+.app-version { font-size:.62rem; font-weight:600; color:var(--text3); letter-spacing:0; vertical-align:middle; margin-left:5px; }
 .header-sub { font-size:.68rem; color:var(--text3); margin-top:2px; }
 .header-right { display:flex; align-items:center; gap:10px; flex-shrink:0; }
 .header-clock-wrap { display:flex; flex-direction:column; align-items:flex-end; gap:2px; }
