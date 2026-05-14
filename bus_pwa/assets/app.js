@@ -38,6 +38,8 @@
     let t; return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
   }
 
+  function haptic(pattern = [30]) { if ('vibrate' in navigator) navigator.vibrate(pattern); }
+
   /* ===== Plages horaires ===== */
   const MORNING_START = 7 * 60 + 15;
   const MORNING_END   = 8 * 60 + 15;
@@ -241,8 +243,9 @@
   }
 
   /* ===== Favoris ===== */
-  const favKey = r => `${r.line}|${r.target_stop}|${r.direction}`;
-  const isFav  = r => state.favorites.some(f => f.key === favKey(r));
+  const favKey   = r => `${r.line}|${r.target_stop}|${r.direction}`;
+  const alarmKey = r => favKey(r) + '|' + r.time_minutes;
+  const isFav    = r => state.favorites.some(f => f.key === favKey(r));
 
   function toggleFav(r) {
     const key = favKey(r);
@@ -253,6 +256,7 @@
       state.favorites.unshift({ key, line: r.line, target_stop: r.target_stop, direction: r.direction, network: r.network, stop: r.stop });
     }
     saveState();
+    haptic(idx >= 0 ? [30] : [50, 30, 50]);
     updateFavCount();
     /* Mettre a jour les boutons en place */
     document.querySelectorAll(`.bus-card[data-fkey] .fav-btn`).forEach(btn => {
@@ -268,6 +272,48 @@
   }
 
   function updateFavCount() { $('tabCountFavorites').textContent = state.favorites.length || ''; }
+
+  /* ===== Alarmes individuelles ===== */
+  const alarms = new Map();
+
+  function setAlarm(r) {
+    const key = alarmKey(r);
+    if (alarms.has(key)) {
+      clearTimeout(alarms.get(key).id);
+      alarms.delete(key);
+      showToast('Alarme annulée — ' + r.network + ' ' + r.line + ' ' + r.time);
+      haptic([100, 50, 100]);
+      updateAlarmBtns();
+      return;
+    }
+    const n = nowMin();
+    const alertMin = r.time_minutes - 3;
+    const diffMs   = (alertMin - n) * 60 * 1000;
+    if (diffMs <= 0) { showToast('Bus trop proche ou déjà passé'); return; }
+    const id = setTimeout(() => {
+      alarms.delete(key);
+      updateAlarmBtns();
+      fireNotif(
+        '🔔 Bus ' + r.network + ' ' + r.line + ' dans 3 min',
+        r.time + ' → ' + r.direction + '\nArrêt : ' + r.target_stop,
+        'alarm-' + key
+      );
+      haptic([200, 100, 200, 100, 400]);
+    }, diffMs);
+    alarms.set(key, { id });
+    showToast('🔔 Alarme dans ' + (alertMin - n) + ' min — ' + r.network + ' ' + r.line + ' ' + r.time);
+    haptic([50, 30, 80]);
+    updateAlarmBtns();
+  }
+
+  function updateAlarmBtns() {
+    document.querySelectorAll('[data-action="alarm"]').forEach(btn => {
+      const active = alarms.has(btn.dataset.akey);
+      btn.classList.toggle('is-active', active);
+      btn.setAttribute('aria-label', active ? 'Annuler alarme' : 'Alarme');
+      btn.title = active ? 'Annuler alarme' : 'Alarme 3 min avant';
+    });
+  }
 
   /* ===== Historique ===== */
   function addHistory(q) {
@@ -602,6 +648,11 @@
 
     const shareBtn = (navigator.share || navigator.clipboard)
       ? `<button class="share-btn" data-action="share" aria-label="Partager" title="Partager" type="button">⬆</button>` : '';
+    const akey     = alarmKey(r);
+    const hasAlarm = alarms.has(akey);
+    const alarmBtn = diff > 2
+      ? `<button class="alarm-btn${hasAlarm ? ' is-active' : ''}" data-action="alarm" data-akey="${escapeHtml(akey)}" aria-label="${hasAlarm ? 'Annuler alarme' : 'Alarme'}" title="${hasAlarm ? 'Annuler alarme' : 'Alarme 3 min avant'}" type="button">🔔</button>`
+      : '';
 
     return `<article class="bus-card ${cls}" data-minutes="${r.time_minutes}" data-fkey="${escapeHtml(key)}" aria-label="Ligne ${escapeHtml(r.line)} a ${escapeHtml(r.time)}">
       <div class="card-time">
@@ -618,6 +669,7 @@
       </div>
       <div class="card-actions">
         <button class="fav-btn${fav ? ' is-fav' : ''}" data-action="fav" aria-label="${fav ? 'Retirer' : 'Ajouter aux favoris'}" title="Favori" type="button">${fav ? '★' : '☆'}</button>
+        ${alarmBtn}
         ${shareBtn}
       </div>
     </article>`;
@@ -664,7 +716,9 @@
     const n = nowMin();
     if (n !== lastMin) {
       lastMin = n;
-      $('nowChip').textContent = `${ALL.filter(r => inRange(r.time_minutes, n, 5)).length} bus \xB15 min`;
+      const busCount = ALL.filter(r => inRange(r.time_minutes, n, 5)).length;
+      $('nowChip').textContent = `${busCount} bus \xB15 min`;
+      if ('setAppBadge' in navigator) navigator.setAppBadge(busCount || 0).catch(() => {});
       refreshCountdowns();
       checkNotifications(n);
       if (state.tab === 'now' || state.tab === 'live') applyFilters();
@@ -1021,6 +1075,7 @@
       btn.classList.toggle('active', active);
       btn.setAttribute('aria-selected', String(active));
       btn.addEventListener('click', () => {
+        haptic([20]);
         state.tab = btn.dataset.tab;
         document.querySelectorAll('.tab').forEach(b => { b.classList.toggle('active', b === btn); b.setAttribute('aria-selected', String(b === btn)); });
         saveState();
@@ -1071,8 +1126,8 @@
       const btn = e.target.closest('[data-action="open-tt"]');
       if (btn) openTimetablePanel(btn.dataset.line);
     });
-    $('walkMinus').addEventListener('click', () => { state.walkMin = Math.max(0, state.walkMin - 1); saveState(); updateNextBus(); });
-    $('walkPlus').addEventListener('click',  () => { state.walkMin = Math.min(20, state.walkMin + 1); saveState(); updateNextBus(); });
+    $('walkMinus').addEventListener('click', () => { haptic([20]); state.walkMin = Math.max(0, state.walkMin - 1); saveState(); updateNextBus(); });
+    $('walkPlus').addEventListener('click',  () => { haptic([20]); state.walkMin = Math.min(20, state.walkMin + 1); saveState(); updateNextBus(); });
     $('updateDataBtn').addEventListener('click', checkDataUpdate);
     $('stopsPanelClose').addEventListener('click', () => closePanel('stopsPanel'));
     $('schedulesPanelClose').addEventListener('click', () => closePanel('schedulesPanel'));
@@ -1111,10 +1166,15 @@
       if (btn.dataset.action === 'open-tt') {
         openTimetablePanel(btn.dataset.line);
       }
+      if (btn.dataset.action === 'alarm') {
+        const card = btn.closest('.bus-card'); if (!card) return;
+        const r = findRecord(card); if (r) setAlarm(r);
+      }
     });
 
     /* GPS header */
     $('gpsBtn').addEventListener('click', () => {
+      haptic();
       state.tab = 'live';
       document.querySelectorAll('.tab').forEach(b => {
         const active = b.dataset.tab === 'live';

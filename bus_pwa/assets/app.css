@@ -228,6 +228,10 @@ input[type="search"]::-webkit-search-cancel-button { -webkit-appearance:none; }
 .fav-btn.is-fav { color:var(--yellow); }
 .share-btn { font-size:.85rem; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--text3); transition:color 200ms,background 200ms; }
 .share-btn:hover { color:var(--accent); background:var(--accent-dim); }
+.alarm-btn { font-size:.85rem; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--text3); transition:color 200ms,background 200ms; }
+.alarm-btn:hover { color:var(--yellow); background:var(--yellow-dim); }
+@media (hover:none) { .alarm-btn:hover { color:var(--text3); background:none; } }
+.alarm-btn.is-active { color:var(--yellow); animation:pulse 1.6s ease infinite; }
 
 /* ===== Favoris — card horaires ===== */
 .fav-route-card { background:var(--surface); border:1.5px solid var(--yellow); border-radius:var(--radius-lg); overflow:hidden; animation:cardIn 200ms ease both; }
