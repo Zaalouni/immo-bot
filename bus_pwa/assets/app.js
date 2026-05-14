@@ -357,11 +357,13 @@
     const lineCls = netCls(next.network);
     card.classList.add('has-bus');
     body.innerHTML =
-      `<span class="nb-time">${escapeHtml(next.time)}</span>` +
-      `<span class="nb-sep">·</span>` +
-      `<span class="badge ${lineCls}">${escapeHtml(next.network)} ${escapeHtml(next.line)}</span>` +
-      `<span class="nb-direction">${escapeHtml(next.direction)}</span>` +
-      `<div class="nb-meta">${escapeHtml(next.target_stop)}${cdText ? ' · ' + cdText : ''}</div>`;
+      `<div class="nb-row">` +
+        `<span class="nb-time">${escapeHtml(next.time)}</span>` +
+        `<span class="badge ${lineCls}">${escapeHtml(next.network)} ${escapeHtml(next.line)}</span>` +
+        (cdText ? `<span class="nb-cd">${escapeHtml(cdText)}</span>` : '') +
+      `</div>` +
+      `<div class="nb-direction">${escapeHtml(next.direction)}</div>` +
+      `<div class="nb-meta">${escapeHtml(next.target_stop)}</div>`;
 
     const walkDiv  = $('nextBusWalk');
     const diffNext = next.time_minutes - n;
