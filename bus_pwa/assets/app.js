@@ -1154,12 +1154,13 @@
     });
 
     /* Filtres */
-    $('stopFilter').addEventListener('change', e => { state.stop = e.target.value; saveState(); applyFilters(); });
-    $('lineFilter').addEventListener('change', e => { state.line = e.target.value; applyFilters(); });
-    $('serviceFilter').addEventListener('change', e => { state.service = e.target.value; applyFilters(); });
+    const debouncedFilter = debounce(applyFilters, 180);
+    $('stopFilter').addEventListener('change', e => { state.stop = e.target.value; saveState(); debouncedFilter(); });
+    $('lineFilter').addEventListener('change', e => { state.line = e.target.value; debouncedFilter(); });
+    $('serviceFilter').addEventListener('change', e => { state.service = e.target.value; debouncedFilter(); });
     $('directionFilter').addEventListener('input', debounce(e => { state.direction = e.target.value; applyFilters(); }, 250));
-    $('timeFilter').addEventListener('change', e => { state.timeTarget = e.target.value; applyFilters(); });
-    $('timeTolerance').addEventListener('change', e => { state.timeTol = Number(e.target.value); applyFilters(); });
+    $('timeFilter').addEventListener('change', e => { state.timeTarget = e.target.value; debouncedFilter(); });
+    $('timeTolerance').addEventListener('change', e => { state.timeTol = Number(e.target.value); debouncedFilter(); });
     $('resetBtn').addEventListener('click', resetFilters);
     $('stopsBtn').addEventListener('click', openStopsPanel);
     $('schedulesBtn').addEventListener('click', () => openTimetablePanel());
