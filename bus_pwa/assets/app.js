@@ -108,9 +108,9 @@
 
   /* ===== Etat ===== */
   const state = {
-    tab: 'now', stop: '', line: '', direction: '', service: '',
+    tab: 'live', stop: '', line: '', direction: '', service: '',
     timeTarget: '', timeTol: 5, search: '',
-    liveStop: '', liveTol: 10, ttLine: '',
+    liveStop: '', liveTol: 30, ttLine: '',
     favorites: [],  /* [{key, line, target_stop, direction, network}] */
     history: [],
     filtered: [],
@@ -315,43 +315,36 @@
     $('results').innerHTML = [...groups.entries()].map(([stop, list]) => renderStopGroup(stop, list, n)).join('');
   }
 
-  /* ===== Onglet Matin — sections Train + Aller + Connexion + Autres ===== */
+  /* ===== Onglet Matin — Trajet en étapes ===== */
   function renderMorningJourney(rows, n) {
-    /* Train L50 : Mamer Gare => Luxembourg Gare Centrale */
-    const train = rows.filter(r => r.network === 'CFL' && STOP_MAMER_TRAIN.includes(r.target_stop));
-    /* Aller : Mamer => vers la ville */
-    const aller = rows.filter(r => STOP_MAMER.includes(r.target_stop) && isCityBound(r.direction));
-    /* Connexion : Belle-Etoile AVL 10 => vers Bourmicht/Gare/Hamilius */
-    const connexion = rows.filter(r => STOP_BELLE_AVL.includes(r.target_stop) && r.line === '10');
-    /* Autres : tout le reste */
-    const autresSet = new Set([...train, ...aller, ...connexion]);
-    const autres = rows.filter(r => !autresSet.has(r));
+    const train     = rows.filter(r => r.network === 'CFL' && STOP_MAMER_TRAIN.includes(r.target_stop));
+    const etape1    = rows.filter(r => STOP_MAMER.includes(r.target_stop) && isCityBound(r.direction));
+    const etape2    = rows.filter(r => STOP_BELLE_AVL.includes(r.target_stop) && r.line === '10');
+    const autresSet = new Set([...train, ...etape1, ...etape2]);
+    const autres    = rows.filter(r => !autresSet.has(r));
 
     let html = '';
-    if (train.length) html += journeySection('train', '\u{1F686} Train L50 — Mamer → Luxembourg Gare Centrale', train, n);
-    if (aller.length) html += journeySection('aller', '\u{1F535} Aller — Mamer → Ville (bus)', aller, n);
-    if (connexion.length) html += journeySection('connexion', '\u{1F517} Connexion — Belle-Étoile → Bourmicht / Gare', connexion, n);
-    if (autres.length) html += journeySection('autres', 'Autres passages matin', autres, n);
+    if (train.length)  html += journeySection('train',    '\u{1F686} Train L50 — Mamer Gare → Luxembourg', train, n);
+    if (etape1.length) html += journeySection('aller',    '\u{1F68C} Étape 1 — Mamer → Belle-Étoile (RGTR)', etape1, n);
+    if (etape2.length) html += journeySection('connexion','\u{1F517} Étape 2 — Belle-Étoile → Ville (AVL 10)', etape2, n);
+    if (autres.length) html += journeySection('autres',   'Autres passages matin', autres, n);
     if (!html) html = emptyForTab('morning', n);
     return html;
   }
 
-  /* ===== Onglet Soir — sections Train + Depart + Retour + Autres ===== */
+  /* ===== Onglet Soir — Trajet en étapes ===== */
   function renderEveningJourney(rows, n) {
-    /* Train L50 : Luxembourg Gare Centrale => Mamer */
-    const train = rows.filter(r => r.network === 'CFL' && STOP_LUX_TRAIN.includes(r.target_stop));
-    /* Depart : Bourmicht/Gare/Hamilius (AVL 10 vers Belle-Etoile) */
-    const depart = rows.filter(r => STOP_CITY_AVL.includes(r.target_stop) && r.line === '10');
-    /* Retour : Belle-Etoile RGTR => vers Mamer */
-    const retour = rows.filter(r => STOP_BELLE_RGTR.includes(r.target_stop) && isMamerBound(r.direction));
-    const autresSet = new Set([...train, ...depart, ...retour]);
-    const autres = rows.filter(r => !autresSet.has(r));
+    const train     = rows.filter(r => r.network === 'CFL' && STOP_LUX_TRAIN.includes(r.target_stop));
+    const etape1    = rows.filter(r => STOP_CITY_AVL.includes(r.target_stop) && r.line === '10');
+    const etape2    = rows.filter(r => STOP_BELLE_RGTR.includes(r.target_stop) && isMamerBound(r.direction));
+    const autresSet = new Set([...train, ...etape1, ...etape2]);
+    const autres    = rows.filter(r => !autresSet.has(r));
 
     let html = '';
-    if (train.length) html += journeySection('train', '\u{1F686} Train L50 — Luxembourg Gare Centrale → Mamer', train, n);
-    if (depart.length) html += journeySection('connexion', '\u{1F535} Départ — Ville → Belle-Étoile (AVL 10)', depart, n);
-    if (retour.length) html += journeySection('retour', '\u{1F517} Retour — Belle-Étoile → Mamer', retour, n);
-    if (autres.length) html += journeySection('autres', 'Autres passages soir', autres, n);
+    if (train.length)  html += journeySection('train',    '\u{1F686} Train L50 — Luxembourg → Mamer Gare', train, n);
+    if (etape1.length) html += journeySection('connexion','\u{1F68C} Étape 1 — Ville → Belle-Étoile (AVL 10)', etape1, n);
+    if (etape2.length) html += journeySection('retour',   '\u{1F517} Étape 2 — Belle-Étoile → Mamer (RGTR)', etape2, n);
+    if (autres.length) html += journeySection('autres',   'Autres passages soir', autres, n);
     if (!html) html = emptyForTab('evening', n);
     return html;
   }
@@ -918,6 +911,18 @@
       if (btn.dataset.action === 'live-gps') {
         detectNearestStop();
       }
+    });
+
+    /* GPS header */
+    $('gpsBtn').addEventListener('click', () => {
+      state.tab = 'live';
+      document.querySelectorAll('.tab').forEach(b => {
+        const active = b.dataset.tab === 'live';
+        b.classList.toggle('active', active);
+        b.setAttribute('aria-selected', String(active));
+      });
+      saveState();
+      detectNearestStop();
     });
 
     /* Theme + Notif */
