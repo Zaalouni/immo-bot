@@ -106,11 +106,61 @@
   const morningAll = ALL.filter(r => r.time_minutes >= MORNING_START && r.time_minutes <= MORNING_END);
   const eveningAll = ALL.filter(r => r.time_minutes >= EVENING_START && r.time_minutes <= EVENING_END);
 
+  /* ===== Carte des connexions Mamer → Belle-Etoile (meme course) ===== */
+  const CONNECTION_MAP = (() => {
+    const byCourseMamer = new Map();
+    const byCourseBert  = new Map();
+    for (const r of ALL) {
+      if (r.target_stop === 'MAMER, Mambra' || r.target_stop === 'MAMER, Eglantiers')
+        byCourseMamer.set(r.course, r);
+      if (r.target_stop === 'BERTRANGE, Belle-Etoile')
+        byCourseBert.set(r.course, r);
+    }
+    const map = new Map();
+    for (const [course, m] of byCourseMamer) {
+      const b = byCourseBert.get(course);
+      if (!b) continue;
+      const dt = b.time_minutes - m.time_minutes;
+      if (dt > 0 && dt <= 20)
+        map.set(course, { mamerStop: m.target_stop, mamerMin: m.time_minutes, bertMin: b.time_minutes, line: m.line, service: m.service_label, time: m.time });
+    }
+    return map;
+  })();
+
+  function renderConnectionWidget(n) {
+    const code  = state.dayFilter === 'all' ? null : activeDayCode();
+    const avl10 = ALL.filter(r => r.target_stop === 'Bertrange, Belle \xC9toile Quai 1' && r.line === '10');
+    const conns = [...CONNECTION_MAP.values()]
+      .filter(c => c.mamerMin >= n - 5 && c.mamerMin <= n + 90)
+      .filter(c => !code || isServiceDay(c.service, code))
+      .sort((a, b) => a.mamerMin - b.mamerMin)
+      .slice(0, 3);
+    if (!conns.length) return '';
+    const rows = conns.map(c => {
+      const diff = c.mamerMin - n;
+      const when = diff <= 0 ? 'maintenant' : `dans ${diff} min`;
+      const avl  = avl10
+        .filter(r => r.time_minutes >= c.bertMin + 2)
+        .filter(r => !code || isServiceDay(r.service_label, code))
+        .sort((a, b) => a.time_minutes - b.time_minutes)[0];
+      const avlHtml = avl
+        ? `<span class="conn-avl">→ AVL 10 <strong>${escapeHtml(avl.time)}</strong> (att. ${avl.time_minutes - c.bertMin} min)</span>`
+        : `<span class="conn-avl conn-miss">→ pas d'AVL 10 disponible</span>`;
+      return `<div class="conn-row${diff < -1 ? ' conn-past' : ''}">
+        <span class="conn-bus"><span class="badge badge-rgtr">${escapeHtml(c.line)}</span> ${escapeHtml(c.mamerStop.replace('MAMER, ', ''))} <strong>${escapeHtml(c.time)}</strong> <span class="conn-when">${escapeHtml(when)}</span></span>
+        <span class="conn-arrow">→ Belle-\xC9toile ${escapeHtml(minToHHMM(c.bertMin))}</span>
+        ${avlHtml}
+      </div>`;
+    }).join('');
+    return `<div class="conn-widget"><div class="conn-title">⚡ Connexion Mamer → Ville</div>${rows}</div>`;
+  }
+
   /* ===== Etat ===== */
   const state = {
     tab: 'live', stop: '', line: '', direction: '', service: '',
     timeTarget: '', timeTol: 5, search: '',
     liveStop: '', liveTol: 30, ttLine: '',
+    dayFilter: 'auto', walkMin: 5,
     favorites: [],  /* [{key, line, target_stop, direction, network}] */
     history: [],
     filtered: [],
@@ -123,6 +173,8 @@
       if (s.tab && ['now','morning','evening','favorites','all','live'].includes(s.tab)) state.tab = s.tab;
       if (s.stop)                                 state.stop    = s.stop;
       if (s.liveTol && [5,10,30].includes(+s.liveTol)) state.liveTol = +s.liveTol;
+      if (s.dayFilter && ['auto','weekday','sat','sun','all'].includes(s.dayFilter)) state.dayFilter = s.dayFilter;
+      if (s.walkMin   && +s.walkMin >= 0 && +s.walkMin <= 20) state.walkMin = +s.walkMin;
       if (Array.isArray(s.favorites)) state.favorites = s.favorites;
       if (Array.isArray(s.history))   state.history   = s.history.slice(0, 5);
     } catch (_) {}
@@ -131,7 +183,7 @@
   }
 
   function saveState() {
-    try { localStorage.setItem('bus-pwa', JSON.stringify({ tab: state.tab, stop: state.stop, liveTol: state.liveTol, favorites: state.favorites, history: state.history })); } catch (_) {}
+    try { localStorage.setItem('bus-pwa', JSON.stringify({ tab: state.tab, stop: state.stop, liveTol: state.liveTol, dayFilter: state.dayFilter, walkMin: state.walkMin, favorites: state.favorites, history: state.history })); } catch (_) {}
   }
 
   /* ===== Theme ===== */
@@ -150,6 +202,32 @@
     if (d === 0) return { label: 'Dimanche & jours feries', icon: '🔵' };
     if (d === 6) return { label: 'Samedi',                  icon: '🟡' };
     return               { label: 'Lundi – Vendredi',   icon: '🟢' };
+  }
+
+  /* ===== Filtre jour de service ===== */
+  function getAutoDay() {
+    const d = new Date().getDay();
+    if (d === 0) return 'sun';
+    if (d === 6) return 'sat';
+    return 'weekday';
+  }
+
+  function isServiceDay(svc, code) {
+    if (!svc || svc === ')') return true;
+    const s = svc.toLowerCase();
+    if (code === 'weekday') {
+      if (/^samedis ouvrables/.test(s))    return false;
+      if (/^dimanche/.test(s))             return false;
+      if (/^samedis, dimanches/.test(s))   return false;
+      if (/^samedi\s*\//.test(s))          return false;
+      return true;
+    }
+    if (code === 'sat') return /samedi|lu.sa|lundi.vendredi.*samedi/.test(s);
+    return /dimanche|f.ri|samedis.*dimanches|samedi.*dimanche/.test(s);
+  }
+
+  function activeDayCode() {
+    return state.dayFilter === 'auto' ? getAutoDay() : state.dayFilter;
   }
 
   /* ===== Countdown ===== */
@@ -242,6 +320,21 @@
       `<span class="badge ${lineCls}">${escapeHtml(next.network)} ${escapeHtml(next.line)}</span>` +
       `<span style="margin-left:7px;font-size:.875rem;font-weight:600">${escapeHtml(next.direction)}</span>` +
       `<div class="nb-meta">${escapeHtml(next.target_stop)}${cdText ? ' · ' + cdText : ''}</div>`;
+
+    const walkDiv  = $('nextBusWalk');
+    const diffNext = next.time_minutes - n;
+    if (diffNext >= 0 && diffNext <= 90 && state.walkMin > 0) {
+      const departMin  = next.time_minutes - state.walkMin;
+      const departDiff = departMin - n;
+      $('walkDepartTime').textContent = minToHHMM(departMin);
+      $('walkDepartIn').textContent   = departDiff > 1  ? `(dans ${departDiff} min)`
+                                      : departDiff >= 0 ? '(maintenant !)'
+                                      : '(en retard — d\xE9p\xEAche-toi !)';
+      $('walkVal').textContent = `${state.walkMin} min`;
+      walkDiv.hidden = false;
+    } else {
+      walkDiv.hidden = true;
+    }
   }
 
   /* ===== Selects ===== */
@@ -279,6 +372,7 @@
       if (state.tab === 'now')     { if (!inRange(r.time_minutes, n, 5)) return false; }
       if (state.tab === 'morning') { if (r.time_minutes < MORNING_START || r.time_minutes > MORNING_END) return false; }
       if (state.tab === 'evening') { if (r.time_minutes < EVENING_START || r.time_minutes > EVENING_END) return false; }
+      if (state.dayFilter !== 'all' && !isServiceDay(r.service_label, activeDayCode())) return false;
       return true;
     });
 
@@ -323,7 +417,7 @@
     const autresSet = new Set([...train, ...etape1, ...etape2]);
     const autres    = rows.filter(r => !autresSet.has(r));
 
-    let html = '';
+    let html = renderConnectionWidget(n);
     if (train.length)  html += journeySection('train',    '\u{1F686} Train L50 — Mamer Gare → Luxembourg', train, n);
     if (etape1.length) html += journeySection('aller',    '\u{1F68C} Étape 1 — Mamer → Belle-Étoile (RGTR)', etape1, n);
     if (etape2.length) html += journeySection('connexion','\u{1F517} Étape 2 — Belle-Étoile → Ville (AVL 10)', etape2, n);
@@ -836,7 +930,57 @@
 
   function closePanel(id) { $(id).hidden = true; }
 
-  /* ===== Barre raccourcis lignes (bas de page) ===== */
+  /* ===== Filtre jour — chips ===== */
+  function renderDayFilterChips() {
+    const auto = getAutoDay();
+    const autoLabel = auto === 'weekday' ? 'Lu-Ve' : auto === 'sat' ? 'Sam' : 'Dim';
+    const opts = [
+      { code: 'auto',    label: `Auto (${autoLabel})` },
+      { code: 'weekday', label: 'Lu-Ve' },
+      { code: 'sat',     label: 'Sam' },
+      { code: 'sun',     label: 'Dim' },
+      { code: 'all',     label: 'Tous' },
+    ];
+    $('dayFilterChips').innerHTML = opts.map(o =>
+      `<button class="day-filter-chip${state.dayFilter === o.code ? ' active' : ''}" data-day="${o.code}" type="button">${escapeHtml(o.label)}</button>`
+    ).join('');
+    $('dayFilterChips').querySelectorAll('.day-filter-chip').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.dayFilter = btn.dataset.day;
+        renderDayFilterChips();
+        renderLinesBar();
+        applyFilters();
+      });
+    });
+  }
+
+  /* ===== Mise a jour des donnees ===== */
+  async function checkDataUpdate() {
+    if (location.protocol === 'file:') { showToast('Mise \xE0 jour non disponible en local'); return; }
+    const btn = $('updateDataBtn');
+    btn.textContent = '⏳'; btn.disabled = true;
+    try {
+      const res  = await fetch('./data/bus-schedules.json', { cache: 'no-cache' });
+      const data = await res.json();
+      const newCount = (data.schedules || []).length;
+      const curCount = (window.BUS_SCHEDULES?.schedules || []).length;
+      if (newCount !== curCount) {
+        $('statusBar').hidden = false;
+        $('statusBarMsg').textContent = `\u{1F504} Nouvelles donn\xE9es : ${newCount} horaires (actuellement ${curCount})`;
+        $('updateBtn').hidden = false;
+        $('updateBtn').onclick = () => location.reload();
+        showToast(`Mise \xE0 jour disponible (${newCount} horaires)`);
+      } else {
+        showToast(`Donn\xE9es \xE0 jour ✓ (${curCount} horaires)`);
+      }
+    } catch (_) {
+      showToast('V\xE9rification impossible (hors ligne ?)');
+    } finally {
+      btn.textContent = '\u{1F504}'; btn.disabled = false;
+    }
+  }
+
+  /* ===== Barre raccourcis lignes (dans main) ===== */
   function renderLinesBar() {
     const n     = nowMin();
     const lines = unique(ALL.map(r => r.line));
@@ -915,10 +1059,14 @@
     $('stopsBtn').addEventListener('click', openStopsPanel);
     $('schedulesBtn').addEventListener('click', () => openTimetablePanel());
     renderLinesBar();
+    renderDayFilterChips();
     $('linesShortcutsChips').addEventListener('click', e => {
       const btn = e.target.closest('[data-action="open-tt"]');
       if (btn) openTimetablePanel(btn.dataset.line);
     });
+    $('walkMinus').addEventListener('click', () => { state.walkMin = Math.max(0, state.walkMin - 1); saveState(); updateNextBus(); });
+    $('walkPlus').addEventListener('click',  () => { state.walkMin = Math.min(20, state.walkMin + 1); saveState(); updateNextBus(); });
+    $('updateDataBtn').addEventListener('click', checkDataUpdate);
     $('stopsPanelClose').addEventListener('click', () => closePanel('stopsPanel'));
     $('schedulesPanelClose').addEventListener('click', () => closePanel('schedulesPanel'));
     /* Fermer overlay en cliquant le fond */

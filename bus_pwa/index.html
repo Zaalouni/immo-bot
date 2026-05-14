@@ -61,6 +61,17 @@
       <div class="next-bus-card" id="nextBusCard">
         <span class="next-bus-label">Prochain bus</span>
         <div class="next-bus-body" id="nextBusBody">—</div>
+        <div class="next-bus-walk" id="nextBusWalk" hidden>
+          <span class="walk-icon">🚶</span>
+          <span class="walk-depart-label">Partir à</span>
+          <span id="walkDepartTime" class="walk-depart-time">—</span>
+          <span id="walkDepartIn" class="walk-depart-in"></span>
+          <div class="walk-controls">
+            <button id="walkMinus" class="walk-btn" type="button" aria-label="Moins">−</button>
+            <span id="walkVal" class="walk-val">5 min</span>
+            <button id="walkPlus"  class="walk-btn" type="button" aria-label="Plus">+</button>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -83,9 +94,10 @@
       <button class="tab"        data-tab="all"       role="tab" aria-selected="false" type="button">Tout</button>
     </nav>
 
-    <!-- Indicateur du jour -->
+    <!-- Indicateur du jour + filtre service -->
     <div class="day-bar">
       <span id="dayChip" class="day-chip"></span>
+      <div class="day-filter-chips" id="dayFilterChips"></div>
     </div>
 
     <!-- Raccourcis horaires par ligne -->
@@ -130,7 +142,10 @@
     <!-- Barre résultats -->
     <div class="result-bar">
       <span id="resultInfo" class="result-info">Chargement…</span>
-      <button id="installBtn" class="btn-primary" hidden type="button">⬇ Installer</button>
+      <div style="display:flex;gap:6px;align-items:center;flex-shrink:0">
+        <button id="updateDataBtn" class="btn-ghost" type="button" title="Vérifier les mises à jour des horaires" style="padding:4px 8px;font-size:.8rem">🔄</button>
+        <button id="installBtn" class="btn-primary" hidden type="button">⬇ Installer</button>
+      </div>
     </div>
 
     <!-- Résultats -->
