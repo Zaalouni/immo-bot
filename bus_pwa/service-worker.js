@@ -1,9 +1,9 @@
 /* ============================================================
-   Service Worker — bus-offline-v6
+   Service Worker — bus-offline-v7
    Cache-first assets · Network-first data · Periodic Sync alerts
    ============================================================ */
 
-const CACHE_NAME = 'bus-offline-v6';
+const CACHE_NAME = 'bus-offline-v7';
 const NOTIF_CACHE = 'bus-notif-state-v1';
 
 const STATIC_ASSETS = [

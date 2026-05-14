@@ -79,6 +79,15 @@
     return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
   }
 
+  function itineraryUrl(stop) {
+    const coords = STOP_COORDS[stop];
+    if (!coords) return null;
+    const [lat, lon] = coords;
+    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    if (isIOS) return `maps://maps.apple.com/?daddr=${lat},${lon}&dirflg=w`;
+    return `https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}&travelmode=walking`;
+  }
+
   function detectNearestStop(opts = {}) {
     if (!('geolocation' in navigator)) {
       if (!opts.silent) showToast('GPS non disponible');
@@ -568,6 +577,10 @@
     const countLabel = sorted.length
       ? `${upcoming.length} \xE0 venir${past.length ? ', ' + past.length + ' pass\xE9(s)' : ''}`
       : `Aucun d\xE9part dans \xB1${state.liveTol}\xa0min`;
+    const mapUrl = state.liveStop ? itineraryUrl(state.liveStop) : null;
+    const mapBtn = mapUrl
+      ? `<a class="map-btn" href="${mapUrl}" target="_blank" rel="noopener noreferrer" title="Itinéraire à pied vers cet arrêt">🗺 Itinéraire</a>`
+      : '';
 
     return `<div class="live-board">
       <div class="live-controls">
@@ -575,7 +588,10 @@
         <div class="live-tol-row">${tolBtns}</div>
       </div>
       <div class="live-board-header">
-        <span class="live-board-title">\u{1F4CD} ${escapeHtml(stopName)}</span>
+        <div class="live-board-left">
+          <span class="live-board-title">\u{1F4CD} ${escapeHtml(stopName)}</span>
+          ${mapBtn}
+        </div>
         <span class="live-board-count">${escapeHtml(countLabel)}</span>
       </div>
       <div class="live-table" id="liveTable">
