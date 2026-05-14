@@ -275,7 +275,19 @@ details > summary::-webkit-details-marker { display:none; }
 .tt-svc-label { font-size:.68rem; font-weight:600; color:var(--text3); }
 .tt-times { display:flex; flex-wrap:wrap; gap:5px; }
 .tt-time { font-size:.82rem; font-weight:700; font-variant-numeric:tabular-nums; background:var(--surface); border:1px solid var(--border2); border-radius:var(--radius-xs); padding:4px 8px; color:var(--text); white-space:nowrap; transition:background 150ms,border-color 150ms; }
-.tt-time:hover { background:var(--accent-dim); border-color:var(--accent); color:var(--accent); }
+.tt-time:hover  { background:var(--accent-dim); border-color:var(--accent); color:var(--accent); }
+.tt-time.is-now  { background:var(--green-dim); border-color:var(--green); color:var(--green); font-weight:900; box-shadow:0 0 0 2px var(--green-dim); }
+.tt-time.is-soon { background:var(--accent-dim); border-color:var(--accent); color:var(--accent); font-weight:800; }
+.tt-time.is-past { opacity:.28; }
+
+/* ===== Barre raccourcis horaires ===== */
+.lines-shortcuts { background:var(--surface); border-top:2px solid var(--border); padding:18px 16px 20px; margin-top:28px; }
+.lines-shortcuts-label { font-size:.72rem; font-weight:800; color:var(--text3); text-transform:uppercase; letter-spacing:.1em; margin-bottom:12px; }
+.lines-shortcuts-chips { display:flex; gap:8px; flex-wrap:wrap; }
+.lines-shortcut-chip { display:inline-flex; align-items:center; gap:5px; padding:8px 14px; border-radius:999px; font-size:.82rem; font-weight:800; border:2px solid transparent; cursor:pointer; transition:transform 120ms,box-shadow 200ms,opacity 200ms; opacity:.75; min-height:38px; }
+.lines-shortcut-chip:hover  { opacity:1; transform:scale(1.05); }
+.lines-shortcut-chip:active { transform:scale(.97); }
+.lines-shortcut-chip .chip-near { font-size:.65rem; font-weight:700; background:rgba(255,255,255,.18); border-radius:999px; padding:1px 6px; margin-left:2px; }
 
 /* ===== Onglet Live — tableau de départ ===== */
 .live-board { display:flex; flex-direction:column; gap:12px; padding-bottom:32px; }

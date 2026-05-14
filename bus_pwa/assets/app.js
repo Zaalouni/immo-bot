@@ -520,7 +520,7 @@
       </div>
       <div class="card-info">
         <div class="card-badges">
-          <span class="badge ${lineCls}">${escapeHtml(r.network)} ${escapeHtml(r.line)}</span>
+          <button class="badge ${lineCls}" data-action="open-tt" data-line="${escapeHtml(r.line)}" title="Voir horaires ligne ${escapeHtml(r.line)}" type="button" style="cursor:pointer">${escapeHtml(r.network)} ${escapeHtml(r.line)}</button>
           ${periodBadge}
         </div>
         <div class="card-direction">${escapeHtml(r.direction)}</div>
@@ -740,13 +740,15 @@
   }
 
   /* ===== Panel Horaires par ligne ===== */
-  function openTimetablePanel() {
+  function openTimetablePanel(line) {
+    if (line) state.ttLine = line;
     if (!state.ttLine) state.ttLine = unique(ALL.map(r => r.line))[0];
     renderTimetableContent();
     $('schedulesPanel').hidden = false;
   }
 
   function renderTimetableContent() {
+    const n     = nowMin();
     const lines = unique(ALL.map(r => r.line));
 
     /* Chips de ligne */
@@ -754,34 +756,48 @@
       const net = ALL.find(r => r.line === l)?.network || '';
       const cls = net === 'AVL' ? 'badge-avl' : net === 'CFL' ? 'badge-cfl' : 'badge-rgtr';
       const active = state.ttLine === l;
-      return `<button class="tt-chip${active ? ' active' : ''} ${cls}" data-action="tt-line" data-ttline="${escapeHtml(l)}" type="button">${escapeHtml(l)}</button>`;
+      /* Compter les departs a venir dans ±30 min */
+      const near = ALL.filter(r => r.line === l && inRange(r.time_minutes, n, 30) && r.time_minutes >= n - 2).length;
+      const nearBadge = near ? ` <span style="background:rgba(255,255,255,.2);border-radius:999px;padding:0 5px;font-size:.65rem">${near}</span>` : '';
+      return `<button class="tt-chip${active ? ' active' : ''} ${cls}" data-action="tt-line" data-ttline="${escapeHtml(l)}" type="button">${escapeHtml(l)}${nearBadge}</button>`;
     }).join('');
 
     /* Donnees de la ligne selectionnee */
-    const rows = ALL.filter(r => r.line === state.ttLine);
-    const stops = unique(rows.map(r => r.target_stop));
+    const rows    = ALL.filter(r => r.line === state.ttLine);
+    const stops   = unique(rows.map(r => r.target_stop));
     const network = rows[0]?.network || '';
     const netLabel = network === 'CFL' ? 'Train CFL' : network;
 
+    /* Nombre de departs a venir */
+    const nearCount = rows.filter(r => inRange(r.time_minutes, n, 30) && r.time_minutes >= n - 2).length;
+    const nearLabel = nearCount
+      ? ` · <strong style="color:var(--green)">${nearCount} dans ±30\xa0min</strong>`
+      : '';
+
     const stopSections = stops.map(stop => {
       const stopRows = rows.filter(r => r.target_stop === stop);
-      /* Grouper par direction puis par service */
-      const dirs = unique(stopRows.map(r => r.direction));
+      const dirs     = unique(stopRows.map(r => r.direction));
 
       const dirBlocks = dirs.map(dir => {
-        /* Destination courte = partie apres la derniere fleche */
-        const dest = (dir || '').split(/→|->/).pop().trim();
+        const dest     = (dir || '').split(/→|->/).pop().trim();
         const services = unique(stopRows.filter(r => r.direction === dir).map(r => r.service_label));
 
         const svcBlocks = services.map(svc => {
-          const times = stopRows
+          const timesData = stopRows
             .filter(r => r.direction === dir && r.service_label === svc)
-            .sort((a, b) => a.time_minutes - b.time_minutes)
-            .map(r => r.time);
+            .sort((a, b) => a.time_minutes - b.time_minutes);
           const svcIcon = /samedi/i.test(svc) ? '\u{1F7E1}' : /dimanche|f.ri/i.test(svc) ? '\u{1F535}' : '\u{1F7E2}';
+          const timesHtml = timesData.map(r => {
+            const diff = r.time_minutes - n;
+            const cls  = Math.abs(diff) <= 2 ? 'tt-time is-now'
+                       : diff >= -2 && diff <= 30 ? 'tt-time is-soon'
+                       : diff < -2 ? 'tt-time is-past'
+                       : 'tt-time';
+            return `<span class="${cls}" data-minutes="${r.time_minutes}">${escapeHtml(r.time)}</span>`;
+          }).join('');
           return `<div class="tt-svc-row">
             <span class="tt-svc-label">${svcIcon} ${escapeHtml(svc || 'Tous jours')}</span>
-            <div class="tt-times">${times.map(t => `<span class="tt-time">${escapeHtml(t)}</span>`).join('')}</div>
+            <div class="tt-times">${timesHtml}</div>
           </div>`;
         }).join('');
 
@@ -801,19 +817,40 @@
       </div>`;
     }).join('');
 
-    const totalDeps = rows.length;
     $('schedulesPanelBody').innerHTML =
       `<div class="tt-line-bar">${lineChips}</div>
-       <div class="tt-summary">${escapeHtml(netLabel)} · Ligne ${escapeHtml(state.ttLine)} · ${totalDeps} passages · ${stops.length} arr\xEAt(s)</div>
+       <div class="tt-summary">${escapeHtml(netLabel)} · Ligne ${escapeHtml(state.ttLine)} · ${rows.length} passages · ${stops.length} arr\xEAt(s)${nearLabel}</div>
        <div class="tt-sections">${stopSections}</div>`;
 
     /* Clicks sur les chips de ligne */
     $('schedulesPanelBody').querySelectorAll('[data-action="tt-line"]').forEach(btn => {
       btn.addEventListener('click', () => { state.ttLine = btn.dataset.ttline; renderTimetableContent(); });
     });
+
+    /* Scroll vers le premier horaire proche */
+    requestAnimationFrame(() => {
+      const first = $('schedulesPanelBody').querySelector('.tt-time.is-now, .tt-time.is-soon');
+      if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
   }
 
   function closePanel(id) { $(id).hidden = true; }
+
+  /* ===== Barre raccourcis lignes (bas de page) ===== */
+  function renderLinesBar() {
+    const n     = nowMin();
+    const lines = unique(ALL.map(r => r.line));
+    const chips = lines.map(l => {
+      const net  = ALL.find(r => r.line === l)?.network || '';
+      const cls  = net === 'AVL' ? 'badge-avl' : net === 'CFL' ? 'badge-cfl' : 'badge-rgtr';
+      const near = ALL.filter(r => r.line === l && r.time_minutes >= n - 2 && r.time_minutes <= n + 30).length;
+      const nearHtml = near
+        ? `<span class="chip-near">${near}</span>`
+        : '';
+      return `<button class="lines-shortcut-chip ${cls}" data-action="open-tt" data-line="${escapeHtml(l)}" type="button" title="Horaires ligne ${escapeHtml(l)}">${escapeHtml(net)} ${escapeHtml(l)}${nearHtml}</button>`;
+    }).join('');
+    $('linesShortcutsChips').innerHTML = chips;
+  }
 
   /* ===== Etats vides ===== */
   function emptyHtml(title, msg, icon) {
@@ -877,6 +914,11 @@
     $('resetBtn').addEventListener('click', resetFilters);
     $('stopsBtn').addEventListener('click', openStopsPanel);
     $('schedulesBtn').addEventListener('click', () => openTimetablePanel());
+    renderLinesBar();
+    $('linesShortcutsChips').addEventListener('click', e => {
+      const btn = e.target.closest('[data-action="open-tt"]');
+      if (btn) openTimetablePanel(btn.dataset.line);
+    });
     $('stopsPanelClose').addEventListener('click', () => closePanel('stopsPanel'));
     $('schedulesPanelClose').addEventListener('click', () => closePanel('schedulesPanel'));
     /* Fermer overlay en cliquant le fond */
@@ -910,6 +952,9 @@
       }
       if (btn.dataset.action === 'live-gps') {
         detectNearestStop();
+      }
+      if (btn.dataset.action === 'open-tt') {
+        openTimetablePanel(btn.dataset.line);
       }
     });
 
