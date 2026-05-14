@@ -12,7 +12,6 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="assets/icon-192.png">
   <link rel="icon" href="assets/icon-192.png" type="image/png">
-  <link rel="preload" href="data/bus-schedules.js" as="script">
   <link rel="stylesheet" href="assets/app.css">
   <title>Bus Offline — Horaires RGTR et AVL</title>
 </head>
@@ -182,7 +181,7 @@
 
   <noscript><p style="padding:2rem;text-align:center;color:#94a3b8">JavaScript requis.</p></noscript>
 
-  <script src="data/bus-schedules.js"></script>
-  <script src="assets/app.js"></script>
+  <script defer src="data/bus-schedules.js"></script>
+  <script defer src="assets/app.js"></script>
 </body>
 </html>

@@ -101,8 +101,10 @@ details > summary::-webkit-details-marker { display:none; }
 .next-bus-card.has-bus { border-color:var(--accent); }
 .next-bus-label { font-size:.65rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:var(--text3); white-space:nowrap; flex-shrink:0; padding-top:3px; }
 .next-bus-body { flex:1; min-width:0; font-size:.9rem; }
-.nb-time { font-size:1.2rem; font-weight:900; color:var(--accent); }
-.nb-meta { font-size:.72rem; color:var(--text3); margin-top:3px; }
+.nb-time   { font-size:1.2rem; font-weight:900; color:var(--accent); }
+.nb-sep    { margin:0 8px; color:var(--text3); }
+.nb-meta   { font-size:.72rem; color:var(--text3); margin-top:3px; }
+.nb-no-bus { color:var(--text3); font-size:.85rem; }
 
 /* ===== Recherche ===== */
 .search-wrap { padding-top:12px; padding-bottom:4px; position:relative; }
@@ -375,6 +377,25 @@ details > summary::-webkit-details-marker { display:none; }
 
 /* ===== Touch targets ===== */
 .tab,.btn-ghost,.btn-primary,.fav-btn,.share-btn,.icon-btn { min-height:44px; }
+
+/* ===== Next bus direction ===== */
+.nb-direction { margin-left:7px; font-size:.875rem; font-weight:600; }
+
+/* ===== Badge button cursor ===== */
+button.badge { cursor:pointer; }
+
+/* ===== Favorites card badges margin ===== */
+.fav-card-badges { margin-bottom:6px; }
+
+/* ===== Stop stat item layout ===== */
+.stop-stat-info { flex:1; min-width:0; }
+.stop-stat-lines { font-size:.7rem; color:var(--text3); margin-top:2px; }
+.stop-stat-pill.morning { color:var(--yellow); }
+.stop-stat-pill.evening { color:var(--red); }
+
+/* ===== Timetable near badge ===== */
+.tt-near-badge { background:rgba(255,255,255,.2); border-radius:999px; padding:0 5px; font-size:.65rem; }
+.tt-near-label { color:var(--green); font-weight:700; }
 
 /* ===== Désactiver hover sur tactile ===== */
 @media (hover:none) {

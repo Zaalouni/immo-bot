@@ -19,6 +19,7 @@
   }
 
   /* ===== Utilitaires ===== */
+  const netCls  = net => net === 'AVL' ? 'badge-avl' : net === 'CFL' ? 'badge-cfl' : 'badge-rgtr';
   const escapeHtml = s => String(s ?? '').replace(/[&<>"']/g, c =>
     ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])
   );
@@ -281,11 +282,6 @@
     el.innerHTML = state.history.map(h =>
       `<div class="history-item" role="option" tabindex="0" data-q="${escapeHtml(h)}"><span class="history-icon">⏱</span><span>${escapeHtml(h)}</span></div>`
     ).join('');
-    el.querySelectorAll('.history-item').forEach(item => {
-      const pick = () => { $('globalSearch').value = item.dataset.q; state.search = item.dataset.q; el.hidden = true; applyFilters(); };
-      item.addEventListener('click', pick);
-      item.addEventListener('keydown', e => { if (e.key === 'Enter') pick(); });
-    });
   }
 
   /* ===== Partage ===== */
@@ -307,16 +303,16 @@
     const card = $('nextBusCard'), body = $('nextBusBody');
     if (!pool.length) {
       card.classList.remove('has-bus');
-      body.innerHTML = '<span style="color:var(--text3);font-size:.85rem">Aucun bus dans les 2 prochaines heures</span>';
+      body.innerHTML = '<span class="nb-no-bus">Aucun bus dans les 2 prochaines heures</span>';
       return;
     }
     const next = pool.reduce((a, b) => Math.abs(b.time_minutes - n) < Math.abs(a.time_minutes - n) ? b : a);
     const { text: cdText } = countdown(next.time_minutes - n);
-    const lineCls = next.network === 'AVL' ? 'badge-avl' : next.network === 'CFL' ? 'badge-cfl' : 'badge-rgtr';
+    const lineCls = netCls(next.network);
     card.classList.add('has-bus');
     body.innerHTML =
       `<span class="nb-time">${escapeHtml(next.time)}</span>` +
-      `<span style="margin:0 8px;color:var(--text3)">·</span>` +
+      `<span class="nb-sep">·</span>` +
       `<span class="badge ${lineCls}">${escapeHtml(next.network)} ${escapeHtml(next.line)}</span>` +
       `<span style="margin-left:7px;font-size:.875rem;font-weight:600">${escapeHtml(next.direction)}</span>` +
       `<div class="nb-meta">${escapeHtml(next.target_stop)}${cdText ? ' · ' + cdText : ''}</div>`;
@@ -478,7 +474,7 @@
       const isPast = diff < -2;
       const rowCls = isNow ? 'live-row is-now' : isSoon ? 'live-row is-soon' : isPast ? 'live-row is-past' : 'live-row';
       const { text: cdText, cls: cdCls } = countdown(diff);
-      const lineCls = r.network === 'AVL' ? 'badge-avl' : r.network === 'CFL' ? 'badge-cfl' : 'badge-rgtr';
+      const lineCls = netCls(r.network);
       const meta = !state.liveStop
         ? escapeHtml(r.target_stop) + (r.course ? ' \xB7 ' + escapeHtml(r.course) : '')
         : r.course ? escapeHtml(r.course) : escapeHtml(r.service_label || '');
@@ -559,7 +555,7 @@
       </div>`;
     }).join('');
 
-    const lineCls = fav.network === 'AVL' ? 'badge-avl' : fav.network === 'CFL' ? 'badge-cfl' : 'badge-rgtr';
+    const lineCls = netCls(fav.network);
     return `<div class="fav-route-card" data-favkey="${escapeHtml(fav.key)}">
       <div class="fav-route-header">
         <div class="fav-route-info">
@@ -595,7 +591,7 @@
     const isSoon = Math.abs(diff) <= 5 && !isNow;
     const cls    = isNow ? 'is-now' : isSoon ? 'is-soon' : '';
     const { text: cdText, cls: cdCls } = countdown(diff);
-    const lineCls = r.network === 'AVL' ? 'badge-avl' : r.network === 'CFL' ? 'badge-cfl' : 'badge-rgtr';
+    const lineCls = netCls(r.network);
     const fav     = isFav(r);
     const key     = favKey(r);
 
@@ -666,10 +662,10 @@
   function tick() {
     $('clock').textContent = nowTime();
     const n = nowMin();
-    $('nowChip').textContent = `${ALL.filter(r => inRange(r.time_minutes, n, 5)).length} bus \xB15 min`;
-    refreshCountdowns();
     if (n !== lastMin) {
       lastMin = n;
+      $('nowChip').textContent = `${ALL.filter(r => inRange(r.time_minutes, n, 5)).length} bus \xB15 min`;
+      refreshCountdowns();
       checkNotifications(n);
       if (state.tab === 'now' || state.tab === 'live') applyFilters();
       else updateNextBus();
@@ -848,7 +844,7 @@
     /* Chips de ligne */
     const lineChips = lines.map(l => {
       const net = ALL.find(r => r.line === l)?.network || '';
-      const cls = net === 'AVL' ? 'badge-avl' : net === 'CFL' ? 'badge-cfl' : 'badge-rgtr';
+      const cls = netCls(net);
       const active = state.ttLine === l;
       /* Compter les departs a venir dans ±30 min */
       const near = ALL.filter(r => r.line === l && inRange(r.time_minutes, n, 30) && r.time_minutes >= n - 2).length;
@@ -986,7 +982,7 @@
     const lines = unique(ALL.map(r => r.line));
     const chips = lines.map(l => {
       const net  = ALL.find(r => r.line === l)?.network || '';
-      const cls  = net === 'AVL' ? 'badge-avl' : net === 'CFL' ? 'badge-cfl' : 'badge-rgtr';
+      const cls  = netCls(net);
       const near = ALL.filter(r => r.line === l && r.time_minutes >= n - 2 && r.time_minutes <= n + 30).length;
       const nearHtml = near
         ? `<span class="chip-near">${near}</span>`
@@ -1047,6 +1043,17 @@
     $('globalSearch').addEventListener('input', doSearch);
     $('globalSearch').addEventListener('focus', () => { if (state.history.length) renderHistory(); });
     document.addEventListener('click', e => { if (!e.target.closest('.search-wrap')) $('searchHistory').hidden = true; });
+    $('searchHistory').addEventListener('click', e => {
+      const item = e.target.closest('.history-item');
+      if (!item) return;
+      $('globalSearch').value = item.dataset.q; state.search = item.dataset.q;
+      $('searchHistory').hidden = true; applyFilters();
+    });
+    $('searchHistory').addEventListener('keydown', e => {
+      if (e.key !== 'Enter') return;
+      const item = e.target.closest('.history-item');
+      if (item) { $('globalSearch').value = item.dataset.q; state.search = item.dataset.q; $('searchHistory').hidden = true; applyFilters(); }
+    });
 
     /* Filtres */
     $('stopFilter').addEventListener('change', e => { state.stop = e.target.value; saveState(); applyFilters(); });
