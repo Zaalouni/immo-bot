@@ -314,7 +314,7 @@
       `<span class="nb-time">${escapeHtml(next.time)}</span>` +
       `<span class="nb-sep">·</span>` +
       `<span class="badge ${lineCls}">${escapeHtml(next.network)} ${escapeHtml(next.line)}</span>` +
-      `<span style="margin-left:7px;font-size:.875rem;font-weight:600">${escapeHtml(next.direction)}</span>` +
+      `<span class="nb-direction">${escapeHtml(next.direction)}</span>` +
       `<div class="nb-meta">${escapeHtml(next.target_stop)}${cdText ? ' · ' + cdText : ''}</div>`;
 
     const walkDiv  = $('nextBusWalk');
@@ -559,7 +559,7 @@
     return `<div class="fav-route-card" data-favkey="${escapeHtml(fav.key)}">
       <div class="fav-route-header">
         <div class="fav-route-info">
-          <div class="card-badges" style="margin-bottom:6px">
+          <div class="card-badges fav-card-badges">
             <span class="badge ${lineCls}">${escapeHtml(fav.network)} ${escapeHtml(fav.line)}</span>
           </div>
           <div class="fav-route-dir">${escapeHtml(fav.direction)}</div>
@@ -610,7 +610,7 @@
       </div>
       <div class="card-info">
         <div class="card-badges">
-          <button class="badge ${lineCls}" data-action="open-tt" data-line="${escapeHtml(r.line)}" title="Voir horaires ligne ${escapeHtml(r.line)}" type="button" style="cursor:pointer">${escapeHtml(r.network)} ${escapeHtml(r.line)}</button>
+          <button class="badge ${lineCls}" data-action="open-tt" data-line="${escapeHtml(r.line)}" title="Voir horaires ligne ${escapeHtml(r.line)}" type="button">${escapeHtml(r.network)} ${escapeHtml(r.line)}</button>
           ${periodBadge}
         </div>
         <div class="card-direction">${escapeHtml(r.direction)}</div>
@@ -807,14 +807,14 @@
     body.innerHTML = `<div class="stop-stat-list">${stops.map(s => {
       const lines = unique(ALL.filter(r => r.target_stop === s).map(r => r.line));
       return `<div class="stop-stat-item" data-stop="${escapeHtml(s)}">
-        <div style="flex:1;min-width:0">
+        <div class="stop-stat-info">
           <div class="stop-stat-name">${escapeHtml(s)}</div>
-          <div style="font-size:.7rem;color:var(--text3);margin-top:2px">Lignes : ${escapeHtml(lines.join(' · '))}</div>
+          <div class="stop-stat-lines">Lignes : ${escapeHtml(lines.join(' · '))}</div>
         </div>
         <div class="stop-stat-counts">
           <span class="stop-stat-pill">${counts[s] || 0} tot</span>
-          ${morning_c[s] ? `<span class="stop-stat-pill" style="color:var(--yellow)">${morning_c[s]} mat</span>` : ''}
-          ${evening_c[s] ? `<span class="stop-stat-pill" style="color:var(--red)">${evening_c[s]} soir</span>` : ''}
+          ${morning_c[s] ? `<span class="stop-stat-pill morning">${morning_c[s]} mat</span>` : ''}
+          ${evening_c[s] ? `<span class="stop-stat-pill evening">${evening_c[s]} soir</span>` : ''}
         </div>
       </div>`;
     }).join('')}</div>`;
@@ -848,7 +848,7 @@
       const active = state.ttLine === l;
       /* Compter les departs a venir dans ±30 min */
       const near = ALL.filter(r => r.line === l && inRange(r.time_minutes, n, 30) && r.time_minutes >= n - 2).length;
-      const nearBadge = near ? ` <span style="background:rgba(255,255,255,.2);border-radius:999px;padding:0 5px;font-size:.65rem">${near}</span>` : '';
+      const nearBadge = near ? ` <span class="tt-near-badge">${near}</span>` : '';
       return `<button class="tt-chip${active ? ' active' : ''} ${cls}" data-action="tt-line" data-ttline="${escapeHtml(l)}" type="button">${escapeHtml(l)}${nearBadge}</button>`;
     }).join('');
 
@@ -861,7 +861,7 @@
     /* Nombre de departs a venir */
     const nearCount = rows.filter(r => inRange(r.time_minutes, n, 30) && r.time_minutes >= n - 2).length;
     const nearLabel = nearCount
-      ? ` · <strong style="color:var(--green)">${nearCount} dans ±30\xa0min</strong>`
+      ? ` · <strong class="tt-near-label">${nearCount} dans ±30\xa0min</strong>`
       : '';
 
     const stopSections = stops.map(stop => {
