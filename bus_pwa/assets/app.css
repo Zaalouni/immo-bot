@@ -94,7 +94,8 @@ details > summary::-webkit-details-marker { display:none; }
 .now-chip { font-size:.65rem; font-weight:700; background:var(--accent-dim); color:var(--accent); border:1px solid var(--accent-ring); border-radius:999px; padding:2px 7px; white-space:nowrap; }
 .icon-btn { width:40px; height:40px; border-radius:50%; border:1.5px solid var(--border2); color:var(--text2); background:var(--surface); display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:color 200ms,border-color 200ms,background 200ms; }
 .icon-btn:hover { color:var(--text); border-color:var(--accent); background:var(--surface2); }
-.icon-btn.notif-on { color:var(--yellow); border-color:var(--yellow); background:var(--yellow-dim); }
+.icon-btn.notif-on    { color:var(--yellow); border-color:var(--yellow); background:var(--yellow-dim); }
+.icon-btn.gps-detecting { color:var(--green); border-color:var(--green); background:var(--green-dim); animation:pulse 1s ease infinite; }
 
 /* ===== Prochain bus ===== */
 .next-bus-section { padding-top:14px; }

@@ -79,22 +79,35 @@
     return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
   }
 
-  function detectNearestStop() {
-    if (!('geolocation' in navigator)) { showToast('GPS non disponible'); return; }
-    navigator.geolocation.getCurrentPosition(pos => {
-      const { latitude: lat, longitude: lon } = pos.coords;
-      let nearest = '', minDist = Infinity;
-      for (const [stop, [slat, slon]] of Object.entries(STOP_COORDS)) {
-        const d = geoDistance(lat, lon, slat, slon);
-        if (d < minDist) { minDist = d; nearest = stop; }
-      }
-      if (nearest) {
-        state.liveStop = nearest;
-        const dist = minDist < 1000 ? Math.round(minDist) + '\xa0m' : (minDist/1000).toFixed(1) + '\xa0km';
-        showToast('\u{1F4CD} ' + nearest + ' (' + dist + ')');
-        applyFilters();
-      }
-    }, () => showToast('Position non disponible'), { timeout: 6000, maximumAge: 30000 });
+  function detectNearestStop(opts = {}) {
+    if (!('geolocation' in navigator)) {
+      if (!opts.silent) showToast('GPS non disponible');
+      return;
+    }
+    const btn = $('gpsBtn');
+    if (btn) btn.classList.add('gps-detecting');
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        if (btn) btn.classList.remove('gps-detecting');
+        const { latitude: lat, longitude: lon } = pos.coords;
+        let nearest = '', minDist = Infinity;
+        for (const [stop, [slat, slon]] of Object.entries(STOP_COORDS)) {
+          const d = geoDistance(lat, lon, slat, slon);
+          if (d < minDist) { minDist = d; nearest = stop; }
+        }
+        if (nearest) {
+          state.liveStop = nearest;
+          const dist = minDist < 1000 ? Math.round(minDist) + '\xa0m' : (minDist/1000).toFixed(1) + '\xa0km';
+          showToast('\u{1F4CD} ' + nearest + ' (' + dist + ')');
+          applyFilters();
+        }
+      },
+      () => {
+        if (btn) btn.classList.remove('gps-detecting');
+        if (!opts.silent) showToast('Position non disponible');
+      },
+      { timeout: 8000, maximumAge: opts.silent ? 120000 : 30000 }
+    );
   }
 
   /* Sous-ensembles d'arrets par role */
@@ -176,7 +189,7 @@
       if (s.tab && ['now','morning','evening','favorites','all','live'].includes(s.tab)) state.tab = s.tab;
       if (s.stop)                                 state.stop    = s.stop;
       if (s.liveTol && [5,10,30].includes(+s.liveTol)) state.liveTol = +s.liveTol;
-      if (s.dayFilter && ['auto','weekday','sat','sun','all'].includes(s.dayFilter)) state.dayFilter = s.dayFilter;
+      if (s.dayFilter && ['auto','weekday','sat','sun','all','tomorrow'].includes(s.dayFilter)) state.dayFilter = s.dayFilter;
       if (s.walkMin   && +s.walkMin >= 0 && +s.walkMin <= 20) state.walkMin = +s.walkMin;
       if (Array.isArray(s.favorites)) state.favorites = s.favorites;
       if (Array.isArray(s.history))   state.history   = s.history.slice(0, 5);
@@ -215,6 +228,13 @@
     return 'weekday';
   }
 
+  function getTomorrowDay() {
+    const d = (new Date().getDay() + 1) % 7;
+    if (d === 0) return 'sun';
+    if (d === 6) return 'sat';
+    return 'weekday';
+  }
+
   function isServiceDay(svc, code) {
     if (!svc || svc === ')') return true;
     const s = svc.toLowerCase();
@@ -230,7 +250,9 @@
   }
 
   function activeDayCode() {
-    return state.dayFilter === 'auto' ? getAutoDay() : state.dayFilter;
+    if (state.dayFilter === 'auto')     return getAutoDay();
+    if (state.dayFilter === 'tomorrow') return getTomorrowDay();
+    return state.dayFilter;
   }
 
   /* ===== Countdown ===== */
@@ -986,12 +1008,15 @@
   function renderDayFilterChips() {
     const auto = getAutoDay();
     const autoLabel = auto === 'weekday' ? 'Lu-Ve' : auto === 'sat' ? 'Sam' : 'Dim';
+    const tom = getTomorrowDay();
+    const tomLabel = tom === 'weekday' ? 'Lu-Ve' : tom === 'sat' ? 'Sam' : 'Dim';
     const opts = [
-      { code: 'auto',    label: `Auto (${autoLabel})` },
-      { code: 'weekday', label: 'Lu-Ve' },
-      { code: 'sat',     label: 'Sam' },
-      { code: 'sun',     label: 'Dim' },
-      { code: 'all',     label: 'Tous' },
+      { code: 'auto',     label: `Auj. (${autoLabel})` },
+      { code: 'tomorrow', label: `Demain (${tomLabel})` },
+      { code: 'weekday',  label: 'Lu-Ve' },
+      { code: 'sat',      label: 'Sam' },
+      { code: 'sun',      label: 'Dim' },
+      { code: 'all',      label: 'Tous' },
     ];
     $('dayFilterChips').innerHTML = opts.map(o =>
       `<button class="day-filter-chip${state.dayFilter === o.code ? ' active' : ''}" data-day="${o.code}" type="button">${escapeHtml(o.label)}</button>`
@@ -1200,7 +1225,17 @@
 
     initInstall();
     initSW();
+    /* Footer dynamique */
+    const _rgtr = unique(ALL.filter(r => r.network === 'RGTR').map(r => r.line)).join(' ');
+    const _avl  = unique(ALL.filter(r => r.network === 'AVL').map(r => r.line)).join(' ');
+    const _cfl  = unique(ALL.filter(r => r.network === 'CFL').map(r => r.line)).join(' ');
+    const _stops = unique(ALL.map(r => r.target_stop)).length;
+    const _fs = document.querySelector('.app-footer p:first-child');
+    const _fl = document.querySelector('.app-footer p:last-child');
+    if (_fs) _fs.textContent = `Mode offline \u00B7 Donn\u00E9es embarqu\u00E9es \u00B7 ${ALL.length} horaires \u00B7 ${_stops} arr\u00EAts`;
+    if (_fl) _fl.textContent = (_rgtr ? `Lignes RGTR : ${_rgtr}` : '') + (_avl ? ` \u00B7 AVL : ${_avl}` : '') + (_cfl ? ` \u00B7 CFL Train : ${_cfl}` : '');
     applyFilters();
+    detectNearestStop({ silent: true });
     tick();
     setInterval(tick, 1000);
   }
