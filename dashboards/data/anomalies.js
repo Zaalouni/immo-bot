@@ -1,6 +1,54 @@
-// Genere le 01/06/2026 20:38
-// 27 anomalies detectees
+// Genere le 03/06/2026 21:18
+// 31 anomalies detectees
 const ANOMALIES = [
+  {
+    "listing_id": "wortimmo_339942",
+    "title": "Annonce Wortimmo 339942",
+    "city": "Gasperich",
+    "price": 1600,
+    "surface": 31,
+    "site": "Wortimmo.lu",
+    "url": "https://www.wortimmo.lu/fr/location-studio-centre-luxembourg-gasperich-id_339942",
+    "reasons": [
+      "Prix/m² élevé: 51.6€/m²"
+    ]
+  },
+  {
+    "listing_id": "wortimmo_40472",
+    "title": "Annonce Wortimmo 40472",
+    "city": "Muhlenbach",
+    "price": 1900,
+    "surface": 35,
+    "site": "Wortimmo.lu",
+    "url": "https://www.wortimmo.lu/fr/location-appartement-centre-luxembourg-muhlenbach-id_40472",
+    "reasons": [
+      "Prix/m² élevé: 54.3€/m²"
+    ]
+  },
+  {
+    "listing_id": "vivi_218330",
+    "title": "1",
+    "city": "Strassen",
+    "price": 2000,
+    "surface": 38,
+    "site": "VIVI.lu",
+    "url": "https://www.vivi.lu/fr/propriete/lieu/appartement/strassen/appartement-1-chambre-a-louer/218330",
+    "reasons": [
+      "Prix/m² élevé: 52.6€/m²"
+    ]
+  },
+  {
+    "listing_id": "athome_7299478",
+    "title": "A louer, superbe appartement meublé 1 chambre de 34,8 m2 à Luxembourg-",
+    "city": "Muhlenbach",
+    "price": 1900,
+    "surface": 35,
+    "site": "Athome.lu",
+    "url": "https://www.athome.lu/location/appartement/luxembourg-muhlenbach/id-7299478.html",
+    "reasons": [
+      "Prix/m² élevé: 54.3€/m²"
+    ]
+  },
   {
     "listing_id": "immolu_1682408",
     "title": "Appartement 1 chambre a louer — Luxembourg-Rollingergrund",
