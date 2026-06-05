@@ -1,6 +1,90 @@
-// Genere le 03/06/2026 21:18
-// 31 anomalies detectees
+// Genere le 05/06/2026 15:39
+// 38 anomalies detectees
 const ANOMALIES = [
+  {
+    "listing_id": "wortimmo_532701",
+    "title": "Annonce Wortimmo 532701",
+    "city": "Leudelange",
+    "price": 1500,
+    "surface": 25,
+    "site": "Wortimmo.lu",
+    "url": "https://www.wortimmo.lu/fr/location-bureau-sud-leudelange-id_532701",
+    "reasons": [
+      "Prix/m² élevé: 60.0€/m²"
+    ]
+  },
+  {
+    "listing_id": "wortimmo_532702",
+    "title": "Annonce Wortimmo 532702",
+    "city": "Leudelange",
+    "price": 1550,
+    "surface": 26,
+    "site": "Wortimmo.lu",
+    "url": "https://www.wortimmo.lu/fr/location-bureau-sud-leudelange-id_532702",
+    "reasons": [
+      "Prix/m² élevé: 59.6€/m²"
+    ]
+  },
+  {
+    "listing_id": "wortimmo_532703",
+    "title": "Annonce Wortimmo 532703",
+    "city": "Leudelange",
+    "price": 1580,
+    "surface": 26,
+    "site": "Wortimmo.lu",
+    "url": "https://www.wortimmo.lu/fr/location-bureau-sud-leudelange-id_532703",
+    "reasons": [
+      "Prix/m² élevé: 60.8€/m²"
+    ]
+  },
+  {
+    "listing_id": "wortimmo_532704",
+    "title": "Annonce Wortimmo 532704",
+    "city": "Leudelange",
+    "price": 1950,
+    "surface": 32,
+    "site": "Wortimmo.lu",
+    "url": "https://www.wortimmo.lu/fr/location-bureau-sud-leudelange-id_532704",
+    "reasons": [
+      "Prix/m² élevé: 60.9€/m²"
+    ]
+  },
+  {
+    "listing_id": "wortimmo_533112",
+    "title": "Annonce Wortimmo 533112",
+    "city": "Gare",
+    "price": 1450,
+    "surface": 25,
+    "site": "Wortimmo.lu",
+    "url": "https://www.wortimmo.lu/fr/location-studio-centre-luxembourg-gare-id_533112",
+    "reasons": [
+      "Prix/m² élevé: 58.0€/m²"
+    ]
+  },
+  {
+    "listing_id": "wortimmo_533153",
+    "title": "Annonce Wortimmo 533153",
+    "city": "Hollerich",
+    "price": 2000,
+    "surface": 34,
+    "site": "Wortimmo.lu",
+    "url": "https://www.wortimmo.lu/fr/location-studio-centre-luxembourg-hollerich-id_533153",
+    "reasons": [
+      "Prix/m² élevé: 58.8€/m²"
+    ]
+  },
+  {
+    "listing_id": "wortimmo_535983",
+    "title": "Annonce Wortimmo 535983",
+    "city": "Luxembourg",
+    "price": 1800,
+    "surface": 33,
+    "site": "Wortimmo.lu",
+    "url": "https://www.wortimmo.lu/fr/location-studio-centre-luxembourg-id_535983",
+    "reasons": [
+      "Prix/m² élevé: 54.5€/m²"
+    ]
+  },
   {
     "listing_id": "wortimmo_339942",
     "title": "Annonce Wortimmo 339942",
