@@ -219,7 +219,7 @@
     tab: 'live', stop: '', line: '', direction: '', service: '',
     timeTarget: '', timeTol: 5, search: '',
     liveStop: '', liveTol: 30, ttLine: '',
-    dayFilter: 'auto', walkMin: 5,
+    dayFilter: 'auto', walkMin: 5, goDir: 'auto',
     favorites: [],  /* [{key, line, target_stop, direction, network}] */
     history: [],
     filtered: [],
@@ -234,6 +234,7 @@
       if (s.liveTol && [5,10,30].includes(+s.liveTol)) state.liveTol = +s.liveTol;
       if (s.dayFilter && ['auto','weekday','sat','sun','all','tomorrow'].includes(s.dayFilter)) state.dayFilter = s.dayFilter;
       if (s.walkMin   && +s.walkMin >= 0 && +s.walkMin <= 20) state.walkMin = +s.walkMin;
+      if (s.goDir && ['auto','city','home'].includes(s.goDir)) state.goDir = s.goDir;
       if (Array.isArray(s.favorites)) state.favorites = s.favorites;
       if (Array.isArray(s.history))   state.history   = s.history.slice(0, 5);
     } catch (_) {}
@@ -242,7 +243,7 @@
   }
 
   function saveState() {
-    try { localStorage.setItem('bus-pwa', JSON.stringify({ tab: state.tab, stop: state.stop, liveTol: state.liveTol, dayFilter: state.dayFilter, walkMin: state.walkMin, favorites: state.favorites, history: state.history })); } catch (_) {}
+    try { localStorage.setItem('bus-pwa', JSON.stringify({ tab: state.tab, stop: state.stop, liveTol: state.liveTol, dayFilter: state.dayFilter, walkMin: state.walkMin, goDir: state.goDir, favorites: state.favorites, history: state.history })); } catch (_) {}
   }
 
   /* ===== Theme ===== */
@@ -535,6 +536,92 @@
     }
   }
 
+  /* ===== Widget "Rentrer / Aller en ville — maintenant" ===== */
+  /* Sens auto : deduit du GPS (arret le plus proche) sinon de l'heure.
+     L'utilisateur peut forcer le sens avec le bouton ⇄. */
+  function computeGoTarget() {
+    if (state.goDir === 'city' || state.goDir === 'home') return state.goDir;
+    const ls = state.liveStop;
+    if (ls) {
+      if (STOP_MAMER.includes(ls) || STOP_MAMER_TRAIN.includes(ls)) return 'city';
+      if (STOP_CITY_AVL.includes(ls) || STOP_LUX_TRAIN.includes(ls) ||
+          STOP_BELLE_RGTR.includes(ls) || STOP_BELLE_AVL.includes(ls)) return 'home';
+    }
+    /* Heuristique : avant 13h on part vers la ville, ensuite on rentre. */
+    return nowMin() < 13 * 60 ? 'city' : 'home';
+  }
+
+  /* Prochains departs exploitables (circulent aujourd'hui, a venir, <3h) */
+  function pickGo(records, n) {
+    return records
+      .filter(runsToday)
+      .filter(r => { const d = r.time_minutes - n; return d >= -2 && d <= 180; })
+      .sort((a, b) => a.time_minutes - b.time_minutes);
+  }
+
+  function goRow(r, n, primary) {
+    const diff = r.time_minutes - n;
+    const { text: cd, cls: cdCls } = countdown(diff);
+    const cls   = netCls(r.network);
+    const icon  = r.network === 'CFL' ? '\u{1F686}' : '\u{1F68C}';
+    const label = r.network === 'CFL' ? 'Train ' + escapeHtml(r.course) : escapeHtml(r.network + ' ' + r.line);
+    const departMin  = r.time_minutes - state.walkMin;
+    const departDiff = departMin - n;
+    const walk = (primary && state.walkMin > 0)
+      ? `<div class="gh-walk">\u{1F6B6} Pars \xE0 <strong>${escapeHtml(minToHHMM(departMin))}</strong> <span class="gh-walk-in">${departDiff > 1 ? `dans ${departDiff} min` : departDiff >= 0 ? 'maintenant\xA0!' : 'en retard\xA0!'}</span></div>`
+      : '';
+    return `<div class="gh-row ${primary ? 'gh-primary' : 'gh-alt'}">
+      <div class="gh-row-top">
+        <span class="gh-mode">${icon}</span>
+        <span class="badge ${cls}">${label}</span>
+        <span class="gh-time">${escapeHtml(r.time)}</span>
+        ${cd ? `<span class="gh-cd ${cdCls}">${escapeHtml(cd)}</span>` : ''}
+      </div>
+      <div class="gh-dir">${escapeHtml(r.direction)}</div>
+      <div class="gh-meta">${escapeHtml(r.target_stop)}</div>
+      ${walk}
+    </div>`;
+  }
+
+  function renderGoHome() {
+    const card = $('goHomeCard');
+    if (!card) return;
+    const n      = nowMin();
+    const target = computeGoTarget();
+    let title, busPool, trainPool, note = '';
+    if (target === 'city') {
+      title     = '\u{1F3D9}️ Aller en ville — maintenant';
+      busPool   = ALL.filter(r => STOP_MAMER.includes(r.target_stop) && isCityBound(r.direction));
+      trainPool = ALL.filter(r => r.network === 'CFL' && STOP_MAMER_TRAIN.includes(r.target_stop));
+    } else {
+      title     = '\u{1F3E0} Rentrer \xE0 Mamer — maintenant';
+      busPool   = ALL.filter(r => STOP_BELLE_RGTR.includes(r.target_stop) && isMamerBound(r.direction));
+      trainPool = ALL.filter(r => r.network === 'CFL' && STOP_LUX_TRAIN.includes(r.target_stop));
+      note      = 'Depuis la ville, le train L50 est l\'option directe. Le bus RGTR suppose d\'\xEAtre \xE0 Belle-\xC9toile.';
+    }
+    const flip = $('goHomeFlip');
+    if (flip) flip.classList.toggle('gh-auto', state.goDir === 'auto');
+    $('goHomeTitle').textContent = title;
+
+    const busList   = pickGo(busPool, n);
+    const trainList = pickGo(trainPool, n);
+    const merged    = [...busList, ...trainList].sort((a, b) => a.time_minutes - b.time_minutes);
+
+    if (!merged.length) {
+      card.classList.remove('has-go');
+      $('goHomeBody').innerHTML = `<div class="gh-empty">Aucun d\xE9part exploitable dans les 3 prochaines heures pour ce sens.</div>`;
+      return;
+    }
+    card.classList.add('has-go');
+    const primary = merged[0];
+    /* Alternative = prochain depart de l'AUTRE mode (train vs bus) */
+    const alt = primary.network === 'CFL' ? busList[0] : trainList[0];
+    $('goHomeBody').innerHTML =
+      goRow(primary, n, true) +
+      (alt && alt !== primary ? goRow(alt, n, false) : '') +
+      (note ? `<div class="gh-note">ℹ️ ${escapeHtml(note)}</div>` : '');
+  }
+
   /* ===== Selects ===== */
   function populateSelect(el, values, allLabel) {
     const saved = el.value;
@@ -578,6 +665,7 @@
     renderResults(rows, n);
     updateTabCounts(n);
     updateNextBus();
+    renderGoHome();
     const tabLabels = { now: 'Prochains \xB15 min', morning: 'Matin 07:15–08:15', evening: 'Soir 17:40–19:00', favorites: 'Favoris', all: 'Tous les horaires', live: 'Live \xB1' + state.liveTol + ' min' };
     /* L'onglet Live re-filtre dans renderLiveBoard (arret + tolerance) : on
        affiche le vrai nombre de passages live, pas le pool generique. */
@@ -903,7 +991,7 @@
       refreshCountdowns();
       checkNotifications(n);
       if (state.tab === 'now' || state.tab === 'live') applyFilters();
-      else updateNextBus();
+      else { updateNextBus(); renderGoHome(); }
     }
   }
 
@@ -1313,7 +1401,13 @@
       if (btn) openTimetablePanel(btn.dataset.line);
     });
     $('walkMinus').addEventListener('click', () => { haptic([20]); state.walkMin = Math.max(0, state.walkMin - 1); saveState(); updateNextBus(); });
-    $('walkPlus').addEventListener('click',  () => { haptic([20]); state.walkMin = Math.min(20, state.walkMin + 1); saveState(); updateNextBus(); });
+    $('walkPlus').addEventListener('click',  () => { haptic([20]); state.walkMin = Math.min(20, state.walkMin + 1); saveState(); updateNextBus(); renderGoHome(); });
+    $('goHomeFlip').addEventListener('click', () => {
+      haptic([20]);
+      state.goDir = computeGoTarget() === 'city' ? 'home' : 'city';
+      saveState();
+      renderGoHome();
+    });
     $('updateDataBtn').addEventListener('click', checkDataUpdate);
     $('stopsPanelClose').addEventListener('click', () => closePanel('stopsPanel'));
     $('schedulesPanelClose').addEventListener('click', () => closePanel('schedulesPanel'));
