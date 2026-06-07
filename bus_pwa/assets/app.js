@@ -608,6 +608,16 @@
   }
 
   /* ===== Onglet Matin — Trajet en étapes ===== */
+  /* Note honnete quand le train L50 n'a pas de donnees pour le jour affiche
+     (donnees extraites en lu-ve uniquement : pas d'horaires train le week-end/ferie) */
+  function trainGapNote() {
+    const code = state.dayFilter === 'all' ? null : activeDayCode();
+    if (!code || code === 'weekday') return '';
+    if (ALL.some(r => r.network === 'CFL' && isServiceDay(r.service_label, code))) return '';
+    const dayLabel = code === 'sat' ? 'le samedi' : 'le dimanche / jour ferie';
+    return `<div class="info-note">ℹ️ Horaires du train L50 indisponibles ${dayLabel} dans cette app (donn\xE9es extraites en lu-ve uniquement). V\xE9rifiez sur cfl.lu.</div>`;
+  }
+
   function renderMorningJourney(rows, n) {
     const train     = rows.filter(r => r.network === 'CFL' && STOP_MAMER_TRAIN.includes(r.target_stop));
     const etape1    = rows.filter(r => STOP_MAMER.includes(r.target_stop) && isCityBound(r.direction));
@@ -617,6 +627,7 @@
 
     let html = renderConnectionWidget(n);
     if (train.length)  html += journeySection('train',    '\u{1F686} Train L50 — Mamer Gare → Luxembourg', train, n);
+    else               html += trainGapNote();
     if (etape1.length) html += journeySection('aller',    '\u{1F68C} Étape 1 — Mamer → Belle-Étoile (RGTR)', etape1, n);
     if (etape2.length) html += journeySection('connexion','\u{1F517} Étape 2 — Belle-Étoile → Ville (AVL 10)', etape2, n);
     if (autres.length) html += journeySection('autres',   'Autres passages matin', autres, n);
@@ -634,6 +645,7 @@
 
     let html = '';
     if (train.length)  html += journeySection('train',    '\u{1F686} Train L50 — Luxembourg → Mamer Gare', train, n);
+    else               html += trainGapNote();
     if (etape1.length) html += journeySection('connexion','\u{1F68C} Étape 1 — Ville → Belle-Étoile (AVL 10)', etape1, n);
     if (etape2.length) html += journeySection('retour',   '\u{1F517} Étape 2 — Belle-Étoile → Mamer (RGTR)', etape2, n);
     if (autres.length) html += journeySection('autres',   'Autres passages soir', autres, n);
@@ -937,16 +949,16 @@
     resetDailyTracking(new Date().getDate());
     if (n === MORNING_START && !notif.morningFired) {
       notif.morningFired = true;
-      const nb = morningAll.filter(r => !state.stop || r.target_stop === state.stop).length;
+      const nb = morningAll.filter(r => (!state.stop || r.target_stop === state.stop) && runsToday(r)).length;
       fireNotif('\u{1F305} Alerte matin', `${nb} bus disponibles — 07:15 à 08:15`, 'alert-morning');
     }
     if (n === EVENING_START && !notif.eveningFired) {
       notif.eveningFired = true;
-      const nb = eveningAll.filter(r => !state.stop || r.target_stop === state.stop).length;
+      const nb = eveningAll.filter(r => (!state.stop || r.target_stop === state.stop) && runsToday(r)).length;
       fireNotif('\u{1F306} Alerte soir', `${nb} bus disponibles — 17:40 à 19:00`, 'alert-evening');
     }
     if (state.favorites.length) {
-      ALL.filter(r => isFav(r) && inRange(r.time_minutes, n, 5)).forEach(r => {
+      ALL.filter(r => isFav(r) && runsToday(r) && inRange(r.time_minutes, n, 5)).forEach(r => {
         const key = r.line + '|' + r.time + '|' + r.target_stop;
         if (notif.notifiedBuses.has(key)) return;
         notif.notifiedBuses.add(key);

@@ -1,9 +1,9 @@
 /* ============================================================
-   Service Worker — bus-offline-v12
+   Service Worker — bus-offline-v14
    Cache-first assets · Network-first data · Periodic Sync alerts
    ============================================================ */
 
-const CACHE_NAME = 'bus-offline-v12';
+const CACHE_NAME = 'bus-offline-v14';
 const NOTIF_CACHE = 'bus-notif-state-v1';
 
 const STATIC_ASSETS = [
@@ -126,6 +126,60 @@ self.addEventListener('notificationclick', event => {
   );
 });
 
+/* ===== Jour de service (aligne sur app.js) ===== */
+const pad2 = n => String(n).padStart(2, '0');
+const fmtDate = d => `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
+
+function easterSunday(year) {
+  const a = year % 19, b = Math.floor(year / 100), c = year % 100;
+  const d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25);
+  const g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30;
+  const i = Math.floor(c / 4), k = c % 4;
+  const l = (32 + 2 * e + 2 * i - h - k) % 7;
+  const m = Math.floor((a + 11 * h + 22 * l) / 451);
+  const month = Math.floor((h + l - 7 * m + 114) / 31);
+  const day = ((h + l - 7 * m + 114) % 31) + 1;
+  return new Date(year, month - 1, day);
+}
+const _holidayCache = {};
+function luxHolidays(year) {
+  if (_holidayCache[year]) return _holidayCache[year];
+  const easter = easterSunday(year);
+  const shift = days => { const x = new Date(easter); x.setDate(x.getDate() + days); return x; };
+  const map = {
+    [fmtDate(new Date(year, 0, 1))]: 1, [fmtDate(shift(1))]: 1,
+    [fmtDate(new Date(year, 4, 1))]: 1, [fmtDate(new Date(year, 4, 9))]: 1,
+    [fmtDate(shift(39))]: 1, [fmtDate(shift(50))]: 1,
+    [fmtDate(new Date(year, 5, 23))]: 1, [fmtDate(new Date(year, 7, 15))]: 1,
+    [fmtDate(new Date(year, 10, 1))]: 1, [fmtDate(new Date(year, 11, 25))]: 1,
+    [fmtDate(new Date(year, 11, 26))]: 1,
+  };
+  _holidayCache[year] = map;
+  return map;
+}
+const isHoliday = date => !!luxHolidays(date.getFullYear())[fmtDate(date)];
+
+function dayCodeFor(date) {
+  if (isHoliday(date)) return 'sun';
+  const d = date.getDay();
+  if (d === 0) return 'sun';
+  if (d === 6) return 'sat';
+  return 'weekday';
+}
+function isServiceDay(svc, code) {
+  if (!svc || svc === ')') return true;
+  const s = svc.toLowerCase();
+  if (code === 'weekday') {
+    if (/^samedis ouvrables/.test(s))  return false;
+    if (/^dimanche/.test(s))           return false;
+    if (/^samedis, dimanches/.test(s)) return false;
+    if (/^samedi\s*\//.test(s))        return false;
+    return true;
+  }
+  if (code === 'sat') return /samedi|lu.sa|lundi.vendredi.*samedi/.test(s);
+  return /dimanche|f.ri|samedis.*dimanches|samedi.*dimanche/.test(s);
+}
+
 /* ===== Logique de notification ===== */
 async function checkAndNotify() {
   const now     = new Date();
@@ -144,8 +198,12 @@ async function checkAndNotify() {
   const schedules = await loadSchedules();
   if (!schedules) return;
 
-  if (isMorning) await showMorningAlert(schedules, totalMin);
-  else           await showEveningAlert(schedules, totalMin);
+  /* Ne garder que les courses qui circulent aujourd'hui (jour de service + feries) */
+  const code = dayCodeFor(now);
+  const todaySchedules = schedules.filter(r => isServiceDay(r.service_label, code));
+
+  if (isMorning) await showMorningAlert(todaySchedules, totalMin);
+  else           await showEveningAlert(todaySchedules, totalMin);
 }
 
 async function loadSchedules() {

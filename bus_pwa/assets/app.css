@@ -468,6 +468,9 @@ button.badge { cursor:pointer; }
   .header-right { gap:6px; }
 }
 
+/* ===== Note d'information (lacune de données, etc.) ===== */
+.info-note { background:var(--yellow-dim); border:1px solid var(--yellow); color:var(--text); border-radius:var(--radius-sm); padding:10px 14px; margin-bottom:12px; font-size:.82rem; line-height:1.4; }
+
 /* ===== Accessibilité : respect de prefers-reduced-motion ===== */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
