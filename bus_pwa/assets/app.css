@@ -5,6 +5,7 @@
 /* ===== Tokens – sombre ===== */
 :root,
 [data-theme="dark"] {
+  color-scheme: dark;
   --bg:          #0a0f1e;
   --surface:     #111827;
   --surface2:    #1a2236;
@@ -37,6 +38,7 @@
 
 /* ===== Tokens – clair ===== */
 [data-theme="light"] {
+  color-scheme: light;
   --bg:          #f1f5f9;
   --surface:     #ffffff;
   --surface2:    #f8fafc;
@@ -166,6 +168,10 @@ input[type="search"]::-webkit-search-cancel-button { -webkit-appearance:none; }
 .conn-arrow { font-size:.75rem; color:var(--text3); padding-left:2px; }
 .conn-avl { font-size:.78rem; color:var(--teal); font-weight:600; padding-left:2px; }
 .conn-miss { color:var(--text3); }
+.conn-walk { font-size:.78rem; color:var(--green); font-weight:600; }
+.conn-avl.conn-ok    { color:var(--green); }
+.conn-avl.conn-long  { color:var(--text3); }
+.conn-avl.conn-tight { color:var(--red); font-weight:800; }
 
 /* ===== Filtres avancés ===== */
 .advanced-filters { border-bottom:1px solid var(--border); }
@@ -460,4 +466,14 @@ button.badge { cursor:pointer; }
   .icon-btn { width:36px; height:36px; }
   .clock { font-size:.95rem; }
   .header-right { gap:6px; }
+}
+
+/* ===== Accessibilité : respect de prefers-reduced-motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }

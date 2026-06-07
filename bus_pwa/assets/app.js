@@ -181,20 +181,37 @@
     const rows = conns.map(c => {
       const diff = c.mamerMin - n;
       const when = diff <= 0 ? 'maintenant' : `dans ${diff} min`;
+      /* Depart pieton depuis le domicile (marge configurable via le widget Prochain bus) */
+      const departMin  = c.mamerMin - state.walkMin;
+      const departDiff = departMin - n;
+      const departWhen = departDiff > 1 ? `dans ${departDiff} min`
+                       : departDiff >= 0 ? 'maintenant'
+                       : `il y a ${-departDiff} min`;
+      const walkHtml = state.walkMin > 0
+        ? `<span class="conn-walk">\u{1F6B6} Pars \xE0 <strong>${escapeHtml(minToHHMM(departMin))}</strong> <span class="conn-when">${escapeHtml(departWhen)}</span></span>`
+        : '';
+      /* Prochaine AVL 10 a Belle-Etoile apres l'arrivee du RGTR (course liee, fiable) */
       const avl  = avl10
         .filter(r => r.time_minutes >= c.bertMin + 2)
         .filter(r => !code || isServiceDay(r.service_label, code))
         .sort((a, b) => a.time_minutes - b.time_minutes)[0];
-      const avlHtml = avl
-        ? `<span class="conn-avl">→ AVL 10 <strong>${escapeHtml(avl.time)}</strong> (att. ${avl.time_minutes - c.bertMin} min)</span>`
-        : `<span class="conn-avl conn-miss">→ pas d'AVL 10 disponible</span>`;
+      let avlHtml;
+      if (avl) {
+        const wait = avl.time_minutes - c.bertMin;
+        const waitCls = wait < 2 ? 'conn-tight' : wait <= 15 ? 'conn-ok' : 'conn-long';
+        const waitTxt = wait < 2 ? 'correspondance serr\xE9e !' : `att. ${wait} min`;
+        avlHtml = `<span class="conn-avl ${waitCls}">→ AVL 10 <strong>${escapeHtml(avl.time)}</strong> (${escapeHtml(waitTxt)})</span>`;
+      } else {
+        avlHtml = `<span class="conn-avl conn-miss">→ pas d'AVL 10 disponible</span>`;
+      }
       return `<div class="conn-row${diff < -1 ? ' conn-past' : ''}">
+        ${walkHtml}
         <span class="conn-bus"><span class="badge badge-rgtr">${escapeHtml(c.line)}</span> ${escapeHtml(c.mamerStop.replace('MAMER, ', ''))} <strong>${escapeHtml(c.time)}</strong> <span class="conn-when">${escapeHtml(when)}</span></span>
         <span class="conn-arrow">→ Belle-\xC9toile ${escapeHtml(minToHHMM(c.bertMin))}</span>
         ${avlHtml}
       </div>`;
     }).join('');
-    return `<div class="conn-widget"><div class="conn-title">⚡ Connexion Mamer → Ville</div>${rows}</div>`;
+    return `<div class="conn-widget"><div class="conn-title">⚡ Connexion Mamer → Ville (porte-\xE0-porte)</div>${rows}</div>`;
   }
 
   /* ===== Etat ===== */
@@ -238,28 +255,67 @@
   }
   function toggleTheme() { applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'); }
 
+  /* ===== Jours feries Luxembourg ===== */
+  const fmtDate = d => `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
+
+  /* Dimanche de Paques — algorithme Computus gregorien (Meeus/Jones/Butcher) */
+  function easterSunday(year) {
+    const a = year % 19, b = Math.floor(year / 100), c = year % 100;
+    const d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25);
+    const g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30;
+    const i = Math.floor(c / 4), k = c % 4;
+    const l = (32 + 2 * e + 2 * i - h - k) % 7;
+    const m = Math.floor((a + 11 * h + 22 * l) / 451);
+    const month = Math.floor((h + l - 7 * m + 114) / 31);
+    const day = ((h + l - 7 * m + 114) % 31) + 1;
+    return new Date(year, month - 1, day);
+  }
+
+  const _holidayCache = {};
+  function luxHolidays(year) {
+    if (_holidayCache[year]) return _holidayCache[year];
+    const easter = easterSunday(year);
+    const shift = days => { const x = new Date(easter); x.setDate(x.getDate() + days); return x; };
+    const map = {
+      [fmtDate(new Date(year, 0, 1))]:   'Nouvel An',
+      [fmtDate(shift(1))]:               'Lundi de Paques',
+      [fmtDate(new Date(year, 4, 1))]:   'Fete du Travail',
+      [fmtDate(new Date(year, 4, 9))]:   "Journee de l'Europe",
+      [fmtDate(shift(39))]:              'Ascension',
+      [fmtDate(shift(50))]:              'Lundi de Pentecote',
+      [fmtDate(new Date(year, 5, 23))]:  'Fete nationale',
+      [fmtDate(new Date(year, 7, 15))]:  'Assomption',
+      [fmtDate(new Date(year, 10, 1))]:  'Toussaint',
+      [fmtDate(new Date(year, 11, 25))]: 'Noel',
+      [fmtDate(new Date(year, 11, 26))]: 'Lendemain de Noel',
+    };
+    _holidayCache[year] = map;
+    return map;
+  }
+  const holidayName = date => luxHolidays(date.getFullYear())[fmtDate(date)] || null;
+
   /* ===== Jour ===== */
   function getDayInfo() {
-    const d = new Date().getDay();
+    const now = new Date();
+    const hol = holidayName(now);
+    if (hol) return { label: hol + ' (ferie)', icon: '🔴' };
+    const d = now.getDay();
     if (d === 0) return { label: 'Dimanche & jours feries', icon: '🔵' };
     if (d === 6) return { label: 'Samedi',                  icon: '🟡' };
     return               { label: 'Lundi – Vendredi',   icon: '🟢' };
   }
 
   /* ===== Filtre jour de service ===== */
-  function getAutoDay() {
-    const d = new Date().getDay();
+  /* Un jour ferie luxembourgeois suit le service Dimanche & feries */
+  function dayCodeFor(date) {
+    if (holidayName(date)) return 'sun';
+    const d = date.getDay();
     if (d === 0) return 'sun';
     if (d === 6) return 'sat';
     return 'weekday';
   }
-
-  function getTomorrowDay() {
-    const d = (new Date().getDay() + 1) % 7;
-    if (d === 0) return 'sun';
-    if (d === 6) return 'sat';
-    return 'weekday';
-  }
+  function getAutoDay() { return dayCodeFor(new Date()); }
+  function getTomorrowDay() { const t = new Date(); t.setDate(t.getDate() + 1); return dayCodeFor(t); }
 
   function isServiceDay(svc, code) {
     if (!svc || svc === ')') return true;
@@ -279,6 +335,11 @@
     if (state.dayFilter === 'auto')     return getAutoDay();
     if (state.dayFilter === 'tomorrow') return getTomorrowDay();
     return state.dayFilter;
+  }
+
+  /* Un horaire circule-t-il selon le filtre jour actif ? ('all' = pas de filtre) */
+  function runsToday(r) {
+    return state.dayFilter === 'all' || isServiceDay(r.service_label, activeDayCode());
   }
 
   /* ===== Countdown ===== */
@@ -321,36 +382,66 @@
 
   function updateFavCount() { $('tabCountFavorites').textContent = state.favorites.length || ''; }
 
-  /* ===== Alarmes individuelles ===== */
-  const alarms = new Map();
+  /* ===== Alarmes individuelles (persistantes) ===== */
+  const alarms = new Map();   /* key -> { id, rec } */
+  const ALARM_LEAD = 3;       /* minutes avant le passage */
+
+  function persistAlarms() {
+    try { localStorage.setItem('bus-alarms', JSON.stringify([...alarms.values()].map(a => a.rec))); } catch (_) {}
+  }
+
+  /* Programme le timer pour un enregistrement d'alarme. Retourne false si deja passe. */
+  function armAlarm(rec, opts = {}) {
+    const n        = nowMin();
+    const alertMin = rec.time_minutes - ALARM_LEAD;
+    const diffMs   = (alertMin - n) * 60 * 1000;
+    if (diffMs <= 0) return false;
+    const id = setTimeout(() => {
+      alarms.delete(rec.key);
+      persistAlarms();
+      updateAlarmBtns();
+      fireNotif(
+        '\u{1F514} Bus ' + rec.network + ' ' + rec.line + ' dans ' + ALARM_LEAD + ' min',
+        rec.time + ' → ' + rec.direction + '\nArrêt : ' + rec.target_stop,
+        'alarm-' + rec.key
+      );
+      haptic([200, 100, 200, 100, 400]);
+    }, diffMs);
+    alarms.set(rec.key, { id, rec });
+    if (!opts.silent) {
+      showToast('\u{1F514} Alarme dans ' + (alertMin - n) + ' min — ' + rec.network + ' ' + rec.line + ' ' + rec.time);
+      haptic([50, 30, 80]);
+    }
+    return true;
+  }
+
+  /* Restaure au demarrage les alarmes du jour encore a venir */
+  function restoreAlarms() {
+    let arr = [];
+    try { arr = JSON.parse(localStorage.getItem('bus-alarms') || '[]'); } catch (_) {}
+    const today = fmtDate(new Date());
+    for (const rec of arr) {
+      if (!rec || rec.date !== today) continue;   /* alarmes d'un autre jour ignorees */
+      armAlarm(rec, { silent: true });
+    }
+    persistAlarms();   /* purge des alarmes expirees / obsoletes */
+    updateAlarmBtns();
+  }
 
   function setAlarm(r) {
     const key = alarmKey(r);
     if (alarms.has(key)) {
       clearTimeout(alarms.get(key).id);
       alarms.delete(key);
+      persistAlarms();
       showToast('Alarme annulée — ' + r.network + ' ' + r.line + ' ' + r.time);
       haptic([100, 50, 100]);
       updateAlarmBtns();
       return;
     }
-    const n = nowMin();
-    const alertMin = r.time_minutes - 3;
-    const diffMs   = (alertMin - n) * 60 * 1000;
-    if (diffMs <= 0) { showToast('Bus trop proche ou déjà passé'); return; }
-    const id = setTimeout(() => {
-      alarms.delete(key);
-      updateAlarmBtns();
-      fireNotif(
-        '🔔 Bus ' + r.network + ' ' + r.line + ' dans 3 min',
-        r.time + ' → ' + r.direction + '\nArrêt : ' + r.target_stop,
-        'alarm-' + key
-      );
-      haptic([200, 100, 200, 100, 400]);
-    }, diffMs);
-    alarms.set(key, { id });
-    showToast('🔔 Alarme dans ' + (alertMin - n) + ' min — ' + r.network + ' ' + r.line + ' ' + r.time);
-    haptic([50, 30, 80]);
+    const rec = { key, line: r.line, network: r.network, target_stop: r.target_stop, direction: r.direction, time: r.time, time_minutes: r.time_minutes, date: fmtDate(new Date()) };
+    if (!armAlarm(rec)) { showToast('Bus trop proche ou déjà passé'); return; }
+    persistAlarms();
     updateAlarmBtns();
   }
 
@@ -391,6 +482,7 @@
     const pool = ALL.filter(r => {
       if (state.stop && r.target_stop !== state.stop) return false;
       if (state.line && r.line         !== state.line) return false;
+      if (!runsToday(r)) return false;
       const diff = r.time_minutes - n;
       return diff >= -2 && diff <= 120;
     });
@@ -401,7 +493,8 @@
       return;
     }
     const next = pool.reduce((a, b) => Math.abs(b.time_minutes - n) < Math.abs(a.time_minutes - n) ? b : a);
-    const { text: cdText } = countdown(next.time_minutes - n);
+    const diffNext = next.time_minutes - n;
+    const { text: cdText } = countdown(diffNext);
     const lineCls = netCls(next.network);
     card.classList.add('has-bus');
     body.innerHTML =
@@ -428,7 +521,6 @@
     }
 
     const walkDiv  = $('nextBusWalk');
-    const diffNext = next.time_minutes - n;
     if (diffNext >= 0 && diffNext <= 90 && state.walkMin > 0) {
       const departMin  = next.time_minutes - state.walkMin;
       const departDiff = departMin - n;
@@ -452,9 +544,9 @@
   }
 
   function updateTabCounts(n) {
-    $('tabCountNow').textContent     = ALL.filter(r => inRange(r.time_minutes, n, 5)).length || '';
-    $('tabCountMorning').textContent = morningAll.length;
-    $('tabCountEvening').textContent = eveningAll.length;
+    $('tabCountNow').textContent     = ALL.filter(r => inRange(r.time_minutes, n, 5) && runsToday(r)).length || '';
+    $('tabCountMorning').textContent = morningAll.filter(runsToday).length;
+    $('tabCountEvening').textContent = eveningAll.filter(runsToday).length;
     updateFavCount();
   }
 
@@ -568,6 +660,7 @@
     /* Filtrage */
     const rows = ALL.filter(r => {
       if (state.liveStop && r.target_stop !== state.liveStop) return false;
+      if (!runsToday(r)) return false;
       return inRange(r.time_minutes, n, state.liveTol);
     });
 
@@ -787,7 +880,7 @@
     const n = nowMin();
     if (n !== lastMin) {
       lastMin = n;
-      const busCount = ALL.filter(r => inRange(r.time_minutes, n, 5)).length;
+      const busCount = ALL.filter(r => inRange(r.time_minutes, n, 5) && runsToday(r)).length;
       $('nowChip').textContent = `${busCount} bus \xB15 min`;
       if ('setAppBadge' in navigator) navigator.setAppBadge(busCount || 0).catch(() => {});
       refreshCountdowns();
@@ -1053,10 +1146,11 @@
 
   /* ===== Filtre jour — chips ===== */
   function renderDayFilterChips() {
-    const auto = getAutoDay();
-    const autoLabel = auto === 'weekday' ? 'Lu-Ve' : auto === 'sat' ? 'Sam' : 'Dim';
-    const tom = getTomorrowDay();
-    const tomLabel = tom === 'weekday' ? 'Lu-Ve' : tom === 'sat' ? 'Sam' : 'Dim';
+    const today = new Date();
+    const tomDate = new Date(); tomDate.setDate(tomDate.getDate() + 1);
+    const codeLabel = (code, date) => holidayName(date) ? 'Ferie' : code === 'weekday' ? 'Lu-Ve' : code === 'sat' ? 'Sam' : 'Dim';
+    const autoLabel = codeLabel(getAutoDay(), today);
+    const tomLabel  = codeLabel(getTomorrowDay(), tomDate);
     const opts = [
       { code: 'auto',     label: `Auj. (${autoLabel})` },
       { code: 'tomorrow', label: `Demain (${tomLabel})` },
@@ -1111,7 +1205,7 @@
     const chips = lines.map(l => {
       const net  = ALL.find(r => r.line === l)?.network || '';
       const cls  = netCls(net);
-      const near = ALL.filter(r => r.line === l && r.time_minutes >= n - 2 && r.time_minutes <= n + 30).length;
+      const near = ALL.filter(r => r.line === l && runsToday(r) && r.time_minutes >= n - 2 && r.time_minutes <= n + 30).length;
       const nearHtml = near
         ? `<span class="chip-near">${near}</span>`
         : '';
@@ -1309,6 +1403,7 @@
       applyFilters();
     }, { passive: true });
 
+    restoreAlarms();
     applyFilters();
     detectNearestStop({ silent: true, watch: true });
     tick();

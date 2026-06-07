@@ -14,6 +14,17 @@
   <link rel="icon" href="assets/icon-192.png" type="image/png">
   <link rel="stylesheet" href="assets/app.css">
   <title>Bus Offline — Horaires RGTR et AVL</title>
+  <script>
+    /* Applique le theme sauvegarde avant le rendu (anti-FOUC) */
+    (function () {
+      try {
+        var t = localStorage.getItem('bus-theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', t);
+        var m = document.getElementById('metaThemeColor');
+        if (m) m.content = t === 'light' ? '#f1f5f9' : '#0a0f1e';
+      } catch (e) {}
+    })();
+  </script>
 </head>
 <body>
 
@@ -26,7 +37,7 @@
   <!-- Header -->
   <header class="app-header">
     <div class="header-brand">
-      <h1>Bus Offline <span class="app-version">v1.9</span></h1>
+      <h1>Bus Offline <span class="app-version">v1.12</span></h1>
       <p class="header-sub">RGTR · AVL 10 · Luxembourg</p>
     </div>
     <div class="header-right">
