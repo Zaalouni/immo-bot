@@ -579,7 +579,12 @@
     updateTabCounts(n);
     updateNextBus();
     const tabLabels = { now: 'Prochains \xB15 min', morning: 'Matin 07:15–08:15', evening: 'Soir 17:40–19:00', favorites: 'Favoris', all: 'Tous les horaires', live: 'Live \xB1' + state.liveTol + ' min' };
-    $('resultInfo').textContent = `${rows.length} passage(s) — ${tabLabels[state.tab] || ''}`;
+    /* L'onglet Live re-filtre dans renderLiveBoard (arret + tolerance) : on
+       affiche le vrai nombre de passages live, pas le pool generique. */
+    const infoCount = state.tab === 'live'
+      ? ALL.filter(r => (!state.liveStop || r.target_stop === state.liveStop) && runsToday(r) && inRange(r.time_minutes, n, state.liveTol)).length
+      : rows.length;
+    $('resultInfo').textContent = `${infoCount} passage(s) — ${tabLabels[state.tab] || ''}`;
   }
 
   function resetFilters() {

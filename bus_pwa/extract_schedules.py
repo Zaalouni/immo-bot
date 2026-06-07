@@ -223,6 +223,12 @@ for r in all_records:
         unique.append(r)
 unique.sort(key=lambda r: (r['target_stop'], r['line'], r['time_minutes'], r['direction'], r['service_label']))
 
+# Le champ brut 'service' (codes/symboles non decodes) ne sert qu'a la
+# deduplication ci-dessus ; on le retire de la sortie (seul 'service_label',
+# decode et lisible, est consomme par l'app).
+for r in unique:
+    r.pop('service', None)
+
 metadata = {
     'generated_from': 'Mobiliteit PDFs downloaded for offline use',
     'excluded': ['813.pdf'],

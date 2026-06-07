@@ -1,9 +1,9 @@
 /* ============================================================
-   Service Worker — bus-offline-v15
+   Service Worker — bus-offline-v17
    Cache-first assets · Network-first data · Periodic Sync alerts
    ============================================================ */
 
-const CACHE_NAME = 'bus-offline-v15';
+const CACHE_NAME = 'bus-offline-v17';
 const NOTIF_CACHE = 'bus-notif-state-v1';
 
 const STATIC_ASSETS = [
@@ -225,11 +225,10 @@ function nextDepartures(schedules, stops, minNow, count) {
       const wrapped = Math.min(Math.abs(d), 1440 - Math.abs(d));
       return d >= -5 && wrapped <= 90;
     })
-    .sort((a, b) => {
-      const da = (a.time_minutes - minNow + 1440) % 1440;
-      const db = (b.time_minutes - minNow + 1440) % 1440;
-      return da - db;
-    })
+    /* Tri chronologique : les fenetres d'alerte (matin/soir) ne franchissent
+       jamais minuit, donc l'ordre des heures = ordre des departs (les bus
+       juste passes restent en tete, ce qui est le comportement attendu). */
+    .sort((a, b) => a.time_minutes - b.time_minutes)
     .slice(0, count);
 }
 
