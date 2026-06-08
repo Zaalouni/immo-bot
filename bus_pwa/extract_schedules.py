@@ -12,6 +12,7 @@ SOURCES = {
     '802': {'network': 'RGTR', 'url': 'https://www.mobiliteit.lu/wp-content/uploads/horaires-new/rgtr//802.pdf'},
     '811': {'network': 'RGTR', 'url': 'https://www.mobiliteit.lu/wp-content/uploads/horaires-new/rgtr//811.pdf?v=20260512'},
     '812': {'network': 'RGTR', 'url': 'https://www.mobiliteit.lu/wp-content/uploads/horaires-new/rgtr//812.pdf'},
+    '821': {'network': 'RGTR', 'url': 'https://www.mobiliteit.lu/wp-content/uploads/horaires-new/rgtr//821.pdf'},
     '822': {'network': 'RGTR', 'url': 'https://www.mobiliteit.lu/wp-content/uploads/horaires-new/rgtr//822.pdf'},
     '823': {'network': 'RGTR', 'url': 'https://www.mobiliteit.lu/wp-content/uploads/horaires-new/rgtr//823.pdf'},
     '824': {'network': 'RGTR', 'url': 'https://www.mobiliteit.lu/wp-content/uploads/horaires-new/rgtr//824.pdf'},

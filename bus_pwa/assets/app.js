@@ -55,7 +55,7 @@
      est la 1re étape vers la ville (correspondance AVL 10). */
   const CITY_RE  = /LUX|HOWALD|FINDEL|Kirchberg|Hamilius|Gare|Steinsel|Centre|Belle.Etoile|Bertrange/i;
   /* Soir  = bus qui repart vers Mamer / ouest */
-  const MAMER_RE = /STEINFORT|EISCHEN|MERSCH|TUNTANGE|SCHWEBACH|REDANGE|MESSANCY|Belle.Etoile/i;
+  const MAMER_RE = /STEINFORT|EISCHEN|MERSCH|TUNTANGE|SCHWEBACH|REDANGE|MESSANCY|CLEMENCY|Belle.Etoile/i;
 
   const isCityBound  = dir => CITY_RE.test(dest(dir));
   const isMamerBound = dir => MAMER_RE.test(dest(dir));
