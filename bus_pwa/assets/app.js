@@ -50,8 +50,10 @@
   /* Direction -> destination = partie apres le dernier fleche */
   const dest = dir => (dir || '').split(/→|->/).pop().trim();
 
-  /* Matin = bus qui va vers la ville (LUX, HOWALD, FINDEL, Kirchberg...) */
-  const CITY_RE  = /LUX|HOWALD|FINDEL|Kirchberg|Hamilius|Gare|Steinsel|Centre/i;
+  /* Matin = bus qui va vers la ville (LUX, HOWALD, FINDEL, Kirchberg...)
+     Belle-Etoile / Bertrange inclus : depuis Mamer, aller à Belle-Étoile
+     est la 1re étape vers la ville (correspondance AVL 10). */
+  const CITY_RE  = /LUX|HOWALD|FINDEL|Kirchberg|Hamilius|Gare|Steinsel|Centre|Belle.Etoile|Bertrange/i;
   /* Soir  = bus qui repart vers Mamer / ouest */
   const MAMER_RE = /STEINFORT|EISCHEN|MERSCH|TUNTANGE|SCHWEBACH|REDANGE|MESSANCY|Belle.Etoile/i;
 
@@ -480,8 +482,12 @@
   /* ===== Prochain bus widget ===== */
   function updateNextBus() {
     const n = nowMin();
+    /* Filtre arrêt : manuel > GPS > tous. Quand le GPS a détecté un arrêt,
+       on restreint au stop GPS pour ne pas afficher un bus d'un autre arrêt
+       à 5 km qui serait chronologiquement le premier de la base. */
+    const effectiveStop = state.stop || state.liveStop;
     const pool = ALL.filter(r => {
-      if (state.stop && r.target_stop !== state.stop) return false;
+      if (effectiveStop && r.target_stop !== effectiveStop) return false;
       if (state.line && r.line         !== state.line) return false;
       if (!runsToday(r)) return false;
       const diff = r.time_minutes - n;
@@ -613,12 +619,22 @@
       return;
     }
     card.classList.add('has-go');
-    const primary = merged[0];
-    /* Alternative = prochain depart de l'AUTRE mode (train vs bus) */
-    const alt = primary.network === 'CFL' ? busList[0] : trainList[0];
+
+    /* Séparer bus à venir (diff >= 0) des bus tout juste passés (diff = -2..-1) */
+    const upcoming   = merged.filter(r => r.time_minutes - n >= 0);
+    const recentPast = merged.filter(r => { const d = r.time_minutes - n; return d >= -2 && d < 0; });
+
+    /* Afficher jusqu'à 4 prochains départs. Si aucun à venir, montrer
+       le bus passé récent seul (pour indiquer qu'on vient de le rater). */
+    const toShow = upcoming.slice(0, 4);
+    if (!toShow.length) {
+      $('goHomeBody').innerHTML =
+        goRow(recentPast[0], n, true) +
+        (note ? `<div class="gh-note">ℹ️ ${escapeHtml(note)}</div>` : '');
+      return;
+    }
     $('goHomeBody').innerHTML =
-      goRow(primary, n, true) +
-      (alt && alt !== primary ? goRow(alt, n, false) : '') +
+      toShow.map((r, i) => goRow(r, n, i === 0)).join('') +
       (note ? `<div class="gh-note">ℹ️ ${escapeHtml(note)}</div>` : '');
   }
 
