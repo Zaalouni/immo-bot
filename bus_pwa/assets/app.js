@@ -53,9 +53,10 @@
   /* Matin = bus qui va vers la ville (LUX, HOWALD, FINDEL, Kirchberg...)
      Belle-Etoile / Bertrange inclus : depuis Mamer, aller à Belle-Étoile
      est la 1re étape vers la ville (correspondance AVL 10). */
-  const CITY_RE  = /LUX|HOWALD|FINDEL|Kirchberg|Hamilius|Gare|Steinsel|Centre|Belle.Etoile|Bertrange/i;
-  /* Soir  = bus qui repart vers Mamer / ouest */
-  const MAMER_RE = /STEINFORT|EISCHEN|MERSCH|TUNTANGE|SCHWEBACH|REDANGE|MESSANCY|CLEMENCY|Belle.Etoile/i;
+  const CITY_RE  = /LUX|HOWALD|FINDEL|Kirchberg|Hamilius|Gare|Steinsel|Centre|Belle[- ]Etoile|Bertrange/i;
+  /* Soir = bus qui repart vers Mamer / ouest. Belle-Étoile est un terminus
+     (bus 850 FINDEL→Belle-Étoile), pas une direction vers Mamer : exclu. */
+  const MAMER_RE = /STEINFORT|EISCHEN|MERSCH|TUNTANGE|SCHWEBACH|REDANGE|MESSANCY|CLEMENCY/i;
 
   const isCityBound  = dir => CITY_RE.test(dest(dir));
   const isMamerBound = dir => MAMER_RE.test(dest(dir));
@@ -647,9 +648,11 @@
   }
 
   function updateTabCounts(n) {
-    $('tabCountNow').textContent     = ALL.filter(r => inRange(r.time_minutes, n, 5) && runsToday(r)).length || '';
-    $('tabCountMorning').textContent = morningAll.filter(runsToday).length;
-    $('tabCountEvening').textContent = eveningAll.filter(runsToday).length;
+    const es = state.stop || state.liveStop;
+    const byStop = r => !es || r.target_stop === es;
+    $('tabCountNow').textContent     = ALL.filter(r => byStop(r) && inRange(r.time_minutes, n, 5) && runsToday(r)).length || '';
+    $('tabCountMorning').textContent = morningAll.filter(r => byStop(r) && runsToday(r)).length || '';
+    $('tabCountEvening').textContent = eveningAll.filter(r => byStop(r) && runsToday(r)).length || '';
     updateFavCount();
   }
 
@@ -663,8 +666,9 @@
 
     let pool = state.tab === 'favorites' ? ALL.filter(r => isFav(r)) : ALL;
 
+    const effectiveStop = state.stop || state.liveStop;
     const rows = pool.filter(r => {
-      if (state.stop    && r.target_stop   !== state.stop)    return false;
+      if (effectiveStop && r.target_stop !== effectiveStop) return false;
       if (state.line    && r.line          !== state.line)     return false;
       if (state.service && r.service_label !== state.service)  return false;
       if (dirNrm && !normalize(r.direction).includes(dirNrm)) return false;

@@ -208,11 +208,16 @@ all_records = []
 for line in SOURCES:
     path = PDF_DIR / f'{line}.pdf'
     if not path.exists():
+        print(f'AVERTISSEMENT : PDF manquant pour ligne {line} — enregistrements ignorés')
         continue
+    before = len(all_records)
     if line == '10':
         all_records.extend(parse_avl10(line, path))
     else:
         all_records.extend(parse_rgtr(line, path))
+    added = len(all_records) - before
+    if added == 0:
+        raise RuntimeError(f'Aucun horaire extrait pour la ligne {line} — vérifier le format PDF')
 
 # Déduplication conservatrice
 seen = set()
