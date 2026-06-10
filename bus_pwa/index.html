@@ -37,7 +37,7 @@
   <!-- Header -->
   <header class="app-header">
     <div class="header-brand">
-      <h1>Bus Offline <span class="app-version">v1.21</span></h1>
+      <h1>Bus Offline <span class="app-version">v1.22</span></h1>
       <p class="header-sub">RGTR · AVL 10 · Luxembourg</p>
     </div>
     <div class="header-right">
@@ -176,10 +176,10 @@
   </main>
 
   <!-- Panel Arrêts couverts -->
-  <div class="overlay-panel" id="stopsPanel" hidden>
+  <div class="overlay-panel" id="stopsPanel" hidden role="dialog" aria-modal="true" aria-labelledby="stopsPanelTitle">
     <div class="overlay-box">
       <div class="overlay-header">
-        <h2>Arrêts couverts</h2>
+        <h2 id="stopsPanelTitle">Arrêts couverts</h2>
         <button class="overlay-close" id="stopsPanelClose" type="button" aria-label="Fermer">✕</button>
       </div>
       <div id="stopsPanelBody" class="overlay-body"></div>
@@ -187,10 +187,10 @@
   </div>
 
   <!-- Panel Horaires par ligne -->
-  <div class="overlay-panel" id="schedulesPanel" hidden>
+  <div class="overlay-panel" id="schedulesPanel" hidden role="dialog" aria-modal="true" aria-labelledby="schedulesPanelTitle">
     <div class="overlay-box">
       <div class="overlay-header">
-        <h2>📋 Horaires par ligne</h2>
+        <h2 id="schedulesPanelTitle">📋 Horaires par ligne</h2>
         <button class="overlay-close" id="schedulesPanelClose" type="button" aria-label="Fermer">✕</button>
       </div>
       <div class="overlay-body" id="schedulesPanelBody"></div>

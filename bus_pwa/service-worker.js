@@ -1,9 +1,9 @@
 /* ============================================================
-   Service Worker — bus-offline-v21
+   Service Worker — bus-offline-v22
    Cache-first assets · Network-first data · Periodic Sync alerts
    ============================================================ */
 
-const CACHE_NAME = 'bus-offline-v21';
+const CACHE_NAME = 'bus-offline-v22';
 const NOTIF_CACHE = 'bus-notif-state-v1';
 
 const STATIC_ASSETS = [
@@ -25,10 +25,12 @@ const DATA_ASSETS = [
 ];
 
 /* ===== Constantes alertes ===== */
-const MORNING_START = 7 * 60 + 15;
-const MORNING_END   = 8 * 60 + 15;
-const EVENING_START = 17 * 60 + 40;
-const EVENING_END   = 19 * 60;
+const MORNING_START   = 7 * 60 + 15;
+const MORNING_END     = 8 * 60 + 15;
+const AFTERNOON_START = 16 * 60;       /* 16:00 — rappel avant heure de pointe */
+const AFTERNOON_END   = 17 * 60 + 30; /* 17:30 */
+const EVENING_START   = 17 * 60 + 40;
+const EVENING_END     = 19 * 60;
 
 /* Arrets matin : depart vers la ville */
 const STOPS_MORNING = ['MAMER, Gare', 'MAMER, Mambra', 'MAMER, Eglantiers'];
@@ -112,7 +114,8 @@ self.addEventListener('periodicsync', event => {
 /* ===== Notification click → ouvre l'app ===== */
 self.addEventListener('notificationclick', event => {
   event.notification.close();
-  const tab = event.notification.tag === 'bus-morning' ? 'morning' : 'evening';
+  const tag = event.notification.tag;
+  const tab = tag === 'bus-morning' ? 'morning' : tag === 'bus-afternoon' ? 'evening' : 'evening';
   event.waitUntil(
     self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(clients => {
       for (const client of clients) {
@@ -182,16 +185,18 @@ function isServiceDay(svc, code) {
 
 /* ===== Logique de notification ===== */
 async function checkAndNotify() {
-  const now     = new Date();
+  const now      = new Date();
   const totalMin = now.getHours() * 60 + now.getMinutes();
-  const isMorning = totalMin >= MORNING_START && totalMin <= MORNING_END;
-  const isEvening = totalMin >= EVENING_START && totalMin <= EVENING_END;
-  if (!isMorning && !isEvening) return;
+  const isMorning   = totalMin >= MORNING_START   && totalMin <= MORNING_END;
+  const isAfternoon = totalMin >= AFTERNOON_START  && totalMin <= AFTERNOON_END;
+  const isEvening   = totalMin >= EVENING_START    && totalMin <= EVENING_END;
+  if (!isMorning && !isAfternoon && !isEvening) return;
 
   /* Anti-doublon : une seule notification par fenetre par jour */
-  const today  = now.toISOString().slice(0, 10);
-  const stateKey = (isMorning ? 'morning-' : 'evening-') + today;
-  const nc     = await caches.open(NOTIF_CACHE);
+  const today    = now.toISOString().slice(0, 10);
+  const window   = isMorning ? 'morning' : isAfternoon ? 'afternoon' : 'evening';
+  const stateKey = window + '-' + today;
+  const nc       = await caches.open(NOTIF_CACHE);
   if (await nc.match(stateKey)) return;
   await nc.put(stateKey, new Response('1'));
 
@@ -202,8 +207,9 @@ async function checkAndNotify() {
   const code = dayCodeFor(now);
   const todaySchedules = schedules.filter(r => isServiceDay(r.service_label, code));
 
-  if (isMorning) await showMorningAlert(todaySchedules, totalMin);
-  else           await showEveningAlert(todaySchedules, totalMin);
+  if (isMorning)   await showMorningAlert(todaySchedules, totalMin);
+  else if (isAfternoon) await showAfternoonAlert(todaySchedules, totalMin);
+  else             await showEveningAlert(todaySchedules, totalMin);
 }
 
 async function loadSchedules() {
@@ -214,7 +220,10 @@ async function loadSchedules() {
                   || await fetch('./data/bus-schedules.json');
     const data  = await resp.json();
     return data.schedules || [];
-  } catch (_) { return null; }
+  } catch (e) {
+    console.error('[SW] Impossible de charger les horaires :', e);
+    return null;
+  }
 }
 
 function nextDepartures(schedules, stops, minNow, count) {
@@ -259,6 +268,29 @@ async function showMorningAlert(schedules, minNow) {
     renotify: false,
     vibrate: [200, 100, 200],
     data:   { tab: 'morning' },
+  });
+}
+
+async function showAfternoonAlert(schedules, minNow) {
+  /* Prévenir l'utilisateur en ville ~1h avant l'heure de pointe soir */
+  const deps = nextDepartures(schedules, STOPS_EVENING, minNow, 3);
+  if (!deps.length) return;
+
+  const trains = deps.filter(r => r.network === 'CFL');
+  const buses  = deps.filter(r => r.network !== 'CFL');
+
+  let body = '';
+  if (trains.length) body += '🚆 ' + trains.map(r => formatDep(r, minNow)).join(' · ') + '\n';
+  if (buses.length)  body += '🚌 ' + buses.map(r => formatDep(r, minNow)).join(' · ');
+
+  await self.registration.showNotification('🌤️ Prépare ton départ — Luxembourg → Mamer', {
+    body:    body.trim() || deps.map(r => formatDep(r, minNow)).join('\n'),
+    icon:    './assets/icon-192.png',
+    badge:   './assets/icon-192.png',
+    tag:     'bus-afternoon',
+    renotify: false,
+    vibrate: [100, 50, 100],
+    data:    { tab: 'evening' },
   });
 }
 
