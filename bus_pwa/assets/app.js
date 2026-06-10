@@ -53,9 +53,10 @@
   /* Matin = bus qui va vers la ville (LUX, HOWALD, FINDEL, Kirchberg...)
      Belle-Etoile / Bertrange inclus : depuis Mamer, aller à Belle-Étoile
      est la 1re étape vers la ville (correspondance AVL 10). */
-  const CITY_RE  = /LUX|HOWALD|FINDEL|Kirchberg|Hamilius|Gare|Steinsel|Centre|Belle.Etoile|Bertrange/i;
-  /* Soir  = bus qui repart vers Mamer / ouest */
-  const MAMER_RE = /STEINFORT|EISCHEN|MERSCH|TUNTANGE|SCHWEBACH|REDANGE|MESSANCY|CLEMENCY|Belle.Etoile/i;
+  const CITY_RE  = /LUX|HOWALD|FINDEL|Kirchberg|Hamilius|Gare|Steinsel|Centre|Belle[- ]Etoile|Bertrange/i;
+  /* Soir = bus qui repart vers Mamer / ouest. Belle-Étoile est un terminus
+     (bus 850 FINDEL→Belle-Étoile), pas une direction vers Mamer : exclu. */
+  const MAMER_RE = /STEINFORT|EISCHEN|MERSCH|TUNTANGE|SCHWEBACH|REDANGE|MESSANCY|CLEMENCY/i;
 
   const isCityBound  = dir => CITY_RE.test(dest(dir));
   const isMamerBound = dir => MAMER_RE.test(dest(dir));
@@ -122,7 +123,7 @@
       if (gpsWatchId !== null) return;
       gpsWatchId = navigator.geolocation.watchPosition(
         pos => onPos(pos, true),
-        () => {},
+        err => { if (err.code === 1) showToast('GPS refusé — sélectionne ton arrêt manuellement'); },
         { timeout: 10000, maximumAge: 30000, enableHighAccuracy: false }
       );
       return;
@@ -149,6 +150,16 @@
   /* Pre-calculs */
   const morningAll = ALL.filter(r => r.time_minutes >= MORNING_START && r.time_minutes <= MORNING_END);
   const eveningAll = ALL.filter(r => r.time_minutes >= EVENING_START && r.time_minutes <= EVENING_END);
+
+  /* Index records par arrêt → O(1) lookup au lieu de O(n) scan dans Live tab */
+  const ALL_BY_STOP = (() => {
+    const m = new Map();
+    for (const r of ALL) {
+      if (!m.has(r.target_stop)) m.set(r.target_stop, []);
+      m.get(r.target_stop).push(r);
+    }
+    return m;
+  })();
 
   /* ===== Carte des connexions Mamer → Belle-Etoile (meme course) ===== */
   const CONNECTION_MAP = (() => {
@@ -357,7 +368,10 @@
   /* ===== Favoris ===== */
   const favKey   = r => `${r.line}|${r.target_stop}|${r.direction}`;
   const alarmKey = r => favKey(r) + '|' + r.time_minutes;
-  const isFav    = r => state.favorites.some(f => f.key === favKey(r));
+  /* Set pour isFav O(1) au lieu de .some() O(n) sur chaque card */
+  let _favSet = new Set();
+  function rebuildFavSet() { _favSet = new Set(state.favorites.map(f => f.key)); }
+  const isFav = r => _favSet.has(favKey(r));
 
   function toggleFav(r) {
     const key = favKey(r);
@@ -368,6 +382,7 @@
       state.favorites.unshift({ key, line: r.line, target_stop: r.target_stop, direction: r.direction, network: r.network, stop: r.stop });
     }
     saveState();
+    rebuildFavSet();
     haptic(idx >= 0 ? [30] : [50, 30, 50]);
     updateFavCount();
     /* Mettre a jour les boutons en place */
@@ -511,7 +526,7 @@
         (cdText ? `<span class="nb-cd">${escapeHtml(cdText)}</span>` : '') +
       `</div>` +
       `<div class="nb-direction">${escapeHtml(next.direction)}</div>` +
-      `<div class="nb-meta">${escapeHtml(next.target_stop)}</div>`;
+      `<div class="nb-meta"><strong>${escapeHtml(next.target_stop)}</strong></div>`;
 
     /* Barre de progression */
     const progressEl = $('nbProgress'), fillEl = $('nbProgressFill');
@@ -647,9 +662,11 @@
   }
 
   function updateTabCounts(n) {
-    $('tabCountNow').textContent     = ALL.filter(r => inRange(r.time_minutes, n, 5) && runsToday(r)).length || '';
-    $('tabCountMorning').textContent = morningAll.filter(runsToday).length;
-    $('tabCountEvening').textContent = eveningAll.filter(runsToday).length;
+    const es = state.stop || state.liveStop;
+    const byStop = r => !es || r.target_stop === es;
+    $('tabCountNow').textContent     = ALL.filter(r => byStop(r) && inRange(r.time_minutes, n, 5) && runsToday(r)).length || '';
+    $('tabCountMorning').textContent = morningAll.filter(r => byStop(r) && runsToday(r)).length || '';
+    $('tabCountEvening').textContent = eveningAll.filter(r => byStop(r) && runsToday(r)).length || '';
     updateFavCount();
   }
 
@@ -663,8 +680,9 @@
 
     let pool = state.tab === 'favorites' ? ALL.filter(r => isFav(r)) : ALL;
 
+    const effectiveStop = state.stop || state.liveStop;
     const rows = pool.filter(r => {
-      if (state.stop    && r.target_stop   !== state.stop)    return false;
+      if (effectiveStop && r.target_stop !== effectiveStop) return false;
       if (state.line    && r.line          !== state.line)     return false;
       if (state.service && r.service_label !== state.service)  return false;
       if (dirNrm && !normalize(r.direction).includes(dirNrm)) return false;
@@ -778,9 +796,9 @@
       `<button class="live-tol-btn${state.liveTol === t ? ' active' : ''}" data-action="live-tol" data-tol="${t}" type="button">\xB1${t} min</button>`
     ).join('');
 
-    /* Filtrage */
-    const rows = ALL.filter(r => {
-      if (state.liveStop && r.target_stop !== state.liveStop) return false;
+    /* Filtrage — index par arrêt pour éviter O(n) scan sur tout ALL */
+    const stopPool = state.liveStop ? (ALL_BY_STOP.get(state.liveStop) || []) : ALL;
+    const rows = stopPool.filter(r => {
       if (!runsToday(r)) return false;
       return inRange(r.time_minutes, n, state.liveTol);
     });
@@ -1188,7 +1206,7 @@
       /* Compter les departs a venir dans ±30 min */
       const near = ALL.filter(r => r.line === l && inRange(r.time_minutes, n, 30) && r.time_minutes >= n - 2).length;
       const nearBadge = near ? ` <span class="tt-near-badge">${near}</span>` : '';
-      return `<button class="tt-chip${active ? ' active' : ''} ${cls}" data-action="tt-line" data-ttline="${escapeHtml(l)}" type="button">${escapeHtml(l)}${nearBadge}</button>`;
+      return `<button class="tt-chip${active ? ' active' : ''} ${cls}" data-action="tt-line" data-ttline="${escapeHtml(l)}" type="button" aria-pressed="${active}" aria-label="Horaires ligne ${escapeHtml(l)}">${escapeHtml(l)}${nearBadge}</button>`;
     }).join('');
 
     /* Donnees de la ligne selectionnee */
@@ -1351,6 +1369,7 @@
   function init() {
     initTheme();
     loadState();
+    rebuildFavSet();
 
     populateSelect($('stopFilter'),    unique(ALL.map(r => r.target_stop)),   'Tous les arrets');
     populateSelect($('lineFilter'),    unique(ALL.map(r => r.line)),           'Toutes les lignes');
