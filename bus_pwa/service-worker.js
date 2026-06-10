@@ -1,9 +1,9 @@
 /* ============================================================
-   Service Worker — bus-offline-v22
+   Service Worker — bus-offline-v23
    Cache-first assets · Network-first data · Periodic Sync alerts
    ============================================================ */
 
-const CACHE_NAME = 'bus-offline-v22';
+const CACHE_NAME = 'bus-offline-v23';
 const NOTIF_CACHE = 'bus-notif-state-v1';
 
 const STATIC_ASSETS = [
@@ -34,11 +34,12 @@ const EVENING_END     = 19 * 60;
 
 /* Arrets matin : depart vers la ville */
 const STOPS_MORNING = ['MAMER, Gare', 'MAMER, Mambra', 'MAMER, Eglantiers'];
-/* Arrets soir : depart depuis la ville / connexion */
+/* Arrets soir : depart depuis la ville / connexion.
+   AVL 10 : Quai 2 = sens Steinsel → Bertrange (vers Belle-Étoile). */
 const STOPS_EVENING = [
   'LUXEMBOURG, Gare Centrale',
-  'Gare Centrale Quai 1', 'Hamilius Quai 1', 'Strassen, Bourmicht Quai 1',
-  'BERTRANGE, Belle-Etoile', 'Bertrange, Belle Étoile Quai 1',
+  'Gare Centrale Quai 2', 'Hamilius Quai 2', 'Strassen, Bourmicht Quai 2',
+  'BERTRANGE, Belle-Etoile',
 ];
 
 /* ===== Install ===== */
@@ -173,10 +174,9 @@ function isServiceDay(svc, code) {
   if (!svc || svc === ')') return true;
   const s = svc.toLowerCase();
   if (code === 'weekday') {
-    if (/^samedis ouvrables/.test(s))  return false;
-    if (/^dimanche/.test(s))           return false;
-    if (/^samedis, dimanches/.test(s)) return false;
-    if (/^samedi\s*\//.test(s))        return false;
+    /* Tout label commencant par samedi/dimanche ne circule pas en semaine */
+    if (/^samedi/.test(s))   return false;
+    if (/^dimanche/.test(s)) return false;
     return true;
   }
   if (code === 'sat') return /samedi|lu.sa|lundi.vendredi.*samedi/.test(s);

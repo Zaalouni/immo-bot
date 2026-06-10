@@ -68,9 +68,13 @@
     'MAMER, Eglantiers':              [49.6268, 6.0198],
     'BERTRANGE, Belle-Etoile':        [49.6088, 6.1163],
     'Bertrange, Belle Étoile Quai 1': [49.6088, 6.1163],
+    'Bertrange, Belle Étoile Quai 2': [49.6088, 6.1163],
     'Strassen, Bourmicht Quai 1':     [49.6150, 6.0870],
+    'Strassen, Bourmicht Quai 2':     [49.6150, 6.0870],
     'Gare Centrale Quai 1':           [49.5997, 6.1347],
+    'Gare Centrale Quai 2':           [49.5997, 6.1347],
     'Hamilius Quai 1':                [49.6110, 6.1297],
+    'Hamilius Quai 2':                [49.6110, 6.1297],
     'FINDEL, Aéroport Quai 4':        [49.6333, 6.2044],
     'LUXEMBOURG, Gare Centrale':      [49.5997, 6.1347],
   };
@@ -142,7 +146,12 @@
   /* Sous-ensembles d'arrets par role */
   const STOP_MAMER       = ['MAMER, Mambra', 'MAMER, Eglantiers'];
   const STOP_BELLE_AVL   = ['Bertrange, Belle Étoile Quai 1'];
-  const STOP_CITY_AVL    = ['Strassen, Bourmicht Quai 1', 'Gare Centrale Quai 1', 'Hamilius Quai 1'];
+  /* Soir : départ ville vers Belle-Étoile = Quai 2 (sens Steinsel → Bertrange).
+     Les Quai 1 vont vers Steinsel, le mauvais sens pour rentrer. */
+  const STOP_CITY_AVL    = ['Hamilius Quai 2', 'Gare Centrale Quai 2', 'Strassen, Bourmicht Quai 2'];
+  /* Tous les arrêts AVL « en ville » (les 2 quais) — détection GPS du sens */
+  const STOP_CITY_AVL_ALL = ['Strassen, Bourmicht Quai 1', 'Gare Centrale Quai 1', 'Hamilius Quai 1',
+                             'Strassen, Bourmicht Quai 2', 'Gare Centrale Quai 2', 'Hamilius Quai 2'];
   const STOP_BELLE_RGTR  = ['BERTRANGE, Belle-Etoile'];
   const STOP_MAMER_TRAIN = ['MAMER, Gare'];
   const STOP_LUX_TRAIN   = ['LUXEMBOURG, Gare Centrale'];
@@ -335,10 +344,10 @@
     if (!svc || svc === ')') return true;
     const s = svc.toLowerCase();
     if (code === 'weekday') {
-      if (/^samedis ouvrables/.test(s))    return false;
-      if (/^dimanche/.test(s))             return false;
-      if (/^samedis, dimanches/.test(s))   return false;
-      if (/^samedi\s*\//.test(s))          return false;
+      /* Tout label commençant par samedi/dimanche ne circule pas en semaine
+         (couvre « Samedi », « samedis ouvrables », « samedis, dimanches… ») */
+      if (/^samedi/.test(s))   return false;
+      if (/^dimanche/.test(s)) return false;
       return true;
     }
     if (code === 'sat') return /samedi|lu.sa|lundi.vendredi.*samedi/.test(s);
@@ -565,7 +574,7 @@
     const ls = state.liveStop;
     if (ls) {
       if (STOP_MAMER.includes(ls) || STOP_MAMER_TRAIN.includes(ls)) return 'city';
-      if (STOP_CITY_AVL.includes(ls) || STOP_LUX_TRAIN.includes(ls) ||
+      if (STOP_CITY_AVL_ALL.includes(ls) || STOP_LUX_TRAIN.includes(ls) ||
           STOP_BELLE_RGTR.includes(ls) || STOP_BELLE_AVL.includes(ls)) return 'home';
     }
     /* Heuristique : avant 13h on part vers la ville, ensuite on rentre. */
