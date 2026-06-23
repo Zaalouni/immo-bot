@@ -165,6 +165,13 @@ def parse_rgtr(line, path):
     return records
 
 def parse_avl10(line, path):
+    # ATTENTION : cette fonction ne detecte pas le service par colonne (une
+    # table PDF mixe parfois Lundi-Vendredi/Samedi/Dimanche dans des bandes
+    # d'en-tete distinctes) et n'expanse pas les colonnes de cadence
+    # ("toutes les NN mn"). Les donnees actuelles de bus-schedules.json pour
+    # la ligne 10 (884 enregistrements) ont ete produites par un script ad
+    # hoc plus complet ; relancer cette fonction régénérerait une extraction
+    # incomplete (~239 enregistrements) et écraserait les bonnes données.
     records = []
     with pdfplumber.open(path) as pdf:
         for pno0, page in enumerate(pdf.pages):

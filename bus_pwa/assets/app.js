@@ -26,7 +26,7 @@
   const normalize = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
   const timeToMin = t => { const [h, m] = String(t || '0:0').split(':').map(Number); return h * 60 + m; };
   const pad2 = n => String(n).padStart(2, '0');
-  const minToHHMM = m => `${pad2(Math.floor((m % 1440) / 60))}:${pad2(m % 60)}`;
+  const minToHHMM = m => { const n = ((m % 1440) + 1440) % 1440; return `${pad2(Math.floor(n / 60))}:${pad2(n % 60)}`; };
   const nowMin  = () => { const d = new Date(); return d.getHours() * 60 + d.getMinutes(); };
   const nowTime = () => { const d = new Date(); return `${pad2(d.getHours())}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())}`; };
   const unique  = arr => [...new Set(arr.filter(Boolean))].sort((a, b) => String(a).localeCompare(String(b), 'fr'));
@@ -1083,12 +1083,12 @@
   function checkNotifications(n) {
     if (!notif.enabled) return;
     resetDailyTracking(new Date().getDate());
-    if (n === MORNING_START && !notif.morningFired) {
+    if (n >= MORNING_START && n <= MORNING_END && !notif.morningFired) {
       notif.morningFired = true;
       const nb = morningAll.filter(r => (!state.stop || r.target_stop === state.stop) && runsToday(r)).length;
       fireNotif('\u{1F305} Alerte matin', `${nb} bus disponibles — 07:15 à 08:15`, 'alert-morning');
     }
-    if (n === EVENING_START && !notif.eveningFired) {
+    if (n >= EVENING_START && n <= EVENING_END && !notif.eveningFired) {
       notif.eveningFired = true;
       const nb = eveningAll.filter(r => (!state.stop || r.target_stop === state.stop) && runsToday(r)).length;
       fireNotif('\u{1F306} Alerte soir', `${nb} bus disponibles — 17:40 à 19:00`, 'alert-evening');
