@@ -170,6 +170,16 @@
     return m;
   })();
 
+  /* Index records par ligne → O(1) lookup pour la barre de raccourcis lignes */
+  const ALL_BY_LINE = (() => {
+    const m = new Map();
+    for (const r of ALL) {
+      if (!m.has(r.line)) m.set(r.line, []);
+      m.get(r.line).push(r);
+    }
+    return m;
+  })();
+
   /* ===== Carte des connexions Mamer → Belle-Etoile (meme course) ===== */
   const CONNECTION_MAP = (() => {
     const byCourseMamer = new Map();
@@ -377,6 +387,16 @@
   /* ===== Favoris ===== */
   const favKey   = r => `${r.line}|${r.target_stop}|${r.direction}`;
   const alarmKey = r => favKey(r) + '|' + r.time_minutes;
+  /* Index records par favKey -> O(1) lookup au lieu d'un scan ALL par favori */
+  const ALL_BY_FAVKEY = (() => {
+    const m = new Map();
+    for (const r of ALL) {
+      const k = favKey(r);
+      if (!m.has(k)) m.set(k, []);
+      m.get(k).push(r);
+    }
+    return m;
+  })();
   /* Set pour isFav O(1) au lieu de .some() O(n) sur chaque card */
   let _favSet = new Set();
   function rebuildFavSet() { _favSet = new Set(state.favorites.map(f => f.key)); }
@@ -754,39 +774,58 @@
     return `<div class="info-note">ℹ️ Horaires du train L50 indisponibles ${dayLabel} dans cette app (donn\xE9es extraites en lu-ve uniquement). V\xE9rifiez sur cfl.lu.</div>`;
   }
 
-  function renderMorningJourney(rows, n) {
-    const train     = rows.filter(r => r.network === 'CFL' && STOP_MAMER_TRAIN.includes(r.target_stop));
-    const etape1    = rows.filter(r => STOP_MAMER.includes(r.target_stop) && isCityBound(r.direction));
-    const etape2    = rows.filter(r => STOP_BELLE_AVL.includes(r.target_stop) && r.line === '10');
+  /* Trajet en etapes : factorise le motif commun matin/soir
+     (train -> etape1 -> etape2 -> autres) derriere une config par sens. */
+  function renderJourney(rows, n, cfg) {
+    const train     = rows.filter(cfg.train);
+    const etape1    = rows.filter(cfg.etape1);
+    const etape2    = rows.filter(cfg.etape2);
     const autresSet = new Set([...train, ...etape1, ...etape2]);
     const autres    = rows.filter(r => !autresSet.has(r));
 
-    let html = renderConnectionWidget(n);
-    if (train.length)  html += journeySection('train',    '\u{1F686} Train L50 — Mamer Gare → Luxembourg', train, n);
+    let html = cfg.prefix ? cfg.prefix(n) : '';
+    if (train.length)  html += journeySection('train', cfg.titles.train, train, n);
     else               html += trainGapNote();
-    if (etape1.length) html += journeySection('aller',    '\u{1F68C} Étape 1 — Mamer → Belle-Étoile (RGTR)', etape1, n);
-    if (etape2.length) html += journeySection('connexion','\u{1F517} Étape 2 — Belle-Étoile → Ville (AVL 10)', etape2, n);
-    if (autres.length) html += journeySection('autres',   'Autres passages matin', autres, n);
-    if (!html) html = emptyForTab('morning', n);
+    if (etape1.length) html += journeySection(cfg.cls1, cfg.titles.etape1, etape1, n);
+    if (etape2.length) html += journeySection(cfg.cls2, cfg.titles.etape2, etape2, n);
+    if (autres.length) html += journeySection('autres', cfg.titles.autres, autres, n);
+    if (!html) html = emptyForTab(cfg.tab, n);
     return html;
+  }
+
+  function renderMorningJourney(rows, n) {
+    return renderJourney(rows, n, {
+      prefix: renderConnectionWidget,
+      train:  r => r.network === 'CFL' && STOP_MAMER_TRAIN.includes(r.target_stop),
+      etape1: r => STOP_MAMER.includes(r.target_stop) && isCityBound(r.direction),
+      etape2: r => STOP_BELLE_AVL.includes(r.target_stop) && r.line === '10',
+      cls1: 'aller', cls2: 'connexion',
+      titles: {
+        train:  '\u{1F686} Train L50 — Mamer Gare → Luxembourg',
+        etape1: '\u{1F68C} Étape 1 — Mamer → Belle-Étoile (RGTR)',
+        etape2: '\u{1F517} Étape 2 — Belle-Étoile → Ville (AVL 10)',
+        autres: 'Autres passages matin',
+      },
+      tab: 'morning',
+    });
   }
 
   /* ===== Onglet Soir — Trajet en étapes ===== */
   function renderEveningJourney(rows, n) {
-    const train     = rows.filter(r => r.network === 'CFL' && STOP_LUX_TRAIN.includes(r.target_stop));
-    const etape1    = rows.filter(r => STOP_CITY_AVL.includes(r.target_stop) && r.line === '10');
-    const etape2    = rows.filter(r => STOP_BELLE_RGTR.includes(r.target_stop) && isMamerBound(r.direction));
-    const autresSet = new Set([...train, ...etape1, ...etape2]);
-    const autres    = rows.filter(r => !autresSet.has(r));
-
-    let html = '';
-    if (train.length)  html += journeySection('train',    '\u{1F686} Train L50 — Luxembourg → Mamer Gare', train, n);
-    else               html += trainGapNote();
-    if (etape1.length) html += journeySection('connexion','\u{1F68C} Étape 1 — Ville → Belle-Étoile (AVL 10)', etape1, n);
-    if (etape2.length) html += journeySection('retour',   '\u{1F517} Étape 2 — Belle-Étoile → Mamer (RGTR)', etape2, n);
-    if (autres.length) html += journeySection('autres',   'Autres passages soir', autres, n);
-    if (!html) html = emptyForTab('evening', n);
-    return html;
+    return renderJourney(rows, n, {
+      prefix: null,
+      train:  r => r.network === 'CFL' && STOP_LUX_TRAIN.includes(r.target_stop),
+      etape1: r => STOP_CITY_AVL.includes(r.target_stop) && r.line === '10',
+      etape2: r => STOP_BELLE_RGTR.includes(r.target_stop) && isMamerBound(r.direction),
+      cls1: 'connexion', cls2: 'retour',
+      titles: {
+        train:  '\u{1F686} Train L50 — Luxembourg → Mamer Gare',
+        etape1: '\u{1F68C} Étape 1 — Ville → Belle-Étoile (AVL 10)',
+        etape2: '\u{1F517} Étape 2 — Belle-Étoile → Mamer (RGTR)',
+        autres: 'Autres passages soir',
+      },
+      tab: 'evening',
+    });
   }
 
   /* ===== Onglet Live — tableau de départ temps réel ===== */
@@ -894,7 +933,7 @@
 
   function renderFavCard(fav, n) {
     /* Tous les horaires de ce trajet (ligne + arret + direction) */
-    const allTimes = ALL.filter(r => r.line === fav.line && r.target_stop === fav.target_stop && r.direction === fav.direction);
+    const allTimes = ALL_BY_FAVKEY.get(fav.key) || [];
     /* Afficher les 3h a venir + passees recentes (<20 min) */
     const visible = allTimes.filter(r => { const d = r.time_minutes - n; return d >= -20 && d <= 180; });
     /* Si rien a venir, prochains 5 */
@@ -1076,7 +1115,15 @@
   }
   async function toggleNotifications() {
     if (notif.enabled) { notif.enabled = false; localStorage.setItem('bus-notif', '0'); updateNotifBtn(); showToast('Notifications désactivées'); return; }
-    await requestNotifPermission();
+    if (Notification.permission === 'denied') {
+      showToast('Notifications bloquées — active-les dans les réglages du navigateur');
+      return;
+    }
+    if (Notification.permission === 'default') {
+      showToast('\u{1F514} Alertes matin/soir + tes bus favoris');
+    }
+    const granted = await requestNotifPermission();
+    if (!granted) { showToast('Permission refusée'); return; }
     notif.enabled = true; localStorage.setItem('bus-notif', '1'); updateNotifBtn(); showToast('Notifications activées');
   }
   function resetDailyTracking(day) { if (day !== notif.lastDay) { notif.notifiedBuses.clear(); notif.morningFired = false; notif.eveningFired = false; notif.lastDay = day; } }
@@ -1151,7 +1198,17 @@
   /* ===== PWA Install ===== */
   function initInstall() {
     let deferred = null;
+    /* Deja installee (lancee en mode standalone) : jamais d'invite a afficher */
+    if (window.matchMedia('(display-mode: standalone)').matches || navigator.standalone) {
+      $('installBtn').hidden = true;
+      return;
+    }
     window.addEventListener('beforeinstallprompt', ev => { ev.preventDefault(); deferred = ev; $('installBtn').hidden = false; });
+    window.addEventListener('appinstalled', () => {
+      deferred = null;
+      $('installBtn').hidden = true;
+      showToast('✅ Bus Offline installée sur l’écran d’accueil');
+    });
     $('installBtn').addEventListener('click', async () => {
       if (!deferred) return;
       deferred.prompt(); await deferred.userChoice; deferred = null; $('installBtn').hidden = true;
@@ -1209,17 +1266,18 @@
 
     /* Chips de ligne */
     const lineChips = lines.map(l => {
-      const net = ALL.find(r => r.line === l)?.network || '';
+      const lineRecords = ALL_BY_LINE.get(l) || [];
+      const net = lineRecords[0]?.network || '';
       const cls = netCls(net);
       const active = state.ttLine === l;
       /* Compter les departs a venir dans ±30 min */
-      const near = ALL.filter(r => r.line === l && inRange(r.time_minutes, n, 30) && r.time_minutes >= n - 2).length;
+      const near = lineRecords.filter(r => inRange(r.time_minutes, n, 30) && r.time_minutes >= n - 2).length;
       const nearBadge = near ? ` <span class="tt-near-badge">${near}</span>` : '';
       return `<button class="tt-chip${active ? ' active' : ''} ${cls}" data-action="tt-line" data-ttline="${escapeHtml(l)}" type="button" aria-pressed="${active}" aria-label="Horaires ligne ${escapeHtml(l)}">${escapeHtml(l)}${nearBadge}</button>`;
     }).join('');
 
     /* Donnees de la ligne selectionnee */
-    const rows    = ALL.filter(r => r.line === state.ttLine);
+    const rows    = ALL_BY_LINE.get(state.ttLine) || [];
     const stops   = unique(rows.map(r => r.target_stop));
     const network = rows[0]?.network || '';
     const netLabel = network === 'CFL' ? 'Train CFL' : network;
@@ -1351,9 +1409,10 @@
     const n     = nowMin();
     const lines = unique(ALL.map(r => r.line));
     const chips = lines.map(l => {
-      const net  = ALL.find(r => r.line === l)?.network || '';
+      const lineRecords = ALL_BY_LINE.get(l) || [];
+      const net  = lineRecords[0]?.network || '';
       const cls  = netCls(net);
-      const near = ALL.filter(r => r.line === l && runsToday(r) && r.time_minutes >= n - 2 && r.time_minutes <= n + 30).length;
+      const near = lineRecords.filter(r => runsToday(r) && r.time_minutes >= n - 2 && r.time_minutes <= n + 30).length;
       const nearHtml = near
         ? `<span class="chip-near">${near}</span>`
         : '';
@@ -1400,20 +1459,47 @@
         else applyFilters();
       });
     });
+    /* Navigation clavier flèches/Home/End sur la liste d'onglets (ARIA tablist) */
+    const tabNav = document.querySelector('.tab-nav');
+    if (tabNav) {
+      tabNav.addEventListener('keydown', e => {
+        const tabs = [...tabNav.querySelectorAll('.tab')];
+        const idx  = tabs.indexOf(document.activeElement);
+        if (idx === -1) return;
+        let next = null;
+        if (e.key === 'ArrowRight') next = tabs[(idx + 1) % tabs.length];
+        else if (e.key === 'ArrowLeft') next = tabs[(idx - 1 + tabs.length) % tabs.length];
+        else if (e.key === 'Home') next = tabs[0];
+        else if (e.key === 'End') next = tabs[tabs.length - 1];
+        if (next) { e.preventDefault(); next.focus(); next.click(); }
+      });
+    }
 
     /* Indicateur du jour */
     const di = getDayInfo();
     $('dayChip').textContent = `${di.icon} Aujourd'hui : ${di.label}`;
 
     /* Recherche */
+    const updateSearchClear = () => { $('searchClear').hidden = !$('globalSearch').value; };
     const doSearch = debounce(() => {
       const q = $('globalSearch').value;
       state.search = q;
       if (q) { addHistory(q); renderHistory(); } else $('searchHistory').hidden = true;
       applyFilters();
     }, 250);
-    $('globalSearch').addEventListener('input', doSearch);
+    $('globalSearch').addEventListener('input', () => { updateSearchClear(); doSearch(); });
     $('globalSearch').addEventListener('focus', () => { if (state.history.length) renderHistory(); });
+    $('globalSearch').addEventListener('keydown', e => {
+      if (e.key !== 'Escape' || !e.target.value) return;
+      e.target.value = ''; state.search = ''; updateSearchClear();
+      $('searchHistory').hidden = true; applyFilters();
+    });
+    $('searchClear').addEventListener('click', () => {
+      $('globalSearch').value = ''; state.search = '';
+      $('searchHistory').hidden = true; updateSearchClear();
+      applyFilters(); $('globalSearch').focus();
+    });
+    updateSearchClear();
     document.addEventListener('click', e => { if (!e.target.closest('.search-wrap')) $('searchHistory').hidden = true; });
     $('searchHistory').addEventListener('click', e => {
       const item = e.target.closest('.history-item');
@@ -1458,6 +1544,11 @@
     /* Fermer overlay en cliquant le fond */
     ['stopsPanel', 'schedulesPanel'].forEach(id => {
       $(id).addEventListener('click', e => { if (e.target === $(id)) closePanel(id); });
+    });
+    /* Fermer overlay avec Echap */
+    document.addEventListener('keydown', e => {
+      if (e.key !== 'Escape') return;
+      ['stopsPanel', 'schedulesPanel'].forEach(id => { if (!$(id).hidden) closePanel(id); });
     });
 
     /* Delegation actions cartes */
@@ -1567,7 +1658,7 @@
 
   function findRecord(card) {
     const key = card.dataset.fkey, m = Number(card.dataset.minutes);
-    return ALL.find(r => favKey(r) === key && r.time_minutes === m) || null;
+    return (ALL_BY_FAVKEY.get(key) || []).find(r => r.time_minutes === m) || null;
   }
 
   init();

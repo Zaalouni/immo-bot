@@ -1,9 +1,9 @@
 /* ============================================================
-   Service Worker — bus-offline-v24
+   Service Worker — bus-offline-v25
    Cache-first assets · Network-first data · Periodic Sync alerts
    ============================================================ */
 
-const CACHE_NAME = 'bus-offline-v24';
+const CACHE_NAME = 'bus-offline-v25';
 const NOTIF_CACHE = 'bus-notif-state-v1';
 
 const STATIC_ASSETS = [
@@ -58,9 +58,24 @@ self.addEventListener('activate', event => {
       .then(keys => Promise.all(
         keys.filter(k => k !== CACHE_NAME && k !== NOTIF_CACHE).map(k => caches.delete(k))
       ))
+      .then(pruneNotifCache)
       .then(() => self.clients.claim())
   );
 });
+
+/* Purge les entrees anti-doublon de plus de 3 jours (sinon NOTIF_CACHE
+   grossit indefiniment, une entree par fenetre/jour). */
+async function pruneNotifCache() {
+  const cache  = await caches.open(NOTIF_CACHE);
+  const keys   = await cache.keys();
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - 3);
+  const cutoffStr = fmtDate(cutoff);
+  await Promise.all(keys.map(req => {
+    const m = req.url.match(/(\d{4}-\d{2}-\d{2})$/);
+    if (m && m[1] < cutoffStr) return cache.delete(req);
+  }));
+}
 
 /* ===== Message SKIP_WAITING ===== */
 self.addEventListener('message', event => {
@@ -248,11 +263,13 @@ function formatDep(r, minNow) {
   return network + ' ' + r.time + ' (' + when + ')';
 }
 
-async function showMorningAlert(schedules, minNow) {
-  const deps = nextDepartures(schedules, STOPS_MORNING, minNow, 4);
+/* Construit et affiche une alerte (matin/apres-midi/soir) : memes etapes
+   (selection des prochains departs, separation train/bus, corps du
+   message), seuls le titre/tag/stops/vibration/onglet cible changent. */
+async function showAlert(schedules, minNow, opts) {
+  const deps = nextDepartures(schedules, opts.stops, minNow, opts.count);
   if (!deps.length) return;
 
-  /* Separer train et bus */
   const trains = deps.filter(r => r.network === 'CFL');
   const buses  = deps.filter(r => r.network !== 'CFL');
 
@@ -260,58 +277,29 @@ async function showMorningAlert(schedules, minNow) {
   if (trains.length) body += '🚆 ' + trains.map(r => formatDep(r, minNow)).join(' · ') + '\n';
   if (buses.length)  body += '🚌 ' + buses.map(r => formatDep(r, minNow)).join(' · ');
 
-  await self.registration.showNotification('🌅 Alerte matin — Mamer → Luxembourg', {
+  await self.registration.showNotification(opts.title, {
     body:   body.trim() || deps.map(r => formatDep(r, minNow)).join('\n'),
     icon:   './assets/icon-192.png',
     badge:  './assets/icon-192.png',
-    tag:    'bus-morning',
+    tag:    opts.tag,
     renotify: false,
-    vibrate: [200, 100, 200],
-    data:   { tab: 'morning' },
+    vibrate: opts.vibrate,
+    data:   { tab: opts.tab },
   });
 }
 
-async function showAfternoonAlert(schedules, minNow) {
-  /* Prévenir l'utilisateur en ville ~1h avant l'heure de pointe soir */
-  const deps = nextDepartures(schedules, STOPS_EVENING, minNow, 3);
-  if (!deps.length) return;
+const showMorningAlert = (schedules, minNow) => showAlert(schedules, minNow, {
+  stops: STOPS_MORNING, count: 4, tab: 'morning', tag: 'bus-morning',
+  title: '🌅 Alerte matin — Mamer → Luxembourg', vibrate: [200, 100, 200],
+});
 
-  const trains = deps.filter(r => r.network === 'CFL');
-  const buses  = deps.filter(r => r.network !== 'CFL');
+/* Prévenir l'utilisateur en ville ~1h avant l'heure de pointe soir */
+const showAfternoonAlert = (schedules, minNow) => showAlert(schedules, minNow, {
+  stops: STOPS_EVENING, count: 3, tab: 'evening', tag: 'bus-afternoon',
+  title: '🌤️ Prépare ton départ — Luxembourg → Mamer', vibrate: [100, 50, 100],
+});
 
-  let body = '';
-  if (trains.length) body += '🚆 ' + trains.map(r => formatDep(r, minNow)).join(' · ') + '\n';
-  if (buses.length)  body += '🚌 ' + buses.map(r => formatDep(r, minNow)).join(' · ');
-
-  await self.registration.showNotification('🌤️ Prépare ton départ — Luxembourg → Mamer', {
-    body:    body.trim() || deps.map(r => formatDep(r, minNow)).join('\n'),
-    icon:    './assets/icon-192.png',
-    badge:   './assets/icon-192.png',
-    tag:     'bus-afternoon',
-    renotify: false,
-    vibrate: [100, 50, 100],
-    data:    { tab: 'evening' },
-  });
-}
-
-async function showEveningAlert(schedules, minNow) {
-  const deps = nextDepartures(schedules, STOPS_EVENING, minNow, 4);
-  if (!deps.length) return;
-
-  const trains = deps.filter(r => r.network === 'CFL');
-  const buses  = deps.filter(r => r.network !== 'CFL');
-
-  let body = '';
-  if (trains.length) body += '🚆 ' + trains.map(r => formatDep(r, minNow)).join(' · ') + '\n';
-  if (buses.length)  body += '🚌 ' + buses.map(r => formatDep(r, minNow)).join(' · ');
-
-  await self.registration.showNotification('🌆 Alerte soir — Luxembourg → Mamer', {
-    body:   body.trim() || deps.map(r => formatDep(r, minNow)).join('\n'),
-    icon:   './assets/icon-192.png',
-    badge:  './assets/icon-192.png',
-    tag:    'bus-evening',
-    renotify: false,
-    vibrate: [200, 100, 200],
-    data:   { tab: 'evening' },
-  });
-}
+const showEveningAlert = (schedules, minNow) => showAlert(schedules, minNow, {
+  stops: STOPS_EVENING, count: 4, tab: 'evening', tag: 'bus-evening',
+  title: '🌆 Alerte soir — Luxembourg → Mamer', vibrate: [200, 100, 200],
+});
