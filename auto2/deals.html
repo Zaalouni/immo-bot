@@ -150,6 +150,7 @@
       <li class="nav-item"><a class="nav-link" href="map.html">Carte</a></li>
       <li class="nav-item"><a class="nav-link" href="reviews.html">Avis</a></li>
       <li class="nav-item"><a class="nav-link" href="market.html">Marché</a></li>
+      <li class="nav-item"><a class="nav-link" href="history.html">Historique</a></li>
       <li class="nav-item"><a class="nav-link" href="suv-hybrid.html">SUV Hybride</a></li>
       <li class="nav-item"><a class="nav-link" href="suv.html">Guide SUV</a></li>
       <li class="nav-item"><a class="nav-link" href="compare.html">Comparer</a></li>
@@ -229,6 +230,10 @@
         <div class="form-check mb-0">
           <input class="form-check-input" type="checkbox" id="hide-suspect" checked onchange="renderDeals()">
           <label class="form-check-label" for="hide-suspect" style="font-size:12px">Masquer suspects</label>
+        </div>
+        <div class="form-check mb-0">
+          <input class="form-check-input" type="checkbox" id="f-recent-7j" onchange="renderDeals()">
+          <label class="form-check-label" for="f-recent-7j" style="font-size:12px">≤ 7 jours</label>
         </div>
         <button class="btn-voir" onclick="resetDealFilters()" style="padding:4px 10px;font-size:11px">↺ Reset</button>
       </div>
@@ -315,8 +320,11 @@
     const kmMax       = parseInt(document.getElementById('f-km-max').value) || Infinity;
     const anneeMin    = parseInt(document.getElementById('f-annee-min').value) || 0;
     const pays        = document.getElementById('f-pays').value;
+    const recent7j    = document.getElementById('f-recent-7j').checked;
+    const seuil7j     = Date.now() - 7 * 24 * 3600 * 1000;
     return deals.filter(d => {
       if (d.economie_pct < seuil) return false;
+      if (recent7j && (!d.date_premiere_vue || new Date(d.date_premiere_vue).getTime() < seuil7j)) return false;
       if (hideSuspect && d.risk_score && d.risk_score > 70) return false;
       if (marque && (d.marque_norm||d.marque) !== marque) return false;
       if (modele && (d.modele_norm||d.modele) !== modele) return false;
@@ -340,6 +348,7 @@
   }
 
   function resetDealFilters() {
+    document.getElementById('f-recent-7j').checked = false;
     document.getElementById('f-marque').value = '';
     document.getElementById('f-modele').value = '';
     document.getElementById('f-prix-max').value = '';

@@ -143,6 +143,7 @@
       <li class="nav-item"><a class="nav-link" href="map.html">Carte</a></li>
       <li class="nav-item"><a class="nav-link" href="reviews.html">Avis</a></li>
       <li class="nav-item"><a class="nav-link" href="market.html">Marché</a></li>
+      <li class="nav-item"><a class="nav-link" href="history.html">Historique</a></li>
       <li class="nav-item"><a class="nav-link" href="suv-hybrid.html">SUV Hybride</a></li>
       <li class="nav-item"><a class="nav-link" href="suv.html">Guide SUV</a></li>
       <li class="nav-item"><a class="nav-link" href="compare.html">Comparer</a></li>
@@ -200,8 +201,24 @@
         <select id="filter-marque" class="form-select form-select-sm"><option value="">Toutes</option></select>
       </div>
       <div class="col-md-2 col-6">
+        <label class="form-label">Modèle</label>
+        <select id="filter-modele" class="form-select form-select-sm"><option value="">Tous</option></select>
+      </div>
+      <div class="col-md-1 col-6">
         <label class="form-label">Carburant</label>
         <select id="filter-carburant" class="form-select form-select-sm"><option value="">Tous</option></select>
+      </div>
+      <div class="col-md-1 col-6">
+        <label class="form-label">Boîte</label>
+        <select id="filter-boite" class="form-select form-select-sm">
+          <option value="">Toutes</option>
+          <option value="automatique">Automatique</option>
+          <option value="manuelle">Manuelle</option>
+        </select>
+      </div>
+      <div class="col-md-1 col-6">
+        <label class="form-label">Carrosserie</label>
+        <select id="filter-carrosserie" class="form-select form-select-sm"><option value="">Toutes</option></select>
       </div>
       <div class="col-md-1 col-6">
         <label class="form-label">Prix min €</label>
@@ -246,10 +263,14 @@
         <label class="form-label">Source</label>
         <select id="filter-site" class="form-select form-select-sm"><option value="">Tous</option></select>
       </div>
-      <div class="col-md-1 col-12 d-flex align-items-end">
+      <div class="col-md-1 col-12 d-flex align-items-end gap-3">
         <div class="form-check mb-0">
           <input class="form-check-input" type="checkbox" id="only-ct">
           <label class="form-check-label" for="only-ct" style="font-size:12px">CT renseigné</label>
+        </div>
+        <div class="form-check mb-0">
+          <input class="form-check-input" type="checkbox" id="only-fiab">
+          <label class="form-check-label" for="only-fiab" style="font-size:12px" title="Modèles avec note fiabilité ≥ 7/10">Fiables ≥7</label>
         </div>
       </div>
       <div class="col-md-2 col-12 d-flex align-items-end gap-2 flex-wrap">
@@ -295,6 +316,7 @@
             <th>Site</th>
             <th>Deal</th>
             <th>Négo</th>
+            <th title="Classement achat = deal×0.6 + fiabilité×0.4 (° = fiabilité inconnue)">Achat</th>
             <th>Statut</th>
             <th>Vu</th>
           </tr>
@@ -317,6 +339,7 @@
 <script src="data/reviews.js"></script>
 <script src="data/vendors.js"></script>
 <script src="data/stats.js"></script>
+<script src="data/matches.js"></script>
 <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});</script>
 <script>
   const listings = typeof LISTINGS !== 'undefined' ? LISTINGS : [];
@@ -349,6 +372,53 @@
     const col = colors[b] || 'var(--txt3)';
     return `<a href="vendors.html" title="${nom} — ${v.badge_label||''} (score: ${Math.round(v.vendor_score||0)})"
       style="color:${col};font-size:11px;text-decoration:none;white-space:nowrap">${b} ${nom.length > 18 ? nom.slice(0,16)+'…' : nom}</a>`;
+  }
+
+  // Note fiabilité (0 si modèle sans avis)
+  function fiabOf(l) {
+    const key = `${(l.marque_norm||l.marque||'').toLowerCase()}|${(l.modele_norm||l.modele||'').toLowerCase()}`;
+    return reviewsMap[key] || 0;
+  }
+
+  // Score Achat composite : deal (marché) + fiabilité (avis) — aide au classement
+  function achatScore(l) {
+    const deal = l.deal_score || 0;
+    const fiab = fiabOf(l);
+    return fiab ? Math.round(deal * 0.6 + fiab * 10 * 0.4) : Math.round(deal * 0.6);
+  }
+
+  function achatBadge(l) {
+    const s = achatScore(l);
+    const fiabConnue = fiabOf(l) > 0;
+    if (!s) return '<span class="s-none">—</span>';
+    const cls = s >= 70 ? 's-hi' : s >= 50 ? 's-mid' : 's-low';
+    const title = fiabConnue
+      ? 'Score achat = deal×0.6 + fiabilité×0.4'
+      : 'Score achat partiel (modèle sans avis fiabilité)';
+    return `<span class="${cls}" title="${title}">${s}${fiabConnue ? '' : '°'}</span>`;
+  }
+
+  // Index des annonces par id (pour résoudre les URLs des matches cross-sites)
+  const listingById = {};
+  listings.forEach(l => { listingById[l.id] = l; });
+  const matchIndex = (typeof MATCHES !== 'undefined') ? (MATCHES.index || {}) : {};
+
+  // Badge « même voiture sur un autre site » avec comparaison de prix
+  function matchBadge(l) {
+    const ms = matchIndex[l.id];
+    if (!ms || !ms.length) return '';
+    const parts = ms.map(m => {
+      const target = listingById[m.id];
+      const diff = (m.prix && l.prix) ? m.prix - l.prix : null;
+      const diffTxt = diff === null ? '' : (diff > 0 ? ` (+${diff.toLocaleString('fr')}€)` : diff < 0 ? ` (${diff.toLocaleString('fr')}€)` : ' (=)');
+      const label = `${m.site}${m.prix ? ' ' + m.prix.toLocaleString('fr') + '€' : ''}${diffTxt}`;
+      return target && target.url
+        ? `<a href="${target.url}" target="_blank" rel="noopener noreferrer" style="color:inherit">${label}</a>`
+        : label;
+    });
+    const anyCheaper = ms.some(m => m.prix && l.prix && m.prix < l.prix);
+    const col = anyCheaper ? 'var(--amber)' : 'var(--accent)';
+    return `<div style="font-size:10px;color:${col};margin-top:1px" title="Même voiture repérée sur un autre site">⇄ ${parts.join(' · ')}</div>`;
   }
 
   function fiabBadge(l) {
@@ -406,9 +476,26 @@
     const marques    = [...new Set(listings.map(l => l.marque_norm).filter(Boolean))].sort();
     const carburants = [...new Set(listings.map(l => l.carburant).filter(Boolean))].sort();
     const sites      = [...new Set(listings.map(l => l.site).filter(Boolean))].sort();
+    const carros     = [...new Set(listings.map(l => l.carrosserie).filter(Boolean))].sort();
     fillSelect('filter-marque', marques);
     fillSelect('filter-carburant', carburants);
     fillSelect('filter-site', sites);
+    fillSelect('filter-carrosserie', carros);
+    fillModeles();
+    document.getElementById('filter-marque').addEventListener('change', fillModeles);
+  }
+
+  // Modèles dépendants de la marque sélectionnée
+  function fillModeles() {
+    const marque = document.getElementById('filter-marque').value;
+    const sel = document.getElementById('filter-modele');
+    const current = sel.value;
+    const modeles = [...new Set(listings
+      .filter(l => !marque || l.marque_norm === marque)
+      .map(l => l.modele_norm).filter(Boolean))].sort();
+    sel.innerHTML = '<option value="">Tous</option>';
+    modeles.forEach(v => { const o = document.createElement('option'); o.value = v; o.textContent = v; sel.appendChild(o); });
+    if (modeles.includes(current)) sel.value = current;
   }
 
   function fillSelect(id, values) {
@@ -433,8 +520,16 @@
     const onlyFavs  = document.getElementById('only-favs').checked;
     const today     = new Date().toISOString().slice(0, 10);
     const favIds    = getFavIds();
+    const modele      = document.getElementById('filter-modele').value.toLowerCase();
+    const boite       = document.getElementById('filter-boite').value.toLowerCase();
+    const carrosserie = document.getElementById('filter-carrosserie').value.toLowerCase();
+    const onlyFiab    = document.getElementById('only-fiab').checked;
     const filtered  = listings.filter(l => {
       if (marque    && !(l.marque_norm||'').toLowerCase().includes(marque))    return false;
+      if (modele    && (l.modele_norm||'').toLowerCase() !== modele)           return false;
+      if (boite     && !(l.boite||'').toLowerCase().startsWith(boite.slice(0,6))) return false;
+      if (carrosserie && (l.carrosserie||'').toLowerCase() !== carrosserie)    return false;
+      if (onlyFiab  && !(fiabOf(l) >= 7))                                      return false;
       if (carburant && !(l.carburant||'').toLowerCase().includes(carburant))   return false;
       const prix = l.prix || 0;
       if (prixMin > 0    && prix < prixMin)  return false;
@@ -470,9 +565,10 @@
   }
 
   function resetFilters() {
-    ['filter-marque','filter-carburant','filter-site','filter-pays','filter-vendeur'].forEach(id => document.getElementById(id).value = '');
+    ['filter-marque','filter-modele','filter-carburant','filter-boite','filter-carrosserie','filter-site','filter-pays','filter-vendeur'].forEach(id => document.getElementById(id).value = '');
     ['filter-prix-min','filter-prix-max','filter-km-max','filter-annee-min'].forEach(id => document.getElementById(id).value = '');
-    ['only-new','only-7j','only-deals','only-ct','only-favs'].forEach(id => document.getElementById(id).checked = false);
+    ['only-new','only-7j','only-deals','only-ct','only-favs','only-fiab'].forEach(id => document.getElementById(id).checked = false);
+    fillModeles();
     const btn50k = document.getElementById('btn-50k');
     if (btn50k) { btn50k.style.background = 'var(--surface2)'; btn50k.style.borderColor = 'var(--border)'; btn50k.style.color = 'var(--txt2)'; }
     renderTable(listings);
@@ -497,7 +593,7 @@
               style="background:none;border:none;cursor:pointer;font-size:14px;padding:0;line-height:1;flex-shrink:0;margin-top:1px;">${isFav?'⭐':'☆'}</button>
             <div>
               <a href="${l.url||'#'}" target="_blank" rel="noopener noreferrer" class="listing-link">${escapeHtml(l.marque_norm||l.marque||'—')} ${escapeHtml(l.modele_norm||l.modele||'')}</a>${fiabBadge(l)}
-              <div class="version-norm">${l.version_norm||l.version||''}</div>
+              <div class="version-norm">${l.version_norm||l.version||''}</div>${matchBadge(l)}
             </div>
           </div>
         </td>
@@ -512,6 +608,7 @@
         <td><span class="badge site-badge">${l.site||'—'}</span></td>
         <td>${scoreBadge(l.deal_score,'deal')}</td>
         <td>${negoBadge(l.nego_score)}</td>
+        <td data-order="${achatScore(l)}">${achatBadge(l)}</td>
         <td>${badges(l)}</td>
         <td style="white-space:nowrap"><span style="color:var(--muted);font-size:12px">${formatDate(l.date_premiere_vue)}</span></td>
       `;
@@ -530,7 +627,7 @@
         title: null,
       }],
       language: { search:'', searchPlaceholder:'Rechercher…', lengthMenu:'_MENU_ lignes', info:'_START_–_END_ / _TOTAL_', paginate:{previous:'‹',next:'›'} },
-      columnDefs: [{ orderable: false, targets: [12,13] }],
+      columnDefs: [{ orderable: false, targets: [13,14] }],
     });
   }
 

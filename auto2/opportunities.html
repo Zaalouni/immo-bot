@@ -128,6 +128,7 @@
       <li class="nav-item"><a class="nav-link" href="map.html">Carte</a></li>
       <li class="nav-item"><a class="nav-link" href="reviews.html">Avis</a></li>
       <li class="nav-item"><a class="nav-link" href="market.html">Marché</a></li>
+      <li class="nav-item"><a class="nav-link" href="history.html">Historique</a></li>
       <li class="nav-item"><a class="nav-link" href="suv-hybrid.html">SUV Hybride</a></li>
       <li class="nav-item"><a class="nav-link" href="suv.html">Guide SUV</a></li>
       <li class="nav-item"><a class="nav-link" href="compare.html">Comparer</a></li>
@@ -188,6 +189,7 @@
   <div class="d-flex gap-2 flex-wrap mb-3">
     <span class="filter-pill active" onclick="setFilter(this,'ALL')">Toutes</span>
     <span class="filter-pill" onclick="setFilter(this,'new')">Nouvelles aujourd'hui</span>
+    <span class="filter-pill" onclick="setFilter(this,'recent7j')">≤ 7 jours</span>
     <span class="filter-pill" onclick="setFilter(this,'deal70')">Deal ≥ 70</span>
     <span class="filter-pill" onclick="setFilter(this,'nego30')">Négo ≥ 30</span>
     <span class="filter-pill" onclick="setFilter(this,'u25k')">< 25 000 €</span>
@@ -251,6 +253,7 @@ function scoreColor(n) {
 function matchFilter(l) {
   if (activeFilter === 'ALL')    return true;
   if (activeFilter === 'new')    return (l.date_premiere_vue || '').slice(0,10) === today;
+  if (activeFilter === 'recent7j') return l.date_premiere_vue && (Date.now() - new Date(l.date_premiere_vue).getTime()) <= 7 * 24 * 3600 * 1000;
   if (activeFilter === 'deal70') return (l.deal_score || 0) >= 70;
   if (activeFilter === 'nego30') return (l.nego_score || 0) >= 30;
   if (activeFilter === 'u25k')   return (l.prix || 0) < 25000;

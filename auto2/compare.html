@@ -126,6 +126,7 @@
       <li class="nav-item"><a class="nav-link" href="map.html">Carte</a></li>
       <li class="nav-item"><a class="nav-link" href="reviews.html">Avis</a></li>
       <li class="nav-item"><a class="nav-link" href="market.html">Marché</a></li>
+      <li class="nav-item"><a class="nav-link" href="history.html">Historique</a></li>
       <li class="nav-item"><a class="nav-link" href="suv-hybrid.html">SUV Hybride</a></li>
       <li class="nav-item"><a class="nav-link" href="suv.html">Guide SUV</a></li>
       <li class="nav-item"><a class="nav-link active" href="compare.html">Comparer</a></li>
@@ -211,6 +212,16 @@
       </div>
     </div>
 
+    <!-- Même voiture ailleurs -->
+    <div class="row g-3 mb-4" id="matches-section" style="display:none">
+      <div class="col-12">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem;text-transform:uppercase;letter-spacing:.04em;color:var(--txt2);margin-bottom:14px;">⇄ La même voiture sur d'autres sites</div>
+          <div class="row g-3" id="matches-body"></div>
+        </div>
+      </div>
+    </div>
+
     <!-- Avis modèles -->
     <div class="row g-3 mb-4" id="reviews-section" style="display:none">
       <div class="col-12">
@@ -256,6 +267,7 @@
 <script src="data/price_history.js"></script>
 <script src="data/reviews.js"></script>
 <script src="data/vendors.js"></script>
+<script src="data/matches.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.0/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -422,6 +434,7 @@ function renderCompare() {
 
   // ── Avis modèles ──────────────────────────────────────────────────────────
   renderReviews(a, b);
+  renderMatches(a, b);
 
   // ── Stats vendeurs ────────────────────────────────────────────────────────
   renderVendorCompare(a, b);
@@ -480,6 +493,47 @@ function renderHistoryChart(idA, idB, titreA, titreB) {
       }
     }
   });
+}
+
+function renderMatches(a, b) {
+  const section = document.getElementById('matches-section');
+  const body    = document.getElementById('matches-body');
+  const idx     = (typeof MATCHES !== 'undefined') ? (MATCHES.index || {}) : {};
+
+  function card(l, titre) {
+    const ms = l ? (idx[l.id] || []) : [];
+    if (!ms.length) return `
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:12px;height:100%">
+        <div style="font-size:12px;color:var(--txt3);font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px">${escapeHtml(titre)}</div>
+        <div style="color:var(--txt3);font-size:13px">Vue sur un seul site.</div>
+      </div>`;
+    const rows = ms.map(m => {
+      const t = getListing(m.id);
+      const diff = (m.prix && l.prix) ? m.prix - l.prix : null;
+      const diffTxt = diff === null ? '' :
+        diff > 0 ? `<span style="color:var(--green)"> — ici ${diff.toLocaleString('fr')}€ moins cher</span>` :
+        diff < 0 ? `<span style="color:var(--amber)"> — là-bas ${(-diff).toLocaleString('fr')}€ moins cher</span>` :
+        ' — même prix';
+      const lien = t && t.url
+        ? `<a href="${t.url}" target="_blank" rel="noopener noreferrer" style="color:var(--accent)">${escapeHtml(m.site)}</a>`
+        : escapeHtml(m.site);
+      return `<div style="font-size:13px;margin-bottom:6px">⇄ ${lien} : <span style="font-family:'DM Mono',monospace">${m.prix ? m.prix.toLocaleString('fr')+' €' : '—'}</span>${diffTxt}
+        <span style="font-size:10px;color:var(--txt3)">(${m.type === 'exact' ? 'correspondance exacte' : 'correspondance probable'})</span></div>`;
+    }).join('');
+    return `
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:12px;height:100%">
+        <div style="font-size:12px;color:var(--txt3);font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px">${escapeHtml(titre)}</div>
+        ${rows}
+      </div>`;
+  }
+
+  const titreA = `${a.marque_norm||a.marque||'?'} ${a.modele_norm||a.modele||''} (${a.site||''})`.trim();
+  const titreB = `${b.marque_norm||b.marque||'?'} ${b.modele_norm||b.modele||''} (${b.site||''})`.trim();
+  section.style.display = 'block';
+  body.innerHTML = `
+    <div class="col-md-6">${card(a, titreA)}</div>
+    <div class="col-md-6">${card(b, titreB)}</div>
+  `;
 }
 
 function renderReviews(a, b) {
@@ -559,7 +613,10 @@ function renderReviews(a, b) {
         <ul style="font-size:12px;color:var(--green);padding-left:18px;margin-bottom:10px">${forts}</ul>` : ''}
 
         ${risks ? `<div style="font-size:11px;color:var(--amber);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px">⚠ Risques à l'achat</div>
-        <ul style="font-size:12px;color:var(--amber);padding-left:18px;margin:0">${risks}</ul>` : ''}
+        <ul style="font-size:12px;color:var(--amber);padding-left:18px;margin:0 0 10px">${risks}</ul>` : ''}
+
+        ${(r.retours_proprietaires||[]).length ? `<div style="font-size:11px;color:var(--txt3);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px">💬 Retour propriétaire</div>
+        <div style="border-left:3px solid var(--accent);padding:4px 10px;background:var(--bg);border-radius:0 4px 4px 0;font-size:12px;color:var(--txt2);font-style:italic;line-height:1.5">${escapeHtml(r.retours_proprietaires[0])}</div>` : ''}
       </div>`;
   }
 
