@@ -1,32 +1,32 @@
 ═══════════════════════════════════════════════════════
-  AUTO-BOT LUXEMBOURG — Résumé du 2026-04-04
+  AUTO-BOT LUXEMBOURG — Résumé du 2026-07-03
 ═══════════════════════════════════════════════════════
-  Annonces actives    : 1,403
-  Nouvelles aujourd'hui: 152
+  Annonces actives    : 5,213
+  Nouvelles aujourd'hui: 226
   Baisses de prix (7j) : 0
 
   TOP 5 OPPORTUNITÉS DU JOUR
   ─────────────────────────────────────────────────────
-  1. Smart Fortwo 2024 — 13 650 km — 15 700 €
-     Score: opp=60 deal=81 nego=20 | Wolfsburg Heiligendorf
-     https://www.autoscout24.de/angebote/smart-fortwo-eq-exclusive-voll-led-pano-dach-alu-shz-elektro-weiss-e15ae115-aa58-4e28-907d-265dd73fd337
+  1. Opel Grandland 2023 — 13 482 km — 21 900 €
+     Score: opp=60 deal=87 nego=10 | Senftenberg /Ortsteil Brieske
+     https://www.autoscout24.de/angebote/opel-grandland-1-2-di-elegance-benzin-silber-cat_ma54mo75943-dc049b08-9266-446f-b35d-68175c1e52ec
 
-  2. Hyundai Bayon 2025 — 9 200 km — 16 300 €
-     Score: opp=57 deal=82 nego=10 | Arnstadt
-     https://www.autoscout24.de/angebote/hyundai-bayon-1-0-t-gdi-select-benzin-grau-07a0017b-986c-4769-9b11-728a8f53310b
+  2. Renault Megane 2023 — 25 250 km — 20 950 €
+     Score: opp=58 deal=84 nego=10 | Köln
+     https://www.autoscout24.de/angebote/renault-megane-grandtour-techno-140-edc-sitzheizung-benzin-weiss-cat_ma60mo1965-52b87892-ae3e-4474-8ea8-8da9f09ff335
 
-  3. Ford Transit 2024 — 20 650 km — 17 990 €
-     Score: opp=56 deal=76 nego=20 | Luxembourg
-     https://www.autopolis.lu/stock/120763737-1-ford-transit-10-trend
+  3. Skoda Kamiq 2025 — 15 129 km — 23 490 €
+     Score: opp=58 deal=69 nego=38 | Esch-sur-Alzette
+     https://www.autoscout24.lu/offres/skoda-kamiq-monte-carlo+bvm+pano+rearview-essence-gris-cat_ma65mo75292-62c0345c-164b-4fa2-be55-452435eef3e4
 
-  4. Mini Cooper Se 2023 — 16 095 km — 17 894 €
-     Score: opp=56 deal=81 nego=10 | Minden
-     https://www.autoscout24.de/angebote/mini-cooper-se-led-waermepumpe-dab-drivingass-etc-elektro-grau-15c0d6d3-dded-43f7-af52-1e6366ba8bc9
+  4. Dfsk K01 2026 — 10 km — 11 900 €
+     Score: opp=58 deal=83 nego=10 | Luxembourg
+     https://www.luxauto.lu/fr/voiture/dfsk-k01-essence-2026-1809205
 
-  5. Nissan Juke 2021 — 33 786 km — 16 910 €
-     Score: opp=56 deal=75 nego=20 | Sickte
-     https://www.autoscout24.de/angebote/nissan-juke-1-0-dig-t-n-design-navi-leder-led-bose-wp-dab-benzin-rot-d47e9393-f500-4a53-aa53-4c45a23c457d
+  5. Suzuki Sx4 S-Cross 2023 — 24 861 km — 18 840 €
+     Score: opp=58 deal=83 nego=10 | Erfurt
+     https://www.autoscout24.de/angebote/suzuki-sx4-s-cross-sx4-s-cross-1-4-ditc-hybrid-comfort-elektro-benzin-schwarz-cat_ma68mo20312-116f410a-4af8-4cfa-b168-41d33479cdd4
 
 ═══════════════════════════════════════════════════════
-  Généré : 2026-04-04 12:16 | python3.9 dashboard_generator.py
+  Généré : 2026-07-03 08:20 | python3.9 dashboard_generator.py
 ═══════════════════════════════════════════════════════

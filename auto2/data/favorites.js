@@ -1,2 +1,2 @@
-// Généré automatiquement le 2026-04-04 12:16
+// Généré automatiquement le 2026-07-03 08:20
 const FAVORITES = [];
