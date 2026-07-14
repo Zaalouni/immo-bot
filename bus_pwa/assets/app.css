@@ -396,16 +396,22 @@ input[type="search"]::-webkit-search-cancel-button { -webkit-appearance:none; }
 .map-btn:hover { background:var(--accent); color:#fff; text-decoration:none; }
 
 .live-table { display:flex; flex-direction:column; gap:4px; }
-.live-row { display:grid; grid-template-columns:72px 1fr; gap:12px; align-items:center; padding:12px 14px; background:var(--surface); border:1.5px solid var(--border); border-radius:var(--radius); transition:border-color 200ms,background 200ms,opacity 200ms; }
+.live-row { position:relative; overflow:hidden; display:grid; grid-template-columns:86px 1fr; gap:12px; align-items:center; padding:12px 14px; background:var(--surface); border:1.5px solid var(--border); border-radius:var(--radius); transition:border-color 200ms,background 200ms,opacity 200ms; }
+/* Barre d'approche : se remplit a mesure que le depart se rapproche */
+.live-row-bar { position:absolute; left:0; right:0; bottom:0; height:3px; background:transparent; }
+.live-row-bar-fill { height:100%; width:0; background:var(--accent); transition:width 1s linear; }
+.live-row.is-now .live-row-bar-fill { background:var(--green); }
 .live-row.is-soon { border-color:var(--accent); background:var(--accent-dim); }
 .live-row.is-now  { border-color:var(--green);  background:var(--green-dim); }
 .live-row.is-past { opacity:.38; }
 
-.live-row-time { display:flex; flex-direction:column; align-items:center; gap:3px; }
-.live-time-val  { font-size:1.35rem; font-weight:900; font-variant-numeric:tabular-nums; letter-spacing:-.025em; line-height:1; }
+/* Countdown = element dominant (esprit tableau d'arret temps reel) : plus
+   gros et en premier visuellement, l'heure passe au second plan. */
+.live-row-time { display:flex; flex-direction:column-reverse; align-items:center; gap:2px; }
+.live-time-val  { font-size:.76rem; font-weight:700; font-variant-numeric:tabular-nums; letter-spacing:-.01em; line-height:1; color:var(--text2); }
 .live-row.is-now  .live-time-val { color:var(--green); }
 .live-row.is-soon .live-time-val { color:var(--accent); }
-.live-countdown { font-size:.6rem; font-weight:700; text-align:center; white-space:nowrap; min-height:13px; }
+.live-countdown { font-size:1.15rem; font-weight:900; font-variant-numeric:tabular-nums; letter-spacing:-.02em; text-align:center; white-space:nowrap; min-height:22px; line-height:1; }
 
 .live-row-info  { min-width:0; }
 .live-row-top   { display:flex; align-items:center; gap:7px; margin-bottom:4px; flex-wrap:wrap; }

@@ -384,6 +384,12 @@
     return { text: '', cls: '' };
   }
 
+  /* Remplissage de la barre d'approche du Live board (0 -> 100% a l'approche du depart) */
+  function liveBarPct(diffMin, tol) {
+    if (diffMin < 0 || diffMin > tol) return 0;
+    return Math.max(4, Math.round(100 - (diffMin / tol) * 100));
+  }
+
   /* ===== Favoris ===== */
   const favKey   = r => `${r.line}|${r.target_stop}|${r.direction}`;
   const alarmKey = r => favKey(r) + '|' + r.time_minutes;
@@ -401,6 +407,14 @@
   let _favSet = new Set();
   function rebuildFavSet() { _favSet = new Set(state.favorites.map(f => f.key)); }
   const isFav = r => _favSet.has(favKey(r));
+
+  /* Un passage est-il le dernier de ce trajet favori pour le jour de service actif ? */
+  function isLastDeparture(r) {
+    const routeTimes = ALL_BY_FAVKEY.get(favKey(r)) || [];
+    let maxMin = -1;
+    for (const x of routeTimes) if (runsToday(x) && x.time_minutes > maxMin) maxMin = x.time_minutes;
+    return maxMin === r.time_minutes;
+  }
 
   function toggleFav(r) {
     const key = favKey(r);
@@ -865,6 +879,7 @@
       const rowCls = isNow ? 'live-row is-now' : isSoon ? 'live-row is-soon' : isPast ? 'live-row is-past' : 'live-row';
       const { text: cdText, cls: cdCls } = countdown(diff);
       const lineCls = netCls(r.network);
+      const barPct = liveBarPct(diff, state.liveTol);
       const meta = !state.liveStop
         ? escapeHtml(r.target_stop) + (r.course ? ' \xB7 ' + escapeHtml(r.course) : '')
         : r.course ? escapeHtml(r.course) : escapeHtml(r.service_label || '');
@@ -881,6 +896,7 @@
           </div>
           ${meta ? `<div class="live-meta">${meta}</div>` : ''}
         </div>
+        <div class="live-row-bar"><div class="live-row-bar-fill" style="width:${barPct}%"></div></div>
       </div>`;
     }).join('');
 
@@ -1042,6 +1058,8 @@
       const { text, cls } = countdown(diff);
       const cdEl = row.querySelector('.live-countdown');
       if (cdEl) { cdEl.textContent = text; cdEl.className = `live-countdown ${cls}`; }
+      const barEl = row.querySelector('.live-row-bar-fill');
+      if (barEl) barEl.style.width = liveBarPct(diff, state.liveTol) + '%';
       row.classList.toggle('is-now',  Math.abs(diff) <= 2);
       row.classList.toggle('is-soon', diff > 2 && diff <= state.liveTol);
       row.classList.toggle('is-past', diff < -2);
@@ -1075,6 +1093,20 @@
       if (state.tab === 'now' || state.tab === 'live') applyFilters();
       else { updateNextBus(); renderGoHome(); }
     }
+  }
+
+  /* Suspend le tick 1s quand l'onglet est masque (batterie) ; reprend
+     immediatement (avec un tick() synchrone pour rattraper) au retour. */
+  let tickTimer = null;
+  function startTicking() {
+    if (tickTimer !== null) return;
+    tick();
+    tickTimer = setInterval(tick, 1000);
+  }
+  function stopTicking() {
+    if (tickTimer === null) return;
+    clearInterval(tickTimer);
+    tickTimer = null;
   }
 
   /* ===== Online / Offline ===== */
@@ -1141,14 +1173,28 @@
       fireNotif('\u{1F306} Alerte soir', `${nb} bus disponibles — 17:40 à 19:00`, 'alert-evening');
     }
     if (state.favorites.length) {
-      ALL.filter(r => isFav(r) && runsToday(r) && inRange(r.time_minutes, n, 5)).forEach(r => {
-        const key = r.line + '|' + r.time + '|' + r.target_stop;
-        if (notif.notifiedBuses.has(key)) return;
-        notif.notifiedBuses.add(key);
+      const due = ALL.filter(r => isFav(r) && runsToday(r) && inRange(r.time_minutes, n, 5))
+        .filter(r => !notif.notifiedBuses.has(r.line + '|' + r.time + '|' + r.target_stop))
+        .sort((a, b) => a.time_minutes - b.time_minutes);
+      due.forEach(r => notif.notifiedBuses.add(r.line + '|' + r.time + '|' + r.target_stop));
+
+      const lineFor = r => {
         const diff = r.time_minutes - n;
         const when = diff <= 1 ? 'maintenant' : `dans ${diff} min`;
-        fireNotif(`Bus ${r.line} (${when})`, `${r.time} — ${r.target_stop}\n${r.direction}`, 'bus-' + key);
-      });
+        const last = isLastDeparture(r) ? ' \u{1F319} dernier bus du jour' : '';
+        return { when, last, text: `${r.network} ${r.line} ${r.time} (${when})${last} — ${r.target_stop}` };
+      };
+
+      /* Un seul favori du : notification detaillee comme avant.
+         Plusieurs en meme temps : regroupees pour eviter le spam. */
+      if (due.length === 1) {
+        const r = due[0];
+        const { when, last } = lineFor(r);
+        fireNotif(`Bus ${r.line} (${when})${last}`, `${r.time} — ${r.target_stop}\n${r.direction}`, 'bus-' + favKey(r));
+      } else if (due.length > 1) {
+        const body = due.map(r => lineFor(r).text).join('\n');
+        fireNotif(`\u{1F514} ${due.length} favoris bientôt`, body, 'bus-group-' + n);
+      }
     }
   }
 
@@ -1652,8 +1698,8 @@
     restoreAlarms();
     applyFilters();
     detectNearestStop({ silent: true, watch: true });
-    tick();
-    setInterval(tick, 1000);
+    document.addEventListener('visibilitychange', () => { document.hidden ? stopTicking() : startTicking(); });
+    if (!document.hidden) startTicking();
   }
 
   function findRecord(card) {

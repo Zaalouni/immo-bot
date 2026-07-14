@@ -1,9 +1,9 @@
 /* ============================================================
-   Service Worker — bus-offline-v25
+   Service Worker — bus-offline-v26
    Cache-first assets · Network-first data · Periodic Sync alerts
    ============================================================ */
 
-const CACHE_NAME = 'bus-offline-v25';
+const CACHE_NAME = 'bus-offline-v26';
 const NOTIF_CACHE = 'bus-notif-state-v1';
 
 const STATIC_ASSETS = [
@@ -89,17 +89,25 @@ self.addEventListener('fetch', event => {
   const isData = DATA_ASSETS.some(d => url.pathname.endsWith(d.replace('./', '/')));
 
   if (isData) {
-    event.respondWith(
-      fetch(event.request)
-        .then(response => {
-          if (response && response.status === 200) {
-            const clone = response.clone();
-            caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
-          }
-          return response;
-        })
-        .catch(() => caches.match(event.request))
-    );
+    /* Stale-while-revalidate : sert le cache instantanement (le bouton
+       "Verifier les mises a jour" de l'app gere deja le cas "nouvelles
+       donnees disponibles" explicitement), et rafraichit le cache en tache
+       de fond. Avant, le fetch reseau bloquait chaque chargement de
+       bus-schedules.js (~1.5 Mo) meme quand le cache etait deja a jour. */
+    event.respondWith((async () => {
+      const cached = await caches.match(event.request);
+      const networkUpdate = fetch(event.request).then(response => {
+        if (response && response.status === 200) {
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, response.clone()));
+        }
+        return response;
+      }).catch(() => null);
+      if (cached) {
+        event.waitUntil(networkUpdate);
+        return cached;
+      }
+      return (await networkUpdate) || new Response('', { status: 408, statusText: 'Offline' });
+    })());
   } else {
     event.respondWith(
       caches.match(event.request).then(cached => {
