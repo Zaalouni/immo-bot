@@ -1,23 +1,23 @@
 ═══════════════════════════════════════════════════════
   AUTO-BOT LUXEMBOURG — Résumé du 2026-09-12
 ═══════════════════════════════════════════════════════
-  Annonces actives    : 5,139
-  Nouvelles aujourd'hui: 1,733
+  Annonces actives    : 6,259
+  Nouvelles aujourd'hui: 2,877
   Baisses de prix (7j) : 0
 
   TOP 5 OPPORTUNITÉS DU JOUR
   ─────────────────────────────────────────────────────
-  1. Kia Ceed Pulse 2024 — 28 500 km — 19 990 €
-     Score: opp=62 deal=77 nego=35 | Luxembourg
-     https://www.autopolis.lu/stock/91528083-1-kia-ceed-pulse-10-t-gdi-120-mhev-dct-isg
-
-  2. Dfsk K01 2026 — 10 km — 13 900 €
+  1. Dfsk K01 2026 — 10 km — 13 900 €
      Score: opp=61 deal=83 nego=20 | Luxembourg
      https://www.luxauto.lu/fr/voiture/dfsk-k01-essence-2026-1809205
 
-  3. Cupra Terramar 2025 — 19 739 km — 31 490 €
-     Score: opp=58 deal=61 nego=53 | Esch-sur-Alzette
-     https://www.autoscout24.lu/offres/cupra-terramar-dsg+led+head+navi-essence-noir-cat_ma51802mo76859-dae02e60-3b7b-4dff-baf7-25d21640efea
+  2. Volkswagen E-Up! 2022 — 22 585 km — 16 490 €
+     Score: opp=60 deal=76 nego=30 | Esch-sur-Alzette
+     https://www.autoscout24.lu/offres/volkswagen-e-up-32kwh+move+p-style+p-confort+digi+-electrique-rouge-cat_ma74mo75860-fac01f88-2eae-4abc-b506-97fb55d188e4
+
+  3. Kia Ceed Pulse 2024 — 28 500 km — 19 990 €
+     Score: opp=59 deal=72 nego=35 | Luxembourg
+     https://www.autopolis.lu/stock/91528083-1-kia-ceed-pulse-10-t-gdi-120-mhev-dct-isg
 
   4. Audi Q2 2025 — 13 692 km — 26 490 €
      Score: opp=58 deal=69 nego=38 | Roost
@@ -28,5 +28,5 @@
      https://www.luxauto.lu/fr/voiture/nissan-juke-essence-2024-1829389
 
 ═══════════════════════════════════════════════════════
-  Généré : 2026-09-12 13:09 | python3.9 dashboard_generator.py
+  Généré : 2026-09-12 13:21 | python3.9 dashboard_generator.py
 ═══════════════════════════════════════════════════════
