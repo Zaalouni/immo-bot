@@ -1,32 +1,32 @@
 ═══════════════════════════════════════════════════════
-  AUTO-BOT LUXEMBOURG — Résumé du 2026-07-03
+  AUTO-BOT LUXEMBOURG — Résumé du 2026-09-12
 ═══════════════════════════════════════════════════════
-  Annonces actives    : 5,213
-  Nouvelles aujourd'hui: 226
+  Annonces actives    : 5,133
+  Nouvelles aujourd'hui: 1,720
   Baisses de prix (7j) : 0
 
   TOP 5 OPPORTUNITÉS DU JOUR
   ─────────────────────────────────────────────────────
-  1. Opel Grandland 2023 — 13 482 km — 21 900 €
-     Score: opp=60 deal=87 nego=10 | Senftenberg /Ortsteil Brieske
-     https://www.autoscout24.de/angebote/opel-grandland-1-2-di-elegance-benzin-silber-cat_ma54mo75943-dc049b08-9266-446f-b35d-68175c1e52ec
+  1. Kia Ceed Pulse 2024 — 28 500 km — 19 990 €
+     Score: opp=62 deal=77 nego=35 | Luxembourg
+     https://www.autopolis.lu/stock/91528083-1-kia-ceed-pulse-10-t-gdi-120-mhev-dct-isg
 
-  2. Renault Megane 2023 — 25 250 km — 20 950 €
-     Score: opp=58 deal=84 nego=10 | Köln
-     https://www.autoscout24.de/angebote/renault-megane-grandtour-techno-140-edc-sitzheizung-benzin-weiss-cat_ma60mo1965-52b87892-ae3e-4474-8ea8-8da9f09ff335
-
-  3. Skoda Kamiq 2025 — 15 129 km — 23 490 €
-     Score: opp=58 deal=69 nego=38 | Esch-sur-Alzette
-     https://www.autoscout24.lu/offres/skoda-kamiq-monte-carlo+bvm+pano+rearview-essence-gris-cat_ma65mo75292-62c0345c-164b-4fa2-be55-452435eef3e4
-
-  4. Dfsk K01 2026 — 10 km — 11 900 €
-     Score: opp=58 deal=83 nego=10 | Luxembourg
+  2. Dfsk K01 2026 — 10 km — 13 900 €
+     Score: opp=61 deal=83 nego=20 | Luxembourg
      https://www.luxauto.lu/fr/voiture/dfsk-k01-essence-2026-1809205
 
-  5. Suzuki Sx4 S-Cross 2023 — 24 861 km — 18 840 €
-     Score: opp=58 deal=83 nego=10 | Erfurt
-     https://www.autoscout24.de/angebote/suzuki-sx4-s-cross-sx4-s-cross-1-4-ditc-hybrid-comfort-elektro-benzin-schwarz-cat_ma68mo20312-116f410a-4af8-4cfa-b168-41d33479cdd4
+  3. Cupra Terramar 2025 — 19 739 km — 31 490 €
+     Score: opp=58 deal=61 nego=53 | Esch-sur-Alzette
+     https://www.autoscout24.lu/offres/cupra-terramar-dsg+led+head+navi-essence-noir-cat_ma51802mo76859-dae02e60-3b7b-4dff-baf7-25d21640efea
+
+  4. Audi Q2 2025 — 13 692 km — 26 490 €
+     Score: opp=58 deal=69 nego=38 | Roost
+     https://www.autoscout24.lu/offres/audi-q2-advanced+35tfsi+s-tronic-essence-noir-cat_ma9mo74373-6fc5c792-807f-431c-8758-21d69d3423f6
+
+  5. Nissan Juke 2024 — 19 434 km — 16 990 €
+     Score: opp=58 deal=74 nego=28 | Luxembourg
+     https://www.luxauto.lu/fr/voiture/nissan-juke-essence-2024-1829389
 
 ═══════════════════════════════════════════════════════
-  Généré : 2026-07-03 08:20 | python3.9 dashboard_generator.py
+  Généré : 2026-09-12 12:14 | python3.9 dashboard_generator.py
 ═══════════════════════════════════════════════════════

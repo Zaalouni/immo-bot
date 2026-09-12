@@ -6,7 +6,7 @@
   <title>Auto-Bot LU — Top Modèles</title>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0d1117">
-  <meta name="description" content="Top modèles recommandés sur le marché auto Luxembourg — Auto-Bot">
+  <meta name="description" content="Quel modèle acheter ? Classement par prix, deal score, fiabilité et consommation — Auto-Bot">
   <meta name="robots" content="noindex,nofollow">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -83,6 +83,12 @@
     /* Carbu tags */
     .carbu-tag { font-size: 10px; background: var(--surface2); color: var(--txt3); border: 1px solid var(--border); border-radius: 3px; padding: 1px 5px; }
 
+    /* Intro */
+    .page-intro { color: var(--txt2); font-size: 13px; margin: 0 0 16px; max-width: 900px; }
+
+    /* Fiabilité badge */
+    .fiab-badge { font-family: 'DM Mono', monospace; font-weight: 600; padding: 2px 8px; border-radius: 10px; font-size: 12px; }
+
     /* Prix */
     .prix-mono { font-family: 'DM Mono', monospace; }
 
@@ -135,6 +141,13 @@
 
 <div class="container-fluid py-4 px-3 px-md-4">
 
+  <p class="page-intro">
+    Aide au choix : classement des modèles combinant le prix du marché LU, le deal score des annonces
+    disponibles, la fiabilité et la consommation réelle (avis constructeur/propriétaires). Le
+    <strong>score achat</strong> combine les trois quand un avis existe pour le modèle (24 modèles suivis) ;
+    les autres modèles restent classés sur prix/deal seulement.
+  </p>
+
   <!-- Filtres -->
   <div class="filter-panel">
     <div class="row g-2 align-items-end">
@@ -168,9 +181,19 @@
         </select>
       </div>
       <div class="col-auto">
+        <label class="form-label mb-1">Usage principal</label>
+        <select class="form-select form-select-sm" id="filter-usage">
+          <option value="mixte">Mixte / Ville</option>
+          <option value="autoroute">Autoroute</option>
+        </select>
+      </div>
+      <div class="col-auto">
         <label class="form-label mb-1">Tri</label>
         <select class="form-select form-select-sm" id="sort-select">
+          <option value="achat">Score achat (prix+fiabilité+conso)</option>
           <option value="deal">Meilleur deal score</option>
+          <option value="fiabilite">Meilleure fiabilité</option>
+          <option value="conso">Conso la plus basse</option>
           <option value="count_desc">Plus d'annonces</option>
           <option value="prix_asc">Prix moyen croissant</option>
           <option value="km_asc">Km moyen croissant</option>
@@ -209,7 +232,9 @@
             <th>Km moyen</th>
             <th>Année moy.</th>
             <th>Deal score</th>
-            <th>Risk score</th>
+            <th>Fiabilité</th>
+            <th>Conso</th>
+            <th>Score achat</th>
             <th>Carburants</th>
           </tr>
         </thead>
@@ -226,6 +251,7 @@
 <div class="footer-bar">Auto-Bot LU — <span id="footer-date">—</span></div>
 
 <script src="data/listings.js"></script>
+<script src="data/reviews.js"></script>
 <script src="data/version.js"></script>
 <script>
   Chart.defaults.color = '#8b949e';
@@ -245,12 +271,37 @@
   });
 
   const allListings = typeof LISTINGS !== 'undefined' ? LISTINGS : [];
+  const allReviews  = (typeof REVIEWS !== 'undefined' && REVIEWS.reviews) ? REVIEWS.reviews : [];
+
+  // Index avis par marque|modele (cle normalisee en minuscules)
+  const reviewsByKey = {};
+  allReviews.forEach(r => {
+    const key = `${(r.marque||'').toLowerCase()}|${(r.modele||'').toLowerCase()}`;
+    reviewsByKey[key] = r;
+  });
+  function findReview(marque, modele) {
+    const mk = (marque||'').toLowerCase(), mod = (modele||'').toLowerCase();
+    const exact = reviewsByKey[`${mk}|${mod}`];
+    if (exact) return exact;
+    // Correspondance partielle (ex: "Golf 8" scrape vs "Golf" en avis)
+    for (const key in reviewsByKey) {
+      const [rmk, rmod] = key.split('|');
+      if (rmk === mk && (mod.includes(rmod) || rmod.includes(mod))) return reviewsByKey[key];
+    }
+    return null;
+  }
 
   function fmtPrix(p) { return p ? p.toLocaleString('fr-LU') + '\u202f€' : '—'; }
   function fmtKm(k)   { return k ? Math.round(k/1000) + 'k km' : '—'; }
   function avg(arr)   { return arr.length ? Math.round(arr.reduce((s,x)=>s+x,0)/arr.length) : null; }
 
-  function buildModels(listings) {
+  // Score conso indicatif 0-100 (plus la conso L/100 est basse, plus le score est haut)
+  function consoScore(conso) {
+    if (!conso) return null;
+    return Math.max(0, Math.min(100, Math.round(100 - (conso - 3) * 12)));
+  }
+
+  function buildModels(listings, usage) {
     const groups = {};
     listings.forEach(l => {
       const marque = l.marque_norm || l.marque || '?';
@@ -264,13 +315,33 @@
       const ls = g.listings;
       const carbus = {};
       ls.forEach(l => { if(l.carburant) { carbus[l.carburant]=(carbus[l.carburant]||0)+1; } });
+
+      const review = findReview(g.marque, g.modele);
+      const fiabilite = review ? review.note_fiabilite : null;
+      const conso = review
+        ? (usage === 'autoroute' ? review.consommation_autoroute_l100 : review.consommation_mixte_l100)
+        : null;
+      const deal_moyen = avg(ls.filter(l=>l.deal_score).map(l=>l.deal_score));
+      const cScore = consoScore(conso);
+
+      // Score achat : deal (50%) + fiabilite (30%) + conso (20%) quand un avis existe,
+      // sinon repli sur le deal score seul.
+      let score_achat = deal_moyen || 0;
+      if (fiabilite != null) {
+        score_achat = Math.round(
+          (deal_moyen || 50) * 0.5 + (fiabilite * 10) * 0.3 + (cScore != null ? cScore : 50) * 0.2
+        );
+      }
+
       return {
         marque: g.marque, modele: g.modele, count: ls.length,
         prix_moyen: avg(ls.filter(l=>l.prix).map(l=>l.prix)),
         km_moyen:   avg(ls.filter(l=>l.km).map(l=>l.km)),
         annee_moy:  avg(ls.filter(l=>l.annee).map(l=>l.annee)),
-        deal_moyen: avg(ls.filter(l=>l.deal_score).map(l=>l.deal_score)),
+        deal_moyen,
         risk_moyen: avg(ls.filter(l=>l.risk_score).map(l=>l.risk_score)),
+        fiabilite, conso, score_achat,
+        a_avis: !!review,
         carburants: carbus, listings: ls,
       };
     });
@@ -280,6 +351,7 @@
     const budget   = parseInt(document.getElementById('filter-budget').value) || Infinity;
     const carbu    = document.getElementById('filter-carbu').value.toLowerCase();
     const minCount = parseInt(document.getElementById('filter-min-count').value) || 1;
+    const usage    = document.getElementById('filter-usage').value;
     const sort     = document.getElementById('sort-select').value;
 
     let filtered = allListings.filter(l => {
@@ -288,16 +360,19 @@
       return true;
     });
 
-    let models = buildModels(filtered).filter(m => m.count >= minCount);
+    let models = buildModels(filtered, usage).filter(m => m.count >= minCount);
 
-    if (sort === 'deal')            models.sort((a,b) => (b.deal_moyen||0) - (a.deal_moyen||0));
+    if (sort === 'achat')            models.sort((a,b) => (b.score_achat||0) - (a.score_achat||0));
+    else if (sort === 'deal')        models.sort((a,b) => (b.deal_moyen||0) - (a.deal_moyen||0));
+    else if (sort === 'fiabilite')   models.sort((a,b) => (b.fiabilite||0) - (a.fiabilite||0));
+    else if (sort === 'conso')       models.sort((a,b) => (a.conso||Infinity) - (b.conso||Infinity));
     else if (sort === 'count_desc') models.sort((a,b) => b.count - a.count);
     else if (sort === 'prix_asc')   models.sort((a,b) => (a.prix_moyen||Infinity) - (b.prix_moyen||Infinity));
     else if (sort === 'km_asc')     models.sort((a,b) => (a.km_moyen||Infinity) - (b.km_moyen||Infinity));
 
     document.getElementById('sb-modeles').textContent  = models.length;
     document.getElementById('sb-annonces').textContent = filtered.length;
-    const bestScore = models.length && models[0].deal_moyen ? models[0].deal_moyen + '/100' : '—';
+    const bestScore = models.length && models[0].score_achat ? models[0].score_achat + '/100' : '—';
     document.getElementById('sb-best').textContent = bestScore;
 
     // Chart deal
@@ -332,10 +407,16 @@
       const carbuTags = Object.entries(m.carburants).sort((a,b)=>b[1]-a[1]).slice(0,3)
         .map(([c,n]) => `<span class="carbu-tag">${c} (${n})</span>`).join(' ');
 
+      const fiab = m.fiabilite;
+      const fiabColor = fiab == null ? null : fiab >= 8 ? 'var(--green)' : fiab >= 6 ? 'var(--amber)' : 'var(--red)';
+      const fiabBg    = fiab == null ? null : fiab >= 8 ? 'var(--green-dim)' : fiab >= 6 ? 'var(--amber-dim)' : 'var(--red-dim)';
+      const achat = m.score_achat;
+      const achatColor = achat >= 70 ? 'var(--green)' : achat >= 45 ? 'var(--amber)' : 'var(--red)';
+
       tbody.innerHTML += `
         <tr>
           <td><span class="rank-badge ${rankClass}">${rank}</span></td>
-          <td><strong>${m.marque}</strong> ${m.modele}</td>
+          <td><strong>${m.marque}</strong> ${m.modele}${m.a_avis ? ' <span title="Avis disponible" style="color:var(--accent)">★</span>' : ''}</td>
           <td><span class="count-badge-sm">${m.count}</span></td>
           <td class="prix-mono">${fmtPrix(m.prix_moyen)}</td>
           <td class="prix-mono">${fmtKm(m.km_moyen)}</td>
@@ -347,17 +428,18 @@
             </div>` : '<span style="color:var(--txt3)">—</span>'}
           </td>
           <td>
-            ${rs ? `<div class="d-flex align-items-center gap-2">
-              <div class="score-bar"><div class="score-bar-fill" style="width:${rs}%;background:${riskColor}"></div></div>
-              <span class="prix-mono" style="color:${riskColor};font-weight:600">${rs}</span>
-            </div>` : '<span style="color:var(--txt3)">—</span>'}
+            ${fiab != null ? `<span class="fiab-badge" style="color:${fiabColor};background:${fiabBg}">${fiab.toFixed(1)}/10</span>` : '<span style="color:var(--txt3)">—</span>'}
+          </td>
+          <td class="prix-mono">${m.conso != null ? m.conso.toFixed(1) + ' L/100' : '—'}</td>
+          <td>
+            <span class="prix-mono" style="color:${achatColor};font-weight:700">${achat}</span>
           </td>
           <td>${carbuTags || '—'}</td>
         </tr>`;
     });
   }
 
-  ['filter-budget','filter-carbu','filter-min-count','sort-select'].forEach(id => {
+  ['filter-budget','filter-carbu','filter-min-count','filter-usage','sort-select'].forEach(id => {
     document.getElementById(id).addEventListener('change', renderAll);
   });
 

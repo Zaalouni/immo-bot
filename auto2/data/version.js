@@ -1,14 +1,14 @@
-// Généré automatiquement — deploy #45
+// Généré automatiquement — deploy #54
 const VERSION = {
   dashboard_version: "2.0",
-  deploy_count: 45,
-  generated_at: "2026-07-03T08:20:12.868534",
-  generated_date: "2026-07-03",
-  generated_time: "08:20",
-  nb_listings: 5213,
-  nb_vendors: 572,
-  nb_new_today: 226,
-  last_scraping: "08:19"
+  deploy_count: 54,
+  generated_at: "2026-09-12T12:14:50.040667",
+  generated_date: "2026-09-12",
+  generated_time: "12:14",
+  nb_listings: 5133,
+  nb_vendors: 511,
+  nb_new_today: 1720,
+  last_scraping: "12:14"
 };
 
 // escapeHtml() globale — échappe tout contenu scrapé avant injection innerHTML (anti-XSS)
