@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Auto-Bot LU — Coût d'importation</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0d1117">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="AutoBot LU">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <meta name="description" content="Calculateur coût d'importation DE/FR → Luxembourg — Auto-Bot Luxembourg">
+  <meta name="robots" content="noindex,nofollow">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+  <style>
+    :root {
+      --bg: #0d1117; --surface: #161b22; --surface2: #21262d;
+      --border: #30363d; --border2: #3d444e;
+      --txt: #e6edf3; --txt2: #8b949e; --txt3: #6e7681;
+      --accent: #388bfd; --accent-dim: rgba(56,139,253,.15);
+      --green: #3fb950; --green-dim: rgba(63,185,80,.15);
+      --amber: #d29922; --amber-dim: rgba(210,153,34,.15);
+      --red: #f85149; --red-dim: rgba(248,81,73,.15);
+      --purple: #bc8cff;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { background: var(--bg); color: var(--txt); font-family: 'Barlow', sans-serif; font-size: 14px; margin: 0; }
+    ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+    .navbar { background: var(--surface) !important; border-bottom: 1px solid var(--border); padding: 0 1rem; }
+    .navbar-brand { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 1.2rem; color: var(--txt) !important; }
+    .navbar-brand span { color: var(--accent); }
+    .navbar-toggler { border: 1px solid var(--border) !important; padding: 4px 8px; }
+    .navbar-toggler-icon { filter: invert(1); }
+    .navbar-collapse { background: var(--surface); }
+    .nav-link { color: var(--txt2) !important; font-size: 13px; font-weight: 500; padding: 12px 14px !important; transition: color .15s; }
+    .nav-link:hover { color: var(--txt) !important; }
+    .nav-link.active { color: var(--accent) !important; }
+
+    .form-section { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px 22px; margin-bottom: 18px; }
+    .form-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1rem; text-transform: uppercase; letter-spacing: .04em; color: var(--txt2); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    .form-label { font-size: 12px; font-weight: 600; color: var(--txt2); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 5px; }
+    .form-control, .form-select {
+      background: var(--surface2) !important; border: 1px solid var(--border) !important;
+      color: var(--txt) !important; border-radius: 6px; font-size: 13px; padding: 7px 12px;
+    }
+    .form-control:focus, .form-select:focus {
+      border-color: var(--accent) !important; box-shadow: 0 0 0 2px rgba(56,139,253,.2) !important; outline: none;
+    }
+    .form-control option, .form-select option { background: var(--surface2); color: var(--txt); }
+    .input-group-text { background: var(--surface2) !important; border: 1px solid var(--border) !important; color: var(--txt3) !important; font-size: 12px; }
+    .form-check-input { background-color: var(--surface2); border-color: var(--border); }
+    .form-check-input:checked { background-color: var(--accent); border-color: var(--accent); }
+    .form-check-label { font-size: 13px; color: var(--txt2); }
+
+    .select2-container--default .select2-selection--single { background: var(--surface2); border: 1px solid var(--border); height: 36px; border-radius: 6px; }
+    .select2-container--default .select2-selection--single .select2-selection__rendered { color: var(--txt); line-height: 34px; font-size: 13px; }
+    .select2-container--default .select2-selection--single .select2-selection__arrow { height: 34px; }
+    .select2-dropdown { background: var(--surface2); border: 1px solid var(--border); }
+    .select2-container--default .select2-results__option--highlighted[aria-selected] { background: var(--accent); }
+    .select2-search__field { background: var(--surface) !important; color: var(--txt) !important; border: 1px solid var(--border) !important; }
+    .select2-results__option { color: var(--txt); font-size: 13px; }
+
+    .hypo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 576px) { .hypo-grid { grid-template-columns: 1fr; } }
+
+    .result-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 16px; }
+    .result-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; text-align: center; }
+    .result-val { font-family: 'DM Mono', monospace; font-size: 1.5rem; font-weight: 500; line-height: 1; }
+    .result-label { font-size: 11px; color: var(--txt3); text-transform: uppercase; letter-spacing: .04em; margin-top: 4px; }
+
+    .detail-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    .detail-table td { padding: 6px 10px; font-size: 13px; border-bottom: 1px solid var(--border); }
+    .detail-table td:first-child { color: var(--txt2); }
+    .detail-table td:nth-child(2) { font-family: 'DM Mono', monospace; text-align: right; font-weight: 500; }
+    .detail-table tr:last-child td { border-bottom: none; font-weight: 700; font-size: 14px; }
+
+    .verdict { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px 22px; margin-top: 18px; }
+    .verdict-winner { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 1.8rem; }
+    .verdict-saving { font-family: 'DM Mono', monospace; font-size: 1.2rem; color: var(--green); }
+
+    .btn-calc {
+      background: var(--accent); border: none; color: #fff; font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700; font-size: 1.1rem; letter-spacing: .04em; text-transform: uppercase;
+      padding: 12px 32px; border-radius: 8px; cursor: pointer; transition: opacity .15s; width: 100%;
+    }
+    .btn-calc:hover { opacity: .85; }
+
+    .chart-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px; }
+    .info-tip { font-size: 11px; color: var(--txt3); margin-top: 3px; }
+
+    .tips-list { font-size: 13px; color: var(--txt2); line-height: 1.6; margin: 0; padding-left: 18px; }
+    .tips-list li { margin-bottom: 6px; }
+
+    .warn-box { background: var(--amber-dim); border: 1px solid rgba(210,153,34,.4); border-radius: 8px; padding: 12px 16px; font-size: 12px; color: var(--txt2); margin-bottom: 18px; }
+    .warn-box strong { color: var(--amber); }
+
+    #version-bar { font-size: 11px; color: var(--txt3); text-align: center; padding: 8px 0 12px; border-top: 1px solid var(--border); background: var(--surface); margin-top: 20px; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg">
+  <a class="navbar-brand" href="index.html"><span>◈</span> AUTO-BOT LU</a>
+  <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navMenu">
+    <ul class="navbar-nav ms-auto">
+      <li class="nav-item"><a class="nav-link" href="index.html">Annonces</a></li>
+      <li class="nav-item"><a class="nav-link" href="deals.html">Deals</a></li>
+      <li class="nav-item"><a class="nav-link" href="opportunities.html">Opportunités</a></li>
+      <li class="nav-item"><a class="nav-link" href="rapport.html">Rapport</a></li>
+      <li class="nav-item"><a class="nav-link" href="watchlist.html">Watchlist</a></li>
+      <li class="nav-item"><a class="nav-link" href="alerts.html">Alertes</a></li>
+      <li class="nav-item"><a class="nav-link" href="map.html">Carte</a></li>
+      <li class="nav-item"><a class="nav-link" href="reviews.html">Avis</a></li>
+      <li class="nav-item"><a class="nav-link" href="market.html">Marché</a></li>
+      <li class="nav-item"><a class="nav-link" href="history.html">Historique</a></li>
+      <li class="nav-item"><a class="nav-link" href="suv-hybrid.html">SUV Hybride</a></li>
+      <li class="nav-item"><a class="nav-link" href="suv.html">Guide SUV</a></li>
+      <li class="nav-item"><a class="nav-link" href="compare.html">Comparer</a></li>
+      <li class="nav-item"><a class="nav-link" href="budget.html">Budget</a></li>
+      <li class="nav-item"><a class="nav-link" href="tco.html">TCO</a></li>
+      <li class="nav-item"><a class="nav-link" href="leasing.html">Leasing</a></li>
+      <li class="nav-item"><a class="nav-link active" href="import.html">Import</a></li>
+      <li class="nav-item"><a class="nav-link" href="selection.html">⭐ Sélection</a></li>
+      <li class="nav-item"><a class="nav-link" href="top-models.html">Top Modèles</a></li>
+      <li class="nav-item"><a class="nav-link" href="vendors.html">Vendeurs</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container-fluid p-3" style="max-width:1100px">
+
+  <div class="mb-4">
+    <h1 style="font-family:'Barlow Condensed',sans-serif;font-size:1.8rem;font-weight:800;margin:0;">
+      🌍 Coût d'importation DE/FR → Luxembourg
+    </h1>
+    <div style="font-size:13px;color:var(--txt2);margin-top:4px;">
+      Estime le coût total d'une annonce achetée en Allemagne ou en France une fois immatriculée au Luxembourg,
+      et le compare au prix médian du même modèle déjà en vente au Luxembourg.
+    </div>
+  </div>
+
+  <div class="warn-box">
+    ⚠ <strong>Estimation indicative</strong> — les frais réels (taxe routière, contrôle technique, plaques) dépendent
+    de la situation exacte du véhicule. Vérifiez les montants à jour auprès de la SNCA (immatriculation) et de
+    l'Administration des douanes et accises avant tout achat. Un achat entre particuliers d'un véhicule d'occasion
+    déjà immatriculé dans l'UE n'entraîne en général pas de TVA supplémentaire au Luxembourg.
+  </div>
+
+  <div class="row g-4">
+
+    <!-- Colonne gauche -->
+    <div class="col-12 col-lg-5">
+
+      <div class="form-section">
+        <div class="form-title">🚘 Véhicule (optionnel — depuis une annonce DE/FR)</div>
+        <select id="select-listing" style="width:100%"></select>
+        <div class="info-tip">Choisir une annonce pré-remplit le prix et le pays d'origine. Laisser vide pour saisir librement.</div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-title">💶 Véhicule & origine</div>
+        <div class="row g-3">
+          <div class="col-12">
+            <label class="form-label">Nom / Modèle</label>
+            <input type="text" class="form-control" id="v-nom" placeholder="ex: BMW 320d Touring 2021" value="Véhicule importé">
+          </div>
+          <div class="col-6">
+            <label class="form-label">Prix d'achat</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="v-prix" value="24000" min="0" step="500">
+              <span class="input-group-text">€</span>
+            </div>
+          </div>
+          <div class="col-6">
+            <label class="form-label">Pays d'origine</label>
+            <select class="form-select" id="v-pays">
+              <option value="Allemagne" selected>Allemagne</option>
+              <option value="France">France</option>
+              <option value="Belgique">Belgique</option>
+            </select>
+          </div>
+          <div class="col-6">
+            <label class="form-label">Marque</label>
+            <input type="text" class="form-control" id="v-marque" placeholder="ex: BMW" value="">
+          </div>
+          <div class="col-6">
+            <label class="form-label">Modèle</label>
+            <input type="text" class="form-control" id="v-modele" placeholder="ex: Serie 3" value="">
+          </div>
+          <div class="col-6">
+            <label class="form-label">CO2</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="v-co2" value="130" min="0" max="400" step="1">
+              <span class="input-group-text">g/km</span>
+            </div>
+            <div class="info-tip">Sert à estimer la taxe routière annuelle LU</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-title">🚚 Frais d'importation & immatriculation</div>
+        <div class="row g-3">
+          <div class="col-6">
+            <label class="form-label">Transport / rapatriement</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="i-transport" value="300" min="0" step="50">
+              <span class="input-group-text">€</span>
+            </div>
+          </div>
+          <div class="col-6">
+            <label class="form-label">Plaques + carte grise LU</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="i-plaques" value="130" min="0" step="10">
+              <span class="input-group-text">€</span>
+            </div>
+          </div>
+          <div class="col-6">
+            <label class="form-label">Contrôle technique LU</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="i-ct" value="80" min="0" step="10">
+              <span class="input-group-text">€</span>
+            </div>
+          </div>
+          <div class="col-6">
+            <label class="form-label">Taxe routière annuelle (estimée)</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="i-taxe" value="150" min="0" step="10">
+              <span class="input-group-text">€/an</span>
+            </div>
+            <div class="info-tip">Pré-remplie selon le CO2 — modifiable</div>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Frais divers (dossier, homologation...)</label>
+            <div class="input-group">
+              <input type="number" class="form-control" id="i-divers" value="100" min="0" step="10">
+              <span class="input-group-text">€</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-calc" onclick="calculate()">⚡ Calculer le coût réel</button>
+
+    </div>
+
+    <!-- Colonne droite -->
+    <div class="col-12 col-lg-7">
+      <div id="results-placeholder" style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:60px 20px;text-align:center;color:var(--txt3);">
+        <div style="font-size:3rem;margin-bottom:16px;">🌍</div>
+        <div style="font-size:1.1rem;font-weight:600;color:var(--txt2);margin-bottom:8px;">Renseignez les paramètres</div>
+        <div style="font-size:13px;">Ajustez les valeurs à gauche et cliquez<br><strong style="color:var(--accent)">⚡ Calculer le coût réel</strong></div>
+      </div>
+
+      <div id="results" style="display:none;">
+
+        <div class="verdict mb-4">
+          <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--txt3);margin-bottom:6px;">Verdict</div>
+          <div class="verdict-winner" id="verdict-winner"></div>
+          <div class="verdict-saving" id="verdict-saving"></div>
+          <div style="font-size:13px;color:var(--txt2);margin-top:6px;" id="verdict-detail"></div>
+        </div>
+
+        <div class="row g-3 mb-3">
+          <div class="col-6">
+            <div style="background:var(--surface);border:2px solid var(--amber);border-radius:10px;padding:16px;">
+              <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;color:var(--amber);margin-bottom:10px;">🌍 Importé + immatriculé</div>
+              <div class="result-grid">
+                <div class="result-card">
+                  <div class="result-val" id="res-import-total" style="color:var(--amber);font-size:1.3rem;"></div>
+                  <div class="result-label">Coût total réel</div>
+                </div>
+              </div>
+              <table class="detail-table" id="detail-import"></table>
+            </div>
+          </div>
+          <div class="col-6">
+            <div style="background:var(--surface);border:2px solid var(--accent);border-radius:10px;padding:16px;">
+              <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;color:var(--accent);margin-bottom:10px;">🇱🇺 Même modèle au LU</div>
+              <div class="result-grid">
+                <div class="result-card">
+                  <div class="result-val" id="res-lu-total" style="color:var(--accent);font-size:1.3rem;"></div>
+                  <div class="result-label">Prix médian marché</div>
+                </div>
+              </div>
+              <table class="detail-table" id="detail-lu"></table>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-card mb-3">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.04em;color:var(--txt2);margin-bottom:12px;">Répartition du coût d'importation</div>
+          <canvas id="import-chart" height="180"></canvas>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /row -->
+
+  <div class="form-section mt-3">
+    <div class="form-title">💡 Points d'attention avant d'importer</div>
+    <ul class="tips-list">
+      <li>Vérifiez que le <strong>contrôle technique du pays d'origine est encore valide</strong> ou prévoyez le CT luxembourgeois avant immatriculation.</li>
+      <li>Un véhicule acheté <strong>chez un professionnel</strong> à l'étranger peut appliquer la TVA sur marge (véhicule d'occasion) — pas de TVA supplémentaire due au Luxembourg dans ce cas.</li>
+      <li>La <strong>taxe routière luxembourgeoise</strong> dépend du CO2/de la cylindrée — le montant ci-dessus est indicatif, vérifiez sur le site de l'Administration.</li>
+      <li>Comptez un délai de <strong>2 à 4 semaines</strong> pour l'immatriculation complète (radiation à l'étranger + réception SNCA).</li>
+      <li>Le <strong>déplacement pour aller chercher le véhicule</strong> (essence, péage, nuitée éventuelle) n'est pas inclus dans "Transport" par défaut — ajustez si besoin.</li>
+    </ul>
+  </div>
+
+</div>
+
+<div id="version-bar">Auto-Bot LU</div>
+
+<script src="data/listings.js"></script>
+<script src="data/version.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+  const listings = (typeof LISTINGS !== 'undefined') ? LISTINGS : [];
+
+  function fmtEur(n) { return n ? n.toLocaleString('fr-LU') + ' €' : '—'; }
+  function fmtKm(n)  { return n ? n.toLocaleString('fr-LU') + ' km' : '—'; }
+  function fmt(n)    { return Math.round(n).toLocaleString('fr') + ' €'; }
+
+  // ── Sélecteur d'annonce (priorité DE/FR) ──────────────────────────────────
+  const sel = document.getElementById('select-listing');
+  const optDefault = document.createElement('option');
+  optDefault.value = '';
+  optDefault.textContent = '— Saisie libre —';
+  sel.appendChild(optDefault);
+
+  const foreign = listings.filter(l => l.pays && l.pays !== 'Luxembourg');
+  const others  = listings.filter(l => !l.pays || l.pays === 'Luxembourg');
+  const ordered = [...foreign, ...others].sort((a, b) => {
+    const fa = (a.pays && a.pays !== 'Luxembourg') ? 0 : 1;
+    const fb = (b.pays && b.pays !== 'Luxembourg') ? 0 : 1;
+    if (fa !== fb) return fa - fb;
+    const la = `${a.marque_norm||a.marque||''} ${a.modele_norm||a.modele||''}`;
+    const lb = `${b.marque_norm||b.marque||''} ${b.modele_norm||b.modele||''}`;
+    return la.localeCompare(lb);
+  });
+  ordered.forEach(l => {
+    const lbl = [
+      l.marque_norm || l.marque || '?',
+      l.modele_norm || l.modele || '',
+      l.annee || '',
+      l.km ? fmtKm(l.km) : '',
+      l.prix ? fmtEur(l.prix) : '',
+      `(${l.pays || '?'} · ${l.site || ''})`,
+    ].filter(Boolean).join(' · ');
+    const opt = document.createElement('option');
+    opt.value = l.id;
+    opt.textContent = lbl;
+    sel.appendChild(opt);
+  });
+
+  $(sel).select2({ placeholder: '— Choisir une annonce —', allowClear: true });
+
+  function applyListing(id) {
+    const l = listings.find(x => x.id === id);
+    if (!l) return;
+    if (l.prix) document.getElementById('v-prix').value = l.prix;
+    if (l.pays && l.pays !== 'Luxembourg') document.getElementById('v-pays').value = l.pays;
+    document.getElementById('v-marque').value = l.marque_norm || l.marque || '';
+    document.getElementById('v-modele').value = l.modele_norm || l.modele || '';
+    const nom = [l.marque_norm || l.marque, l.modele_norm || l.modele, l.annee].filter(Boolean).join(' ');
+    if (nom) document.getElementById('v-nom').value = nom;
+  }
+
+  $(sel).on('change', function() { applyListing(this.value); });
+
+  (function() {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    if (id) {
+      $(sel).val(id).trigger('change.select2');
+      applyListing(id);
+    }
+  })();
+
+  // ── Taxe routière estimée selon CO2 (barème indicatif, à vérifier) ────────
+  function estimTaxeCO2(co2) {
+    if (!co2) return 100;
+    if (co2 <= 90)  return 30;
+    if (co2 <= 110) return 80;
+    if (co2 <= 130) return 150;
+    if (co2 <= 150) return 250;
+    if (co2 <= 180) return 400;
+    if (co2 <= 220) return 650;
+    return 900;
+  }
+  document.getElementById('v-co2').addEventListener('change', function() {
+    document.getElementById('i-taxe').value = estimTaxeCO2(parseInt(this.value) || 0);
+  });
+
+  // ── Prix médian LU pour le même modèle ────────────────────────────────────
+  function prixMedianLU(marque, modele) {
+    const mk = (marque || '').toLowerCase(), md = (modele || '').toLowerCase();
+    if (!mk && !md) return null;
+    const matches = listings.filter(l => {
+      const lm = (l.marque_norm || l.marque || '').toLowerCase();
+      const lmo = (l.modele_norm || l.modele || '').toLowerCase();
+      return (l.pays === 'Luxembourg') && l.prix && lm === mk && (md ? lmo === md : true);
+    });
+    if (!matches.length) return null;
+    const prices = matches.map(l => l.prix).sort((a, b) => a - b);
+    const mid = Math.floor(prices.length / 2);
+    const median = prices.length % 2 ? prices[mid] : Math.round((prices[mid - 1] + prices[mid]) / 2);
+    return { median, count: matches.length };
+  }
+
+  let importChart = null;
+
+  window.calculate = function calculate() {
+    const nom = document.getElementById('v-nom').value || 'Véhicule importé';
+    const prix = parseInt(document.getElementById('v-prix').value) || 0;
+    const pays = document.getElementById('v-pays').value;
+    const marque = document.getElementById('v-marque').value;
+    const modele = document.getElementById('v-modele').value;
+
+    const transport = parseInt(document.getElementById('i-transport').value) || 0;
+    const plaques   = parseInt(document.getElementById('i-plaques').value) || 0;
+    const ct        = parseInt(document.getElementById('i-ct').value) || 0;
+    const taxe      = parseInt(document.getElementById('i-taxe').value) || 0;
+    const divers    = parseInt(document.getElementById('i-divers').value) || 0;
+
+    const totalImport = prix + transport + plaques + ct + taxe + divers;
+
+    document.getElementById('results-placeholder').style.display = 'none';
+    document.getElementById('results').style.display = 'block';
+
+    document.getElementById('res-import-total').textContent = fmt(totalImport);
+    document.getElementById('detail-import').innerHTML = [
+      ['Prix d\'achat (' + pays + ')', fmt(prix)],
+      ['Transport / rapatriement', fmt(transport)],
+      ['Plaques + carte grise LU', fmt(plaques)],
+      ['Contrôle technique LU', fmt(ct)],
+      ['Taxe routière (1ère année)', fmt(taxe)],
+      ['Frais divers', fmt(divers)],
+      ['<strong>Coût total réel</strong>', '<strong>' + fmt(totalImport) + '</strong>'],
+    ].map(r => '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td></tr>').join('');
+
+    const luMatch = prixMedianLU(marque, modele);
+
+    if (luMatch) {
+      document.getElementById('res-lu-total').textContent = fmt(luMatch.median);
+      document.getElementById('detail-lu').innerHTML = [
+        ['Annonces comparables au LU', luMatch.count],
+        ['Prix médian marché LU', fmt(luMatch.median)],
+        ['<strong>Écart vs import</strong>', '<strong>' + (luMatch.median - totalImport >= 0 ? '+' : '') + fmt(luMatch.median - totalImport) + '</strong>'],
+      ].map(r => '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td></tr>').join('');
+
+      const diff = luMatch.median - totalImport;
+      const importWins = diff >= 0;
+      document.getElementById('verdict-winner').textContent = importWins ? '🏆 Importer est plus avantageux' : '🏆 Acheter au Luxembourg est plus avantageux';
+      document.getElementById('verdict-winner').style.color = importWins ? 'var(--amber)' : 'var(--accent)';
+      document.getElementById('verdict-saving').textContent = 'Différence : ' + fmt(Math.abs(diff));
+      document.getElementById('verdict-detail').textContent =
+        fmt(totalImport) + ' importé vs ' + fmt(luMatch.median) + ' au LU (médiane sur ' + luMatch.count + ' annonces comparables)';
+    } else {
+      document.getElementById('res-lu-total').textContent = '—';
+      document.getElementById('detail-lu').innerHTML = '<tr><td colspan="2" style="color:var(--txt3);text-align:center;">Aucune annonce comparable trouvée au Luxembourg (renseignez marque + modèle)</td></tr>';
+      document.getElementById('verdict-winner').textContent = 'Coût d\'importation calculé';
+      document.getElementById('verdict-winner').style.color = 'var(--amber)';
+      document.getElementById('verdict-saving').textContent = fmt(totalImport);
+      document.getElementById('verdict-detail').textContent = 'Renseignez marque et modèle pour comparer au marché luxembourgeois.';
+    }
+
+    if (importChart) importChart.destroy();
+    const ctx = document.getElementById('import-chart').getContext('2d');
+    importChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: [nom],
+        datasets: [
+          { label: 'Prix d\'achat', data: [prix], backgroundColor: 'rgba(188,140,255,.7)', borderColor: '#bc8cff', borderWidth: 1 },
+          { label: 'Transport', data: [transport], backgroundColor: 'rgba(210,153,34,.7)', borderColor: '#d29922', borderWidth: 1 },
+          { label: 'Immatriculation (plaques+CT)', data: [plaques + ct], backgroundColor: 'rgba(56,139,253,.7)', borderColor: '#388bfd', borderWidth: 1 },
+          { label: 'Taxe + divers', data: [taxe + divers], backgroundColor: 'rgba(63,185,80,.7)', borderColor: '#3fb950', borderWidth: 1 },
+        ]
+      },
+      options: {
+        indexAxis: 'y', responsive: true,
+        plugins: {
+          legend: { labels: { color: '#8b949e', font: { size: 11 } } },
+          tooltip: {
+            backgroundColor: '#161b22', borderColor: '#30363d', borderWidth: 1,
+            titleColor: '#e6edf3', bodyColor: '#8b949e',
+            callbacks: { label: c => ' ' + c.dataset.label + ' : ' + Math.round(c.raw).toLocaleString('fr') + ' €' }
+          }
+        },
+        scales: {
+          x: { stacked: true, grid: { color: '#21262d' }, ticks: { color: '#8b949e', callback: v => v.toLocaleString('fr') + ' €' } },
+          y: { stacked: true, grid: { color: '#21262d' }, ticks: { color: '#8b949e' } }
+        }
+      }
+    });
+  };
+
+  calculate();
+
+  if (typeof VERSION !== 'undefined') {
+    const v = VERSION;
+    const bar = document.getElementById('version-bar');
+    if (bar) {
+      const ann  = v.nb_listings  ? v.nb_listings.toLocaleString('fr') + ' ann.' : '';
+      const nouv = v.nb_new_today ? '+' + v.nb_new_today + ' nouvelles' : '';
+      const scr  = v.last_scraping && v.last_scraping !== '—' ? 'Scraping : ' + v.last_scraping : '';
+      const stats = [ann, nouv].filter(Boolean).join(' · ');
+      bar.innerHTML = 'Auto-Bot LU <strong>v' + v.dashboard_version + '</strong>'
+        + ' — Deploy <strong>#' + v.deploy_count + '</strong>'
+        + ' — ' + v.generated_date + ' ' + v.generated_time
+        + (stats ? ' — ' + stats : '')
+        + (scr   ? ' | ' + scr   : '');
+    }
+  }
+}); // DOMContentLoaded
+</script>
+<script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});</script>
+</body>
+</html>

@@ -1,8 +1,8 @@
 ═══════════════════════════════════════════════════════
   AUTO-BOT LUXEMBOURG — Résumé du 2026-09-12
 ═══════════════════════════════════════════════════════
-  Annonces actives    : 5,133
-  Nouvelles aujourd'hui: 1,720
+  Annonces actives    : 5,139
+  Nouvelles aujourd'hui: 1,733
   Baisses de prix (7j) : 0
 
   TOP 5 OPPORTUNITÉS DU JOUR
@@ -28,5 +28,5 @@
      https://www.luxauto.lu/fr/voiture/nissan-juke-essence-2024-1829389
 
 ═══════════════════════════════════════════════════════
-  Généré : 2026-09-12 12:14 | python3.9 dashboard_generator.py
+  Généré : 2026-09-12 13:09 | python3.9 dashboard_generator.py
 ═══════════════════════════════════════════════════════
