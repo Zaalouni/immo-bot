@@ -119,6 +119,7 @@
   </button>
   <div class="collapse navbar-collapse" id="navMenu">
     <ul class="navbar-nav ms-auto">
+      <li class="nav-item"><a class="nav-link" href="objectif.html">🎯 Objectif</a></li>
       <li class="nav-item"><a class="nav-link" href="index.html">Annonces</a></li>
       <li class="nav-item"><a class="nav-link" href="deals.html">Deals</a></li>
       <li class="nav-item"><a class="nav-link active" href="opportunities.html">Opportunités</a></li>
@@ -271,6 +272,14 @@ function setFilter(el, f) {
   renderList();
 }
 
+  // Fiabilité ★ (👥 = avis propriétaires réels) — champs ajoutés par le générateur
+function fiabBadge(l) {
+  if (!l.fiab) return '<span style="font-size:10px;color:var(--txt3)" title="aucun avis pour ce modèle">★ ?</span>';
+  const c = l.fiab >= 7.5 ? 'var(--green)' : l.fiab >= 6 ? 'var(--amber)' : 'var(--red)';
+  const t = l.fiab_source === 'proprietaires' ? `Fiabilité propriétaires : ${l.avis_nb} avis (${l.avis_note}/20)` : `Fiabilité (${l.fiab_source})`;
+  return `<span title="${escapeHtml(t)}" style="font-size:11px;font-weight:700;color:${c};white-space:nowrap">★ ${l.fiab}${l.fiab_source === 'proprietaires' ? ' 👥' : ''}</span>`;
+}
+
 function renderList() {
   const filtered = top.filter(matchFilter);
   const container = document.getElementById('opp-list');
@@ -298,8 +307,8 @@ function renderList() {
       <div class="d-flex align-items-start gap-3">
         <div class="opp-rank ${rankClass(rank)}">#${rank}</div>
         <div style="flex:1;min-width:0;">
-          <div class="opp-titre">${marque} ${modele} ${l.annee || ''}</div>
-          <div class="opp-meta">${fmtKm(l.km)} · ${l.carburant || ''} · ${l.boite || ''} · <span class="badge-site ${siteClass(l.site)}">${l.site || '—'}</span> · ${l.ville || '—'} · ${joursStr}</div>
+          <div class="opp-titre">${escapeHtml(marque)} ${escapeHtml(modele)} ${l.annee || ''} ${fiabBadge(l)}</div>
+          <div class="opp-meta">${fmtKm(l.km)} · ${escapeHtml(l.carburant || '')} · ${escapeHtml(l.boite || '')} · <span class="badge-site ${siteClass(l.site)}">${l.site || '—'}</span> · ${escapeHtml(l.ville || '—')} · ${joursStr}</div>
         </div>
         <div class="text-end" style="white-space:nowrap;">
           <div class="opp-prix">${fmtPrix(l.prix)}</div>
@@ -330,7 +339,7 @@ function renderList() {
           </div>
         </div>
         <div class="ms-auto d-flex gap-2 flex-wrap">
-          ${l.url ? `<a href="${l.url}" target="_blank" rel="noopener" class="btn-voir">Voir →</a>` : ''}
+          ${l.url ? `<a href="${escapeHtml(l.url)}" target="_blank" rel="noopener noreferrer" class="btn-voir">Voir →</a>` : ''}
           ${l.id ? `<a href="compare.html?a=${l.id}" class="btn-compare">⇌ Comparer</a>` : ''}
         </div>
       </div>

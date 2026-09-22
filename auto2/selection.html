@@ -141,6 +141,7 @@
   </button>
   <div class="collapse navbar-collapse" id="navMenu">
     <ul class="navbar-nav ms-auto flex-wrap">
+      <li class="nav-item"><a class="nav-link" href="objectif.html">🎯 Objectif</a></li>
       <li class="nav-item"><a class="nav-link" href="index.html">Annonces</a></li>
       <li class="nav-item"><a class="nav-link" href="deals.html">Deals</a></li>
       <li class="nav-item"><a class="nav-link" href="opportunities.html">Opportunités</a></li>
@@ -257,7 +258,10 @@
 
 <!-- ── Data files ── -->
 <script src="data/listings.js"></script>
+<script src="data/reviews.js"></script>
+<script src="data/objectif.js"></script>
 <script src="data/version.js"></script>
+<script src="fiab.js"></script>
 
 <!-- ── Bootstrap JS ── -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -365,32 +369,63 @@
    * @param {Object} l — listing object from LISTINGS
    * @returns {string} HTML string for the card column
    */
+  /* ─────────────────────────────────────────────
+     Aide à la décision (grille objectif) pour un favori
+  ───────────────────────────────────────────── */
+  const OBJ_BY_ID = {};
+  if (typeof OBJECTIF !== 'undefined') (OBJECTIF.annonces || []).forEach(a => { OBJ_BY_ID[a.id] = a; });
+
+  /**
+   * Score objectif /100, points rouges et questions à poser au vendeur (si l'annonce
+   * fait partie de l'objectif), sinon raison de l'exclusion.
+   * @param {Object} l — listing
+   * @returns {string} HTML
+   */
+  function objectifBlock(l) {
+    const a = OBJ_BY_ID[l.id];
+    if (!a) {
+      const c = l.carburant || '';
+      const why = c !== 'Hybride' ? `hors objectif : ${c || 'carburant inconnu'}` : 'hors critères objectif (boîte, prix, km ou année) ou hors top 300';
+      return '<div style="font-size:11px;color:var(--txt3);margin-bottom:10px">🎯 ' + escapeHtml(why) + '</div>';
+    }
+    const ko = (a.checklist || []).filter(i => i.statut === 'ko');
+    const col = a.score >= 70 ? 'var(--green)' : a.score >= 55 ? 'var(--amber)' : 'var(--txt2)';
+    return '<div style="background:var(--surface2);border-radius:6px;padding:8px 10px;margin-bottom:10px;font-size:12px">'
+      + '<div>🎯 Score objectif <b style="color:' + col + '">' + a.score + '/100</b>'
+      + (a.ecart_pct != null ? ' · ' + (a.ecart_pct > 0 ? '+' : '') + a.ecart_pct + '% vs marché' : '') + '</div>'
+      + ko.map(i => '<div style="color:var(--red)">⛔ ' + escapeHtml(i.critere + ' — ' + i.texte) + '</div>').join('')
+      + ((a.questions || []).length ? '<div style="margin-top:4px;color:var(--txt2)">❓ À demander :</div><ul style="margin:0;padding-left:16px;color:var(--txt2)">'
+        + a.questions.map(q => '<li>' + escapeHtml(q) + '</li>').join('') + '</ul>' : '')
+      + '<a href="objectif.html" style="font-size:11px;color:var(--accent)">fiche complète →</a>'
+      + '</div>';
+  }
+
   function buildCard(l) {
     const id        = String(l.id || '');
-    const marque    = l.marque_norm || l.marque || '';
-    const modele    = l.modele_norm || l.modele || '';
+    const marque    = escapeHtml(l.marque_norm || l.marque || '');
+    const modele    = escapeHtml(l.modele_norm || l.modele || '');
     const annee     = l.annee || '—';
     const km        = formatKm(l.km);
-    const carbu     = l.carburant || '—';
-    const boite     = l.boite || '—';
+    const carbu     = escapeHtml(l.carburant || '—');
+    const boite     = escapeHtml(l.boite || '—');
     const prix      = formatPrix(l.prix);
     const deal      = dealScoreLabel(l.deal_score);
     const dealCls   = dealScoreClass(l.deal_score || 0);
     const nego      = (l.nego_score !== null && l.nego_score !== undefined) ? Math.round(l.nego_score) : '—';
-    const ville     = l.ville || '—';
-    const site      = l.site || l.source || '';
-    const url       = l.url || '';
+    const ville     = escapeHtml(l.ville || '—');
+    const site      = escapeHtml(l.site || l.source || '');
+    const url       = escapeHtml(l.url || '');
 
     var urlLink = '';
     if (url) {
-      urlLink = '<a href="' + url + '" target="_blank" rel="noopener" class="btn-voir">Voir l\'annonce →</a>';
+      urlLink = '<a href="' + url + '" target="_blank" rel="noopener noreferrer" class="btn-voir">Voir l\'annonce →</a>';
     }
 
     return '<div class="col-lg-4 col-md-6">'
       + '<div class="fav-card">'
       + '<div class="card-body">'
       + '<div class="d-flex justify-content-between align-items-start mb-2">'
-      + '<div class="fav-card-title">' + marque + ' ' + modele + '</div>'
+      + '<div class="fav-card-title">' + marque + ' ' + modele + ' ' + FIAB.badge(l) + '</div>'
       + '<button class="btn-fav" title="Retirer des favoris" onclick="removeFav(\'' + id + '\')">⭐</button>'
       + '</div>'
       + '<div class="fav-card-meta">' + annee + ' · ' + km + ' · ' + carbu + ' · ' + boite + '</div>'
@@ -399,6 +434,7 @@
       + '<span class="score-badge ' + dealCls + '">Deal ' + deal + '</span>'
       + '<span style="font-size:12px;color:var(--txt3);">Négo <span style="color:var(--amber);font-weight:600;">' + nego + '</span></span>'
       + '</div>'
+      + objectifBlock(l)
       + '<div class="d-flex align-items-center justify-content-between flex-wrap gap-2">'
       + '<div>'
       + '<span style="font-size:12px;color:var(--txt2);">' + ville + '</span>'
@@ -421,13 +457,13 @@
    */
   function buildRow(l) {
     const id     = String(l.id || '');
-    const marque = l.marque_norm || l.marque || '';
-    const modele = l.modele_norm || l.modele || '';
+    const marque = escapeHtml(l.marque_norm || l.marque || '');
+    const modele = escapeHtml(l.modele_norm || l.modele || '');
     const deal   = dealScoreLabel(l.deal_score);
     const dealCls = dealScoreClass(l.deal_score || 0);
     const nego   = (l.nego_score !== null && l.nego_score !== undefined) ? Math.round(l.nego_score) : '—';
-    const carbu  = l.carburant || '—';
-    const ville  = l.ville || '—';
+    const carbu  = escapeHtml(l.carburant || '—');
+    const ville  = escapeHtml(l.ville || '—');
 
     return '<tr>'
       + '<td class="td-model">' + marque + ' ' + modele + '</td>'

@@ -134,6 +134,7 @@
   </button>
   <div class="collapse navbar-collapse" id="navMenu">
     <ul class="navbar-nav ms-auto">
+      <li class="nav-item"><a class="nav-link" href="objectif.html">🎯 Objectif</a></li>
       <li class="nav-item"><a class="nav-link active" href="index.html">Annonces</a></li>
       <li class="nav-item"><a class="nav-link" href="deals.html">Deals</a></li>
       <li class="nav-item"><a class="nav-link" href="opportunities.html">Opportunités</a></li>
@@ -277,6 +278,8 @@
       </div>
       <div class="col-md-2 col-12 d-flex align-items-end gap-2 flex-wrap">
         <button class="btn-filter btn" onclick="applyFilters()">Filtrer</button>
+        <button class="btn" id="btn-objectif" onclick="applyObjectif()" title="Full hybrid non rechargeable (HEV) — Toyota, Lexus, Honda e:HEV, Renault E-Tech, Kia/Hyundai HEV… Exclut micro-hybrides 48V et PHEV"
+          style="background:var(--green-dim,#1a3a24);border:1px solid var(--green,#3fb950);color:var(--green,#3fb950);font-size:12px;padding:4px 10px;white-space:nowrap">🎯 Hybride non rechargeable</button>
         <button class="btn-reset btn" onclick="resetFilters()">Réinitialiser</button>
         <div class="d-flex gap-3 ms-1">
           <div class="form-check mb-0">
@@ -354,6 +357,10 @@
       const key = `${(r.marque||'').toLowerCase()}|${(r.modele||'').toLowerCase()}`;
       reviewsMap[key] = r.note_fiabilite;
     });
+    // Priorité à la fiabilité RÉELLE des propriétaires (critère caradisiac /10)
+    Object.entries(REVIEWS.proprietaires || {}).forEach(([key, p]) => {
+      if (p.fiab && p.nb >= 5) reviewsMap[key] = p.fiab;
+    });
   }
   // Index score vendeur : vendeur_nom → {vendor_score, badge, badge_label}
   const vendorMap = {};
@@ -415,7 +422,7 @@
       const diffTxt = diff === null ? '' : (diff > 0 ? ` (+${diff.toLocaleString('fr')}€)` : diff < 0 ? ` (${diff.toLocaleString('fr')}€)` : ' (=)');
       const label = `${m.site}${m.prix ? ' ' + m.prix.toLocaleString('fr') + '€' : ''}${diffTxt}`;
       return target && target.url
-        ? `<a href="${target.url}" target="_blank" rel="noopener noreferrer" style="color:inherit">${label}</a>`
+        ? `<a href="${escapeHtml(target.url)}" target="_blank" rel="noopener noreferrer" style="color:inherit">${label}</a>`
         : label;
     });
     const anyCheaper = ms.some(m => m.prix && l.prix && m.prix < l.prix);
@@ -438,6 +445,8 @@
     fillFilters();
     renderTable(listings);
     renderMiniCharts(listings);
+    // index.html?objectif=1 → preset hybride non rechargeable (lien depuis objectif.html)
+    if (new URLSearchParams(location.search).get('objectif')) applyObjectif();
   });
 
   function renderMiniCharts(data) {
@@ -532,7 +541,8 @@
       if (boite     && !(l.boite||'').toLowerCase().startsWith(boite.slice(0,6))) return false;
       if (carrosserie && (l.carrosserie||'').toLowerCase() !== carrosserie)    return false;
       if (onlyFiab  && !(fiabOf(l) >= 7))                                      return false;
-      if (carburant && !(l.carburant||'').toLowerCase().includes(carburant))   return false;
+      // Égalité stricte : 'hybride' ne doit plus inclure 'hybride rechargeable' / 'hybride léger'
+      if (carburant && (l.carburant||'').toLowerCase() !== carburant)          return false;
       const prix = l.prix || 0;
       if (prixMin > 0    && prix < prixMin)  return false;
       if (prixMax < Infinity && prix > prixMax) return false;
@@ -554,6 +564,17 @@
       return true;
     });
     renderTable(filtered);
+  }
+
+  // Preset objectif utilisateur : full hybrid non rechargeable (HEV), boîte auto, budget ≤ 50k.
+  // "Hybride" = HEV uniquement (normalizer) ; "Hybride léger" (48V) et
+  // "Hybride rechargeable" (PHEV) sont des valeurs distinctes du filtre.
+  function applyObjectif() {
+    resetFilters();
+    document.getElementById('filter-carburant').value = 'Hybride';
+    document.getElementById('filter-boite').value = 'automatique';
+    document.getElementById('filter-prix-max').value = '50000';
+    applyFilters();
   }
 
   function togglePrix50k(btn) {
@@ -594,8 +615,8 @@
             <button onclick="toggleFav('${l.id}',this)" title="${isFav?'Retirer des favoris':'Ajouter aux favoris'}"
               style="background:none;border:none;cursor:pointer;font-size:14px;padding:0;line-height:1;flex-shrink:0;margin-top:1px;">${isFav?'⭐':'☆'}</button>
             <div>
-              <a href="${l.url||'#'}" target="_blank" rel="noopener noreferrer" class="listing-link">${escapeHtml(l.marque_norm||l.marque||'—')} ${escapeHtml(l.modele_norm||l.modele||'')}</a>${fiabBadge(l)}
-              <div class="version-norm">${l.version_norm||l.version||''}</div>${matchBadge(l)}
+              <a href="${escapeHtml(l.url||'#')}" target="_blank" rel="noopener noreferrer" class="listing-link">${escapeHtml(l.marque_norm||l.marque||'—')} ${escapeHtml(l.modele_norm||l.modele||'')}</a>${fiabBadge(l)}
+              <div class="version-norm">${escapeHtml(l.version_norm||l.version||'')}</div>${matchBadge(l)}
             </div>
           </div>
         </td>

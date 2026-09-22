@@ -80,6 +80,7 @@
   </button>
   <div class="collapse navbar-collapse" id="navMenu">
     <ul class="navbar-nav ms-auto">
+      <li class="nav-item"><a class="nav-link" href="objectif.html">🎯 Objectif</a></li>
       <li class="nav-item"><a class="nav-link" href="index.html">Annonces</a></li>
       <li class="nav-item"><a class="nav-link" href="deals.html">Deals</a></li>
       <li class="nav-item"><a class="nav-link" href="opportunities.html">Opportunités</a></li>
@@ -286,7 +287,7 @@ function renderDrops() {
     return '<div class="drop-row">'
       + '<div class="drop-pct">−' + pct + '%</div>'
       + '<div style="flex:1;min-width:0">'
-      +   '<div class="drop-title"><a href="' + (d.url || '#') + '" target="_blank" rel="noopener noreferrer">'
+      +   '<div class="drop-title"><a href="' + escapeHtml(d.url || '#') + '" target="_blank" rel="noopener noreferrer">'
       +     escapeHtml((d.marque || '') + ' ' + (d.modele || '')) + '</a> <span style="color:var(--txt3);font-weight:400">' + escapeHtml(d.titre_brut || '') + '</span></div>'
       +   '<div class="drop-meta"><span class="badge-site">' + escapeHtml(d.site || '') + '</span> · baisse le ' + (d.date_baisse || '—') + '</div>'
       + '</div>'

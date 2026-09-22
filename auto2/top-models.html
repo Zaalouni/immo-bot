@@ -106,6 +106,8 @@
   <div class="collapse navbar-collapse" id="navMenu">
     <ul class="navbar-nav ms-auto flex-wrap">
       
+      <li class="nav-item"><a class="nav-link" href="objectif.html">🎯 Objectif</a></li>
+      
       <li class="nav-item"><a class="nav-link" href="index.html">Annonces</a></li>
       <li class="nav-item"><a class="nav-link" href="deals.html">Deals</a></li>
       <li class="nav-item"><a class="nav-link" href="opportunities.html">Opportunités</a></li>
@@ -169,8 +171,10 @@
           <option value="">Tous</option>
           <option value="essence">Essence</option>
           <option value="diesel">Diesel</option>
-          <option value="hybride">Hybride</option>
-          <option value="électrique">Électrique</option>
+          <option value="hybride">🎯 Hybride HEV</option>
+          <option value="hybride léger">Hybride 48V</option>
+          <option value="hybride rechargeable">Hybride rechargeable</option>
+          <option value="electrique">Électrique</option>
         </select>
       </div>
       <div class="col-auto">
@@ -255,6 +259,7 @@
 <script src="data/listings.js"></script>
 <script src="data/reviews.js"></script>
 <script src="data/version.js"></script>
+<script src="fiab.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   Chart.defaults.color = '#8b949e';
@@ -286,11 +291,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const mk = (marque||'').toLowerCase(), mod = (modele||'').toLowerCase();
     const exact = reviewsByKey[`${mk}|${mod}`];
     if (exact) return exact;
-    // Correspondance partielle (ex: "Golf 8" scrape vs "Golf" en avis)
-    for (const key in reviewsByKey) {
-      const [rmk, rmod] = key.split('|');
-      if (rmk === mk && (mod.includes(rmod) || rmod.includes(mod))) return reviewsByKey[key];
-    }
+    // Plus de correspondance partielle : les modèles sont normalisés en familles
+    // (normalizer) et "includes" associait des modèles différents (ex. "c" ⊂ "glc").
     return null;
   }
 
@@ -320,21 +322,21 @@ document.addEventListener('DOMContentLoaded', function() {
       ls.forEach(l => { if(l.carburant) { carbus[l.carburant]=(carbus[l.carburant]||0)+1; } });
 
       const review = findReview(g.marque, g.modele);
-      const fiabilite = review ? review.note_fiabilite : null;
+      // Fiabilité : avis propriétaires réels (≥ 5) > synthèse éditoriale (fiab.js)
+      const fiche = FIAB.of({ marque_norm: g.marque, modele_norm: g.modele });
+      const fiabilite = fiche ? fiche.note : null;
       const conso = review
         ? (usage === 'autoroute' ? review.consommation_autoroute_l100 : review.consommation_mixte_l100)
         : null;
       const deal_moyen = avg(ls.filter(l=>l.deal_score).map(l=>l.deal_score));
       const cScore = consoScore(conso);
 
-      // Score achat : deal (50%) + fiabilite (30%) + conso (20%) quand un avis existe,
-      // sinon repli sur le deal score seul.
-      let score_achat = deal_moyen || 0;
-      if (fiabilite != null) {
-        score_achat = Math.round(
-          (deal_moyen || 50) * 0.5 + (fiabilite * 10) * 0.3 + (cScore != null ? cScore : 50) * 0.2
-        );
-      }
+      // Score achat : deal (50%) + fiabilité (30%) + conso (20%), même échelle pour tous :
+      // fiabilité inconnue = 5/10, conso inconnue = 50 (avant : repli sur le deal seul,
+      // un modèle sans avis pouvait dépasser un modèle fiable).
+      const score_achat = Math.round(
+        (deal_moyen || 50) * 0.5 + ((fiabilite != null ? fiabilite : 5) * 10) * 0.3 + (cScore != null ? cScore : 50) * 0.2
+      );
 
       return {
         marque: g.marque, modele: g.modele, count: ls.length,
@@ -344,7 +346,7 @@ document.addEventListener('DOMContentLoaded', function() {
         deal_moyen,
         risk_moyen: avg(ls.filter(l=>l.risk_score).map(l=>l.risk_score)),
         fiabilite, conso, score_achat,
-        a_avis: !!review,
+        a_avis: !!fiche, fiab_source: fiche ? fiche.source : null, avis_nb: fiche ? fiche.nb : 0,
         carburants: carbus, listings: ls,
       };
     });
@@ -359,7 +361,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let filtered = allListings.filter(l => {
       if (budget !== Infinity && l.prix && l.prix > budget) return false;
-      if (carbu && !(l.carburant || '').toLowerCase().includes(carbu)) return false;
+      if (carbu && (l.carburant || '').toLowerCase() !== carbu) return false;  // égalité stricte
       return true;
     });
 
@@ -408,7 +410,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const rs = m.risk_moyen;
       const riskColor = rs >= 70 ? 'var(--red)' : rs >= 40 ? 'var(--amber)' : 'var(--green)';
       const carbuTags = Object.entries(m.carburants).sort((a,b)=>b[1]-a[1]).slice(0,3)
-        .map(([c,n]) => `<span class="carbu-tag">${c} (${n})</span>`).join(' ');
+        .map(([c,n]) => `<span class="carbu-tag">${escapeHtml(c)} (${n})</span>`).join(' ');
 
       const fiab = m.fiabilite;
       const fiabColor = fiab == null ? null : fiab >= 8 ? 'var(--green)' : fiab >= 6 ? 'var(--amber)' : 'var(--red)';
@@ -419,7 +421,7 @@ document.addEventListener('DOMContentLoaded', function() {
       tbody.innerHTML += `
         <tr>
           <td><span class="rank-badge ${rankClass}">${rank}</span></td>
-          <td><strong>${m.marque}</strong> ${m.modele}${m.a_avis ? ' <span title="Avis disponible" style="color:var(--accent)">★</span>' : ''}</td>
+          <td><strong>${escapeHtml(m.marque)}</strong> ${escapeHtml(m.modele)}${m.a_avis ? ` <span title="${m.fiab_source === 'proprietaires' ? m.avis_nb + ' avis propriétaires' : 'synthèse éditoriale'}" style="color:var(--accent)">${m.fiab_source === 'proprietaires' ? '👥' : '★'}</span>` : ''}</td>
           <td><span class="count-badge-sm">${m.count}</span></td>
           <td class="prix-mono">${fmtPrix(m.prix_moyen)}</td>
           <td class="prix-mono">${fmtKm(m.km_moyen)}</td>

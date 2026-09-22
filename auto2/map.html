@@ -103,6 +103,7 @@
   </button>
   <div class="collapse navbar-collapse" id="navMenu">
     <ul class="navbar-nav ms-auto">
+      <li class="nav-item"><a class="nav-link" href="objectif.html">🎯 Objectif</a></li>
       <li class="nav-item"><a class="nav-link" href="index.html">Annonces</a></li>
       <li class="nav-item"><a class="nav-link" href="deals.html">Deals</a></li>
       <li class="nav-item"><a class="nav-link" href="opportunities.html">Opportunités</a></li>
@@ -223,13 +224,13 @@ function renderClusters(clusters) {
       `<div style="border-top:1px solid #30363d;padding-top:6px;margin-top:6px;">
         <div style="font-weight:600;font-size:12px;">${a.titre}</div>
         <div class="popup-detail">${a.km ? a.km.toLocaleString('fr-FR') + ' km' : ''} ${a.prix ? '— ' + a.prix.toLocaleString('fr-FR') + ' €' : ''}</div>
-        ${a.url ? `<a href="${a.url}" target="_blank" rel="noopener noreferrer" class="popup-link">Voir</a>` : ''}
+        ${a.url ? `<a href="${escapeHtml(a.url)}" target="_blank" rel="noopener noreferrer" class="popup-link">Voir</a>` : ''}
       </div>`
     ).join('');
 
     circle.bindPopup(`
       <div>
-        <div class="popup-titre">${c.ville}</div>
+        <div class="popup-titre">${escapeHtml(c.ville)}</div>
         <div style="color:#8b949e;font-size:11px;margin-bottom:8px;">${c.region}</div>
         <div><span class="popup-nb">${c.nb}</span> <span style="color:#8b949e;font-size:12px;">annonce${c.nb > 1 ? 's' : ''}</span></div>
         <div class="popup-detail">Prix moyen : <strong>${prix}</strong></div>
@@ -257,9 +258,9 @@ function renderPoints(points) {
         const km   = p.km   ? p.km.toLocaleString('fr-FR')   + ' km' : '—';
         dot.bindPopup(`
           <div>
-            <div class="popup-titre">${p.marque} ${p.modele} ${p.annee || ''}</div>
+            <div class="popup-titre">${escapeHtml(p.marque)} ${escapeHtml(p.modele)} ${p.annee || ''}</div>
             <div class="popup-detail">${km} — ${prix}</div>
-            ${p.url ? `<a href="${p.url}" target="_blank" rel="noopener noreferrer" class="popup-link">Voir l'annonce</a>` : ''}
+            ${p.url ? `<a href="${escapeHtml(p.url)}" target="_blank" rel="noopener noreferrer" class="popup-link">Voir l'annonce</a>` : ''}
           </div>
         `);
         dot.addTo(markersLayer);
@@ -276,7 +277,7 @@ function renderVillesList(clusters) {
     const prix = c.prix_moyen ? c.prix_moyen.toLocaleString('fr-FR') + ' €' : '—';
     return `
     <div class="ville-card" onclick="flyToVille(${c.lat}, ${c.lng})">
-      <div class="ville-name">${c.ville}</div>
+      <div class="ville-name">${escapeHtml(c.ville)}</div>
       <div class="ville-region">${c.region}</div>
       <div class="ville-stats">${c.nb} annonce${c.nb > 1 ? 's' : ''} · moy. ${prix}</div>
     </div>`;

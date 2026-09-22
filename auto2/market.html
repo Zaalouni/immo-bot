@@ -74,6 +74,8 @@
   <div class="collapse navbar-collapse" id="navMenu">
     <ul class="navbar-nav ms-auto flex-wrap">
       
+      <li class="nav-item"><a class="nav-link" href="objectif.html">🎯 Objectif</a></li>
+      
       <li class="nav-item"><a class="nav-link" href="index.html">Annonces</a></li>
       <li class="nav-item"><a class="nav-link" href="deals.html">Deals</a></li>
       <li class="nav-item"><a class="nav-link" href="opportunities.html">Opportunités</a></li>
@@ -260,10 +262,10 @@
         <table class="table table-sm w-100" style="font-size:12px;color:var(--txt2);margin:0">
           <thead><tr>
             <th style="color:var(--txt3)">Carburant</th>
-            <th style="color:var(--txt3);text-align:right">Achat médian</th>
+            <th style="color:var(--txt3);text-align:right">Dépréciation 5 ans</th>
             <th style="color:var(--txt3);text-align:right">Carbu 5 ans</th>
             <th style="color:var(--txt3);text-align:right">Entretien</th>
-            <th style="color:var(--txt3);text-align:right">Total 5 ans</th>
+            <th style="color:var(--txt3);text-align:right">Coût réel 5 ans</th>
             <th style="color:var(--txt3);text-align:right">€/km</th>
           </tr></thead>
           <tbody id="tbody-tco"></tbody>
@@ -531,7 +533,7 @@ if (typeof VERSION !== 'undefined') {
   const data = (MARKET.depreciation || []).slice(0, 15);
   if (!data.length) return;
 
-  const labels = data.map(d => `${d.marque} ${d.modele}`);
+  const labels = data.map(d => `${d.marque} ${d.modele}`);  // canvas Chart.js : texte brut
   const values = data.map(d => d.perte_pct_par_an);
   const colors = values.map(v => v > 14 ? '#f85149' : v > 10 ? '#d29922' : '#3fb950');
 
@@ -563,7 +565,7 @@ if (typeof VERSION !== 'undefined') {
   data.forEach(d => {
     const color = d.perte_pct_par_an > 14 ? 'var(--red)' : d.perte_pct_par_an > 10 ? 'var(--amber)' : 'var(--green)';
     tbody.innerHTML += `<tr>
-      <td>${d.marque} ${d.modele}<br><span style="font-size:10px;color:var(--txt3)">${d.annee_min}–${d.annee_max} · ${d.nb_annonces} ann.</span></td>
+      <td>${escapeHtml(d.marque)} ${escapeHtml(d.modele)}<br><span style="font-size:10px;color:var(--txt3)">${d.annee_min}–${d.annee_max} · ${d.nb_annonces} ann.</span></td>
       <td style="text-align:right;font-family:'DM Mono',monospace;color:${color};font-weight:600">${d.perte_pct_par_an.toFixed(1)}%</td>
       <td style="text-align:right;font-family:'DM Mono',monospace;color:var(--txt2)">${d.perte_pct_par_10k_km ? d.perte_pct_par_10k_km.toFixed(1)+'%' : '—'}</td>
       <td style="text-align:right;font-family:'DM Mono',monospace">${fmtEur(d.prix_recent_median)}</td>
@@ -585,7 +587,7 @@ if (typeof VERSION !== 'undefined') {
     grid.innerHTML += `
     <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-        <span style="font-weight:600;font-size:13px;color:var(--txt)">${d.marque} ${d.modele}</span>
+        <span style="font-weight:600;font-size:13px;color:var(--txt)">${escapeHtml(d.marque)} ${escapeHtml(d.modele)}</span>
         <span style="font-size:11px;font-weight:700;padding:2px 10px;border-radius:10px;background:${BG[d.color]};color:${COLOR[d.color]}">${d.label}</span>
       </div>
       <div style="height:4px;background:var(--border2);border-radius:2px;margin-bottom:8px;">
@@ -600,18 +602,18 @@ if (typeof VERSION !== 'undefined') {
 // ── 3. TCO par carburant ──────────────────────────────────────────────────────
 (function() {
   const tco = MARKET.tco_par_carburant || {};
-  const order = ['Hybride', 'Essence', 'Electrique', 'Diesel'];
+  const order = ['Hybride', 'Hybride léger', 'Hybride rechargeable', 'Essence', 'Electrique', 'Diesel'];
   const carbus = order.filter(c => tco[c]);
   if (!carbus.length) return;
 
-  const COLORS_MAP = { Essence: '#388bfd', Diesel: '#d29922', Hybride: '#3fb950', Electrique: '#bc8cff' };
+  const COLORS_MAP = { Essence: '#388bfd', Diesel: '#d29922', Hybride: '#3fb950', 'Hybride léger': '#8b949e', 'Hybride rechargeable': '#39c5bb', Electrique: '#bc8cff' };
 
   new Chart(document.getElementById('chart-tco'), {
     type: 'bar',
     data: {
       labels: carbus,
       datasets: [
-        { label: 'Achat (médian)',   data: carbus.map(c => tco[c].prix_achat),       backgroundColor: carbus.map(c => COLORS_MAP[c]),  borderRadius: 4, stack: 's' },
+        { label: 'Dépréciation 5 ans', data: carbus.map(c => tco[c].depreciation_5ans),       backgroundColor: carbus.map(c => COLORS_MAP[c]),  borderRadius: 4, stack: 's' },
         { label: 'Carburant 5 ans', data: carbus.map(c => tco[c].carburant_5ans),    backgroundColor: 'rgba(248,81,73,.5)',              stack: 's' },
         { label: 'Entretien 5 ans', data: carbus.map(c => tco[c].entretien_5ans),    backgroundColor: 'rgba(227,179,65,.5)',             stack: 's' },
       ]
@@ -638,7 +640,7 @@ if (typeof VERSION !== 'undefined') {
     const rowStyle = isBest ? 'background:var(--green-dim);' : '';
     tbody.innerHTML += `<tr style="${rowStyle}">
       <td style="font-weight:600;color:var(--txt)">${c}${isBest ? ' <span style="font-size:10px;color:var(--green)">✓ meilleur TCO</span>' : ''}</td>
-      <td style="text-align:right;font-family:'DM Mono',monospace">${fmtEur(d.prix_achat)}</td>
+      <td style="text-align:right;font-family:'DM Mono',monospace" title="achat médian ${fmtEur(d.prix_achat)} − revente ${fmtEur(d.valeur_residuelle)}">${fmtEur(d.depreciation_5ans)}</td>
       <td style="text-align:right;font-family:'DM Mono',monospace">${fmtEur(d.carburant_5ans)}</td>
       <td style="text-align:right;font-family:'DM Mono',monospace">${fmtEur(d.entretien_5ans)}</td>
       <td style="text-align:right;font-family:'DM Mono',monospace;font-weight:700;color:var(--txt)">${fmtEur(d.total_5ans)}</td>
@@ -659,10 +661,10 @@ if (typeof VERSION !== 'undefined') {
       const color = isOver ? 'var(--red)' : 'var(--amber)';
       const sign  = isOver ? '+' : '';
       const km    = r.km ? r.km.toLocaleString('fr-LU') + ' km' : '—';
-      const link  = r.url ? `<a href="${r.url}" target="_blank" rel="noopener noreferrer" style="font-size:10px;color:var(--accent)">↗</a>` : '';
+      const link  = r.url ? `<a href="${escapeHtml(r.url)}" target="_blank" rel="noopener noreferrer" style="font-size:10px;color:var(--accent)">↗</a>` : '';
       tbody.innerHTML += `<tr>
-        <td>${r.marque} ${r.modele} ${r.annee || ''}<br>
-            <span style="font-size:10px;color:var(--txt3)">${km} · ${r.ville || ''} ${link}</span></td>
+        <td>${escapeHtml(r.marque)} ${escapeHtml(r.modele)} ${r.annee || ''}<br>
+            <span style="font-size:10px;color:var(--txt3)">${km} · ${escapeHtml(r.ville || '')} ${link}</span></td>
         <td style="text-align:right;font-family:'DM Mono',monospace">${fmtEur(r.prix)}</td>
         <td style="text-align:right;font-family:'DM Mono',monospace;color:var(--txt3)">${fmtEur(r.median)}</td>
         <td style="text-align:right;font-family:'DM Mono',monospace;font-weight:700;color:${color}">${sign}${r.ecart_pct}%</td>

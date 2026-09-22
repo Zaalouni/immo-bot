@@ -183,6 +183,7 @@
   </button>
   <div class="collapse navbar-collapse" id="navMenu">
     <ul class="navbar-nav ms-auto">
+      <li class="nav-item"><a class="nav-link" href="objectif.html">🎯 Objectif</a></li>
       <li class="nav-item"><a class="nav-link" href="index.html">Annonces</a></li>
       <li class="nav-item"><a class="nav-link" href="deals.html">Deals</a></li>
       <li class="nav-item"><a class="nav-link" href="opportunities.html">Opportunités</a></li>
@@ -244,7 +245,7 @@
     <div class="col-6 col-md">
       <div class="kpi-card kpi-teal">
         <div class="kpi-val" id="kpi-hybride">—</div>
-        <div class="kpi-label">Hybrides auto</div>
+        <div class="kpi-label">Hybrides HEV</div>
         <div class="kpi-sub"><a href="suv-hybrid.html" style="color:var(--teal);font-size:11px;text-decoration:none;">Voir la page dédiée →</a></div>
       </div>
     </div>
@@ -296,7 +297,9 @@
     <div class="filter-row">
       <span class="filter-label">Carburant</span>
       <span class="chip c-blue"   data-dim="carbu" data-val="ALL"     onclick="setChip(this)">Tous</span>
-      <span class="chip"          data-dim="carbu" data-val="Hybride" onclick="setChip(this)">🔋 Hybride</span>
+      <span class="chip"          data-dim="carbu" data-val="Hybride" onclick="setChip(this)" title="Full hybrid non rechargeable">🎯 Hybride HEV</span>
+      <span class="chip"          data-dim="carbu" data-val="MHEV"    onclick="setChip(this)" title="Micro-hybride 48V">Hybride 48V</span>
+      <span class="chip"          data-dim="carbu" data-val="PHEV"    onclick="setChip(this)">🔌 PHEV</span>
       <span class="chip"          data-dim="carbu" data-val="Essence" onclick="setChip(this)">⛽ Essence</span>
       <span class="chip"          data-dim="carbu" data-val="Diesel"  onclick="setChip(this)">🛢 Diesel</span>
       <span class="chip"          data-dim="carbu" data-val="Electrique" onclick="setChip(this)">⚡ Électrique</span>
@@ -392,8 +395,9 @@ function scoreFill(s, max, color) {
 function carbuBadge(c) {
   if (!c) return '—';
   const cl = c.toLowerCase();
-  if (cl.includes('phev') || cl.includes('rechargeable') || cl.includes('plug')) return `<span class="badge-carbu badge-phev">PHEV</span>`;
-  if (cl.includes('hybrid') || cl.includes('hybride')) return `<span class="badge-carbu badge-hev">Hybride</span>`;
+  if (cl === 'hybride rechargeable') return `<span class="badge-carbu badge-phev">PHEV</span>`;
+  if (cl === 'hybride léger') return `<span class="badge-carbu badge-ess" title="micro-hybride 48V">48V</span>`;
+  if (cl === 'hybride') return `<span class="badge-carbu badge-hev">HEV</span>`;
   if (cl.includes('electr') || cl.includes('électr')) return `<span class="badge-carbu badge-elec">Élec.</span>`;
   if (cl.includes('diesel')) return `<span class="badge-carbu badge-dies">Diesel</span>`;
   return `<span class="badge-carbu badge-ess">Essence</span>`;
@@ -436,7 +440,7 @@ document.getElementById('kpi-score').textContent   = Math.round(D.score_moyen);
 
   container.innerHTML = top.map((l, i) => {
     const fiabHtml = l.note_fiabilite
-      ? `<span class="score-pill score-fiab">Fiab. ${l.note_fiabilite}/10</span>`
+      ? `<span class="score-pill score-fiab" title="${l.fiab_source === 'proprietaires' ? `${l.avis_nb} avis propriétaires` : escapeHtml(l.fiab_source || '')}">Fiab. ${l.note_fiabilite}/10${l.fiab_source === 'proprietaires' ? ' 👥' : ''}</span>`
       : '';
     const dealHtml = l.deal_score != null
       ? `<span class="score-pill score-deal">Deal ${Math.round(l.deal_score)}</span>`
@@ -445,13 +449,13 @@ document.getElementById('kpi-score').textContent   = Math.round(D.score_moyen);
     return `
     <div class="podium-card ${ranks[i]}">
       <div class="podium-rank">${medals[i]}</div>
-      <div class="podium-marque">${l.marque_norm || l.marque || '—'}</div>
-      <div class="podium-modele">${l.modele_norm || l.modele || '—'}</div>
+      <div class="podium-marque">${escapeHtml(l.marque_norm || l.marque || '—')}</div>
+      <div class="podium-modele">${escapeHtml(l.modele_norm || l.modele || '—')}</div>
       <div class="podium-details">${l.annee || '—'} · ${fmtKm(l.km)} · ${l.carburant || '—'}</div>
-      <div class="podium-details">${l.ville || ''} · ${l.site || ''}</div>
+      <div class="podium-details">${escapeHtml(l.ville || '')} · ${l.site || ''}</div>
       <div class="podium-prix">${fmtPrix(l.prix)}</div>
       <div class="podium-scores">${compHtml}${dealHtml}${fiabHtml}</div>
-      ${l.url ? `<div style="margin-top:10px;"><a href="${l.url}" target="_blank" rel="noopener" class="lien">Voir l'annonce →</a></div>` : ''}
+      ${l.url ? `<div style="margin-top:10px;"><a href="${escapeHtml(l.url)}" target="_blank" rel="noopener noreferrer" class="lien">Voir l'annonce →</a></div>` : ''}
     </div>`;
   }).join('');
 })();
@@ -498,7 +502,7 @@ document.getElementById('kpi-score').textContent   = Math.round(D.score_moyen);
 
     return `
     <div class="fiab-card" onclick="window.open('reviews.html#${fiabId}', '_self')" title="${resume || ''}">
-      <div class="fiab-marque">${m.marque}</div>
+      <div class="fiab-marque">${escapeHtml(m.marque)}</div>
       <div class="fiab-modele">${m.modele.split(' ')[0]}</div>
       <div class="fiab-note">
         <span class="fiab-score" style="color:${color};">${n}</span>
@@ -633,11 +637,14 @@ function matchFilters(l) {
   if (activeFilters.marque !== 'ALL' && marque !== activeFilters.marque) return false;
 
   if (activeFilters.carbu !== 'ALL') {
-    const isHybrid = carb.includes('hybrid') || carb.includes('phev') || carb.includes('rechargeable');
+    // "Hybride" = full hybrid HEV uniquement (objectif) ; 48V et PHEV ont leur chip
+    const isHybrid = carb === 'hybride';
     const isElec   = carb.includes('electr') || carb.includes('électr');
-    const isEss    = !isHybrid && !isElec && (carb.includes('essence') || carb.includes('petrol'));
+    const isEss    = carb === 'essence';
     const isDies   = carb.includes('diesel');
     if (activeFilters.carbu === 'Hybride'   && !isHybrid) return false;
+    if (activeFilters.carbu === 'MHEV'      && carb !== 'hybride léger') return false;
+    if (activeFilters.carbu === 'PHEV'      && carb !== 'hybride rechargeable') return false;
     if (activeFilters.carbu === 'Essence'   && !isEss)    return false;
     if (activeFilters.carbu === 'Diesel'    && !isDies)   return false;
     if (activeFilters.carbu === 'Electrique' && !isElec)  return false;
@@ -678,10 +685,10 @@ function refreshTable() {
       ? `<span style="font-family:'DM Mono',monospace;font-size:12px;font-weight:600;color:${dealColor(deal)};">${deal}</span>`
       : '—';
     const fiabHtml = l.note_fiabilite != null
-      ? `<span style="font-family:'DM Mono',monospace;font-size:12px;font-weight:600;color:${noteColor(l.note_fiabilite)};">${l.note_fiabilite}/10</span>`
+      ? `<span style="font-family:'DM Mono',monospace;font-size:12px;font-weight:600;color:${noteColor(l.note_fiabilite)};" title="${l.fiab_source === 'proprietaires' ? `${l.avis_nb} avis propriétaires` : escapeHtml(l.fiab_source || '')}">${l.note_fiabilite}/10${l.fiab_source === 'proprietaires' ? ' 👥' : ''}</span>`
       : '<span style="font-size:11px;color:var(--txt3)">—</span>';
     return `<tr>
-      <td><strong style="font-size:13px;">${l.marque_norm || l.marque || '—'}</strong><br><span style="font-size:12px;color:var(--txt2);">${l.modele_norm || l.modele || '—'}</span></td>
+      <td><strong style="font-size:13px;">${escapeHtml(l.marque_norm || l.marque || '—')}</strong><br><span style="font-size:12px;color:var(--txt2);">${escapeHtml(l.modele_norm || l.modele || '—')}</span></td>
       <td>${l.annee || '—'}</td>
       <td style="font-family:'DM Mono',monospace;font-size:12px;">${fmtKm(l.km)}</td>
       <td>${carbuBadge(l.carburant)}</td>
@@ -689,9 +696,9 @@ function refreshTable() {
       <td style="font-family:'DM Mono',monospace;font-size:13px;font-weight:600;color:var(--txt);white-space:nowrap;">${fmtPrix(l.prix)}</td>
       <td>${dealHtml}</td>
       <td>${fiabHtml}</td>
-      <td style="font-size:12px;color:var(--txt2);">${l.ville || '—'}</td>
+      <td style="font-size:12px;color:var(--txt2);">${escapeHtml(l.ville || '—')}</td>
       <td>${siteBadge(l.site)}</td>
-      <td>${l.url ? `<a href="${l.url}" target="_blank" rel="noopener" class="lien">→</a>` : '—'}</td>
+      <td>${l.url ? `<a href="${escapeHtml(l.url)}" target="_blank" rel="noopener noreferrer" class="lien">→</a>` : '—'}</td>
     </tr>`;
   }).join('');
 

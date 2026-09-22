@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Auto-Bot LU — Objectif Hybride</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0d1117">
+  <meta name="description" content="Objectif : hybride non rechargeable (HEV) — classement des meilleures annonces — Auto-Bot">
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0d1117; --surface: #161b22; --surface2: #21262d;
+      --border: #30363d; --border2: #3d444e;
+      --txt: #e6edf3; --txt2: #8b949e; --txt3: #6e7681;
+      --accent: #388bfd; --accent-dim: rgba(56,139,253,.15);
+      --green: #3fb950; --green-dim: rgba(63,185,80,.15);
+      --amber: #d29922; --amber-dim: rgba(210,153,34,.15);
+      --red: #f85149; --red-dim: rgba(248,81,73,.15);
+      --gold: #e3b341; --silver: #9a9a9a; --bronze: #c97c37;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { background: var(--bg); color: var(--txt); font-family: 'Barlow', sans-serif; font-size: 14px; margin: 0; }
+    ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+    /* Navbar */
+    .navbar { background: var(--surface) !important; border-bottom: 1px solid var(--border); padding: 0 1rem; }
+    .navbar-brand { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 1.2rem; color: var(--txt) !important; }
+    .navbar-brand span { color: var(--accent); }
+    .navbar-toggler { border: 1px solid var(--border) !important; padding: 4px 8px; }
+    .navbar-toggler-icon { filter: invert(1); }
+    .navbar-collapse { background: var(--surface); }
+    .nav-link { color: var(--txt2) !important; font-size: 13px; font-weight: 500; padding: 12px 14px !important; transition: color .15s; }
+    .nav-link:hover { color: var(--txt) !important; }
+    .nav-link.active { color: var(--accent) !important; }
+
+    /* Stats bar */
+    #stats-bar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 8px 0; font-family: 'DM Mono', monospace; font-size: 12px; color: var(--txt2); }
+    #stats-bar strong { color: var(--txt); }
+    .pipe { color: var(--border2); margin: 0 8px; }
+
+    /* Filter panel */
+    .filter-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 18px; margin-bottom: 20px; }
+    .form-select { background-color: var(--surface2) !important; border: 1px solid var(--border) !important; color: var(--txt) !important; font-size: 13px; border-radius: 6px; }
+    .form-select:focus { box-shadow: 0 0 0 3px var(--accent-dim) !important; border-color: var(--accent) !important; }
+    .form-select option { background: var(--surface2); }
+    .form-label { color: var(--txt3); font-size: 11px; text-transform: uppercase; letter-spacing: .04em; }
+
+    /* Chart cards */
+    .chart-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+    .chart-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: .9rem; color: var(--txt2); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 12px; }
+    .chart-wrap { position: relative; height: 300px; }
+
+    /* Table card */
+    .table-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+    .table-card-header { background: var(--surface2); border-bottom: 1px solid var(--border); padding: 12px 16px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1rem; color: var(--txt); }
+    .models-table { width: 100%; border-collapse: collapse; }
+    .models-table thead th { background: var(--surface2); color: var(--txt3); font-size: 11px; text-transform: uppercase; letter-spacing: .05em; padding: 8px 12px; border-bottom: 1px solid var(--border); font-weight: 600; white-space: nowrap; }
+    .models-table tbody td { padding: 9px 12px; border-bottom: 1px solid var(--border); color: var(--txt); font-size: 13px; vertical-align: middle; }
+    .models-table tbody tr:last-child td { border-bottom: none; }
+    .models-table tbody tr:hover td { background: rgba(56,139,253,.06); }
+
+    /* Rank badges */
+    .rank-badge { width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 12px; flex-shrink: 0; }
+    .rank-1 { background: var(--gold); color: #000; }
+    .rank-2 { background: var(--silver); color: #000; }
+    .rank-3 { background: var(--bronze); color: #fff; }
+    .rank-n { background: var(--surface2); color: var(--txt3); border: 1px solid var(--border); }
+
+    /* Score bar */
+    .score-bar { height: 5px; border-radius: 3px; background: var(--surface2); overflow: hidden; margin-top: 5px; width: 60px; }
+    .score-bar-fill { height: 100%; border-radius: 3px; }
+
+    /* Count badge */
+    .count-badge-sm { background: var(--surface2); color: var(--txt2); border: 1px solid var(--border); font-size: 11px; padding: 1px 7px; border-radius: 10px; font-family: 'DM Mono', monospace; }
+
+    /* Carbu tags */
+    .carbu-tag { font-size: 10px; background: var(--surface2); color: var(--txt3); border: 1px solid var(--border); border-radius: 3px; padding: 1px 5px; }
+
+    /* Intro */
+    .page-intro { color: var(--txt2); font-size: 13px; margin: 0 0 16px; max-width: 900px; }
+
+    /* Fiabilité badge */
+    .fiab-badge { font-family: 'DM Mono', monospace; font-weight: 600; padding: 2px 8px; border-radius: 10px; font-size: 12px; }
+
+    /* Prix */
+    .prix-mono { font-family: 'DM Mono', monospace; }
+
+    /* Footer */
+    .footer-bar { text-align: center; padding: 8px; font-size: 11px; color: var(--txt3); font-family: 'DM Mono', monospace; border-top: 1px solid var(--border); background: var(--surface); }
+    .kpi { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; }
+    .kpi-val { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 1.7rem; }
+    .kpi-label { color: var(--txt3); font-size: 11px; text-transform: uppercase; letter-spacing: .04em; }
+    .form-control { background-color: var(--surface2) !important; border: 1px solid var(--border) !important; color: var(--txt) !important; font-size: 13px; }
+    .pill { font-size: 11px; padding: 1px 7px; border-radius: 10px; font-family: 'DM Mono', monospace; white-space: nowrap; }
+    .pill-g { background: var(--green-dim); color: var(--green); } .pill-a { background: var(--amber-dim); color: var(--amber); }
+    .pill-r { background: var(--red-dim); color: var(--red); } .pill-n { background: var(--surface2); color: var(--txt3); }
+    .info-box { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--green); border-radius: 6px; padding: 12px 16px; font-size: 13px; color: var(--txt2); }
+    .info-box b { color: var(--txt); }
+    a.lnk { color: var(--accent); text-decoration: none; } a.lnk:hover { text-decoration: underline; }
+    .table-scroll { overflow-x: auto; }
+    .crit-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 8px; }
+    .crit { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; font-size: 12px; color: var(--txt2); }
+    .crit b { color: var(--txt); font-family: 'Barlow Condensed', sans-serif; font-size: 14px; }
+    .crit .w { float: right; font-family: 'DM Mono', monospace; color: var(--accent); }
+    tr.row-main { cursor: pointer; }
+    tr.row-detail td { background: var(--surface2) !important; padding: 12px 16px !important; }
+    .chk { list-style: none; padding: 0; margin: 0; font-size: 12.5px; }
+    .chk li { padding: 2px 0; }
+    .st-ok::before { content: "✅ "; } .st-warn::before { content: "⚠️ "; } .st-ko::before { content: "⛔ "; } .st-unknown::before { content: "❓ "; }
+    .avis-ext { border-left: 2px solid var(--border2); padding: 4px 10px; margin: 6px 0; font-size: 12.5px; color: var(--txt2); }
+    .avis-ext .n { font-family: 'DM Mono', monospace; font-weight: 600; }
+    .detail-h { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; color: var(--txt); font-size: 13px; text-transform: uppercase; letter-spacing: .04em; margin: 0 0 6px; }
+    .bar { display: inline-block; height: 6px; border-radius: 3px; background: var(--accent); vertical-align: middle; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg px-3">
+  <a class="navbar-brand" href="index.html"><span>◈</span> AUTO-BOT LU</a>
+  <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Menu navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navMenu">
+    <ul class="navbar-nav ms-auto flex-wrap">
+      
+      <li class="nav-item"><a class="nav-link active" href="objectif.html">🎯 Objectif</a></li>
+      <li class="nav-item"><a class="nav-link" href="index.html">Annonces</a></li>
+      <li class="nav-item"><a class="nav-link" href="deals.html">Deals</a></li>
+      <li class="nav-item"><a class="nav-link" href="opportunities.html">Opportunités</a></li>
+      <li class="nav-item"><a class="nav-link" href="rapport.html">Rapport</a></li>
+      <li class="nav-item"><a class="nav-link" href="watchlist.html">Watchlist</a></li>
+      <li class="nav-item"><a class="nav-link" href="alerts.html">Alertes</a></li>
+      <li class="nav-item"><a class="nav-link" href="map.html">Carte</a></li>
+      <li class="nav-item"><a class="nav-link" href="reviews.html">Avis</a></li>
+      <li class="nav-item"><a class="nav-link" href="market.html">Marché</a></li>
+      <li class="nav-item"><a class="nav-link" href="history.html">Historique</a></li>
+      <li class="nav-item"><a class="nav-link" href="suv-hybrid.html">SUV Hybride</a></li>
+      <li class="nav-item"><a class="nav-link" href="suv.html">Guide SUV</a></li>
+      <li class="nav-item"><a class="nav-link" href="compare.html">Comparer</a></li>
+      <li class="nav-item"><a class="nav-link" href="budget.html">Budget</a></li>
+      <li class="nav-item"><a class="nav-link" href="tco.html">TCO</a></li>
+      <li class="nav-item"><a class="nav-link" href="leasing.html">Leasing</a></li>
+      <li class="nav-item"><a class="nav-link" href="import.html">Import</a></li>
+      <li class="nav-item"><a class="nav-link" href="selection.html">⭐ Sélection</a></li>
+      <li class="nav-item"><a class="nav-link" href="top-models.html">Top Modèles</a></li>
+      <li class="nav-item"><a class="nav-link" href="vendors.html">Vendeurs</a></li>
+    
+    </ul>
+  </div>
+</nav>
+<div class="container-fluid px-3 py-3" style="max-width:1400px">
+  <h1 style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.6rem;margin:0 0 4px">🎯 Objectif : hybride non rechargeable</h1>
+  <p class="page-intro" id="intro">Full hybrid (HEV) uniquement — micro-hybrides 48V et hybrides rechargeables (PHEV) exclus.</p>
+
+  <div class="row g-2 mb-3" id="kpis"></div>
+
+  <div class="table-card mb-3">
+    <div class="table-card-header">Grille de choix d'une bonne voiture — score /100</div>
+    <div style="padding:12px 16px">
+      <div class="crit-grid" id="crit-grid"></div>
+      <div style="font-size:12px;color:var(--txt3);margin-top:8px">
+        Pénalités : signaux de risque (−8), pannes fréquentes dans les avis propriétaires (−5), accident déclaré (−10).
+        Les critères inconnus comptent peu et deviennent des <b style="color:var(--txt2)">questions à poser au vendeur</b>.
+        Poids modifiables dans <code>config/criteria.yaml → objectif.poids</code>. Cliquez une annonce pour sa fiche.
+      </div>
+    </div>
+  </div>
+
+  <div class="filter-panel">
+    <div class="row g-2 align-items-end">
+      <div class="col-md-2 col-6"><label class="form-label">Pays</label>
+        <select id="f-pays" class="form-select form-select-sm"><option value="">Tous</option></select></div>
+      <div class="col-md-2 col-6"><label class="form-label">Modèle</label>
+        <select id="f-modele" class="form-select form-select-sm"><option value="">Tous</option></select></div>
+      <div class="col-md-2 col-6"><label class="form-label">Carrosserie</label>
+        <select id="f-carro" class="form-select form-select-sm"><option value="">Toutes</option></select></div>
+      <div class="col-md-1 col-6"><label class="form-label">Prix max €</label>
+        <input type="number" id="f-prix" class="form-control form-control-sm" placeholder="50000"></div>
+      <div class="col-md-1 col-6"><label class="form-label">Km max</label>
+        <input type="number" id="f-km" class="form-control form-control-sm" placeholder="150000"></div>
+      <div class="col-md-1 col-6"><label class="form-label">Année min</label>
+        <input type="number" id="f-annee" class="form-control form-control-sm" placeholder="2016"></div>
+      <div class="col-md-3 col-12 d-flex gap-3 flex-wrap">
+        <div class="form-check mb-0"><input class="form-check-input" type="checkbox" id="f-fiab">
+          <label class="form-check-label" for="f-fiab" style="font-size:12px">Fiabilité ≥ 7,5</label></div>
+        <div class="form-check mb-0"><input class="form-check-input" type="checkbox" id="f-avis">
+          <label class="form-check-label" for="f-avis" style="font-size:12px">Avec avis propriétaires</label></div>
+        <div class="form-check mb-0"><input class="form-check-input" type="checkbox" id="f-noko">
+          <label class="form-check-label" for="f-noko" style="font-size:12px">Sans point rouge ⛔</label></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-card mb-3">
+    <div class="table-card-header">Modèles HEV — ce qu'en disent les propriétaires</div>
+    <div class="table-scroll"><table class="models-table" id="t-modeles">
+      <thead><tr><th>Modèle</th><th>Annonces</th><th>Prix médian</th><th>Prix min</th><th>Km médian</th>
+        <th>Fiabilité /10</th><th>Avis propriétaires</th><th>Pannes signalées</th><th>Meilleur score</th></tr></thead>
+      <tbody></tbody></table></div>
+  </div>
+
+  <div class="table-card mb-3">
+    <div class="table-card-header">Meilleures annonces <span class="count-badge-sm" id="nb-annonces">0</span>
+      <a class="lnk" href="index.html?objectif=1" style="float:right;font-size:12px;font-family:Barlow,sans-serif;font-weight:500">Voir toutes dans Annonces →</a></div>
+    <div class="table-scroll"><table class="models-table" id="t-annonces">
+      <thead><tr><th>#</th><th>Score</th><th>Véhicule</th><th>Année</th><th>Km</th><th>Prix</th><th>vs marché</th>
+        <th>Fiab.</th><th>Contrôles</th><th>Lieu</th><th>Vendeur</th></tr></thead>
+      <tbody></tbody></table></div>
+  </div>
+</div>
+
+<div class="footer-bar" id="footer"></div>
+
+<script src="data/objectif.js"></script>
+<script src="data/version.js"></script>
+<script>
+  const D = (typeof OBJECTIF !== 'undefined') ? OBJECTIF : { annonces: [], modeles: [], types_hybrides: {}, config: {}, poids: {} };
+  const fmt = n => (n || n === 0) ? Number(n).toLocaleString('fr-FR') : '—';
+  const esc = s => escapeHtml(s == null ? '' : String(s));
+  const pillScore = s => `<span class="pill ${s >= 70 ? 'pill-g' : s >= 55 ? 'pill-a' : 'pill-n'}">${s}</span>`;
+  const SRC = { proprietaires: 'avis propriétaires', editorial: 'synthèse éditoriale', marque: 'référence marque' };
+  const pillFiab = (f, src) => f ? `<span class="pill ${f >= 7.5 ? 'pill-g' : f >= 6 ? 'pill-a' : 'pill-r'}" title="${esc(SRC[src] || '')}">${Number(f).toFixed(1)}${src === 'proprietaires' ? ' 👥' : src === 'marque' ? '°' : ''}</span>` : '<span class="pill pill-n">—</span>';
+  const pillEcart = e => e === null || e === undefined ? '<span class="pill pill-n" title="pas assez d\'annonces comparables">n/d</span>'
+    : `<span class="pill ${e <= -5 ? 'pill-g' : e <= 5 ? 'pill-n' : 'pill-r'}">${e > 0 ? '+' : ''}${e}%</span>`;
+  const CRIT = {
+    fiabilite: ['Fiabilité réelle', 'Avis propriétaires Caradisiac (critère fiabilité + note), sinon synthèse éditoriale, sinon référence marque'],
+    prix: ['Prix vs marché', 'Médiane des annonces du même modèle, âge (3 ans), km, carburant et boîte'],
+    historique: ['Historique', '1ère main, carnet d\'entretien complet, sans accident (fiche de l\'annonce)'],
+    garantie: ['Garantie', 'Garantie constructeur / hybride ou durée annoncée par le vendeur'],
+    km: ['Kilométrage', 'Km total et cohérence km/an (7 000–25 000 idéal)'],
+    age: ['Âge', 'Plus récent = batterie hybride et garantie plus confortables'],
+    equipement: ['Sécurité & équipements', 'Freinage d\'urgence, régulateur adaptatif, caméra, maintien de voie, angle mort…'],
+    vendeur: ['Vendeur', 'Pro vs particulier, note des clients du vendeur, Car-Pass (BE)'],
+  };
+
+  function kpis() {
+    const t = D.types_hybrides || {}, A = D.annonces || [];
+    const items = [
+      ['Annonces objectif', D.nb, 'var(--green)'],
+      ['Avec avis propriétaires', A.filter(a => a.avis).length, 'var(--accent)'],
+      ['Fiche détail analysée', A.filter(a => a.fiche).length, 'var(--accent)'],
+      ['Micro-hybr. 48V / PHEV exclus', `${fmt(t['Hybride léger'] || 0)} / ${fmt(t['Hybride rechargeable'] || 0)}`, 'var(--txt3)'],
+    ];
+    document.getElementById('kpis').innerHTML = items.map(([l, v, c]) =>
+      `<div class="col-md-3 col-6"><div class="kpi"><div class="kpi-val" style="color:${c}">${typeof v === 'number' ? fmt(v) : esc(v)}</div><div class="kpi-label">${esc(l)}</div></div></div>`).join('');
+    document.getElementById('crit-grid').innerHTML = Object.entries(D.poids || {}).map(([k, w]) =>
+      `<div class="crit"><span class="w">${w} pts</span><b>${esc((CRIT[k] || [k])[0])}</b><br>${esc((CRIT[k] || ['', ''])[1])}</div>`).join('');
+  }
+
+  function fillSel(id, vals) {
+    const sel = document.getElementById(id);
+    [...new Set(vals.filter(Boolean))].sort().forEach(v => { const o = document.createElement('option'); o.value = v; o.textContent = v; sel.appendChild(o); });
+  }
+
+  function renderModeles() {
+    document.querySelector('#t-modeles tbody').innerHTML = (D.modeles || []).map(m => `<tr>
+      <td><b>${esc(m.modele)}</b></td><td><span class="count-badge-sm">${m.nb}</span></td>
+      <td class="prix-mono">${fmt(m.prix_median)} €</td><td class="prix-mono">${fmt(m.prix_min)} €</td>
+      <td class="prix-mono">${fmt(m.km_median)}</td><td>${pillFiab(m.fiab, m.fiab_source)}</td>
+      <td>${m.avis_nb ? `<a class="lnk" href="${esc(m.avis_url)}" target="_blank" rel="noopener noreferrer">${m.avis_note}/20 · ${m.avis_nb} avis</a>` : '<span style="color:var(--txt3)">aucun</span>'}</td>
+      <td>${m.avis_nb ? `<span class="pill ${m.avis_alertes / m.avis_nb >= 0.15 ? 'pill-r' : m.avis_alertes ? 'pill-a' : 'pill-g'}">${m.avis_alertes}</span>` : '—'}</td>
+      <td>${pillScore(m.meilleur_score)}</td></tr>`).join('')
+      || '<tr><td colspan="9" style="color:var(--txt3)">Aucune donnée</td></tr>';
+  }
+
+  function controles(a) {
+    const c = { ok: 0, warn: 0, ko: 0, unknown: 0 };
+    (a.checklist || []).forEach(i => c[i.statut]++);
+    return `<span class="pill pill-g" title="points OK">✓${c.ok}</span> ${c.warn ? `<span class="pill pill-a" title="à surveiller">!${c.warn}</span>` : ''} ${c.ko ? `<span class="pill pill-r" title="points rouges">✕${c.ko}</span>` : ''} ${c.unknown ? `<span class="pill pill-n" title="inconnus → questions">?${c.unknown}</span>` : ''}`;
+  }
+
+  function detailRow(a) {
+    const crit = Object.entries(a.criteres || {}).map(([k, v]) => {
+      const w = (D.poids || {})[k] || 1;
+      return `<div style="font-size:12px;display:flex;gap:6px;align-items:center"><span style="width:150px;color:var(--txt2)">${esc((CRIT[k] || [k])[0])}</span>
+        <span class="bar" style="width:${Math.round(v / w * 80)}px"></span><span style="font-family:'DM Mono',monospace">${v}/${w}</span></div>`;
+    }).join('') + (a.penalite ? `<div style="font-size:12px;color:var(--red)">Pénalités : −${a.penalite}</div>` : '');
+    const chk = (a.checklist || []).map(i => `<li class="st-${i.statut}"><b>${esc(i.critere)}</b> — ${esc(i.texte)}</li>`).join('');
+    const q = (a.questions || []).map(x => `<li>${esc(x)}</li>`).join('');
+    const av = a.avis ? `<div class="detail-h" style="margin-top:10px">Avis propriétaires ${esc(a.marque)} ${esc(a.modele)} hybride
+        — ${a.avis.note}/20, ${a.avis.nb} avis <a class="lnk" style="text-transform:none" href="${esc(a.avis.url)}" target="_blank" rel="noopener noreferrer">tous les avis →</a></div>` +
+      (a.avis.extraits || []).map(e => `<div class="avis-ext"><span class="n" style="color:${e.note >= 15 ? 'var(--green)' : e.note >= 12 ? 'var(--amber)' : 'var(--red)'}">${e.note}/20</span>
+        · ${esc(e.version)} · ${esc(e.date)}<br>« ${esc(e.extrait)} » <a class="lnk" href="${esc(e.url)}" target="_blank" rel="noopener noreferrer">lire</a></div>`).join('')
+      : '<div style="font-size:12px;color:var(--txt3);margin-top:10px">Pas d\'avis propriétaires hybrides trouvés pour ce modèle.</div>';
+    return `<tr class="row-detail" id="d-${esc(a.id)}" style="display:none"><td colspan="11"><div class="row g-3">
+      <div class="col-lg-4"><div class="detail-h">Détail du score ${a.score}/100</div>${crit}
+        ${a.fiche ? '' : '<div style="font-size:12px;color:var(--txt3);margin-top:6px">Fiche de l\'annonce pas encore analysée (historique/garantie inconnus).</div>'}</div>
+      <div class="col-lg-4"><div class="detail-h">Checklist</div><ul class="chk">${chk}</ul>
+        ${q ? `<div class="detail-h" style="margin-top:10px">❓ À demander au vendeur</div><ul style="font-size:12.5px;padding-left:18px;margin:0">${q}</ul>` : ''}</div>
+      <div class="col-lg-4">${av}</div></div></td></tr>`;
+  }
+
+  function renderAnnonces() {
+    const g = id => document.getElementById(id);
+    const pays = g('f-pays').value, modele = g('f-modele').value, carro = g('f-carro').value;
+    const pmax = parseInt(g('f-prix').value) || Infinity, kmax = parseInt(g('f-km').value) || Infinity, amin = parseInt(g('f-annee').value) || 0;
+    const onlyFiab = g('f-fiab').checked, onlyAvis = g('f-avis').checked, noKo = g('f-noko').checked;
+    const rows = (D.annonces || []).filter(a =>
+      (!pays || a.pays === pays) && (!modele || `${a.marque} ${a.modele}` === modele) && (!carro || a.carrosserie === carro)
+      && a.prix <= pmax && (a.km === null || a.km <= kmax) && (!a.annee || a.annee >= amin)
+      && (!onlyFiab || (a.fiab || 0) >= 7.5) && (!onlyAvis || a.avis) && (!noKo || !(a.checklist || []).some(i => i.statut === 'ko'))).slice(0, 150);
+    g('nb-annonces').textContent = rows.length;
+    document.querySelector('#t-annonces tbody').innerHTML = rows.map((a, i) => `<tr class="row-main" data-id="${esc(a.id)}">
+      <td><span class="rank-badge ${i < 3 ? 'rank-' + (i + 1) : 'rank-n'}">${i + 1}</span></td>
+      <td>${pillScore(a.score)}</td>
+      <td><a class="lnk" href="${esc(a.url || '#')}" target="_blank" rel="noopener noreferrer"><b>${esc(a.marque)} ${esc(a.modele)}</b></a>
+        <div style="font-size:11px;color:var(--txt3)">${esc(a.version)} · ${esc(a.site)}</div></td>
+      <td>${a.annee || '—'}</td><td class="prix-mono">${fmt(a.km)}</td>
+      <td class="prix-mono"><b>${fmt(a.prix)} €</b>${a.median ? `<div style="font-size:11px;color:var(--txt3)">méd. ${fmt(a.median)} €</div>` : ''}</td>
+      <td>${pillEcart(a.ecart_pct)}</td><td>${pillFiab(a.fiab, a.fiab_source)}</td><td style="white-space:nowrap">${controles(a)}</td>
+      <td style="font-size:12px">${esc(a.ville)}<div style="font-size:11px;color:var(--txt3)">${esc(a.pays)}</div></td>
+      <td style="font-size:12px">${esc(a.vendeur_nom || '—')}<div style="font-size:11px;color:var(--txt3)">${esc(a.vendeur_type)}</div></td></tr>` + detailRow(a)).join('')
+      || '<tr><td colspan="11" style="color:var(--txt3)">Aucune annonce ne correspond</td></tr>';
+  }
+
+  // Dépliage de la fiche : délégation d'événement (pas de <script> dans innerHTML)
+  document.addEventListener('click', e => {
+    if (e.target.closest('a')) return;
+    const tr = e.target.closest('tr.row-main');
+    if (!tr) return;
+    const d = document.getElementById('d-' + tr.dataset.id);
+    if (d) d.style.display = d.style.display === 'none' ? '' : 'none';
+  });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const c = D.config || {};
+    if (c.label) document.getElementById('intro').textContent =
+      `${c.label} · boîte ${(c.boite || []).join('/') || 'toutes'} · ≤ ${fmt(c.prix_max)} € · ≤ ${fmt(c.km_max)} km · ${c.annee_min || ''}+ — micro-hybrides 48V ${c.inclure_hybride_leger ? 'inclus' : 'exclus'}, PHEV exclus.`;
+    kpis();
+    fillSel('f-pays', D.annonces.map(a => a.pays));
+    fillSel('f-modele', D.annonces.map(a => `${a.marque} ${a.modele}`));
+    fillSel('f-carro', D.annonces.map(a => a.carrosserie));
+    ['f-pays', 'f-modele', 'f-carro', 'f-prix', 'f-km', 'f-annee', 'f-fiab', 'f-avis', 'f-noko'].forEach(id =>
+      document.getElementById(id).addEventListener('input', renderAnnonces));
+    renderModeles(); renderAnnonces();
+    document.getElementById('footer').textContent = `Objectif calculé le ${D.date_calcul || '—'} · avis propriétaires : caradisiac.com (extraits, lien vers l'avis complet) · score = aide à la décision, vérifier chaque annonce`;
+  });
+</script>
+<script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

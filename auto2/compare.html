@@ -117,6 +117,8 @@
   <div class="collapse navbar-collapse" id="navMenu">
     <ul class="navbar-nav ms-auto flex-wrap">
       
+      <li class="nav-item"><a class="nav-link" href="objectif.html">🎯 Objectif</a></li>
+      
       <li class="nav-item"><a class="nav-link" href="index.html">Annonces</a></li>
       <li class="nav-item"><a class="nav-link" href="deals.html">Deals</a></li>
       <li class="nav-item"><a class="nav-link" href="opportunities.html">Opportunités</a></li>
@@ -332,7 +334,7 @@ function scoreColor(score) {
 function renderPhoto(container, l) {
   const photo = l.photos_url && l.photos_url[0];
   if (photo) {
-    container.innerHTML = `<img src="${photo}" class="car-photo" alt="${l.marque_norm||l.marque||''}" onerror="this.parentElement.innerHTML='<div class=car-photo-placeholder>◈</div>'">`;
+    container.innerHTML = `<img src="${photo}" class="car-photo" alt="${escapeHtml(l.marque_norm||l.marque||'')}" onerror="this.parentElement.innerHTML='<div class=car-photo-placeholder>◈</div>'">`;
   } else {
     container.innerHTML = '<div class="car-photo-placeholder">◈</div>';
   }
@@ -377,8 +379,8 @@ function renderCompare() {
     { label: 'Deal Score',  a: a.deal_score,  b: b.deal_score,  lower: false, fmt: v => v ? v+'/100' : '—' },
     { label: 'Risk Score',  a: a.risk_score,  b: b.risk_score,  lower: true,  fmt: v => v ? v+'/100' : '—' },
     { label: 'Annonce',     a: a.url,         b: b.url,         lower: null,
-      fmtA: () => `<a href="${a.url}" target="_blank" rel="noopener noreferrer" class="btn-voir">Voir →</a>`,
-      fmtB: () => `<a href="${b.url}" target="_blank" rel="noopener noreferrer" class="btn-voir">Voir →</a>` },
+      fmtA: () => `<a href="${escapeHtml(a.url)}" target="_blank" rel="noopener noreferrer" class="btn-voir">Voir →</a>`,
+      fmtB: () => `<a href="${escapeHtml(b.url)}" target="_blank" rel="noopener noreferrer" class="btn-voir">Voir →</a>` },
   ];
 
   let pts_a = 0, pts_b = 0;
@@ -418,16 +420,16 @@ function renderCompare() {
 
   let verdict = '';
   if (pts_a > pts_b) {
-    verdict = `<span style="color:var(--green)">✓</span> <strong>${titreA}</strong> est objectivement meilleure sur ${pts_a}/${pts_a+pts_b} critères comparables.`;
+    verdict = `<span style="color:var(--green)">✓</span> <strong>${escapeHtml(titreA)}</strong> est objectivement meilleure sur ${pts_a}/${pts_a+pts_b} critères comparables.`;
   } else if (pts_b > pts_a) {
-    verdict = `<span style="color:var(--green)">✓</span> <strong>${titreB}</strong> est objectivement meilleure sur ${pts_b}/${pts_a+pts_b} critères comparables.`;
+    verdict = `<span style="color:var(--green)">✓</span> <strong>${escapeHtml(titreB)}</strong> est objectivement meilleure sur ${pts_b}/${pts_a+pts_b} critères comparables.`;
   } else {
     verdict = `<span style="color:var(--amber)">⇌</span> Les deux véhicules sont <strong>équivalents</strong> sur les critères objectifs.`;
   }
   if (a.prix && b.prix && a.prix !== b.prix) {
     const diff = Math.abs(a.prix - b.prix);
     const cheaperName = a.prix < b.prix ? titreA : titreB;
-    verdict += ` <span style="color:var(--txt3)">— ${cheaperName} est moins chère de ${fmtEur(diff)}.</span>`;
+    verdict += ` <span style="color:var(--txt3)">— ${escapeHtml(cheaperName)} est moins chère de ${fmtEur(diff)}.</span>`;
   }
   document.getElementById('verdict-text').innerHTML = verdict;
 
@@ -517,7 +519,7 @@ function renderMatches(a, b) {
         diff < 0 ? `<span style="color:var(--amber)"> — là-bas ${(-diff).toLocaleString('fr')}€ moins cher</span>` :
         ' — même prix';
       const lien = t && t.url
-        ? `<a href="${t.url}" target="_blank" rel="noopener noreferrer" style="color:var(--accent)">${escapeHtml(m.site)}</a>`
+        ? `<a href="${escapeHtml(t.url)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent)">${escapeHtml(m.site)}</a>`
         : escapeHtml(m.site);
       return `<div style="font-size:13px;margin-bottom:6px">⇄ ${lien} : <span style="font-family:'DM Mono',monospace">${m.prix ? m.prix.toLocaleString('fr')+' €' : '—'}</span>${diffTxt}
         <span style="font-size:10px;color:var(--txt3)">(${m.type === 'exact' ? 'correspondance exacte' : 'correspondance probable'})</span></div>`;
@@ -529,8 +531,8 @@ function renderMatches(a, b) {
       </div>`;
   }
 
-  const titreA = `${a.marque_norm||a.marque||'?'} ${a.modele_norm||a.modele||''} (${a.site||''})`.trim();
-  const titreB = `${b.marque_norm||b.marque||'?'} ${b.modele_norm||b.modele||''} (${b.site||''})`.trim();
+  const titreA = `${escapeHtml(a.marque_norm||a.marque||'?')} ${escapeHtml(a.modele_norm||a.modele||'')} (${a.site||''})`.trim();
+  const titreB = `${escapeHtml(b.marque_norm||b.marque||'?')} ${escapeHtml(b.modele_norm||b.modele||'')} (${b.site||''})`.trim();
   section.style.display = 'block';
   body.innerHTML = `
     <div class="col-md-6">${card(a, titreA)}</div>
@@ -588,7 +590,7 @@ function renderReviews(a, b) {
     return `
       <div style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:14px;height:100%">
         <div style="font-size:12px;color:var(--txt3);font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px">${titre}</div>
-        <div style="font-weight:700;font-size:15px;margin-bottom:2px">${r.marque} ${r.modele}</div>
+        <div style="font-weight:700;font-size:15px;margin-bottom:2px">${escapeHtml(r.marque)} ${escapeHtml(r.modele)}</div>
         <div style="font-size:11px;color:var(--txt3);margin-bottom:12px">${r.annee_debut}–${r.annee_fin||'…'}</div>
 
         <div class="d-flex gap-3 mb-10" style="margin-bottom:10px">
@@ -617,13 +619,17 @@ function renderReviews(a, b) {
         ${risks ? `<div style="font-size:11px;color:var(--amber);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px">⚠ Risques à l'achat</div>
         <ul style="font-size:12px;color:var(--amber);padding-left:18px;margin:0 0 10px">${risks}</ul>` : ''}
 
-        ${(r.retours_proprietaires||[]).length ? `<div style="font-size:11px;color:var(--txt3);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px">💬 Retour propriétaire</div>
-        <div style="border-left:3px solid var(--accent);padding:4px 10px;background:var(--bg);border-radius:0 4px 4px 0;font-size:12px;color:var(--txt2);font-style:italic;line-height:1.5">${escapeHtml(r.retours_proprietaires[0])}</div>` : ''}
+        ${r.avis_proprietaires ? (() => { const o = r.avis_proprietaires, h = o.hybride, g = o.generations[o.generations.length - 1];
+          const top = h && h.avis.length ? h.avis[0] : null;
+          return `<div style="font-size:11px;color:var(--txt3);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px">👥 Avis propriétaires</div>
+          <div style="font-size:12px;color:var(--txt2);margin-bottom:4px">${h ? `Hybride : <b>${h.note_moy}/20</b> (${h.nb} avis)${h.fiab ? ` · fiabilité ${h.fiab}/10` : ''}${h.nb_alertes ? ` · <span style="color:var(--red)">${h.nb_alertes} pannes signalées</span>` : ''}`
+            : `<b>${g.note}/20</b> (${g.nb} avis)${g.fiab ? ` · fiabilité ${g.fiab}/10` : ''}`} <a href="${escapeHtml(h ? h.url : g.url)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent)">voir</a></div>
+          ${top ? `<div style="border-left:3px solid var(--accent);padding:4px 10px;background:var(--bg);border-radius:0 4px 4px 0;font-size:12px;color:var(--txt2);line-height:1.5">${top.note}/20 · ${escapeHtml(top.date)} — « ${escapeHtml(top.extrait)} »</div>` : ''}`; })() : ''}
       </div>`;
   }
 
-  const titreA = `${a.marque_norm||a.marque||'?'} ${a.modele_norm||a.modele||''}`.trim();
-  const titreB = `${b.marque_norm||b.marque||'?'} ${b.modele_norm||b.modele||''}`.trim();
+  const titreA = `${escapeHtml(a.marque_norm||a.marque||'?')} ${escapeHtml(a.modele_norm||a.modele||'')}`.trim();
+  const titreB = `${escapeHtml(b.marque_norm||b.marque||'?')} ${escapeHtml(b.modele_norm||b.modele||'')}`.trim();
   body.innerHTML = `
     <div class="col-md-6">${reviewCard(rA, titreA)}</div>
     <div class="col-md-6">${reviewCard(rB, titreB)}</div>
@@ -725,8 +731,8 @@ function renderVendorCompare(a, b) {
       </div>`;
   }
 
-  const titreA = `${a.marque_norm||a.marque||'?'} ${a.modele_norm||a.modele||''}`.trim();
-  const titreB = `${b.marque_norm||b.marque||'?'} ${b.modele_norm||b.modele||''}`.trim();
+  const titreA = `${escapeHtml(a.marque_norm||a.marque||'?')} ${escapeHtml(a.modele_norm||a.modele||'')}`.trim();
+  const titreB = `${escapeHtml(b.marque_norm||b.marque||'?')} ${escapeHtml(b.modele_norm||b.modele||'')}`.trim();
   body.innerHTML = `
     <div class="col-md-6">${vendorCard(a, vA, titreA)}</div>
     <div class="col-md-6">${vendorCard(b, vB, titreB)}</div>

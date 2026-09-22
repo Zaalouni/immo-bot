@@ -113,6 +113,7 @@
   </button>
   <div class="collapse navbar-collapse" id="navMenu">
     <ul class="navbar-nav ms-auto">
+      <li class="nav-item"><a class="nav-link" href="objectif.html">🎯 Objectif</a></li>
       <li class="nav-item"><a class="nav-link" href="index.html">Annonces</a></li>
       <li class="nav-item"><a class="nav-link" href="deals.html">Deals</a></li>
       <li class="nav-item"><a class="nav-link" href="opportunities.html">Opportunités</a></li>
@@ -457,7 +458,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   $(sel).select2({ placeholder: '— Choisir une annonce —', allowClear: true });
 
-  const CARBU_MAP = { 'essence':'essence', 'diesel':'diesel', 'hybride':'hybride', 'phev':'phev', 'hybride rechargeable':'phev', 'électrique':'electrique', 'electrique':'electrique' };
+  const CARBU_MAP = { 'essence':'essence', 'diesel':'diesel', 'hybride':'hybride', 'hybride léger':'essence', 'phev':'phev', 'hybride rechargeable':'phev', 'électrique':'electrique', 'electrique':'electrique' };
   const CONSO_DEFAULT = { essence: 6.5, diesel: 5.5, hybride: 4.8, phev: 2.5, electrique: 18 };
 
   function applyListing(id) {

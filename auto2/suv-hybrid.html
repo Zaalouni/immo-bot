@@ -156,6 +156,7 @@
   </button>
   <div class="collapse navbar-collapse" id="navMenu">
     <ul class="navbar-nav ms-auto">
+      <li class="nav-item"><a class="nav-link" href="objectif.html">🎯 Objectif</a></li>
       <li class="nav-item"><a class="nav-link" href="index.html">Annonces</a></li>
       <li class="nav-item"><a class="nav-link" href="deals.html">Deals</a></li>
       <li class="nav-item"><a class="nav-link" href="opportunities.html">Opportunités</a></li>
@@ -189,7 +190,7 @@
         SUV · Hybride · Automatique
       </h1>
       <div style="font-size:13px;color:var(--txt2);margin-top:4px;">
-        Annonces filtrées — boîte auto · carburant hybride/PHEV · carrosserie SUV/crossover
+        Annonces filtrées — boîte auto · hybrides (HEV par défaut, 48V et PHEV en option) · carrosserie SUV/crossover
       </div>
       <div id="date-label" style="font-size:12px;color:var(--txt3);margin-top:2px;"></div>
     </div>
@@ -245,9 +246,10 @@
   <div class="filter-panel">
     <div class="filter-row">
       <span class="filter-label">Carburant</span>
-      <span class="filter-chip active-blue" data-dim="carbu" data-val="ALL" onclick="setFilter(this)">Tous</span>
-      <span class="filter-chip" data-dim="carbu" data-val="HEV"  onclick="setFilter(this)">Hybride HEV</span>
-      <span class="filter-chip" data-dim="carbu" data-val="PHEV" onclick="setFilter(this)">Hybride PHEV</span>
+      <span class="filter-chip" data-dim="carbu" data-val="ALL" onclick="setFilter(this)">Tous hybrides</span>
+      <span class="filter-chip active-blue" data-dim="carbu" data-val="HEV"  onclick="setFilter(this)" title="Full hybrid non rechargeable — objectif">🎯 Hybride HEV</span>
+      <span class="filter-chip" data-dim="carbu" data-val="MHEV" onclick="setFilter(this)" title="Micro-hybride 48V : essence assistée, pas de roulage électrique">Micro-hybride 48V</span>
+      <span class="filter-chip" data-dim="carbu" data-val="PHEV" onclick="setFilter(this)">Rechargeable PHEV</span>
     </div>
     <div class="filter-row">
       <span class="filter-label">Budget</span>
@@ -339,9 +341,10 @@ function siteBadge(s) {
 function carbuBadge(c) {
   if (!c) return '—';
   const cl = c.toLowerCase();
-  if (cl.includes('phev') || cl.includes('rechargeable')) return `<span class="badge-carbu badge-phev">PHEV</span>`;
-  if (cl.includes('hybrid') || cl.includes('hybride')) return `<span class="badge-carbu badge-hybride">Hybride</span>`;
-  return `<span class="badge-carbu" style="background:var(--surface2);color:var(--txt2);">${c}</span>`;
+  if (cl === 'hybride rechargeable') return `<span class="badge-carbu badge-phev">PHEV</span>`;
+  if (cl === 'hybride léger') return `<span class="badge-carbu" style="background:var(--surface2);color:var(--txt2);" title="micro-hybride 48V">48V</span>`;
+  if (cl === 'hybride') return `<span class="badge-carbu badge-hybride">HEV</span>`;
+  return `<span class="badge-carbu" style="background:var(--surface2);color:var(--txt2);">${escapeHtml(c)}</span>`;
 }
 function scoreBadge(s) {
   if (s == null) return '—';
@@ -497,8 +500,8 @@ if (D.prix_median && D.rav4_median) {
             ${vsTag}${vsRav4Tag}
           </div>
           <div style="margin-top:6px;display:flex;justify-content:space-between;align-items:center;">
-            <span style="font-size:12px;color:var(--txt3);">${l.ville || ''} · ${l.site || ''}</span>
-            ${l.url ? `<a href="${l.url}" target="_blank" rel="noopener" class="row-link">Voir →</a>` : ''}
+            <span style="font-size:12px;color:var(--txt3);">${escapeHtml(l.ville || '')} · ${l.site || ''}</span>
+            ${l.url ? `<a href="${escapeHtml(l.url)}" target="_blank" rel="noopener noreferrer" class="row-link">Voir →</a>` : ''}
           </div>
         </div>
       </div>`;
@@ -511,7 +514,7 @@ const allAnnonces = D.annonces || [];
 const medRav4     = D.rav4_median || 0;
 
 // État des filtres
-const filters = { carbu: 'ALL', budget: 'ALL', km: 'ALL', annee: 'ALL', score: 'ALL', marque: 'ALL' };
+const filters = { carbu: 'HEV', budget: 'ALL', km: 'ALL', annee: 'ALL', score: 'ALL', marque: 'ALL' };
 
 // Préfixes des classes active par dimension
 const activeClass = { carbu:'active-blue', budget:'active-amber', km:'active-green', annee:'active-purple', score:'active-teal' };
@@ -527,10 +530,9 @@ function matchesFilters(l) {
   if (filters.marque !== 'ALL' && marque !== filters.marque) return false;
 
   if (filters.carbu !== 'ALL') {
-    const isPhev = carb.includes('phev') || carb.includes('rechargeable') || carb.includes('plug');
-    const isHev  = !isPhev && (carb.includes('hybr') || carb.includes('hybrid'));
-    if (filters.carbu === 'PHEV' && !isPhev) return false;
-    if (filters.carbu === 'HEV'  && !isHev)  return false;
+    // Valeurs canoniques du normalizer : égalité stricte
+    const type = { 'hybride': 'HEV', 'hybride léger': 'MHEV', 'hybride rechargeable': 'PHEV' }[carb];
+    if (type !== filters.carbu) return false;
   }
 
   if (filters.budget !== 'ALL') {
@@ -563,13 +565,22 @@ function matchesFilters(l) {
   return true;
 }
 
+// Fiabilité : avis propriétaires réels (👥) > synthèse éditoriale > référence marque (°)
+function fiabTag(l) {
+  if (!l.fiab) return '';
+  const c = l.fiab >= 7.5 ? 'var(--green)' : l.fiab >= 6 ? 'var(--amber)' : 'var(--red)';
+  const src = l.fiab_source === 'proprietaires' ? ` 👥${l.avis_nb}` : l.fiab_source === 'marque' ? '°' : '';
+  const title = l.fiab_source === 'proprietaires' ? `Fiabilité propriétaires — ${l.avis_nb} avis, ${l.avis_note}/20` : `Fiabilité (${l.fiab_source})`;
+  return `<div style="font-size:10px;font-weight:700;color:${c}" title="${escapeHtml(title)}">★ ${l.fiab}/10${src}</div>`;
+}
+
 function makeRow(l) {
   const vsRav4 = medRav4 && l.prix ? Math.round(((l.prix - medRav4) / medRav4) * 100) : null;
   const vsTag  = vsRav4 !== null
     ? `<span class="vs-tag ${vsRav4 <= -5 ? 'vs-better' : vsRav4 >= 5 ? 'vs-worse' : 'vs-equal'}">${vsRav4 > 0 ? '+' : ''}${vsRav4}%</span>`
     : '—';
   return [
-    `<span style="font-weight:600;">${l.marque_norm || l.marque || ''} ${l.modele_norm || l.modele || ''}</span>`,
+    `<span style="font-weight:600;">${escapeHtml(l.marque_norm || l.marque || '')} ${escapeHtml(l.modele_norm || l.modele || '')}</span>${fiabTag(l)}`,
     l.annee || '—',
     `<span style="font-family:'DM Mono',monospace;">${fmtKm(l.km)}</span>`,
     carbuBadge(l.carburant),
@@ -577,9 +588,9 @@ function makeRow(l) {
     scoreBadge(l.deal_score),
     negoBadge(l.nego_score),
     vsTag,
-    `<span style="font-size:12px;color:var(--txt2);">${l.ville || '—'}</span>`,
+    `<span style="font-size:12px;color:var(--txt2);">${escapeHtml(l.ville || '—')}</span>`,
     siteBadge(l.site),
-    l.url ? `<a href="${l.url}" target="_blank" rel="noopener" class="row-link">→</a>` : '—',
+    l.url ? `<a href="${escapeHtml(l.url)}" target="_blank" rel="noopener noreferrer" class="row-link">→</a>` : '—',
   ];
 }
 
@@ -656,6 +667,7 @@ $(document).ready(function() {
   });
   document.getElementById('count-label').textContent =
     `${allAnnonces.length} annonce${allAnnonces.length > 1 ? 's' : ''}`;
+  applyFilters();  // filtre par défaut : HEV (objectif hybride non rechargeable)
 });
 
 // Construire les onglets de marques

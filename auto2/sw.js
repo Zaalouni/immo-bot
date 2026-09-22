@@ -4,7 +4,7 @@
    version en ligne), Cache First uniquement pour les librairies CDN figées par version.
    Scope : /immo-bot/auto2/
 */
-const CACHE_NAME = 'autobot-lu-v4';
+const CACHE_NAME = 'autobot-lu-v6';
 
 /* Assets statiques mis en cache au premier chargement (chemins relatifs au scope) */
 const STATIC_ASSETS = [
@@ -56,7 +56,12 @@ self.addEventListener('fetch', event => {
   /* Données dynamiques (listings.js, deals.js...) → Network First */
   const isHtmlPage = event.request.mode === 'navigate' || url.endsWith('.html') || url.includes('.html?');
 
-  if (DATA_PATTERNS.some(p => url.includes(p)) || isHtmlPage) {
+  /* Tous les fichiers du site lui-même (HTML, data/*.js, fiab.js…) → Network First ;
+     seules les librairies CDN versionnées restent en Cache First (sinon un script
+     local comme fiab.js restait figé après mise à jour). */
+  const isOwnAsset = url.includes('zaalouni.github.io');
+
+  if (DATA_PATTERNS.some(p => url.includes(p)) || isHtmlPage || isOwnAsset) {
     /* Pages HTML + données : toujours tenter le réseau d'abord pour ne jamais
        servir une version figée après une mise à jour du dashboard. Le cache
        ne sert que de secours hors-ligne. */

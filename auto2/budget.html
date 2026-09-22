@@ -113,6 +113,8 @@
   <div class="collapse navbar-collapse" id="navMenu">
     <ul class="navbar-nav ms-auto flex-wrap">
       
+      <li class="nav-item"><a class="nav-link" href="objectif.html">🎯 Objectif</a></li>
+      
       <li class="nav-item"><a class="nav-link" href="index.html">Annonces</a></li>
       <li class="nav-item"><a class="nav-link" href="deals.html">Deals</a></li>
       <li class="nav-item"><a class="nav-link" href="opportunities.html">Opportunités</a></li>
@@ -206,8 +208,10 @@
           <option value="">Tous</option>
           <option value="Essence">Essence</option>
           <option value="Diesel">Diesel</option>
-          <option value="Hybride">Hybride</option>
-          <option value="Électrique">Électrique</option>
+          <option value="Hybride">🎯 Hybride HEV</option>
+          <option value="Hybride léger">Hybride 48V</option>
+          <option value="Hybride rechargeable">Hybride rechargeable</option>
+          <option value="Electrique">Électrique</option>
         </select>
       </div>
       <div class="col-auto">
@@ -231,7 +235,9 @@
       <div class="col-auto">
         <label class="form-label mb-1">Tri</label>
         <select class="form-select form-select-sm" id="sort-select">
+          <option value="achat">Meilleur achat (deal + fiabilité)</option>
           <option value="deal">Meilleur deal</option>
+          <option value="fiab">Plus fiable</option>
           <option value="prix_asc">Prix croissant</option>
           <option value="km_asc">Km croissant</option>
           <option value="annee_desc">Plus récent</option>
@@ -306,7 +312,9 @@
 <div class="footer-bar">Auto-Bot LU — <span id="footer-date">—</span></div>
 
 <script src="data/listings.js"></script>
+<script src="data/reviews.js"></script>
 <script src="data/version.js"></script>
+<script src="fiab.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   Chart.defaults.color = '#8b949e';
@@ -348,6 +356,12 @@ document.addEventListener('DOMContentLoaded', function() {
     allMods.forEach(mod => { const o = document.createElement('option'); o.value = mod; o.textContent = mod; modSel.appendChild(o); });
   })();
 
+  // Ouverture de l'annonce : délégation (pas d'URL scrapée dans un onclick inline)
+  document.addEventListener('click', e => {
+    const card = e.target.closest('.listing-card[data-url]');
+    if (card && card.dataset.url) window.open(card.dataset.url, '_blank', 'noopener');
+  });
+
   function getFiltered() {
     const budget   = parseInt(document.getElementById('budget-slider').value);
     const tol      = parseInt(document.getElementById('tolerance-select').value) / 100;
@@ -363,7 +377,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let results = allListings.filter(l => {
       if (!l.prix || l.prix < pMin || l.prix > pMax) return false;
-      if (carbu && !(l.carburant || '').toLowerCase().includes(carbu)) return false;
+      // Égalité stricte : "hybride" ne doit pas inclure 48V/PHEV ; "Electrique" sans accent (normalizer)
+      if (carbu && (l.carburant || '').toLowerCase() !== carbu) return false;
       if (l.km && l.km > kmMax) return false;
       if (l.annee && l.annee < anneeMin) return false;
       if (marque && (l.marque_norm||l.marque) !== marque) return false;
@@ -371,7 +386,9 @@ document.addEventListener('DOMContentLoaded', function() {
       if (pays && (l.pays||'') !== pays) return false;
       return true;
     });
-    if (sort === 'deal')        results.sort((a,b) => (b.deal_score||0) - (a.deal_score||0));
+    if (sort === 'achat')       results.sort((a,b) => FIAB.achat(b) - FIAB.achat(a));
+    else if (sort === 'fiab')   results.sort((a,b) => FIAB.note(b) - FIAB.note(a) || (b.deal_score||0) - (a.deal_score||0));
+    else if (sort === 'deal')   results.sort((a,b) => (b.deal_score||0) - (a.deal_score||0));
     else if (sort === 'prix_asc')  results.sort((a,b) => (a.prix||0) - (b.prix||0));
     else if (sort === 'km_asc')    results.sort((a,b) => (a.km||0) - (b.km||0));
     else if (sort === 'annee_desc') results.sort((a,b) => (b.annee||0) - (a.annee||0));
@@ -439,19 +456,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
       grid.innerHTML += `
         <div class="col-6 col-md-4 col-lg-3">
-          <div class="listing-card h-100" onclick="window.open('${l.url||'#'}','_blank')">
+          <div class="listing-card h-100" data-url="${escapeHtml(l.url||'')}">
             <div class="d-flex justify-content-between align-items-start mb-1">
-              <div class="listing-title">${l.marque_norm||l.marque||'?'} ${l.modele_norm||l.modele||''}</div>
+              <div class="listing-title">${escapeHtml(l.marque_norm||l.marque||'?')} ${escapeHtml(l.modele_norm||l.modele||'')} ${FIAB.badge(l)}</div>
               ${deal ? `<span class="score-pill ${scoreClass}">${deal}</span>` : ''}
             </div>
             <div class="d-flex align-items-baseline gap-2 mb-1">
               <span class="listing-prix">${fmtPrix(l.prix)}</span>
               ${diffHtml}
             </div>
-            <div class="listing-meta">${l.annee||'?'} · ${fmtKm(l.km)} · ${l.carburant||'?'}</div>
-            <div class="listing-meta">${l.ville||''}</div>
+            <div class="listing-meta">${l.annee||'?'} · ${fmtKm(l.km)} · ${escapeHtml(l.carburant||'?')}</div>
+            <div class="listing-meta">${escapeHtml(l.ville||'')}</div>
             <div class="d-flex justify-content-between align-items-center mt-2">
-              <span class="listing-site">${l.site||''}</span>
+              <span class="listing-site">${escapeHtml(l.site||'')}</span>
               ${dealLabel ? `<span class="deal-tag">${dealLabel}</span>` : ''}
             </div>
           </div>

@@ -129,6 +129,7 @@
   </button>
   <div class="collapse navbar-collapse" id="navMenu">
     <ul class="navbar-nav ms-auto">
+      <li class="nav-item"><a class="nav-link" href="objectif.html">🎯 Objectif</a></li>
       <li class="nav-item"><a class="nav-link" href="index.html">Annonces</a></li>
       <li class="nav-item"><a class="nav-link" href="deals.html">Deals</a></li>
       <li class="nav-item"><a class="nav-link" href="opportunities.html">Opportunités</a></li>
@@ -238,7 +239,7 @@ function buildSidebar(reviews) {
     <div class="marque-group">
       <div class="marque-label">${marque}</div>
       ${modeles.map(r => `
-        <button class="modele-btn" id="btn_${ficheId(r)}" onclick="showFiche('${ficheId(r)}')">${r.modele} <span style="font-size:11px;color:var(--txt3)">${r.annee_debut}–${r.annee_fin || '…'}</span></button>
+        <button class="modele-btn" id="btn_${ficheId(r)}" onclick="showFiche('${ficheId(r)}')">${escapeHtml(r.modele)} <span style="font-size:11px;color:var(--txt3)">${r.annee_debut}–${r.annee_fin || '…'}</span></button>
       `).join('')}
     </div>
   `).join('');
@@ -298,6 +299,21 @@ function dangerClass(item) {
   if (low.includes('critique') || low.includes('absolument') || low.includes('important')) return 'danger';
   if (low.includes('vérifier') || low.includes('surveiller') || low.includes('préférer') || low.includes('exiger')) return 'warning';
   return '';
+}
+
+// Avis réels de propriétaires (caradisiac) : notes par génération + extraits hybrides
+function ownerBlock(r) {
+  const o = r.avis_proprietaires;
+  const box = inner => `<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin-bottom:12px;">
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--txt3);margin-bottom:10px;">👥 Avis de propriétaires (caradisiac.com)</div>${inner}</div>`;
+  if (!o) return box('<div style="font-size:13px;color:var(--txt3)">Aucun avis propriétaire collecté pour ce modèle.</div>');
+  const gens = o.generations.map(g => `<div style="font-size:13px;margin-bottom:4px"><a href="${escapeHtml(g.url)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent)">Génération ${escapeHtml(g.annees)}</a>
+    — <b>${g.note}/20</b> sur ${g.nb} avis${g.fiab ? ` · fiabilité <b>${g.fiab}/10</b>` : ''}</div>`).join('');
+  const h = o.hybride;
+  const ext = h ? `<div style="font-size:12px;color:var(--txt3);margin:10px 0 6px">Versions hybrides : ${h.note_moy}/20 sur ${h.nb} avis${h.nb_alertes ? ` · <span style="color:var(--red)">${h.nb_alertes} avis mal notés évoquant des pannes</span>` : ''}</div>` +
+    h.avis.map(a => `<div style="border-left:3px solid ${a.note >= 15 ? 'var(--green)' : a.note >= 12 ? 'var(--amber)' : 'var(--red)'};padding:6px 12px;margin-bottom:8px;background:var(--surface2);border-radius:0 6px 6px 0;font-size:13px;color:var(--txt2);line-height:1.5">
+      <b>${a.note}/20</b> · ${escapeHtml(a.version)} · ${escapeHtml(a.date)}<br>« ${escapeHtml(a.extrait)} » <a href="${escapeHtml(a.url)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent)">lire</a></div>`).join('') : '';
+  return box(gens + ext);
 }
 
 function buildChecklist(r) {
@@ -369,8 +385,8 @@ function renderFiche(r) {
 
   return `
   <div class="fiche-header">
-    <div class="fiche-marque">${r.marque}</div>
-    <div class="fiche-titre">${r.modele}${carburant}</div>
+    <div class="fiche-marque">${escapeHtml(r.marque)}</div>
+    <div class="fiche-titre">${escapeHtml(r.modele)}${carburant}</div>
     ${generation ? `<div class="fiche-gen">${generation}</div>` : ''}
     <div class="fiche-resume">${r.fiabilite_resumee || ''}</div>
     ${tags ? `<div class="tags">${tags}</div>` : ''}
@@ -448,12 +464,7 @@ function renderFiche(r) {
     </div>
   </div>
 
-  ${r.retours_proprietaires && r.retours_proprietaires.length ? `
-  <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin-bottom:12px;">
-    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--txt3);margin-bottom:10px;">💬 Retours de propriétaires</div>
-    ${r.retours_proprietaires.map(t => `
-      <div style="border-left:3px solid var(--accent);padding:6px 12px;margin-bottom:8px;background:var(--surface2);border-radius:0 6px 6px 0;font-size:13px;color:var(--txt2);font-style:italic;line-height:1.5">${escapeHtml(t)}</div>`).join('')}
-  </div>` : ''}
+  ${ownerBlock(r)}
 
   ${r.recommande_pour && r.recommande_pour.length ? `
   <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin-bottom:12px;">
