@@ -1,32 +1,32 @@
 ═══════════════════════════════════════════════════════
   AUTO-BOT LUXEMBOURG — Résumé du 2026-09-22
 ═══════════════════════════════════════════════════════
-  Annonces actives    : 6,975
-  Nouvelles aujourd'hui: 2,777
+  Annonces actives    : 6,471
+  Nouvelles aujourd'hui: 2,718
   Baisses de prix (7j) : 1
 
   TOP 5 OPPORTUNITÉS DU JOUR
   ─────────────────────────────────────────────────────
-  1. Volkswagen T-Roc 2026 — 1 001 km — 26 990 €
-     Score: opp=59 deal=85 nego=10 | Kitzingen
-     https://www.autoscout24.de/angebote/volkswagen-t-roc-trend-1-5-etsi-dsg-carplay-ahk-led-benzin-weiss-cat_ma74gr74667ge10994va3307mt12120tr479050-472b03f1-84e6-4817-993c-72108566ac00
-
-  2. BMW Serie 1 2025 — 23 690 km — 28 990 €
+  1. BMW Serie 1 2025 — 23 690 km — 28 990 €
      Score: opp=58 deal=73 nego=30 | Luxembourg
      https://www.luxauto.lu/fr/voiture/bmw-116-essence-2025-1805924
 
-  3. Skoda Kamiq 2025 — 7 500 km — 23 900 €
+  2. Skoda Kamiq 2025 — 7 500 km — 23 900 €
      Score: opp=57 deal=64 nego=45 | Esch-sur-Alzette
      https://www.autoscout24.lu/offres/skoda-kamiq-essence-essence-blanc-cat_ma65mo75292-d95bce88-0f81-42db-a600-d2dba9e14fe3
 
-  4. Honda Jazz 2026 — 5 000 km — 23 990 €
-     Score: opp=56 deal=80 nego=10 | Foetz
-     https://www.autoscout24.lu/offres/honda-jazz-crosstar-24-1-5-i-mmd-122ch-e-hev-advance-my26-electrique-essence-rouge-cat_ma31mo16490-88708204-0614-4964-9137-32c16c0b5d8f
+  3. Skoda Scala 2025 — 10 144 km — 20 490 €
+     Score: opp=57 deal=77 nego=20 | Foetz
+     https://www.autoscout24.lu/offres/skoda-scala-34-1-0-tsi-evo2-116ch-selection-dsg7-essence-blanc-cat_ma65mo75258-9d9732e2-c625-4451-9a30-758170421b15
 
-  5. Audi Q3 2026 — 13 km — 37 444 €
-     Score: opp=56 deal=80 nego=10 | Unna
-     https://www.autoscout24.de/angebote/audi-q3-advanced-neues-modell-cam-e-klappe-navi-alu17-benzin-schwarz-cat_ma9gr19715ge10819va3113tr479959-9603354a-84ab-42f1-a3b6-4ef78bd321d6
+  4. Volkswagen Tiguan 2025 — 3 400 km — 30 800 €
+     Score: opp=56 deal=79 nego=14 | Luxembourg
+     https://www.luxauto.lu/fr/voiture/vw-tiguan-essence-2025-1842783
+
+  5. Honda Jazz 2026 — 5 000 km — 23 990 €
+     Score: opp=56 deal=80 nego=10 | Thionville
+     https://www.autoscout24.lu/offres/honda-jazz-crosstar-24-1-5-i-mmd-122ch-e-hev-advance-my26-electrique-essence-rouge-cat_ma31mo16490-5261ae22-42c0-4c2b-a575-9aee9bd3fa23
 
 ═══════════════════════════════════════════════════════
-  Généré : 2026-09-22 21:14 | python3.9 dashboard_generator.py
+  Généré : 2026-09-22 21:45 | python3.9 dashboard_generator.py
 ═══════════════════════════════════════════════════════
