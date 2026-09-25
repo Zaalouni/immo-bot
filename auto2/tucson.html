@@ -186,17 +186,19 @@
   <!-- 2. Offres -->
   <div class="filter-panel">
     <div class="row g-2 align-items-end">
-      <div class="col-md-2 col-6"><label class="form-label">Pays</label>
+      <div class="col-md-2 col-6"><label class="form-label">Périmètre</label>
+        <select id="f-scope" class="form-select form-select-sm"><option value="ok">Conformes (classées)</option><option value="hors">Hors cible</option><option value="">Toutes</option></select></div>
+      <div class="col-md-2 col-6"><label class="form-label">Pays du vendeur</label>
         <select id="f-pays" class="form-select form-select-sm"><option value="">Tous</option></select></div>
       <div class="col-md-2 col-6"><label class="form-label">Puissance</label>
         <select id="f-ch" class="form-select form-select-sm"><option value="">Toutes</option><option value="239">239 ch (cible)</option><option value="215">215 ch</option><option value="230">230 ch</option></select></div>
       <div class="col-md-2 col-6"><label class="form-label">Transmission</label>
         <select id="f-tr" class="form-select form-select-sm"><option value="">Toutes</option><option value="2WD">2WD</option><option value="4WD">4WD / HTRAC</option><option value="?">Inconnue</option></select></div>
       <div class="col-md-2 col-6"><label class="form-label">État</label>
-        <select id="f-etat" class="form-select form-select-sm"><option value="">Neuf + occasion</option><option value="neuf">Neuf / 0 km</option><option value="occ">Occasion</option></select></div>
-      <div class="col-md-2 col-6"><label class="form-label">Prix max €</label>
+        <select id="f-etat" class="form-select form-select-sm"><option value="">Tous états</option><option value="neuf">Neuf non immatriculé</option><option value="0km">0 km déjà immatriculé</option><option value="occasion">Occasion / démo</option></select></div>
+      <div class="col-md-1 col-6"><label class="form-label">Prix max €</label>
         <input type="number" id="f-prix" class="form-control form-control-sm" placeholder="45000"></div>
-      <div class="col-md-2 col-6"><label class="form-label">Garantie restante min (mois)</label>
+      <div class="col-md-1 col-6"><label class="form-label">Garantie min (mois)</label>
         <input type="number" id="f-gar" class="form-control form-control-sm" placeholder="36"></div>
     </div>
   </div>
@@ -204,6 +206,8 @@
   <div class="table-card mb-3">
     <div class="table-card-header">Offres classées par correspondance <span class="count-badge-sm" id="nb-offres">0</span>
       <span style="float:right;font-size:12px;font-family:Barlow,sans-serif;font-weight:500;color:var(--txt3)" id="poids"></span></div>
+    <div id="perimetre" style="padding:8px 16px;font-size:12.5px;color:var(--txt2)"></div>
+    <div id="medianes" style="padding:0 16px 8px;font-size:12px;color:var(--txt3)"></div>
     <div class="table-scroll"><table class="models-table" id="t-offres">
       <thead><tr><th>#</th><th>Score</th><th>Version</th><th>Prix</th><th>Année · km</th><th>Puiss.</th><th>Transm.</th>
         <th>Garantie</th><th>Tes équipements</th><th>Lieu</th><th>Annonces</th></tr></thead>
@@ -262,19 +266,21 @@
   function pillGar(g) {
     if (!g || g.mois_restants == null) return '<span class="pill pill-n">?</span>';
     const m = g.mois_restants, cls = m >= 48 ? 'pill-g' : m >= 24 ? 'pill-a' : 'pill-r';
-    const t = g.source === 'neuf' ? '5 ans complets (démarre à l\'immatriculation)' : `du ${g.debut} au ${g.fin} (${g.source})`;
-    return `<span class="pill ${cls}" title="${esc(t)}">${m} mois</span>`;
+    const t = (g.source === 'neuf' ? '5 ans complets (démarre à l\'immatriculation)' : `du ${g.debut} au ${g.fin} (${g.source})`)
+      + (g.verifiee ? ' — confirmée par l\'annonce' : ' — ESTIMÉE, à confirmer');
+    return `<span class="pill ${cls}" title="${esc(t)}">${g.verifiee ? '' : '~'}${m} mois</span>${g.verifiee ? '' : '<div style="font-size:10.5px;color:var(--txt3)">estimée</div>'}`;
   }
 
   function kpis() {
-    const O = D.offres, lu = O.filter(o => (o.pays_all || []).includes('Luxembourg'));
-    const cible = lu.filter(o => o.puissance === C.puissance_ch);
-    const best = O[0];
+    const O = D.offres, pays = C.pays_defaut || 'Luxembourg';
+    const lu = O.filter(o => (o.pays_all || []).includes(pays));
+    const cible = O.filter(o => o.eligible);
+    const best = cible[0];
     const minCible = cible.filter(o => o.prix).map(o => o.prix).sort((a, b) => a - b)[0];
     const A = D.avis_proprietaires || {};
     const items = [
-      ['Offres au Luxembourg', lu.length, 'var(--green)', `${fmt(D.stats.nb_annonces)} annonces regroupées en ${fmt(D.stats.nb_offres)} offres (tous pays)`],
-      [`${C.puissance_ch || 239} ch au Luxembourg`, cible.length, 'var(--accent)', 'version cible'],
+      [`Vendeurs au ${pays}`, lu.length, 'var(--green)', `${fmt(D.stats.nb_annonces)} annonces regroupées en ${fmt(D.stats.nb_offres)} offres (tous pays) — pays réel du garage`],
+      ['Offres conformes', cible.length, 'var(--accent)', `HEV ${C.puissance_ch || 239} ch, vendeur au ${pays} — seules classées`],
       [`${C.puissance_ch || 239} ch dès`, minCible ? fmt(minCible) + ' €' : '—', 'var(--accent)', 'prix affiché : demander le prix final comptant'],
       ['Meilleure correspondance', best ? best.score + '/100' : '—', 'var(--green)', best ? `${best.finition || ''} ${fmt(best.prix)} €` : ''],
       ['Avis Caradisiac', A.note ? `${A.note}/20` : '—', 'var(--amber)', A.nb_avis ? `${A.nb_avis} avis, Tucson IV` : 'aucun'],
@@ -301,11 +307,14 @@
 
   function detailRow(o) {
     const P = C.poids || {};
+    const LBL = { equipements: 'équipements', prix: 'prix', garantie: 'garantie', etat: 'état', transmission: 'transmission', confiance: 'confiance données' };
     const sc = Object.entries(o.score_detail || {}).map(([k, v]) =>
-      `<div style="font-size:12px;display:flex;gap:6px;align-items:center"><span style="width:110px;color:var(--txt2)">${esc(k)}</span>
+      `<div style="font-size:12px;display:flex;gap:6px;align-items:center"><span style="width:110px;color:var(--txt2)">${esc(LBL[k] || k)}</span>
         <span class="bar" style="width:${Math.round(v / (P[k] || 1) * 80)}px"></span><span style="font-family:'DM Mono',monospace">${v}/${P[k] || '?'}</span></div>`).join('');
     const eq = Object.entries(EQ).map(([k, lbl]) => `<li class="${(o.equip_ok || []).includes(k) ? 'st-ok' : 'st-unknown'}">${esc(lbl)}</li>`).join('');
-    const al = (o.alertes || []).map(a => `<li class="st-warn">${esc(a)}</li>`).join('');
+    const al = (o.exclusions || []).map(a => `<li class="st-ko">Hors cible : ${esc(a)}</li>`).join('')
+      + (o.alertes || []).map(a => `<li class="st-warn">${esc(a)}</li>`).join('')
+      + (o.a_verifier || []).map(a => `<li class="st-unknown">${esc(a)} — 0 point</li>`).join('');
     const hist = [
       o.proprietaires != null ? `<li class="${o.proprietaires <= 1 ? 'st-ok' : 'st-warn'}">${o.proprietaires} propriétaire(s)</li>` : '',
       o.accident === false ? '<li class="st-ok">Sans accident déclaré</li>' : o.accident ? '<li class="st-ko">Accident déclaré</li>' : '',
@@ -314,10 +323,11 @@
     const g = o.garantie || {};
     const autres = (o.autres || []).map(a => `<li>${link(a.url, a.site)} — ${esc(a.ville || '')} (${esc(a.pays || '')})</li>`).join('');
     return `<tr class="row-detail" id="d-${esc(o.id)}" style="display:none"><td colspan="11"><div class="row g-3">
-      <div class="col-lg-3"><div class="detail-h">Score ${o.score}/100</div>${sc}
-        <div style="font-size:12px;color:var(--txt3);margin-top:6px">Prix comparé à la médiane des offres de même puissance, ${o.neuf ? 'en neuf' : 'en occasion'} : ${o.prix_median_comparable ? fmt(o.prix_median_comparable) + ' €' : 'n/d (moins de 3 offres)'}.</div>
-        <div class="detail-h" style="margin-top:10px">Garantie Hyundai 5 ans</div>
-        <div style="font-size:12.5px;color:var(--txt2)">${g.source === 'neuf' ? 'Neuf non immatriculé : 5 ans complets à partir de ton immatriculation.' : g.debut ? `Début ${esc(g.debut)} → fin ${esc(g.fin)} (${esc(g.source)}) — reste <b>${g.mois_restants} mois</b>. Batterie HT : 8 ans / 160 000 km.` : 'Date inconnue : demander la 1ère immatriculation.'}</div></div>
+      <div class="col-lg-3"><div class="detail-h">Score ${o.score}/100${o.eligible ? '' : ' — hors cible, non classée'}</div>${sc}
+        <div style="font-size:12px;color:var(--txt3);margin-top:6px">Prix comparé à la médiane ${o.segment_prix ? esc(o.segment_prix) : ''} : ${o.prix_median_comparable ? fmt(o.prix_median_comparable) + ' €' : 'n/d (moins de 3 offres comparables)'}.</div>
+        <div class="detail-h" style="margin-top:10px">Garantie Hyundai 5 ans — ${g.verifiee ? 'confirmée par l\'annonce' : 'ESTIMÉE'}</div>
+        <div style="font-size:12.5px;color:var(--txt2)">${esc(o.etat_label || '')} · ${g.source === 'neuf' ? '5 ans complets à partir de ton immatriculation.' : g.debut ? `Début ${esc(g.debut)} → fin ${esc(g.fin)} (${esc(g.source)}) — reste ${g.verifiee ? '' : '~'}<b>${g.mois_restants} mois</b>. Batterie HT : 8 ans / 160 000 km.` : 'Date inconnue : demander la 1ère immatriculation.'}
+        ${g.verifiee ? '' : '<br><span style="color:var(--txt3)">Calcul théorique (5 ans depuis l\'immatriculation) : taxi/location/VTC = 3 ans / 100 000 km. Faire confirmer début et fin.</span>'}</div></div>
       <div class="col-lg-3"><div class="detail-h">Tes équipements (${(o.equip_ok || []).length}/${Object.keys(EQ).length})</div><ul class="chk">${eq}</ul>
         ${o.equip_connus ? '' : '<div style="font-size:11.5px;color:var(--txt3)">Fiche pas encore analysée : lance <code>python3.9 main.py --cible</code>.</div>'}
         <div style="font-size:11.5px;color:var(--txt3)">❓ = pas trouvé dans l'annonce, à confirmer.</div></div>
@@ -332,24 +342,26 @@
   }
 
   function renderOffres() {
-    const pays = $('f-pays').value, ch = parseInt($('f-ch').value) || 0, tr = $('f-tr').value, etat = $('f-etat').value;
+    const scope = $('f-scope').value, pays = $('f-pays').value, ch = parseInt($('f-ch').value) || 0, tr = $('f-tr').value, etat = $('f-etat').value;
     const pmax = parseInt($('f-prix').value) || Infinity, gmin = parseInt($('f-gar').value) || 0;
     const rows = D.offres.filter(o =>
-      (!pays || (o.pays_all || []).includes(pays)) && (!ch || o.puissance === ch)
+      (!scope || (scope === 'ok') === !!o.eligible) && (!pays || (o.pays_all || []).includes(pays)) && (!ch || o.puissance === ch)
       && (!tr || (tr === '?' ? !o.transmission : o.transmission === tr))
-      && (!etat || (etat === 'neuf') === o.neuf) && (!o.prix || o.prix <= pmax)
+      && (!etat || o.etat === etat) && (!o.prix || o.prix <= pmax)
       && (!gmin || (o.garantie && (o.garantie.mois_restants || 0) >= gmin)));
     $('nb-offres').textContent = rows.length;
+    let rang = 0;
     const nEq = Object.keys(EQ).length;
     $('t-offres').querySelector('tbody').innerHTML = rows.map((o, i) => `<tr class="row-main" data-id="${esc(o.id)}">
-      <td><span class="rank-badge ${i < 3 ? 'rank-' + (i + 1) : 'rank-n'}">${i + 1}</span></td>
-      <td>${pillScore(o.score)}</td>
-      <td>${link(o.url, (o.finition || 'Tucson HEV'))}<div style="font-size:11px;color:var(--txt3)">${esc(o.version)} · ${esc(o.site)}</div></td>
+      <td>${o.eligible ? (r => `<span class="rank-badge ${r <= 3 ? 'rank-' + r : 'rank-n'}">${r}</span>`)(++rang) : '<span class="pill pill-n" title="non classée">—</span>'}</td>
+      <td>${o.eligible ? pillScore(o.score) : `<span class="pill pill-r" title="${esc((o.exclusions || []).join(' · '))}">hors cible</span>`}</td>
+      <td>${link(o.url, (o.finition || 'Tucson HEV'))}<div style="font-size:11px;color:var(--txt3)">${esc(o.version)} · ${esc(o.site)}</div>
+        ${o.eligible ? '' : `<div style="font-size:11px;color:var(--red)">⛔ ${esc((o.exclusions || []).join(' · '))}</div>`}</td>
       <td class="prix-mono"><b>${fmt(o.prix)} €</b>${o.prix_median_comparable ? `<div style="font-size:11px;color:${o.prix <= o.prix_median_comparable ? 'var(--green)' : 'var(--txt3)'}">méd. ${fmt(o.prix_median_comparable)} €</div>` : ''}</td>
-      <td class="prix-mono">${o.annee || '—'}<div style="font-size:11px;color:var(--txt3)">${o.neuf ? 'neuf / 0 km' : fmt(o.km) + ' km'}</div></td>
+      <td class="prix-mono">${o.annee || '—'}<div style="font-size:11px;color:var(--txt3)">${fmt(o.km)} km · ${esc(o.etat_label || '')}</div></td>
       <td>${pillCh(o)}</td><td>${pillTr(o.transmission)}</td><td>${pillGar(o.garantie)}</td>
       <td style="min-width:150px">${o.equip_connus ? `<span class="bar" style="width:${Math.round((o.equip_ok || []).length / (nEq || 1) * 60)}px;background:var(--green)"></span> <span class="prix-mono" style="font-size:12px">${(o.equip_ok || []).length}/${nEq}</span>` : '<span class="pill pill-n">non détaillés</span>'}
-        ${(o.alertes || []).length ? `<div style="font-size:11px;color:var(--amber)">⚠️ ${o.alertes.length} point(s) à vérifier</div>` : ''}</td>
+        ${(o.alertes || []).length + (o.a_verifier || []).length ? `<div style="font-size:11px;color:var(--amber)">⚠️ ${(o.alertes || []).length + (o.a_verifier || []).length} point(s) à vérifier</div>` : ''}</td>
       <td style="font-size:12px">${esc(o.ville)}<div style="font-size:11px;color:var(--txt3)">${esc((o.pays_all || []).join(', '))}</div></td>
       <td>${o.nb_annonces > 1 ? `<span class="count-badge-sm" title="${o.type_groupe === 'stock' ? 'exemplaires identiques en stock' : 'même voiture sur plusieurs sites'}">${o.nb_annonces} ${o.type_groupe === 'stock' ? 'en stock' : 'sites'}</span>` : '1'}</td></tr>` + detailRow(o)).join('')
       || '<tr><td colspan="11" style="color:var(--txt3)">Aucune offre ne correspond aux filtres</td></tr>';
@@ -415,15 +427,18 @@
   document.addEventListener('DOMContentLoaded', () => {
     if (C.label) $('h-label').textContent = C.label;
     const P = C.poids || {};
-    $('poids').textContent = `score : puissance ${P.puissance} · transmission ${P.transmission} · équipements ${P.equipements} · garantie ${P.garantie} · prix ${P.prix}`;
+    $('poids').textContent = 'score : ' + Object.entries(P).map(([k, v]) => `${k} ${v}`).join(' · ');
+    $('perimetre').innerHTML = `<b>Classement</b> = uniquement les offres conformes : HEV non rechargeable, ${C.puissance_ch || 239} ch, vendeur physiquement au ${esc(C.pays_defaut || 'Luxembourg')} (pays réel du garage, pas le site de publication). Une info inconnue ne rapporte aucun point. Les autres offres sont dans « Hors cible » avec le motif.`;
+    const meds = (D.stats.segments_fins || []).filter(s => s.label.startsWith(String(C.puissance_ch)))
+      .map(s => `<span style="white-space:nowrap">${esc(s.label)} : <b class="prix-mono">${fmt(s.mediane)} €</b> (${s.nb}, ${esc(s.pays)})</span>`);
+    $('medianes').innerHTML = meds.length ? 'Médianes de référence — ' + meds.join(' · ') : '';
     const sel = $('f-pays');
     Object.keys(D.stats.par_pays || {}).sort().forEach(p => { const op = document.createElement('option'); op.value = p; op.textContent = `${p} (${D.stats.par_pays[p]})`; sel.appendChild(op); });
-    if (C.pays_defaut && (D.stats.par_pays || {})[C.pays_defaut]) sel.value = C.pays_defaut;
     kpis(); guide(); renderAvis(); renderSources();
     $('questions').innerHTML = (C.questions || []).map(q => `<li>${esc(q)}</li>`).join('');
-    ['f-pays', 'f-ch', 'f-tr', 'f-etat', 'f-prix', 'f-gar'].forEach(id => $(id).addEventListener('input', renderOffres));
+    ['f-scope', 'f-pays', 'f-ch', 'f-tr', 'f-etat', 'f-prix', 'f-gar'].forEach(id => $(id).addEventListener('input', renderOffres));
     renderOffres();
-    $('footer').textContent = `Calculé le ${D.date_calcul || '—'} · annonces actives uniquement · * puissance déduite de la date d'immatriculation · score = aide à la décision, vérifier chaque annonce`;
+    $('footer').textContent = `Calculé le ${D.date_calcul || '—'} · annonces actives uniquement · * puissance déduite de la date d'immatriculation · garantie ~ = estimée · score = aide à la décision, vérifier chaque annonce`;
   });
 </script>
 <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});</script>
