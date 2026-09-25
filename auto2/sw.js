@@ -4,7 +4,7 @@
    version en ligne), Cache First uniquement pour les librairies CDN figées par version.
    Scope : /immo-bot/auto2/
 */
-const CACHE_NAME = 'autobot-lu-v8';
+const CACHE_NAME = 'autobot-lu-v10';
 
 /* Assets statiques mis en cache au premier chargement (chemins relatifs au scope) */
 const STATIC_ASSETS = [

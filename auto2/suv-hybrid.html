@@ -335,7 +335,7 @@ function fmtKm(v) {
   return new Intl.NumberFormat('fr-LU').format(v) + ' km';
 }
 function siteBadge(s) {
-  const colors = { autoscout24: '#388bfd', autopolis: '#3fb950', luxauto: '#d29922' };
+  const colors = { autoscout24: '#388bfd', autopolis: '#3fb950', luxauto: '#d29922', mycar: '#a371f7', euroccasion: '#f778ba' };
   const c = colors[s] || '#6e7681';
   return `<span style="font-size:10px;font-weight:700;color:${c};text-transform:uppercase;">${s || '?'}</span>`;
 }

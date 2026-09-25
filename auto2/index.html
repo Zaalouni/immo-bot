@@ -164,6 +164,8 @@
   <div class="container-fluid d-flex gap-4 justify-content-center flex-wrap px-3">
     <span>ACTIVES <strong id="nb-actives">—</strong></span>
     <span class="stat-sep">|</span>
+    <span title="Même voiture publiée sur plusieurs sites comptée une fois">VÉHICULES UNIQUES <strong id="nb-uniques">—</strong></span>
+    <span class="stat-sep">|</span>
     <span>NOUVELLES <strong id="nb-nouvelles">—</strong></span>
     <span class="stat-sep">|</span>
     <span>PRIX MOY <strong id="prix-moyen">—</strong></span>
@@ -479,6 +481,8 @@
 
   function fillStats() {
     document.getElementById('nb-actives').textContent   = stats.total_actives || listings.length;
+    if (stats.vehicules_uniques) document.getElementById('nb-actives').title = `${stats.vehicules_uniques} véhicules uniques (même voiture sur plusieurs sites comptée 1 fois)`;
+    if (stats.vehicules_uniques) document.getElementById('nb-uniques').textContent = stats.vehicules_uniques;
     document.getElementById('nb-nouvelles').textContent = stats.nouvelles_aujourd_hui ?? '—';
     document.getElementById('prix-moyen').textContent   = stats.prix_moyen ? formatPrix(stats.prix_moyen) : '—';
     document.getElementById('last-update').textContent  = stats.date_calcul ? stats.date_calcul.slice(0,16).replace('T',' ') : '—';

@@ -1,32 +1,32 @@
 ═══════════════════════════════════════════════════════
   AUTO-BOT LUXEMBOURG — Résumé du 2026-09-25
 ═══════════════════════════════════════════════════════
-  Annonces actives    : 6,471
-  Nouvelles aujourd'hui: 0
+  Annonces actives    : 25,121
+  Nouvelles aujourd'hui: 19,125
   Baisses de prix (7j) : 0
 
   TOP 5 OPPORTUNITÉS DU JOUR
   ─────────────────────────────────────────────────────
-  1. BMW Serie 1 2025 — 23 690 km — 28 990 €
-     Score: opp=58 deal=73 nego=30 | Luxembourg
-     https://www.luxauto.lu/fr/voiture/bmw-116-essence-2025-1805924
-
-  2. Skoda Kamiq 2025 — 7 500 km — 23 900 €
-     Score: opp=57 deal=64 nego=45 | Esch-sur-Alzette
+  1. Skoda Kamiq 2025 — 7 500 km — 23 690 €
+     Score: opp=60 deal=64 nego=53 | Esch-sur-Alzette
      https://www.autoscout24.lu/offres/skoda-kamiq-essence-essence-blanc-cat_ma65mo75292-d95bce88-0f81-42db-a600-d2dba9e14fe3
 
-  3. Skoda Scala 2025 — 10 144 km — 20 490 €
-     Score: opp=57 deal=77 nego=20 | Foetz
-     https://www.autoscout24.lu/offres/skoda-scala-34-1-0-tsi-evo2-116ch-selection-dsg7-essence-blanc-cat_ma65mo75258-9d9732e2-c625-4451-9a30-758170421b15
+  2. Ford Transit 2025 — 3 500 km — 22 980 €
+     Score: opp=60 deal=81 nego=20 | Diekirch
+     https://www.luxauto.lu/fr/voiture/ford-transit-diesel-2025-1734381
 
-  4. Volkswagen Tiguan 2025 — 3 400 km — 30 800 €
-     Score: opp=56 deal=79 nego=14 | Luxembourg
-     https://www.luxauto.lu/fr/voiture/vw-tiguan-essence-2025-1842783
+  3. Fiat Grande Panda 2026 — 561 km — 13 749 €
+     Score: opp=58 deal=83 nego=10 | Arlon
+     https://www.luxauto.lu/fr/voiture/fiat-grande-panda-essence-2026-1855413
 
-  5. Honda Jazz 2026 — 5 000 km — 23 990 €
-     Score: opp=56 deal=80 nego=10 | Thionville
-     https://www.autoscout24.lu/offres/honda-jazz-crosstar-24-1-5-i-mmd-122ch-e-hev-advance-my26-electrique-essence-rouge-cat_ma31mo16490-5261ae22-42c0-4c2b-a575-9aee9bd3fa23
+  4. Volkswagen Taigo 2026 — 9 000 km — 23 900 €
+     Score: opp=57 deal=77 nego=20 | Luxembourg
+     https://www.luxauto.lu/fr/voiture/vw-taigo-essence-2026-1841233
+
+  5. Peugeot 308 2025 — 7 000 km — 21 900 €
+     Score: opp=57 deal=82 nego=10 | Luxembourg
+     https://www.autoscout24.lu/offres/peugeot-308-1-2-hybride-145-allure-e-dcs6-electrique-essence-gris-cat_ma55mo19055-7c403629-beb3-496e-a3fd-8cced4eb49ba
 
 ═══════════════════════════════════════════════════════
-  Généré : 2026-09-25 18:56 | python3.9 dashboard_generator.py
+  Généré : 2026-09-25 20:00 | python3.9 dashboard_generator.py
 ═══════════════════════════════════════════════════════
