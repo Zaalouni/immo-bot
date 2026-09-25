@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Auto-Bot LU — Tucson HEV</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0d1117">
+  <meta name="description" content="Guide d'achat Hyundai Tucson HEV 239 ch — offres Luxembourg, avis propriétaires Europe et monde — Auto-Bot">
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0d1117; --surface: #161b22; --surface2: #21262d;
+      --border: #30363d; --border2: #3d444e;
+      --txt: #e6edf3; --txt2: #8b949e; --txt3: #6e7681;
+      --accent: #388bfd; --accent-dim: rgba(56,139,253,.15);
+      --green: #3fb950; --green-dim: rgba(63,185,80,.15);
+      --amber: #d29922; --amber-dim: rgba(210,153,34,.15);
+      --red: #f85149; --red-dim: rgba(248,81,73,.15);
+      --gold: #e3b341; --silver: #9a9a9a; --bronze: #c97c37;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { background: var(--bg); color: var(--txt); font-family: 'Barlow', sans-serif; font-size: 14px; margin: 0; }
+    ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+    /* Navbar */
+    .navbar { background: var(--surface) !important; border-bottom: 1px solid var(--border); padding: 0 1rem; }
+    .navbar-brand { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 1.2rem; color: var(--txt) !important; }
+    .navbar-brand span { color: var(--accent); }
+    .navbar-toggler { border: 1px solid var(--border) !important; padding: 4px 8px; }
+    .navbar-toggler-icon { filter: invert(1); }
+    .navbar-collapse { background: var(--surface); }
+    .nav-link { color: var(--txt2) !important; font-size: 13px; font-weight: 500; padding: 12px 14px !important; transition: color .15s; }
+    .nav-link:hover { color: var(--txt) !important; }
+    .nav-link.active { color: var(--accent) !important; }
+
+    /* Stats bar */
+    #stats-bar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 8px 0; font-family: 'DM Mono', monospace; font-size: 12px; color: var(--txt2); }
+    #stats-bar strong { color: var(--txt); }
+    .pipe { color: var(--border2); margin: 0 8px; }
+
+    /* Filter panel */
+    .filter-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 18px; margin-bottom: 20px; }
+    .form-select { background-color: var(--surface2) !important; border: 1px solid var(--border) !important; color: var(--txt) !important; font-size: 13px; border-radius: 6px; }
+    .form-select:focus { box-shadow: 0 0 0 3px var(--accent-dim) !important; border-color: var(--accent) !important; }
+    .form-select option { background: var(--surface2); }
+    .form-label { color: var(--txt3); font-size: 11px; text-transform: uppercase; letter-spacing: .04em; }
+
+    /* Chart cards */
+    .chart-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+    .chart-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: .9rem; color: var(--txt2); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 12px; }
+    .chart-wrap { position: relative; height: 300px; }
+
+    /* Table card */
+    .table-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+    .table-card-header { background: var(--surface2); border-bottom: 1px solid var(--border); padding: 12px 16px; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1rem; color: var(--txt); }
+    .models-table { width: 100%; border-collapse: collapse; }
+    .models-table thead th { background: var(--surface2); color: var(--txt3); font-size: 11px; text-transform: uppercase; letter-spacing: .05em; padding: 8px 12px; border-bottom: 1px solid var(--border); font-weight: 600; white-space: nowrap; }
+    .models-table tbody td { padding: 9px 12px; border-bottom: 1px solid var(--border); color: var(--txt); font-size: 13px; vertical-align: middle; }
+    .models-table tbody tr:last-child td { border-bottom: none; }
+    .models-table tbody tr:hover td { background: rgba(56,139,253,.06); }
+
+    /* Rank badges */
+    .rank-badge { width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 12px; flex-shrink: 0; }
+    .rank-1 { background: var(--gold); color: #000; }
+    .rank-2 { background: var(--silver); color: #000; }
+    .rank-3 { background: var(--bronze); color: #fff; }
+    .rank-n { background: var(--surface2); color: var(--txt3); border: 1px solid var(--border); }
+
+    /* Score bar */
+    .score-bar { height: 5px; border-radius: 3px; background: var(--surface2); overflow: hidden; margin-top: 5px; width: 60px; }
+    .score-bar-fill { height: 100%; border-radius: 3px; }
+
+    /* Count badge */
+    .count-badge-sm { background: var(--surface2); color: var(--txt2); border: 1px solid var(--border); font-size: 11px; padding: 1px 7px; border-radius: 10px; font-family: 'DM Mono', monospace; }
+
+    /* Carbu tags */
+    .carbu-tag { font-size: 10px; background: var(--surface2); color: var(--txt3); border: 1px solid var(--border); border-radius: 3px; padding: 1px 5px; }
+
+    /* Intro */
+    .page-intro { color: var(--txt2); font-size: 13px; margin: 0 0 16px; max-width: 900px; }
+
+    /* Fiabilité badge */
+    .fiab-badge { font-family: 'DM Mono', monospace; font-weight: 600; padding: 2px 8px; border-radius: 10px; font-size: 12px; }
+
+    /* Prix */
+    .prix-mono { font-family: 'DM Mono', monospace; }
+
+    /* Footer */
+    .footer-bar { text-align: center; padding: 8px; font-size: 11px; color: var(--txt3); font-family: 'DM Mono', monospace; border-top: 1px solid var(--border); background: var(--surface); }
+    .kpi { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; }
+    .kpi-val { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 1.7rem; }
+    .kpi-label { color: var(--txt3); font-size: 11px; text-transform: uppercase; letter-spacing: .04em; }
+    .form-control { background-color: var(--surface2) !important; border: 1px solid var(--border) !important; color: var(--txt) !important; font-size: 13px; }
+    .pill { font-size: 11px; padding: 1px 7px; border-radius: 10px; font-family: 'DM Mono', monospace; white-space: nowrap; }
+    .pill-g { background: var(--green-dim); color: var(--green); } .pill-a { background: var(--amber-dim); color: var(--amber); }
+    .pill-r { background: var(--red-dim); color: var(--red); } .pill-n { background: var(--surface2); color: var(--txt3); }
+    .info-box { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--green); border-radius: 6px; padding: 12px 16px; font-size: 13px; color: var(--txt2); }
+    .info-box b { color: var(--txt); }
+    a.lnk { color: var(--accent); text-decoration: none; } a.lnk:hover { text-decoration: underline; }
+    .table-scroll { overflow-x: auto; }
+    .crit-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 8px; }
+    .crit { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; font-size: 12px; color: var(--txt2); }
+    .crit b { color: var(--txt); font-family: 'Barlow Condensed', sans-serif; font-size: 14px; }
+    .crit .w { float: right; font-family: 'DM Mono', monospace; color: var(--accent); }
+    tr.row-main { cursor: pointer; }
+    tr.row-detail td { background: var(--surface2) !important; padding: 12px 16px !important; }
+    .chk { list-style: none; padding: 0; margin: 0; font-size: 12.5px; }
+    .chk li { padding: 2px 0; }
+    .st-ok::before { content: "✅ "; } .st-warn::before { content: "⚠️ "; } .st-ko::before { content: "⛔ "; } .st-unknown::before { content: "❓ "; }
+    .avis-ext { border-left: 2px solid var(--border2); padding: 4px 10px; margin: 6px 0; font-size: 12.5px; color: var(--txt2); }
+    .avis-ext .n { font-family: 'DM Mono', monospace; font-weight: 600; }
+    .detail-h { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; color: var(--txt); font-size: 13px; text-transform: uppercase; letter-spacing: .04em; margin: 0 0 6px; }
+    .bar { display: inline-block; height: 6px; border-radius: 3px; background: var(--accent); vertical-align: middle; }
+    .guide-col { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; height: 100%; }
+    .guide-col h3 { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 1.05rem; margin: 0 0 8px; }
+    .guide-col ul { padding-left: 18px; margin: 0; font-size: 13px; color: var(--txt2); }
+    .guide-col li { margin-bottom: 6px; }
+    .src-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; height: 100%; font-size: 12.5px; color: var(--txt2); }
+    .src-card .src-h { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 14px; color: var(--txt); }
+    .src-card .src-fig { font-family: 'DM Mono', monospace; color: var(--accent); font-size: 13px; margin: 4px 0; }
+    .eq-tag { display: inline-block; font-size: 11px; padding: 1px 6px; border-radius: 4px; margin: 1px 2px 1px 0; }
+    .eq-ok { background: var(--green-dim); color: var(--green); } .eq-no { background: var(--surface2); color: var(--txt3); }
+    .copy-btn { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent); border-radius: 6px; font-size: 12px; padding: 3px 10px; cursor: pointer; }
+    .gen-row td { font-size: 12.5px !important; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg px-3">
+  <a class="navbar-brand" href="index.html"><span>◈</span> AUTO-BOT LU</a>
+  <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Menu navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navMenu">
+    <ul class="navbar-nav ms-auto flex-wrap">
+      
+      <li class="nav-item"><a class="nav-link" href="objectif.html">🎯 Objectif</a></li>
+      <li class="nav-item"><a class="nav-link active" href="tucson.html">🚙 Tucson HEV</a></li>
+      <li class="nav-item"><a class="nav-link" href="index.html">Annonces</a></li>
+      <li class="nav-item"><a class="nav-link" href="deals.html">Deals</a></li>
+      <li class="nav-item"><a class="nav-link" href="opportunities.html">Opportunités</a></li>
+      <li class="nav-item"><a class="nav-link" href="rapport.html">Rapport</a></li>
+      <li class="nav-item"><a class="nav-link" href="watchlist.html">Watchlist</a></li>
+      <li class="nav-item"><a class="nav-link" href="alerts.html">Alertes</a></li>
+      <li class="nav-item"><a class="nav-link" href="map.html">Carte</a></li>
+      <li class="nav-item"><a class="nav-link" href="reviews.html">Avis</a></li>
+      <li class="nav-item"><a class="nav-link" href="market.html">Marché</a></li>
+      <li class="nav-item"><a class="nav-link" href="history.html">Historique</a></li>
+      <li class="nav-item"><a class="nav-link" href="suv-hybrid.html">SUV Hybride</a></li>
+      <li class="nav-item"><a class="nav-link" href="suv.html">Guide SUV</a></li>
+      <li class="nav-item"><a class="nav-link" href="compare.html">Comparer</a></li>
+      <li class="nav-item"><a class="nav-link" href="budget.html">Budget</a></li>
+      <li class="nav-item"><a class="nav-link" href="tco.html">TCO</a></li>
+      <li class="nav-item"><a class="nav-link" href="leasing.html">Leasing</a></li>
+      <li class="nav-item"><a class="nav-link" href="import.html">Import</a></li>
+      <li class="nav-item"><a class="nav-link" href="selection.html">⭐ Sélection</a></li>
+      <li class="nav-item"><a class="nav-link" href="top-models.html">Top Modèles</a></li>
+      <li class="nav-item"><a class="nav-link" href="vendors.html">Vendeurs</a></li>
+    
+    </ul>
+  </div>
+</nav>
+<div class="container-fluid px-3 py-3" style="max-width:1400px">
+  <h1 style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.6rem;margin:0 0 4px">🚙 <span id="h-label">Hyundai Tucson HEV 239 ch</span> — guide d'achat</h1>
+  <p class="page-intro">Full hybrid <b>non rechargeable</b> uniquement : les micro-hybrides 48V et les PHEV sont exclus. Les annonces d'une même voiture publiée sur plusieurs sites sont regroupées.
+    Chaque offre a un score de correspondance avec ta cible. Clique sur une offre pour voir sa fiche et les questions à poser au vendeur.</p>
+
+  <div class="row g-2 mb-3" id="kpis"></div>
+
+  <!-- 1. Guide : choisir / éviter / vérifier -->
+  <div class="row g-2 mb-3" id="guide"></div>
+
+  <div class="table-card mb-3">
+    <div class="table-card-header">Reconnaître la bonne version</div>
+    <div class="table-scroll"><table class="models-table" id="t-gen">
+      <thead><tr><th>Version</th><th>Période (1ère immat.)</th><th>Puissance</th><th>Boîte</th><th>Commentaire</th><th>Offres</th><th>Prix neuf / 0 km</th><th>Prix occasion</th></tr></thead>
+      <tbody></tbody></table></div>
+  </div>
+
+  <!-- 2. Offres -->
+  <div class="filter-panel">
+    <div class="row g-2 align-items-end">
+      <div class="col-md-2 col-6"><label class="form-label">Pays</label>
+        <select id="f-pays" class="form-select form-select-sm"><option value="">Tous</option></select></div>
+      <div class="col-md-2 col-6"><label class="form-label">Puissance</label>
+        <select id="f-ch" class="form-select form-select-sm"><option value="">Toutes</option><option value="239">239 ch (cible)</option><option value="215">215 ch</option><option value="230">230 ch</option></select></div>
+      <div class="col-md-2 col-6"><label class="form-label">Transmission</label>
+        <select id="f-tr" class="form-select form-select-sm"><option value="">Toutes</option><option value="2WD">2WD</option><option value="4WD">4WD / HTRAC</option><option value="?">Inconnue</option></select></div>
+      <div class="col-md-2 col-6"><label class="form-label">État</label>
+        <select id="f-etat" class="form-select form-select-sm"><option value="">Neuf + occasion</option><option value="neuf">Neuf / 0 km</option><option value="occ">Occasion</option></select></div>
+      <div class="col-md-2 col-6"><label class="form-label">Prix max €</label>
+        <input type="number" id="f-prix" class="form-control form-control-sm" placeholder="45000"></div>
+      <div class="col-md-2 col-6"><label class="form-label">Garantie restante min (mois)</label>
+        <input type="number" id="f-gar" class="form-control form-control-sm" placeholder="36"></div>
+    </div>
+  </div>
+
+  <div class="table-card mb-3">
+    <div class="table-card-header">Offres classées par correspondance <span class="count-badge-sm" id="nb-offres">0</span>
+      <span style="float:right;font-size:12px;font-family:Barlow,sans-serif;font-weight:500;color:var(--txt3)" id="poids"></span></div>
+    <div class="table-scroll"><table class="models-table" id="t-offres">
+      <thead><tr><th>#</th><th>Score</th><th>Version</th><th>Prix</th><th>Année · km</th><th>Puiss.</th><th>Transm.</th>
+        <th>Garantie</th><th>Tes équipements</th><th>Lieu</th><th>Annonces</th></tr></thead>
+      <tbody></tbody></table></div>
+  </div>
+
+  <!-- 3. Avis -->
+  <div class="table-card mb-3">
+    <div class="table-card-header">Avis propriétaires — France (Caradisiac, avis réels) <a class="lnk" id="cara-link" target="_blank" rel="noopener noreferrer" style="float:right;font-size:12px;font-family:Barlow,sans-serif;font-weight:500"></a></div>
+    <div style="padding:12px 16px" id="cara"></div>
+  </div>
+
+  <h2 style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.25rem;margin:18px 0 8px">🇪🇺 Europe — enquêtes, essais et garantie</h2>
+  <div class="row g-2 mb-3" id="src-europe"></div>
+  <h2 style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.25rem;margin:18px 0 8px">🌍 Monde</h2>
+  <div class="row g-2 mb-3" id="src-monde"></div>
+
+  <div class="table-card mb-3">
+    <div class="table-card-header">Problèmes connus et rappels — à vérifier par numéro de châssis (VIN)</div>
+    <div class="table-scroll"><table class="models-table" id="t-pb">
+      <thead><tr><th>Problème</th><th>Années</th><th>Gravité</th><th>Détail</th><th>Ce que tu fais</th><th>Source</th></tr></thead>
+      <tbody></tbody></table></div>
+  </div>
+
+  <div class="table-card mb-3">
+    <div class="table-card-header">❓ Questions à envoyer au vendeur <button class="copy-btn" data-copy="questions" style="float:right">Copier</button></div>
+    <ol style="padding:12px 16px 12px 36px;margin:0;font-size:13px;color:var(--txt2)" id="questions"></ol>
+  </div>
+
+  <div class="info-box mb-3" id="avert"></div>
+</div>
+
+<div class="footer-bar" id="footer"></div>
+
+<script src="data/tucson.js"></script>
+<script src="data/version.js"></script>
+<script>
+  const D = (typeof CIBLE !== 'undefined' && CIBLE && CIBLE.offres) ? CIBLE : { offres: [], stats: { segments: [], par_pays: {} }, config: {}, synthese: {}, avis_proprietaires: {} };
+  const C = D.config || {}, S = D.synthese || {};
+  const EQ = C.equipements || {};
+  const fmt = n => (n || n === 0) ? Number(n).toLocaleString('fr-FR') : '—';
+  const esc = s => escapeHtml(s == null ? '' : String(s));
+  const link = (url, txt) => url ? `<a class="lnk" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(txt)}</a>` : esc(txt);
+  const pillScore = s => `<span class="pill ${s >= 70 ? 'pill-g' : s >= 50 ? 'pill-a' : 'pill-n'}">${s}</span>`;
+  const $ = id => document.getElementById(id);
+
+  function pillCh(o) {
+    if (!o.puissance) return '<span class="pill pill-n" title="inconnue">?</span>';
+    const cls = o.puissance === C.puissance_ch ? 'pill-g' : 'pill-a';
+    return `<span class="pill ${cls}" title="${o.puissance_src === 'date' ? 'déduite de la date de 1ère immatriculation' : 'lue dans l\'annonce'}">${o.puissance}${o.puissance_src === 'date' ? '*' : ''}</span>`;
+  }
+  function pillTr(t) {
+    if (!t) return '<span class="pill pill-n" title="non indiquée dans l\'annonce">?</span>';
+    return `<span class="pill ${t === C.transmission ? 'pill-g' : 'pill-a'}">${esc(t)}</span>`;
+  }
+  function pillGar(g) {
+    if (!g || g.mois_restants == null) return '<span class="pill pill-n">?</span>';
+    const m = g.mois_restants, cls = m >= 48 ? 'pill-g' : m >= 24 ? 'pill-a' : 'pill-r';
+    const t = g.source === 'neuf' ? '5 ans complets (démarre à l\'immatriculation)' : `du ${g.debut} au ${g.fin} (${g.source})`;
+    return `<span class="pill ${cls}" title="${esc(t)}">${m} mois</span>`;
+  }
+
+  function kpis() {
+    const O = D.offres, lu = O.filter(o => (o.pays_all || []).includes('Luxembourg'));
+    const cible = lu.filter(o => o.puissance === C.puissance_ch);
+    const best = O[0];
+    const minCible = cible.filter(o => o.prix).map(o => o.prix).sort((a, b) => a - b)[0];
+    const A = D.avis_proprietaires || {};
+    const items = [
+      ['Offres au Luxembourg', lu.length, 'var(--green)', `${fmt(D.stats.nb_annonces)} annonces regroupées en ${fmt(D.stats.nb_offres)} offres (tous pays)`],
+      [`${C.puissance_ch || 239} ch au Luxembourg`, cible.length, 'var(--accent)', 'version cible'],
+      [`${C.puissance_ch || 239} ch dès`, minCible ? fmt(minCible) + ' €' : '—', 'var(--accent)', 'prix affiché : demander le prix final comptant'],
+      ['Meilleure correspondance', best ? best.score + '/100' : '—', 'var(--green)', best ? `${best.finition || ''} ${fmt(best.prix)} €` : ''],
+      ['Avis Caradisiac', A.note ? `${A.note}/20` : '—', 'var(--amber)', A.nb_avis ? `${A.nb_avis} avis, Tucson IV` : 'aucun'],
+      (() => { const w = (S.sources || []).find(x => /What Car/.test(x.source)); return ['What Car? fiabilité (UK)', w ? w.chiffre.split('—')[0].trim() : '—', 'var(--amber)', w ? w.chiffre : '']; })(),
+    ];
+    $('kpis').innerHTML = items.map(([l, v, c, t]) =>
+      `<div class="col-md-2 col-6"><div class="kpi" title="${esc(t)}"><div class="kpi-val" style="color:${c}">${typeof v === 'number' ? fmt(v) : esc(v)}</div><div class="kpi-label">${esc(l)}</div><div style="font-size:11px;color:var(--txt3)">${esc(t)}</div></div></div>`).join('');
+  }
+
+  function guide() {
+    const g = S.guide || {};
+    const col = (titre, color, items) => `<div class="col-lg-4"><div class="guide-col" style="border-top:3px solid ${color}"><h3>${titre}</h3>
+      <ul>${(items || []).map(x => `<li>${esc(x)}</li>`).join('')}</ul></div></div>`;
+    $('guide').innerHTML = col('✅ Quoi choisir', 'var(--green)', g.choisir) + col('⛔ Quoi éviter', 'var(--red)', g.eviter) + col('🔎 Vérifier avant de signer', 'var(--amber)', g.verifier);
+    const seg = D.stats.segments || [];
+    const px = (ch, neuf) => { const s = seg.find(x => x.puissance === ch && x.neuf === neuf); return s ? `${fmt(s.min)} – ${fmt(s.max)} € <span style="color:var(--txt3)">(méd. ${fmt(s.mediane)}, ${s.nb})</span>` : '—'; };
+    $('t-gen').querySelector('tbody').innerHTML = (S.generations || []).map(v => `<tr class="gen-row">
+      <td><b>${esc(v.code)}</b></td><td>${esc(v.periode)}</td>
+      <td>${v.puissance_ch === C.puissance_ch ? `<span class="pill pill-g">${v.puissance_ch} ch</span>` : `<span class="pill pill-n">${v.puissance_ch} ch</span>`}</td>
+      <td>${esc(v.boite)}</td><td style="color:var(--txt2)">${esc(v.note)}</td>
+      <td><span class="count-badge-sm">${D.offres.filter(o => o.puissance === v.puissance_ch).length}</span></td>
+      <td class="prix-mono">${px(v.puissance_ch, true)}</td><td class="prix-mono">${px(v.puissance_ch, false)}</td></tr>`).join('');
+  }
+
+  function detailRow(o) {
+    const P = C.poids || {};
+    const sc = Object.entries(o.score_detail || {}).map(([k, v]) =>
+      `<div style="font-size:12px;display:flex;gap:6px;align-items:center"><span style="width:110px;color:var(--txt2)">${esc(k)}</span>
+        <span class="bar" style="width:${Math.round(v / (P[k] || 1) * 80)}px"></span><span style="font-family:'DM Mono',monospace">${v}/${P[k] || '?'}</span></div>`).join('');
+    const eq = Object.entries(EQ).map(([k, lbl]) => `<li class="${(o.equip_ok || []).includes(k) ? 'st-ok' : 'st-unknown'}">${esc(lbl)}</li>`).join('');
+    const al = (o.alertes || []).map(a => `<li class="st-warn">${esc(a)}</li>`).join('');
+    const hist = [
+      o.proprietaires != null ? `<li class="${o.proprietaires <= 1 ? 'st-ok' : 'st-warn'}">${o.proprietaires} propriétaire(s)</li>` : '',
+      o.accident === false ? '<li class="st-ok">Sans accident déclaré</li>' : o.accident ? '<li class="st-ko">Accident déclaré</li>' : '',
+      o.carnet ? '<li class="st-ok">Carnet d\'entretien complet</li>' : '',
+    ].join('');
+    const g = o.garantie || {};
+    const autres = (o.autres || []).map(a => `<li>${link(a.url, a.site)} — ${esc(a.ville || '')} (${esc(a.pays || '')})</li>`).join('');
+    return `<tr class="row-detail" id="d-${esc(o.id)}" style="display:none"><td colspan="11"><div class="row g-3">
+      <div class="col-lg-3"><div class="detail-h">Score ${o.score}/100</div>${sc}
+        <div style="font-size:12px;color:var(--txt3);margin-top:6px">Prix comparé à la médiane des offres de même puissance, ${o.neuf ? 'en neuf' : 'en occasion'} : ${o.prix_median_comparable ? fmt(o.prix_median_comparable) + ' €' : 'n/d (moins de 3 offres)'}.</div>
+        <div class="detail-h" style="margin-top:10px">Garantie Hyundai 5 ans</div>
+        <div style="font-size:12.5px;color:var(--txt2)">${g.source === 'neuf' ? 'Neuf non immatriculé : 5 ans complets à partir de ton immatriculation.' : g.debut ? `Début ${esc(g.debut)} → fin ${esc(g.fin)} (${esc(g.source)}) — reste <b>${g.mois_restants} mois</b>. Batterie HT : 8 ans / 160 000 km.` : 'Date inconnue : demander la 1ère immatriculation.'}</div></div>
+      <div class="col-lg-3"><div class="detail-h">Tes équipements (${(o.equip_ok || []).length}/${Object.keys(EQ).length})</div><ul class="chk">${eq}</ul>
+        ${o.equip_connus ? '' : '<div style="font-size:11.5px;color:var(--txt3)">Fiche pas encore analysée : lance <code>python3.9 main.py --cible</code>.</div>'}
+        <div style="font-size:11.5px;color:var(--txt3)">❓ = pas trouvé dans l'annonce, à confirmer.</div></div>
+      <div class="col-lg-3"><div class="detail-h">À vérifier sur cette offre</div><ul class="chk">${al || '<li class="st-ok">Rien de particulier</li>'}${hist}</ul></div>
+      <div class="col-lg-3"><div class="detail-h">Annonce</div>
+        <div style="font-size:12.5px;color:var(--txt2)">${esc(o.titre)}<br>${esc(o.vendeur || '')} ${o.vendeur_type ? '(' + esc(o.vendeur_type) + ')' : ''} · ${esc(o.ville || '')}<br>
+        ${o.jours != null ? `En ligne depuis ${o.jours} j` : ''}${o.prix_initial && o.prix_initial > o.prix ? ` · baisse de ${fmt(o.prix_initial - o.prix)} €` : ''}<br>
+        ${link(o.url, 'Ouvrir l\'annonce (' + o.site + ') →')}</div>
+        ${autres ? `<div class="detail-h" style="margin-top:10px">${o.type_groupe === 'stock' ? 'Autres exemplaires identiques en stock' : 'Même voiture sur d\'autres sites'}</div><ul style="font-size:12px;padding-left:18px;margin:0">${autres}</ul>` : ''}
+        <button class="copy-btn" style="margin-top:10px" data-copy="offre" data-id="${esc(o.id)}">Copier les questions + lien</button></div>
+      </div></td></tr>`;
+  }
+
+  function renderOffres() {
+    const pays = $('f-pays').value, ch = parseInt($('f-ch').value) || 0, tr = $('f-tr').value, etat = $('f-etat').value;
+    const pmax = parseInt($('f-prix').value) || Infinity, gmin = parseInt($('f-gar').value) || 0;
+    const rows = D.offres.filter(o =>
+      (!pays || (o.pays_all || []).includes(pays)) && (!ch || o.puissance === ch)
+      && (!tr || (tr === '?' ? !o.transmission : o.transmission === tr))
+      && (!etat || (etat === 'neuf') === o.neuf) && (!o.prix || o.prix <= pmax)
+      && (!gmin || (o.garantie && (o.garantie.mois_restants || 0) >= gmin)));
+    $('nb-offres').textContent = rows.length;
+    const nEq = Object.keys(EQ).length;
+    $('t-offres').querySelector('tbody').innerHTML = rows.map((o, i) => `<tr class="row-main" data-id="${esc(o.id)}">
+      <td><span class="rank-badge ${i < 3 ? 'rank-' + (i + 1) : 'rank-n'}">${i + 1}</span></td>
+      <td>${pillScore(o.score)}</td>
+      <td>${link(o.url, (o.finition || 'Tucson HEV'))}<div style="font-size:11px;color:var(--txt3)">${esc(o.version)} · ${esc(o.site)}</div></td>
+      <td class="prix-mono"><b>${fmt(o.prix)} €</b>${o.prix_median_comparable ? `<div style="font-size:11px;color:${o.prix <= o.prix_median_comparable ? 'var(--green)' : 'var(--txt3)'}">méd. ${fmt(o.prix_median_comparable)} €</div>` : ''}</td>
+      <td class="prix-mono">${o.annee || '—'}<div style="font-size:11px;color:var(--txt3)">${o.neuf ? 'neuf / 0 km' : fmt(o.km) + ' km'}</div></td>
+      <td>${pillCh(o)}</td><td>${pillTr(o.transmission)}</td><td>${pillGar(o.garantie)}</td>
+      <td style="min-width:150px">${o.equip_connus ? `<span class="bar" style="width:${Math.round((o.equip_ok || []).length / (nEq || 1) * 60)}px;background:var(--green)"></span> <span class="prix-mono" style="font-size:12px">${(o.equip_ok || []).length}/${nEq}</span>` : '<span class="pill pill-n">non détaillés</span>'}
+        ${(o.alertes || []).length ? `<div style="font-size:11px;color:var(--amber)">⚠️ ${o.alertes.length} point(s) à vérifier</div>` : ''}</td>
+      <td style="font-size:12px">${esc(o.ville)}<div style="font-size:11px;color:var(--txt3)">${esc((o.pays_all || []).join(', '))}</div></td>
+      <td>${o.nb_annonces > 1 ? `<span class="count-badge-sm" title="${o.type_groupe === 'stock' ? 'exemplaires identiques en stock' : 'même voiture sur plusieurs sites'}">${o.nb_annonces} ${o.type_groupe === 'stock' ? 'en stock' : 'sites'}</span>` : '1'}</td></tr>` + detailRow(o)).join('')
+      || '<tr><td colspan="11" style="color:var(--txt3)">Aucune offre ne correspond aux filtres</td></tr>';
+  }
+
+  function renderAvis() {
+    const A = D.avis_proprietaires || {};
+    if (!A.note) { $('cara').innerHTML = '<span style="color:var(--txt3)">Pas encore d\'avis en cache : lance <code>python3.9 main.py --avis</code>.</span>'; return; }
+    $('cara-link').href = A.url; $('cara-link').textContent = `Tous les ${A.nb_avis} avis →`;
+    const crit = Object.entries(A.criteres || {}).map(([k, v]) =>
+      `<div style="font-size:12px;display:flex;gap:6px;align-items:center"><span style="width:150px;color:var(--txt2)">${esc(k)}</span>
+        <span class="bar" style="width:${Math.round(v * 8)}px;background:${v >= 8 ? 'var(--green)' : v >= 7 ? 'var(--accent)' : 'var(--amber)'}"></span><span class="prix-mono">${v}/10</span></div>`).join('');
+    const extHtml = e => `<div class="avis-ext"><span class="n" style="color:${e.note >= 15 ? 'var(--green)' : e.note >= 12 ? 'var(--amber)' : 'var(--red)'}">${e.note}/20</span>
+      · ${esc(e.version)} · ${esc(e.date)} ${e.alerte_panne ? '<span class="pill pill-r">panne évoquée</span>' : ''}<br>« ${esc(e.extrait)} » ${link(e.url, 'lire')}</div>`;
+    const H = A.avis_hybrides || [];
+    const ext = H.slice(0, 6).map(extHtml).join('') + (H.length > 6
+      ? `<details><summary class="lnk" style="cursor:pointer;font-size:12.5px;margin:6px 0">Voir les ${H.length - 6} autres avis HEV</summary>${H.slice(6).map(extHtml).join('')}</details>` : '');
+    $('cara').innerHTML = `<div class="row g-3"><div class="col-lg-4"><div class="detail-h">Tucson IV (${esc(A.periode)}) — ${A.note}/20 sur ${A.nb_avis} avis (tous moteurs)</div>${crit}</div>
+      <div class="col-lg-8"><div class="detail-h">Avis de propriétaires d'hybrides HEV (${(A.avis_hybrides || []).length})</div>${ext || '<span style="color:var(--txt3)">Aucun avis hybride isolé.</span>'}</div></div>`;
+  }
+
+  function renderSources() {
+    const V = { verifie: ['pill-g', 'lu à la source'], recherche: ['pill-a', 'via recherche — à confirmer'] };
+    const card = s => `<div class="col-lg-4 col-md-6"><div class="src-card">
+      <div class="src-h">${esc(s.source)}</div>
+      <div style="font-size:11px;color:var(--txt3)">${esc(s.pays)} · ${esc(s.type)} <span class="pill ${(V[s.verifie] || V.recherche)[0]}">${(V[s.verifie] || V.recherche)[1]}</span></div>
+      <div class="src-fig">${esc(s.chiffre)}</div><div>${esc(s.resume)}</div>
+      ${(s.plus || []).length ? `<div style="margin-top:6px"><span style="color:var(--green)">+</span> ${s.plus.map(esc).join(' · ')}</div>` : ''}
+      ${(s.moins || []).length ? `<div><span style="color:var(--red)">−</span> ${s.moins.map(esc).join(' · ')}</div>` : ''}
+      <div style="margin-top:6px">${link(s.url, 'Source →')}</div></div></div>`;
+    const src = S.sources || [];
+    $('src-europe').innerHTML = src.filter(s => s.region === 'Europe').map(card).join('');
+    $('src-monde').innerHTML = src.filter(s => s.region !== 'Europe').map(card).join('');
+    const G = { critique: 'pill-r', 'élevée': 'pill-r', moyenne: 'pill-a', info: 'pill-n' };
+    $('t-pb').querySelector('tbody').innerHTML = (S.problemes_connus || []).map(p => `<tr>
+      <td><b>${esc(p.titre)}</b></td><td>${esc(p.annees)}</td><td><span class="pill ${G[p.gravite] || 'pill-n'}">${esc(p.gravite)}</span></td>
+      <td style="font-size:12.5px;color:var(--txt2)">${esc(p.description)}</td><td style="font-size:12.5px">${esc(p.action)}</td>
+      <td style="font-size:12px">${link(p.url, p.region)}</td></tr>`).join('');
+    $('avert').innerHTML = `<b>Sources :</b> ${esc(S.avertissement || '')} <span style="color:var(--txt3)">(synthèse du ${esc(S.date_maj || '—')})</span>`;
+  }
+
+  function questionsTexte(o) {
+    let t = (C.questions || []).map((q, i) => `${i + 1}. ${q}`).join('\n');
+    if (o) t = `Concernant votre annonce : ${o.titre || ''} — ${fmt(o.prix)} € — ${o.url || ''}\n\n` + t;
+    return t;
+  }
+
+  // Délégation d'événements : dépliage des fiches + boutons « Copier » (pas de <script> dans innerHTML)
+  document.addEventListener('click', e => {
+    const btn = e.target.closest('.copy-btn');
+    if (btn) {
+      const o = btn.dataset.copy === 'offre' ? D.offres.find(x => x.id === btn.dataset.id) : null;
+      navigator.clipboard.writeText(questionsTexte(o)).then(() => { btn.textContent = 'Copié ✓'; setTimeout(() => btn.textContent = o ? 'Copier les questions + lien' : 'Copier', 1500); }).catch(() => {});
+      return;
+    }
+    if (e.target.closest('a')) return;
+    const tr = e.target.closest('tr.row-main');
+    if (!tr) return;
+    const d = document.getElementById('d-' + tr.dataset.id);
+    if (d) d.style.display = d.style.display === 'none' ? '' : 'none';
+  });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    if (C.label) $('h-label').textContent = C.label;
+    const P = C.poids || {};
+    $('poids').textContent = `score : puissance ${P.puissance} · transmission ${P.transmission} · équipements ${P.equipements} · garantie ${P.garantie} · prix ${P.prix}`;
+    const sel = $('f-pays');
+    Object.keys(D.stats.par_pays || {}).sort().forEach(p => { const op = document.createElement('option'); op.value = p; op.textContent = `${p} (${D.stats.par_pays[p]})`; sel.appendChild(op); });
+    if (C.pays_defaut && (D.stats.par_pays || {})[C.pays_defaut]) sel.value = C.pays_defaut;
+    kpis(); guide(); renderAvis(); renderSources();
+    $('questions').innerHTML = (C.questions || []).map(q => `<li>${esc(q)}</li>`).join('');
+    ['f-pays', 'f-ch', 'f-tr', 'f-etat', 'f-prix', 'f-gar'].forEach(id => $(id).addEventListener('input', renderOffres));
+    renderOffres();
+    $('footer').textContent = `Calculé le ${D.date_calcul || '—'} · annonces actives uniquement · * puissance déduite de la date d'immatriculation · score = aide à la décision, vérifier chaque annonce`;
+  });
+</script>
+<script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

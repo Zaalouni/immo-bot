@@ -1,13 +1,13 @@
-// Généré automatiquement — deploy #72
+// Généré automatiquement — deploy #73
 const VERSION = {
   dashboard_version: "2.0",
-  deploy_count: 72,
-  generated_at: "2026-09-22T21:45:47.808781",
-  generated_date: "2026-09-22",
-  generated_time: "21:45",
+  deploy_count: 73,
+  generated_at: "2026-09-25T18:37:26.321109",
+  generated_date: "2026-09-25",
+  generated_time: "18:37",
   nb_listings: 6471,
   nb_vendors: 621,
-  nb_new_today: 2718,
+  nb_new_today: 0,
   last_scraping: "21:42"
 };
 

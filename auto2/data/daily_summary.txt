@@ -1,9 +1,9 @@
 ═══════════════════════════════════════════════════════
-  AUTO-BOT LUXEMBOURG — Résumé du 2026-09-22
+  AUTO-BOT LUXEMBOURG — Résumé du 2026-09-25
 ═══════════════════════════════════════════════════════
   Annonces actives    : 6,471
-  Nouvelles aujourd'hui: 2,718
-  Baisses de prix (7j) : 1
+  Nouvelles aujourd'hui: 0
+  Baisses de prix (7j) : 0
 
   TOP 5 OPPORTUNITÉS DU JOUR
   ─────────────────────────────────────────────────────
@@ -28,5 +28,5 @@
      https://www.autoscout24.lu/offres/honda-jazz-crosstar-24-1-5-i-mmd-122ch-e-hev-advance-my26-electrique-essence-rouge-cat_ma31mo16490-5261ae22-42c0-4c2b-a575-9aee9bd3fa23
 
 ═══════════════════════════════════════════════════════
-  Généré : 2026-09-22 21:45 | python3.9 dashboard_generator.py
+  Généré : 2026-09-25 18:37 | python3.9 dashboard_generator.py
 ═══════════════════════════════════════════════════════
